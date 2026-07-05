@@ -1,10 +1,21 @@
-// ── Filter functionality (인터랙티브 / 프로젝션) ──
+// ── Filter functionality (유형) ──
 function initFilters() {
   const checkItems = document.querySelectorAll('.filter-checks > li, .mo-filter');
   const containers = document.querySelectorAll('.img-post-box, .index-post-box');
   const noResults = document.querySelector('.no-results');
 
   if (!checkItems.length || !containers.length) return;
+
+  function getItemLabels(item) {
+    const labels = [];
+    if (item.dataset.type) labels.push(item.dataset.type);
+    if (item.dataset.tags) {
+      item.dataset.tags.split(',').forEach((tag) => {
+        if (tag) labels.push(tag);
+      });
+    }
+    return labels;
+  }
 
   function getActiveChecks() {
     const active = [];
@@ -25,8 +36,8 @@ function initFilters() {
 
     containers.forEach((container) => {
       container.querySelectorAll('[data-year]').forEach((item) => {
-        const itemTags = (item.dataset.tags || '').split(',');
-        const tagMatch = checks.length === 0 || checks.some((c) => itemTags.includes(c));
+        const itemLabels = getItemLabels(item);
+        const tagMatch = checks.length === 0 || checks.some((c) => itemLabels.includes(c));
         item.classList.toggle('hidden', !tagMatch);
       });
     });
@@ -57,6 +68,26 @@ function initFilters() {
       const willCheck = !el.classList.contains('checked');
       syncChecks(el.dataset.value, willCheck);
       filter();
+    });
+  });
+}
+
+// ── Works nav accordion ──
+function initNavAccordion() {
+  const accordion = document.querySelector('.nav-accordion');
+  const worksLink = document.querySelector('.nav-works');
+  if (!accordion || !worksLink) return;
+
+  worksLink.addEventListener('click', (e) => {
+    if (!document.querySelector('.site-header--works')) return;
+
+    e.preventDefault();
+    accordion.classList.toggle('is-open');
+  });
+
+  document.querySelectorAll('.nav-lab, .nav-about, .nav-cv, .nav-contact').forEach((link) => {
+    link.addEventListener('click', () => {
+      accordion.classList.remove('is-open');
     });
   });
 }
@@ -174,46 +205,12 @@ function initMobileMenu() {
   });
 }
 
-// ── Project page: left text scroll, then page scrolls images ──
-function initProjectScroll() {
-  const postText = document.querySelector('.post-text');
-  const postImgBox = document.querySelector('.post-img-box');
-  if (!postText || !postImgBox) return;
-
-  const minPageHeight = () => {
-    const imgHeight = postImgBox.offsetHeight + 100;
-    const textHeight = postText.scrollHeight;
-    document.body.style.minHeight = `${Math.max(imgHeight + 100, textHeight + 200)}px`;
-  };
-
-  minPageHeight();
-  window.addEventListener('resize', minPageHeight);
-
-  window.addEventListener('wheel', (e) => {
-    if (window.innerWidth <= 1100) return;
-
-    const textAtBottom = postText.scrollTop + postText.clientHeight >= postText.scrollHeight - 2;
-    const textAtTop = postText.scrollTop <= 0;
-    const pageAtTop = window.scrollY <= 0;
-
-    if (e.deltaY > 0 && !textAtBottom) {
-      e.preventDefault();
-      postText.scrollTop += e.deltaY;
-    } else if (e.deltaY < 0 && !pageAtTop) {
-      return;
-    } else if (e.deltaY < 0 && pageAtTop && !textAtTop) {
-      e.preventDefault();
-      postText.scrollTop += e.deltaY;
-    }
-  }, { passive: false });
-}
-
 // ── Init ──
 document.addEventListener('DOMContentLoaded', () => {
+  initNavAccordion();
   initFilters();
   initViewToggle();
   initIndexPreview();
   initReveal();
   initMobileMenu();
-  initProjectScroll();
 });

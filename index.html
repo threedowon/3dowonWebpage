@@ -6,40 +6,55 @@
   <title>3Dowon — Media Artist</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-  <link rel="stylesheet" href="styles.css?v=32" />
+  <link rel="stylesheet" href="styles.css?v=57" />
 </head>
 <body>
   <header class="site-header site-header--works">
     <a href="index.html" class="sidebar-logo">3Dowon</a>
     <nav class="nav-main">
-      <a href="index.html" class="nav-cell nav-works active">작업</a>
-      <a href="about.html" class="nav-cell nav-about">소개</a>
-      <a href="contact.html" class="nav-cell nav-contact">문의</a>
+      <div class="nav-accordion is-open">
+        <a href="index.html" class="nav-cell nav-works active">WORKS</a>
+        <div class="sidebar-controls">
+          <ul class="view-toggle">
+            <li data-view="grid" class="active">그리드</li>
+            <li data-view="index">인덱스</li>
+          </ul>
+          <ul class="filter-checks">
+            <li data-value="설치">설치</li>
+            <li data-value="영상">영상</li>
+            <li data-value="퍼포먼스">퍼포먼스</li>
+            <li data-value="전시">전시</li>
+            <li data-value="인터랙티브">인터랙티브</li>
+            <li data-value="프로젝션">프로젝션</li>
+          </ul>
+        </div>
+      </div>
+      <a href="lab.html" class="nav-cell nav-lab">LAB</a>
+      <a href="about.html" class="nav-cell nav-about">ABOUT</a>
+      <a href="cv.html" class="nav-cell nav-cv">CV</a>
+      <a href="contact.html" class="nav-cell nav-contact">CONTACT</a>
     </nav>
-    <div class="sidebar-controls">
-      <ul class="view-toggle">
-        <li data-view="grid" class="active">그리드</li>
-        <li data-view="index">인덱스</li>
-      </ul>
-      <ul class="filter-checks">
-        <li data-value="인터랙티브">인터랙티브</li>
-        <li data-value="프로젝션">프로젝션</li>
-      </ul>
-    </div>
   </header>
+  <p class="site-tagline">인터랙티브 미디어 아티스트</p>
 
   <div class="mo-header">
     <a href="index.html" class="mo-logo">3Dowon</a>
     <button class="mo-menu-btn" id="moMenuBtn">메뉴</button>
   </div>
   <div class="mo-filters">
+    <span class="mo-filter" data-value="설치">설치</span>
+    <span class="mo-filter" data-value="영상">영상</span>
+    <span class="mo-filter" data-value="퍼포먼스">퍼포먼스</span>
+    <span class="mo-filter" data-value="전시">전시</span>
     <span class="mo-filter" data-value="인터랙티브">인터랙티브</span>
     <span class="mo-filter" data-value="프로젝션">프로젝션</span>
   </div>
   <nav class="mo-nav" id="moNav">
-    <a href="index.html">작업</a>
-    <a href="about.html">소개</a>
-    <a href="contact.html">문의</a>
+    <a href="index.html">WORKS</a>
+    <a href="lab.html">LAB</a>
+    <a href="about.html">ABOUT</a>
+    <a href="cv.html">CV</a>
+    <a href="contact.html">CONTACT</a>
   </nav>
 
   <main>
@@ -466,6 +481,6 @@
 
     <p class="no-results" style="margin-left:30px">검색 결과가 없습니다.</p>
   </main>
-  <script src="script.js?v=33"></script>
+  <script src="script.js?v=57"></script>
 </body>
 </html>
