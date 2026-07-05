@@ -35,19 +35,19 @@ function initFilters() {
   }
 
   function updateNoResults() {
-    const noResults = document.querySelector('.no-results');
+    const noResultsEl = document.querySelector('.no-results');
     const indexView = document.getElementById('indexView');
     const activeContainer = indexView && !indexView.classList.contains('hidden')
       ? document.querySelector('.index-post-box')
       : document.querySelector('.img-post-box');
 
-    if (!noResults || !activeContainer) return;
+    if (!noResultsEl || !activeContainer) return;
 
     let visible = 0;
     activeContainer.querySelectorAll('[data-year]').forEach((item) => {
       if (!item.classList.contains('hidden')) visible++;
     });
-    noResults.classList.toggle('show', visible === 0);
+    noResultsEl.classList.toggle('show', visible === 0);
   }
 
   window.updateNoResults = updateNoResults;
@@ -80,6 +80,7 @@ function initViewToggle() {
     history.replaceState(null, '', url);
 
     if (window.updateNoResults) window.updateNoResults();
+    hideIndexPreview();
   };
 
   toggles.forEach((t) => {
@@ -88,6 +89,60 @@ function initViewToggle() {
 
   const params = new URLSearchParams(window.location.search);
   if (params.get('view') === 'index') setView('index');
+}
+
+// ── Index hover preview (single shared image) ──
+const INDEX_PREVIEW_OFFSET_Y = 0;
+
+function hideIndexPreview() {
+  const preview = document.getElementById('indexPreview');
+  if (!preview) return;
+  preview.classList.remove('is-visible');
+  document.querySelectorAll('.index-post.is-hovered').forEach((p) => {
+    p.classList.remove('is-hovered');
+  });
+}
+
+function initIndexPreview() {
+  const preview = document.getElementById('indexPreview');
+  const posts = document.querySelectorAll('.index-post');
+  if (!preview || !posts.length) return;
+
+  const positionPreview = (post) => {
+    const line = post.querySelector('.index-post-line');
+    const titleCell = post.querySelector('.index-post-title');
+    if (!line || !titleCell) return;
+
+    const bg = post.dataset.previewBg;
+    if (bg) preview.style.backgroundImage = `url(${bg})`;
+
+    const lineRect = line.getBoundingClientRect();
+    const titleRect = titleCell.getBoundingClientRect();
+    const textStartX = titleRect.left + (parseFloat(getComputedStyle(titleCell).paddingLeft) || 0);
+
+    preview.style.top = `${lineRect.bottom + INDEX_PREVIEW_OFFSET_Y}px`;
+    preview.style.left = `${textStartX}px`;
+  };
+
+  posts.forEach((post) => {
+    post.addEventListener('mouseenter', () => {
+      hideIndexPreview();
+      post.classList.add('is-hovered');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          positionPreview(post);
+          preview.classList.add('is-visible');
+        });
+      });
+    });
+
+    post.addEventListener('mouseleave', () => {
+      post.classList.remove('is-hovered');
+      preview.classList.remove('is-visible');
+    });
+  });
+
+  document.getElementById('indexView')?.addEventListener('mouseleave', hideIndexPreview);
 }
 
 // ── Scroll reveal ──
@@ -157,6 +212,7 @@ function initProjectScroll() {
 document.addEventListener('DOMContentLoaded', () => {
   initFilters();
   initViewToggle();
+  initIndexPreview();
   initReveal();
   initMobileMenu();
   initProjectScroll();
