@@ -1,10 +1,10 @@
 // ── Filter functionality (인터랙티브 / 프로젝션) ──
-function initFilters(container) {
-  const checkItems = document.querySelectorAll('.filter-checks li, .mo-filter');
-  const items = container.querySelectorAll('[data-year]');
+function initFilters() {
+  const checkItems = document.querySelectorAll('.filter-checks > li, .mo-filter');
+  const containers = document.querySelectorAll('.img-post-box, .index-post-box');
   const noResults = document.querySelector('.no-results');
 
-  if (!checkItems.length) return;
+  if (!checkItems.length || !containers.length) return;
 
   function getActiveChecks() {
     const active = [];
@@ -22,17 +22,35 @@ function initFilters(container) {
 
   function filter() {
     const checks = getActiveChecks();
-    let visible = 0;
 
-    items.forEach((item) => {
-      const itemTags = (item.dataset.tags || '').split(',');
-      const tagMatch = checks.length === 0 || checks.some((c) => itemTags.includes(c));
-      item.classList.toggle('hidden', !tagMatch);
-      if (tagMatch) visible++;
+    containers.forEach((container) => {
+      container.querySelectorAll('[data-year]').forEach((item) => {
+        const itemTags = (item.dataset.tags || '').split(',');
+        const tagMatch = checks.length === 0 || checks.some((c) => itemTags.includes(c));
+        item.classList.toggle('hidden', !tagMatch);
+      });
     });
 
-    if (noResults) noResults.classList.toggle('show', visible === 0);
+    updateNoResults();
   }
+
+  function updateNoResults() {
+    const noResults = document.querySelector('.no-results');
+    const indexView = document.getElementById('indexView');
+    const activeContainer = indexView && !indexView.classList.contains('hidden')
+      ? document.querySelector('.index-post-box')
+      : document.querySelector('.img-post-box');
+
+    if (!noResults || !activeContainer) return;
+
+    let visible = 0;
+    activeContainer.querySelectorAll('[data-year]').forEach((item) => {
+      if (!item.classList.contains('hidden')) visible++;
+    });
+    noResults.classList.toggle('show', visible === 0);
+  }
+
+  window.updateNoResults = updateNoResults;
 
   checkItems.forEach((el) => {
     el.addEventListener('click', () => {
@@ -41,6 +59,35 @@ function initFilters(container) {
       filter();
     });
   });
+}
+
+// ── Grid / Index view toggle ──
+function initViewToggle() {
+  const toggles = document.querySelectorAll('.view-toggle > li');
+  const gridView = document.getElementById('gridView');
+  const indexView = document.getElementById('indexView');
+  if (!toggles.length || !gridView || !indexView) return;
+
+  const setView = (view) => {
+    const isGrid = view === 'grid';
+    gridView.classList.toggle('hidden', !isGrid);
+    indexView.classList.toggle('hidden', isGrid);
+    toggles.forEach((t) => t.classList.toggle('active', t.dataset.view === view));
+
+    const url = new URL(window.location.href);
+    if (isGrid) url.searchParams.delete('view');
+    else url.searchParams.set('view', 'index');
+    history.replaceState(null, '', url);
+
+    if (window.updateNoResults) window.updateNoResults();
+  };
+
+  toggles.forEach((t) => {
+    t.addEventListener('click', () => setView(t.dataset.view));
+  });
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('view') === 'index') setView('index');
 }
 
 // ── Scroll reveal ──
@@ -108,12 +155,8 @@ function initProjectScroll() {
 
 // ── Init ──
 document.addEventListener('DOMContentLoaded', () => {
-  const indexBox = document.querySelector('.index-post-box');
-  const imgBox = document.querySelector('.img-post-box');
-
-  if (indexBox) initFilters(indexBox);
-  if (imgBox) initFilters(imgBox);
-
+  initFilters();
+  initViewToggle();
   initReveal();
   initMobileMenu();
   initProjectScroll();
