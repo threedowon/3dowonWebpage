@@ -1386,8 +1386,12 @@ body:has(.site-header--project) .post-detail-des {
     transform: none;
   }
 
+  body:has(.site-header--project) .post-projects {
+    --project-text-gap: 8px;
+  }
+
   body:has(.site-header--project) .post-title {
-    margin: 0 0 2px;
+    margin: 0;
     width: 100%;
     padding: 2px 0 2px 3px;
     font-size: 1.1em;
@@ -1415,9 +1419,9 @@ body:has(.site-header--project) .post-detail-des {
 
   body:has(.site-header--project) .post-des-box1 {
     border-top: none;
-    margin-top: 8px;
+    margin-top: var(--project-text-gap);
     padding-top: 0;
-    padding-bottom: 10px;
+    padding-bottom: var(--project-text-gap);
   }
 
   body:has(.site-header--project) .post-des-box1::before {
@@ -1441,7 +1445,8 @@ body:has(.site-header--project) .post-detail-des {
   .post-title { margin-top: 0; }
 
   body:has(.site-header--project) .post-detail-des {
-    margin-top: 2px;
+    margin-top: 0;
+    padding-top: var(--project-text-gap);
   }
 
   .post-img-box {
