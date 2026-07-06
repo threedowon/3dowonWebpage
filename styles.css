@@ -1426,7 +1426,7 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   body:has(.site-header--project) .post-title {
-    margin: 0 0 var(--project-text-gap);
+    margin: 0;
     width: 100%;
     padding: 2px 0 2px 3px;
     font-size: 1.1em;
@@ -1456,6 +1456,7 @@ body:has(.site-header--project) .post-detail-des {
     display: flex;
     flex-direction: column;
     gap: var(--project-text-gap);
+    margin-top: var(--project-text-gap);
   }
 
   body:has(.site-header--project) .post-des-box1 {
