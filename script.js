@@ -238,6 +238,17 @@ function initMobileMenu() {
     nav.setAttribute('aria-hidden', 'true');
   };
 
+  const setActiveNavLink = () => {
+    const current = window.location.pathname.split('/').pop() || 'index.html';
+    nav.querySelectorAll('.mo-nav-links a').forEach((a) => {
+      const href = a.getAttribute('href')?.split('/').pop();
+      const isIndex = (current === '' || current === 'index.html') && href === 'index.html';
+      a.classList.toggle('active', isIndex || href === current);
+    });
+  };
+
+  setActiveNavLink();
+
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
     if (nav.classList.contains('open')) closeMenu();
