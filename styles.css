@@ -705,6 +705,22 @@ main:has(.contact-box) {
   display: block;
 }
 
+body:has(.site-header--project) .post-left {
+  grid-column: 1;
+  position: sticky;
+  top: 20px;
+  height: calc(100vh - var(--logo-bar-h) - 40px);
+  overflow-y: auto;
+  scrollbar-width: none;
+  width: 100%;
+  z-index: 1;
+  background: var(--bg);
+}
+
+body:has(.site-header--project) .post-left::-webkit-scrollbar {
+  display: none;
+}
+
 body:has(.site-header--project) .post-title {
   display: block;
   width: 100%;
@@ -713,13 +729,13 @@ body:has(.site-header--project) .post-title {
   border-bottom: none;
   margin: 0 0 2px;
   padding: 2px 0 2px 3px;
-  grid-column: 1;
-  grid-row: 1;
 }
 
 body:has(.site-header--project) .post-text {
-  grid-column: 1;
-  grid-row: 2;
+  position: static;
+  height: auto;
+  overflow: visible;
+  background: transparent;
 }
 
 body:has(.site-header--project) .post-img-box {
@@ -739,6 +755,20 @@ body:has(.site-header--project) .post-title::after {
 body:has(.site-header--project) .post-des-box1,
 body:has(.site-header--project) .post-detail-des {
   padding-left: 3px;
+}
+
+body:has(.site-header--project) .post-des-box1 {
+  border-top: none;
+  margin-top: 10px;
+  padding-top: 0;
+  padding-bottom: 10px;
+}
+
+body:has(.site-header--project) .post-des-box1::before {
+  content: '';
+  display: block;
+  border-top: 1px solid var(--line);
+  margin-bottom: 8px;
 }
 
 body:has(.site-header--project) .post-detail-des {
@@ -1374,6 +1404,10 @@ body:has(.site-header--project) .post-detail-des {
     padding-left: 12px;
     padding-right: 12px;
     padding-top: 0;
+  }
+
+  body:has(.site-header--project) .post-left {
+    display: contents;
   }
 
   body:has(.site-header--project) .post-hero {
