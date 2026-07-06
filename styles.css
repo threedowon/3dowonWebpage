@@ -617,7 +617,7 @@ main:has(.contact-box) {
 
 .cv-section {
   margin-bottom: 1.85rem;
-  padding-left: 3px;
+  padding-left: 0;
 }
 
 .cv-section:last-child {
@@ -628,16 +628,18 @@ main:has(.contact-box) {
   font-size: 0.98em;
   font-weight: 400;
   margin: 0 0 10px;
-  padding: 0 0 3px;
+  padding: 0 0 3px 3px;
   border-bottom: 1px solid var(--line);
-  width: fit-content;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .cv-entries {
   display: flex;
   flex-direction: column;
   gap: 1px;
-  padding-left: 0;
+  padding-left: 3px;
 }
 
 .cv-entry {
