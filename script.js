@@ -287,6 +287,50 @@ function initCvCommaWrap() {
     return tooWide;
   };
 
+  const commaCount = (html) => {
+    let depth = 0;
+    let count = 0;
+    for (let i = 0; i < html.length; i++) {
+      if (html[i] === '<') depth++;
+      else if (html[i] === '>') depth--;
+      else if (html[i] === ',' && depth === 0) count++;
+    }
+    return count;
+  };
+
+  const insertBreakAtCommaFromEnd = (html, fromEnd) => {
+    const positions = [];
+    let depth = 0;
+    for (let i = 0; i < html.length; i++) {
+      if (html[i] === '<') depth++;
+      else if (html[i] === '>') depth--;
+      else if (html[i] === ',' && depth === 0) positions.push(i);
+    }
+    if (positions.length < fromEnd) return html;
+    const idx = positions[positions.length - fromEnd];
+    return html.slice(0, idx + 1) + '<br>' + html.slice(idx + 1).replace(/^\s+/, '');
+  };
+
+  const wrapOverflowingDesc = (el, original) => {
+    const commas = commaCount(original);
+    if (commas === 0) return original;
+
+    const breakAt = commas >= 3 ? 2 : 1;
+    const wrapped = insertBreakAtCommaFromEnd(original, breakAt);
+    if (wrapped === original) return original;
+
+    el.innerHTML = wrapped;
+    if (!isTooWide(el, wrapped)) return wrapped;
+
+    el.innerHTML = original;
+    if (breakAt === 2 && commas > 1) {
+      const fallback = insertBreakAtCommaFromEnd(original, 1);
+      el.innerHTML = fallback;
+      return fallback;
+    }
+    return original;
+  };
+
   const apply = () => {
     descs.forEach((el) => {
       const original = el.dataset.cvOriginal;
@@ -295,7 +339,7 @@ function initCvCommaWrap() {
       if (!mq.matches || !original.includes(',')) return;
       if (!isTooWide(el, original)) return;
 
-      el.innerHTML = original.replace(/,\s+/g, ',<br>');
+      wrapOverflowingDesc(el, original);
     });
   };
 
