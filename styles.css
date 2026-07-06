@@ -1224,6 +1224,8 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   body:has(.site-header--works) .img-post-box {
+    margin-left: 12px;
+    width: calc(100% - 24px);
     margin-top: 0;
   }
 
