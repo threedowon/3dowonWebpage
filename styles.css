@@ -856,15 +856,6 @@ body:has(.site-header--project) .post-detail-des {
     z-index: 1002;
   }
 
-  .mo-header::after {
-    content: '';
-    position: absolute;
-    left: 14px;
-    right: 14px;
-    bottom: 0;
-    border-bottom: 1px solid var(--line);
-  }
-
   .mo-logo {
     font-size: 1.12em;
     font-weight: 350;
@@ -1007,13 +998,22 @@ body:has(.site-header--project) .post-detail-des {
     left: 0;
     width: 100%;
     height: auto;
-    padding: 6px 12px 6px;
+    padding: 12px 12px 6px;
     border-right: none;
     border-bottom: none;
     background: var(--bg);
     z-index: 1001;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
+  }
+
+  .site-header::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: 6px;
+    border-top: 1px solid var(--line);
   }
 
   .site-header--works::after {
@@ -1034,7 +1034,7 @@ body:has(.site-header--project) .post-detail-des {
     left: 0;
     width: 100%;
     height: auto;
-    padding: 6px 12px 7px;
+    padding: 12px 12px 7px;
     background: var(--bg);
     border-bottom: none;
     z-index: 1001;
@@ -1170,7 +1170,7 @@ body:has(.site-header--project) .post-detail-des {
 
   body:has(.site-header--simple) main,
   body:has(.site-header--project) main {
-    padding-top: calc(var(--mobile-bar-h) + 34px);
+    padding-top: calc(var(--mobile-bar-h) + 40px);
   }
 
   .index-box,
