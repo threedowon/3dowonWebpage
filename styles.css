@@ -757,20 +757,6 @@ body:has(.site-header--project) .post-detail-des {
   padding-left: 3px;
 }
 
-body:has(.site-header--project) .post-des-box1 {
-  border-top: none;
-  margin-top: 10px;
-  padding-top: 0;
-  padding-bottom: 10px;
-}
-
-body:has(.site-header--project) .post-des-box1::before {
-  content: '';
-  display: block;
-  border-top: 1px solid var(--line);
-  margin-bottom: 8px;
-}
-
 body:has(.site-header--project) .post-detail-des {
   margin-top: 2px;
   padding-right: 3px;
