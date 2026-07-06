@@ -995,7 +995,7 @@ body:has(.site-header--project) .post-detail-des {
     left: 0;
     width: 100%;
     height: auto;
-    padding: 8px 12px 10px;
+    padding: 6px 12px 6px;
     border-right: none;
     border-bottom: 1px solid var(--line);
     background: var(--bg);
@@ -1065,15 +1065,15 @@ body:has(.site-header--project) .post-detail-des {
 
   .nav-accordion.is-open .sidebar-controls {
     max-height: max-content;
-    margin-top: 8px;
+    margin-top: 6px;
   }
 
   .sidebar-controls {
-    margin-top: 8px;
+    margin-top: 6px;
     padding-top: 0;
     flex-direction: column;
     flex-wrap: nowrap;
-    gap: 8px;
+    gap: 6px;
     border-top: none;
     width: 100%;
   }
@@ -1100,7 +1100,11 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   body:has(.site-header--works) main {
-    padding-top: calc(var(--mobile-bar-h) + 250px);
+    padding-top: calc(var(--mobile-bar-h) + 182px);
+  }
+
+  body:has(.site-header--works) .img-post-box {
+    margin-top: 4px;
   }
 
   body:has(.site-header--simple) main,
