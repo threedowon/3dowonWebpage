@@ -1220,8 +1220,8 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   body:has(.lab-view) .img-post-box {
-    margin-left: 15px;
-    width: calc(100% - 27px);
+    margin-left: 12px;
+    width: calc(100% - 24px);
   }
 
   .index-box,
@@ -1261,10 +1261,6 @@ body:has(.site-header--project) .post-detail-des {
     width: 33.33%;
     max-width: 33.33%;
     flex: 1 1 30%;
-  }
-
-  .lab-view .img-post-thumbimg {
-    width: 100%;
   }
 
   .lab-post-caption {
