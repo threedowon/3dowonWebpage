@@ -708,7 +708,7 @@ body:has(.site-header--project) .post-title {
   width: 100%;
   box-sizing: border-box;
   border-top: none;
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
   margin: 0 0 2px;
   padding: 2px 0 2px 3px;
   grid-column: 1;
@@ -724,7 +724,12 @@ body:has(.site-header--project) .post-img-box {
 }
 
 body:has(.site-header--project) .post-title::after {
-  display: none;
+  content: '';
+  display: block;
+  margin-top: 2px;
+  margin-left: 3px;
+  margin-right: 0;
+  border-bottom: 1px solid var(--line);
 }
 
 body:has(.site-header--project) .post-des-box1,
@@ -1369,6 +1374,12 @@ body:has(.site-header--project) .post-detail-des {
     z-index: 1000;
     background: var(--bg);
     box-sizing: border-box;
+    border-bottom: none;
+  }
+
+  body:has(.site-header--project) .post-title::after {
+    margin-left: 12px;
+    margin-right: 12px;
   }
 
   body:has(.site-header--project) .post-detail-des {
