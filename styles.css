@@ -914,6 +914,10 @@ body:has(.site-header--project) .post-detail-des::before {
 @media (max-width: 768px) {
   :root {
     --mobile-subheader-h: calc(9px + 4px + 1.1em * 1.4 + 1px);
+    --mobile-header-line-top: 6px;
+    --mobile-header-line-inset: 12px;
+    --mobile-page-title-size: 1.1em;
+    --mobile-page-title-padding: 2px 0 2px 3px;
   }
 
   .mo-header {
@@ -1085,20 +1089,15 @@ body:has(.site-header--project) .post-detail-des::before {
   .site-header::before {
     content: '';
     position: absolute;
-    left: 12px;
-    right: 12px;
-    top: 6px;
+    left: var(--mobile-header-line-inset);
+    right: var(--mobile-header-line-inset);
+    top: var(--mobile-header-line-top);
     border-top: 1px solid var(--line);
   }
 
   .site-header--works {
     --works-filter-gap: 6px;
-    padding-top: 5px;
     padding-bottom: 0;
-  }
-
-  .site-header--works::before {
-    top: 4px;
   }
 
   .site-header--works::after {
@@ -1143,9 +1142,10 @@ body:has(.site-header--project) .post-detail-des::before {
   .site-header--simple .nav-main > .nav-cell.active,
   .site-header--project .nav-main > .nav-cell.active {
     display: block;
-    font-size: 1.1em;
+    font-size: var(--mobile-page-title-size);
     font-weight: 350;
-    padding: 2px 0 2px 3px;
+    line-height: 1.4;
+    padding: var(--mobile-page-title-padding);
     border-bottom: 1px solid var(--line);
     background: var(--bg);
   }
