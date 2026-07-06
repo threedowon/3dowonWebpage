@@ -9,6 +9,7 @@
   --sidebar-w-project: 125px;
   --index-line-inset: 80px;
   --logo-bar-h: 82px;
+  --mobile-bar-h: 42px;
 }
 
 html { font-size: 16px; scroll-behavior: smooth; }
@@ -222,18 +223,6 @@ main:has(.contact-box) {
   border-right: 1px solid var(--line);
 }
 
-.filter-checks--production {
-  flex-wrap: nowrap;
-}
-
-.filter-checks--production > li {
-  flex: 1 1 33.33%;
-}
-
-.filter-checks--production > li:not(:last-child) {
-  border-right: 1px solid var(--line);
-}
-
 .filter-checks--type > li:nth-child(odd) {
   border-right: 1px solid var(--line);
 }
@@ -295,11 +284,14 @@ main:has(.contact-box) {
 
 /* Section 4: Search — removed */
 
-/* 모바일 전용 — 기본 숨김, 데스크톱 헤더 항상 표시 */
+/* 모바일 전용 — 기본 숨김 */
 .mo-header,
-.mo-filters,
 .mo-nav,
 .pad-header {
+  display: none;
+}
+
+.mo-filters {
   display: none;
 }
 
@@ -841,65 +833,155 @@ body:has(.site-header--project) .post-detail-des {
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  .site-header {
+  .mo-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
+    height: var(--mobile-bar-h);
+    padding: 0 14px;
+    background: rgba(255, 255, 255, 0.97);
+    border-bottom: 1px solid var(--line);
+    z-index: 1002;
+  }
+
+  .mo-logo {
+    font-size: 1.35em;
+    font-weight: 350;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    padding: 0;
+  }
+
+  .mo-menu-btn {
+    font-size: 0.92em;
+    font-weight: 350;
+    background: none;
+    border: none;
+    color: var(--text);
+    padding: 6px 0 6px 12px;
+    line-height: 1;
+  }
+
+  .mo-nav {
+    display: none;
+    position: fixed;
+    top: var(--mobile-bar-h);
+    right: 14px;
+    min-width: 148px;
+    flex-direction: column;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    z-index: 1003;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  }
+
+  .mo-nav.open {
+    display: flex;
+  }
+
+  .mo-nav a {
+    padding: 10px 16px;
+    font-size: 0.95em;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .mo-nav a:last-child {
+    border-bottom: none;
+  }
+
+  .mo-nav a:hover,
+  .mo-nav a:active {
+    background: var(--hover-bg);
+  }
+
+  .site-header {
+    position: fixed;
+    top: var(--mobile-bar-h);
+    left: 0;
     width: 100%;
     height: auto;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 10px 12px;
+    padding: 8px 12px 10px;
     border-right: none;
     border-bottom: 1px solid var(--line);
+    z-index: 1001;
+  }
+
+  .site-header--simple,
+  .site-header--project {
+    display: none;
+  }
+
+  .site-header .sidebar-logo {
+    display: none;
   }
 
   body::after { display: none; }
 
-  main {
-    margin-left: 0;
-    margin-top: 120px;
-    padding-top: 0;
+  .nav-main {
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
   }
 
-  .nav-main {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0 12px;
-    width: 100%;
+  .nav-main > .nav-cell {
+    display: none;
+  }
+
+  .site-header--works .nav-works {
+    display: block;
   }
 
   .nav-accordion {
-    flex: 1 1 100%;
+    width: 100%;
   }
 
   .nav-accordion.is-open .sidebar-controls {
-    max-height: 200px;
-  }
-
-  .nav-logo {
-    width: 100%;
-    padding-bottom: 4px;
+    max-height: max-content;
+    margin-top: 8px;
   }
 
   .sidebar-controls {
-    margin-top: 10px;
-    padding-top: 10px;
-    flex-direction: row;
-    flex-wrap: wrap;
+    margin-top: 8px;
+    padding-top: 0;
+    flex-direction: column;
+    flex-wrap: nowrap;
     gap: 8px;
     border-top: none;
     width: 100%;
   }
 
+  .view-toggle {
+    display: none;
+  }
+
   .view-toggle,
   .filter-checks {
-    width: auto;
+    width: 100%;
   }
 
   .view-toggle > li,
   .filter-checks > li {
     padding: 5px 6px 7px 4px;
+    font-size: 0.84em;
+  }
+
+  main {
+    margin-left: 0;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  body:has(.site-header--works) main {
+    padding-top: calc(var(--mobile-bar-h) + 250px);
+  }
+
+  body:has(.site-header--simple) main,
+  body:has(.site-header--project) main {
+    padding-top: calc(var(--mobile-bar-h) + 16px);
   }
 
   .index-box,
@@ -963,7 +1045,6 @@ body:has(.site-header--project) .post-detail-des {
     bottom: auto;
     overflow: visible;
     margin-left: 0;
-    margin-top: 120px;
   }
 
   .post-projects {

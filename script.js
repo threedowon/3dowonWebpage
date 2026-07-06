@@ -1,4 +1,4 @@
-// ── Filter functionality (제작 + 유형 + 기술) ──
+// ── Filter functionality (유형 + 기술) ──
 function initFilters() {
   const checkItems = document.querySelectorAll('.filter-checks > li, .mo-filter');
   const containers = document.querySelectorAll('.img-post-box, .index-post-box');
@@ -34,11 +34,6 @@ function initFilters() {
     });
   }
 
-  function itemMatchesProduction(item, productionChecks) {
-    if (productionChecks.length === 0) return true;
-    return productionChecks.includes(item.dataset.production);
-  }
-
   function itemMatchesType(item, typeChecks) {
     if (typeChecks.length === 0) return true;
     const typeLabels = getItemTypeLabels(item);
@@ -52,16 +47,14 @@ function initFilters() {
   }
 
   function filter() {
-    const productionChecks = getActiveChecks('production');
     const typeChecks = getActiveChecks('type');
     const techChecks = getActiveChecks('tech');
 
     containers.forEach((container) => {
-      container.querySelectorAll('[data-production]').forEach((item) => {
-        const productionMatch = itemMatchesProduction(item, productionChecks);
+      container.querySelectorAll('[data-type]').forEach((item) => {
         const typeMatch = itemMatchesType(item, typeChecks);
         const techMatch = itemMatchesTech(item, techChecks);
-        item.classList.toggle('hidden', !(productionMatch && typeMatch && techMatch));
+        item.classList.toggle('hidden', !(typeMatch && techMatch));
       });
     });
 
@@ -78,7 +71,7 @@ function initFilters() {
     if (!noResultsEl || !activeContainer) return;
 
     let visible = 0;
-    activeContainer.querySelectorAll('[data-production]').forEach((item) => {
+    activeContainer.querySelectorAll('[data-type]').forEach((item) => {
       if (!item.classList.contains('hidden')) visible++;
     });
     noResultsEl.classList.toggle('show', visible === 0);
@@ -124,6 +117,8 @@ function initViewToggle() {
   const indexView = document.getElementById('indexView');
   if (!toggles.length || !gridView || !indexView) return;
 
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
   const setView = (view) => {
     const isGrid = view === 'grid';
     gridView.classList.toggle('hidden', !isGrid);
@@ -138,6 +133,11 @@ function initViewToggle() {
     if (window.updateNoResults) window.updateNoResults();
     hideIndexPreview();
   };
+
+  if (isMobile) {
+    setView('grid');
+    return;
+  }
 
   toggles.forEach((t) => {
     t.addEventListener('click', () => setView(t.dataset.view));
@@ -224,10 +224,18 @@ function initMobileMenu() {
   const nav = document.getElementById('moNav');
   if (!btn || !nav) return;
 
-  btn.addEventListener('click', () => nav.classList.toggle('open'));
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    nav.classList.toggle('open');
+  });
+
+  nav.addEventListener('click', (e) => e.stopPropagation());
+
   nav.querySelectorAll('a').forEach((a) => {
     a.addEventListener('click', () => nav.classList.remove('open'));
   });
+
+  document.addEventListener('click', () => nav.classList.remove('open'));
 }
 
 // ── Init ──
