@@ -1010,7 +1010,7 @@ body:has(.site-header--project) .post-detail-des {
     left: 0;
     width: 100%;
     height: auto;
-    padding: 12px 12px 6px;
+    padding: 9px 12px 6px;
     border-right: none;
     border-bottom: none;
     background: var(--bg);
@@ -1046,7 +1046,7 @@ body:has(.site-header--project) .post-detail-des {
     left: 0;
     width: 100%;
     height: auto;
-    padding: 12px 12px 7px;
+    padding: 9px 12px 6px;
     background: var(--bg);
     border-bottom: none;
     z-index: 1001;
