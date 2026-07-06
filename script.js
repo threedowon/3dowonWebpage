@@ -363,12 +363,13 @@ function initMobileHeaderHeight() {
     if (!header) return;
 
     const height = header.getBoundingClientRect().height;
-    const bottom = header.getBoundingClientRect().bottom;
+    const bottom = Math.ceil(header.getBoundingClientRect().bottom);
     document.documentElement.style.setProperty('--mobile-subheader-h', `${height}px`);
     document.documentElement.style.setProperty('--mobile-sticky-top', `${bottom}px`);
   };
 
   window.addEventListener('resize', sync);
+  window.addEventListener('scroll', sync, { passive: true });
   window.addEventListener('orientationchange', sync);
   if (document.fonts?.ready) document.fonts.ready.then(sync);
   sync();

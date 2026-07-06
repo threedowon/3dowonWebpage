@@ -732,7 +732,13 @@ body:has(.site-header--project) .post-title::after {
   border-bottom: 1px solid var(--line);
 }
 
-body:has(.site-header--project) .post-des-box1,
+body:has(.site-header--project) .post-des-box1 {
+  padding-left: 3px;
+  border-top: 1px solid var(--line);
+  margin-top: 2px;
+  padding-top: 2px;
+}
+
 body:has(.site-header--project) .post-detail-des {
   padding-left: 3px;
 }
@@ -1048,7 +1054,7 @@ body:has(.site-header--project) .post-detail-des {
     border-right: none;
     border-bottom: none;
     background: var(--bg);
-    z-index: 1001;
+    z-index: 1003;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
   }
@@ -1091,7 +1097,7 @@ body:has(.site-header--project) .post-detail-des {
     padding: 9px 12px 0;
     background: var(--bg);
     border-bottom: none;
-    z-index: 1001;
+    z-index: 1003;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     box-sizing: border-box;
@@ -1393,6 +1399,7 @@ body:has(.site-header--project) .post-detail-des {
     border-bottom: 1px solid var(--line);
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
+    pointer-events: none;
   }
 
   body:has(.site-header--project) .post-title::after {
