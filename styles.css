@@ -1067,7 +1067,7 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   .site-header--works::before {
-    top: 2px;
+    top: 4px;
   }
 
   .site-header--works::after {
@@ -1381,6 +1381,16 @@ body:has(.site-header--project) .post-detail-des {
 
   .post-title { margin-top: 0; }
 
+  body:has(.site-header--project) .post-hero {
+    position: relative;
+    z-index: 0;
+  }
+
+  body:has(.site-header--project) .post-hero.reveal,
+  body:has(.site-header--project) .post-hero.reveal.visible {
+    transform: none;
+  }
+
   body:has(.site-header--project) .post-title {
     margin: 0;
     width: 100%;
@@ -1391,10 +1401,23 @@ body:has(.site-header--project) .post-detail-des {
     position: -webkit-sticky;
     position: sticky;
     top: calc(var(--mobile-bar-h) + var(--mobile-subheader-h));
-    z-index: 1000;
+    z-index: 1002;
     background: var(--bg);
     box-sizing: border-box;
     border-bottom: 1px solid var(--line);
+    isolation: isolate;
+  }
+
+  body:has(.site-header--project) .post-title.is-scroll-cover::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    right: -12px;
+    bottom: 100%;
+    height: 100vh;
+    background: var(--bg);
+    z-index: -1;
+    pointer-events: none;
   }
 
   body:has(.site-header--project) .post-title::after {

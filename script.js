@@ -201,6 +201,32 @@ function initIndexPreview() {
   document.getElementById('indexView')?.addEventListener('mouseleave', hideIndexPreview);
 }
 
+// ── Mobile project detail scroll cover ──
+function initMobileProjectScroll() {
+  const header = document.querySelector('.site-header--project');
+  const title = document.querySelector('.post-title');
+  const hero = document.querySelector('.post-hero');
+  if (!header || !title || !hero) return;
+
+  const mq = window.matchMedia('(max-width: 768px)');
+
+  const update = () => {
+    if (!mq.matches) {
+      title.classList.remove('is-scroll-cover');
+      return;
+    }
+    const headerBottom = header.getBoundingClientRect().bottom;
+    const heroRect = hero.getBoundingClientRect();
+    const titleRect = title.getBoundingClientRect();
+    const heroInGap = heroRect.bottom > headerBottom && heroRect.top < titleRect.top;
+    title.classList.toggle('is-scroll-cover', heroInGap);
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+}
+
 // ── Scroll reveal ──
 function initReveal() {
   const observer = new IntersectionObserver(
@@ -356,5 +382,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initIndexPreview();
   initReveal();
   initMobileMenu();
+  initMobileProjectScroll();
   initCvCommaWrap();
 });
