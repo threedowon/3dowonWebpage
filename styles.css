@@ -704,7 +704,7 @@ main:has(.contact-box) {
 body:has(.site-header--project) .post-title {
   position: relative;
   border-top: none;
-  margin: 0 0 10px;
+  margin: 0 0 2px;
   padding: 2px 0 0 3px;
 }
 
@@ -721,7 +721,7 @@ body:has(.site-header--project) .post-detail-des {
 }
 
 body:has(.site-header--project) .post-detail-des {
-  margin-top: 10px;
+  margin-top: 2px;
 }
 
 .post-text {
@@ -1327,11 +1327,11 @@ body:has(.site-header--project) .post-detail-des {
   .post-title { margin-top: 0; }
 
   body:has(.site-header--project) .post-title {
-    margin-bottom: 10px;
+    margin-bottom: 2px;
   }
 
   body:has(.site-header--project) .post-detail-des {
-    margin-top: 10px;
+    margin-top: 2px;
   }
 
   .post-img-box {
