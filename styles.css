@@ -709,7 +709,7 @@ body:has(.site-header--project) .post-title {
   box-sizing: border-box;
   border-top: none;
   border-bottom: none;
-  margin: 0 0 2px;
+  margin: 0;
   padding: 2px 0 2px 3px;
   grid-column: 1;
 }
@@ -734,9 +734,17 @@ body:has(.site-header--project) .post-title::after {
 
 body:has(.site-header--project) .post-des-box1 {
   padding-left: 3px;
+  border-top: none;
+  margin-top: 10px;
+  padding-top: 0;
+  padding-bottom: 10px;
+}
+
+body:has(.site-header--project) .post-des-box1::before {
+  content: '';
+  display: block;
   border-top: 1px solid var(--line);
-  margin-top: 2px;
-  padding-top: 2px;
+  margin-bottom: 8px;
 }
 
 body:has(.site-header--project) .post-detail-des {
@@ -1383,7 +1391,7 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   body:has(.site-header--project) .post-title {
-    margin: 0 0 2px;
+    margin: 0;
     width: 100%;
     padding: 2px 0 2px 3px;
     font-size: 1.1em;
