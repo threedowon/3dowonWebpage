@@ -849,8 +849,17 @@ body:has(.site-header--project) .post-detail-des {
     height: var(--mobile-bar-h);
     padding: 0 14px;
     background: var(--bg);
-    border-bottom: 1px solid var(--line);
+    border-bottom: none;
     z-index: 1002;
+  }
+
+  .mo-header::after {
+    content: '';
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 0;
+    border-bottom: 1px solid var(--line);
   }
 
   .mo-logo {
@@ -997,11 +1006,20 @@ body:has(.site-header--project) .post-detail-des {
     height: auto;
     padding: 6px 12px 6px;
     border-right: none;
-    border-bottom: 1px solid var(--line);
+    border-bottom: none;
     background: var(--bg);
     z-index: 1001;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
+  }
+
+  .site-header--works::after {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 0;
+    border-bottom: 1px solid var(--line);
   }
 
   .site-header--simple,
@@ -1129,6 +1147,18 @@ body:has(.site-header--project) .post-detail-des {
     width: 100%;
     max-width: 100%;
     flex: 1 1 100%;
+  }
+
+  #imgPostBox > .img-post,
+  .works-view .img-post {
+    border-left: none;
+    padding-left: 0;
+    margin-left: 0;
+  }
+
+  #imgPostBox > .img-post .img-post-thumbimg,
+  .works-view .img-post-thumbimg {
+    width: 100%;
   }
 
   .lab-view .img-post {
