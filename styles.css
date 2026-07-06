@@ -1379,6 +1379,7 @@ body:has(.site-header--project) .post-detail-des {
   body:has(.site-header--project) .post-hero {
     position: relative;
     z-index: 0;
+    margin: 0;
   }
 
   body:has(.site-header--project) .post-hero.reveal,
@@ -1393,7 +1394,7 @@ body:has(.site-header--project) .post-detail-des {
   body:has(.site-header--project) .post-title {
     margin: 0 0 var(--project-text-gap);
     width: 100%;
-    padding: 2px 0 2px 3px;
+    padding: 10px 0 2px 3px;
     font-size: 1.1em;
     font-weight: 350;
     line-height: 1.4;
