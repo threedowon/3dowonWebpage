@@ -748,7 +748,7 @@ body:has(.site-header--project) .post-title::after {
   content: '';
   display: block;
   margin-top: 2px;
-  margin-left: 3px;
+  margin-left: 0;
   margin-right: 0;
   border-bottom: 1px solid var(--line);
 }
@@ -767,7 +767,7 @@ body:has(.site-header--project) .post-detail-des {
 body:has(.site-header--project) .post-detail-des::before {
   content: '';
   display: block;
-  margin-left: 3px;
+  margin-left: 0;
   border-bottom: 1px solid var(--line);
 }
 
