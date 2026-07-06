@@ -1276,8 +1276,14 @@ body:has(.site-header--project) .post-detail-des {
   .about-right {
     margin-left: 0;
     width: 100%;
-    max-width: 280px;
-    justify-self: start;
+    max-width: none;
+    justify-self: stretch;
+    padding-left: 4px;
+    box-sizing: border-box;
+  }
+
+  .about-img {
+    width: 100%;
   }
 
   .cv-box {
