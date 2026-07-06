@@ -1091,9 +1091,9 @@ body:has(.site-header--project) .post-detail-des {
   .index-post-thumbimg { display: none !important; }
 
   .img-post {
-    width: 48%;
-    max-width: 48%;
-    flex: 1 1 45%;
+    width: 100%;
+    max-width: 100%;
+    flex: 1 1 100%;
   }
 
   .lab-view .img-post {
