@@ -1418,7 +1418,7 @@ body:has(.site-header--project) .post-detail-des::before {
 
   body:has(.site-header--project) .post-projects {
     --project-text-gap: 8px;
-    --project-meta-top-gap: -7px;
+    --project-meta-top-gap: -8px;
   }
 
   body:has(.site-header--project) .post-title {
