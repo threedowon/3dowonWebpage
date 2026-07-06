@@ -348,6 +348,33 @@ function initCvCommaWrap() {
   window.addEventListener('resize', apply);
 }
 
+// ── Mobile header height sync (exact sticky/fixed alignment) ──
+function initMobileHeaderHeight() {
+  const mq = window.matchMedia('(max-width: 768px)');
+
+  const sync = () => {
+    if (!mq.matches) {
+      document.documentElement.style.removeProperty('--mobile-subheader-h');
+      document.documentElement.style.removeProperty('--mobile-sticky-top');
+      return;
+    }
+
+    const header = document.querySelector('.site-header');
+    if (!header) return;
+
+    const height = header.getBoundingClientRect().height;
+    const bottom = header.getBoundingClientRect().bottom;
+    document.documentElement.style.setProperty('--mobile-subheader-h', `${height}px`);
+    document.documentElement.style.setProperty('--mobile-sticky-top', `${bottom}px`);
+  };
+
+  window.addEventListener('resize', sync);
+  window.addEventListener('orientationchange', sync);
+  if (document.fonts?.ready) document.fonts.ready.then(sync);
+  sync();
+  requestAnimationFrame(sync);
+}
+
 // ── Init ──
 document.addEventListener('DOMContentLoaded', () => {
   initNavAccordion();
@@ -356,5 +383,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initIndexPreview();
   initReveal();
   initMobileMenu();
+  initMobileHeaderHeight();
   initCvCommaWrap();
 });
