@@ -1062,6 +1062,14 @@ body:has(.site-header--project) .post-detail-des {
     border-top: 1px solid var(--line);
   }
 
+  .site-header--works {
+    padding-top: 5px;
+  }
+
+  .site-header--works::before {
+    top: 2px;
+  }
+
   .site-header--works::after {
     content: '';
     position: absolute;
@@ -1209,7 +1217,7 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   body:has(.site-header--works) main {
-    padding-top: calc(var(--mobile-bar-h) + 176px);
+    padding-top: calc(var(--mobile-bar-h) + 172px);
   }
 
   body:has(.site-header--works) .img-post-box {
