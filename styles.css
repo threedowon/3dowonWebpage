@@ -706,19 +706,7 @@ main:has(.contact-box) {
 }
 
 body:has(.site-header--project) .post-left {
-  grid-column: 1;
-  position: sticky;
-  top: 20px;
-  height: calc(100vh - var(--logo-bar-h) - 40px);
-  overflow-y: auto;
-  scrollbar-width: none;
-  width: 100%;
-  z-index: 1;
-  background: var(--bg);
-}
-
-body:has(.site-header--project) .post-left::-webkit-scrollbar {
-  display: none;
+  display: contents;
 }
 
 body:has(.site-header--project) .post-title {
@@ -729,13 +717,11 @@ body:has(.site-header--project) .post-title {
   border-bottom: none;
   margin: 0 0 2px;
   padding: 2px 0 2px 3px;
+  grid-column: 1;
 }
 
 body:has(.site-header--project) .post-text {
-  position: static;
-  height: auto;
-  overflow: visible;
-  background: transparent;
+  grid-column: 1;
 }
 
 body:has(.site-header--project) .post-img-box {
