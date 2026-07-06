@@ -1,12 +1,11 @@
-// ── Filter functionality (유형) ──
+// ── Filter functionality (제작 + 유형 + 기술) ──
 function initFilters() {
   const checkItems = document.querySelectorAll('.filter-checks > li, .mo-filter');
   const containers = document.querySelectorAll('.img-post-box, .index-post-box');
-  const noResults = document.querySelector('.no-results');
 
   if (!checkItems.length || !containers.length) return;
 
-  function getItemLabels(item) {
+  function getItemTypeLabels(item) {
     const labels = [];
     if (item.dataset.type) labels.push(item.dataset.type);
     if (item.dataset.tags) {
@@ -17,28 +16,52 @@ function initFilters() {
     return labels;
   }
 
-  function getActiveChecks() {
+  function getActiveChecks(filterName) {
     const active = [];
     checkItems.forEach((el) => {
-      if (el.classList.contains('checked')) active.push(el.dataset.value);
+      if (el.dataset.filter === filterName && el.classList.contains('checked')) {
+        active.push(el.dataset.value);
+      }
     });
     return active;
   }
 
-  function syncChecks(value, checked) {
+  function syncChecks(filterName, value, checked) {
     checkItems.forEach((el) => {
-      if (el.dataset.value === value) el.classList.toggle('checked', checked);
+      if (el.dataset.filter === filterName && el.dataset.value === value) {
+        el.classList.toggle('checked', checked);
+      }
     });
   }
 
+  function itemMatchesProduction(item, productionChecks) {
+    if (productionChecks.length === 0) return true;
+    return productionChecks.includes(item.dataset.production);
+  }
+
+  function itemMatchesType(item, typeChecks) {
+    if (typeChecks.length === 0) return true;
+    const typeLabels = getItemTypeLabels(item);
+    return typeChecks.some((check) => typeLabels.includes(check));
+  }
+
+  function itemMatchesTech(item, techChecks) {
+    if (techChecks.length === 0) return true;
+    const techs = (item.dataset.tech || '').split(',').filter(Boolean);
+    return techChecks.some((check) => techs.includes(check));
+  }
+
   function filter() {
-    const checks = getActiveChecks();
+    const productionChecks = getActiveChecks('production');
+    const typeChecks = getActiveChecks('type');
+    const techChecks = getActiveChecks('tech');
 
     containers.forEach((container) => {
-      container.querySelectorAll('[data-year]').forEach((item) => {
-        const itemLabels = getItemLabels(item);
-        const tagMatch = checks.length === 0 || checks.some((c) => itemLabels.includes(c));
-        item.classList.toggle('hidden', !tagMatch);
+      container.querySelectorAll('[data-production]').forEach((item) => {
+        const productionMatch = itemMatchesProduction(item, productionChecks);
+        const typeMatch = itemMatchesType(item, typeChecks);
+        const techMatch = itemMatchesTech(item, techChecks);
+        item.classList.toggle('hidden', !(productionMatch && typeMatch && techMatch));
       });
     });
 
@@ -55,7 +78,7 @@ function initFilters() {
     if (!noResultsEl || !activeContainer) return;
 
     let visible = 0;
-    activeContainer.querySelectorAll('[data-year]').forEach((item) => {
+    activeContainer.querySelectorAll('[data-production]').forEach((item) => {
       if (!item.classList.contains('hidden')) visible++;
     });
     noResultsEl.classList.toggle('show', visible === 0);
@@ -65,8 +88,10 @@ function initFilters() {
 
   checkItems.forEach((el) => {
     el.addEventListener('click', () => {
+      const filterName = el.dataset.filter;
+      if (!filterName) return;
       const willCheck = !el.classList.contains('checked');
-      syncChecks(el.dataset.value, willCheck);
+      syncChecks(filterName, el.dataset.value, willCheck);
       filter();
     });
   });
