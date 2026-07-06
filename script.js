@@ -222,20 +222,34 @@ function initReveal() {
 function initMobileMenu() {
   const btn = document.getElementById('moMenuBtn');
   const nav = document.getElementById('moNav');
+  const overlay = document.getElementById('moOverlay');
+  const closeBtn = document.getElementById('moNavClose');
   if (!btn || !nav) return;
+
+  const openMenu = () => {
+    nav.classList.add('open');
+    document.body.classList.add('mo-menu-open');
+    nav.setAttribute('aria-hidden', 'false');
+  };
+
+  const closeMenu = () => {
+    nav.classList.remove('open');
+    document.body.classList.remove('mo-menu-open');
+    nav.setAttribute('aria-hidden', 'true');
+  };
 
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
-    nav.classList.toggle('open');
+    if (nav.classList.contains('open')) closeMenu();
+    else openMenu();
   });
 
-  nav.addEventListener('click', (e) => e.stopPropagation());
+  closeBtn?.addEventListener('click', closeMenu);
+  overlay?.addEventListener('click', closeMenu);
 
-  nav.querySelectorAll('a').forEach((a) => {
-    a.addEventListener('click', () => nav.classList.remove('open'));
+  nav.querySelectorAll('.mo-nav-links a').forEach((a) => {
+    a.addEventListener('click', closeMenu);
   });
-
-  document.addEventListener('click', () => nav.classList.remove('open'));
 }
 
 // ── Init ──
