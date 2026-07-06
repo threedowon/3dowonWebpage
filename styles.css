@@ -884,7 +884,7 @@ body:has(.site-header--project) .post-detail-des {
 /* ── Responsive ── */
 @media (max-width: 768px) {
   :root {
-    --mobile-subheader-h: 44px;
+    --mobile-subheader-h: calc(9px + 4px + 1.1em * 1.4 + 1px);
   }
 
   .mo-header {
@@ -1044,7 +1044,7 @@ body:has(.site-header--project) .post-detail-des {
     left: 0;
     width: 100%;
     height: auto;
-    padding: 9px 12px 6px;
+    padding: 9px 12px 0;
     border-right: none;
     border-bottom: none;
     background: var(--bg);
@@ -1080,15 +1080,13 @@ body:has(.site-header--project) .post-detail-des {
     left: 0;
     width: 100%;
     height: auto;
-    min-height: var(--mobile-subheader-h);
-    padding: 9px 12px 8px;
+    padding: 9px 12px 0;
     background: var(--bg);
     border-bottom: none;
     z-index: 1001;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     box-sizing: border-box;
-    overflow: hidden;
   }
 
   .site-header--simple .sidebar-logo,
@@ -1211,11 +1209,11 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   body:has(.site-header--works) main {
-    padding-top: calc(var(--mobile-bar-h) + 182px);
+    padding-top: calc(var(--mobile-bar-h) + 176px);
   }
 
   body:has(.site-header--works) .img-post-box {
-    margin-top: 4px;
+    margin-top: 0;
   }
 
   body:has(.site-header--simple) main,
@@ -1376,11 +1374,9 @@ body:has(.site-header--project) .post-detail-des {
   .post-title { margin-top: 0; }
 
   body:has(.site-header--project) .post-title {
-    margin-bottom: 2px;
-    margin-left: -12px;
-    margin-right: -12px;
-    width: calc(100% + 24px);
-    padding: 2px 12px 2px 15px;
+    margin: 0;
+    width: 100%;
+    padding: 2px 0 2px 3px;
     font-size: 1.1em;
     font-weight: 350;
     line-height: 1.4;
@@ -1390,12 +1386,11 @@ body:has(.site-header--project) .post-detail-des {
     z-index: 1000;
     background: var(--bg);
     box-sizing: border-box;
-    border-bottom: none;
+    border-bottom: 1px solid var(--line);
   }
 
   body:has(.site-header--project) .post-title::after {
-    margin-left: 12px;
-    margin-right: 12px;
+    display: none;
   }
 
   body:has(.site-header--project) .post-detail-des {
