@@ -480,7 +480,7 @@ main:has(.contact-box) {
 
 .lab-post-caption {
   padding-left: 1px;
-  font-size: 0.82em;
+  font-size: 0.72em;
   line-height: 1.2;
 }
 
@@ -873,16 +873,18 @@ body:has(.site-header--project) .post-detail-des {
     background: none;
     border: none;
     color: var(--text);
-    padding: 6px 0 6px 10px;
-    line-height: 1;
+    font-size: 3.2rem;
+    font-weight: 200;
+    line-height: 0.9;
+    padding: 0 4px 0 10px;
   }
 
   .mo-menu-icon {
     display: block;
     position: relative;
-    width: 18px;
-    height: 1px;
-    background: var(--text);
+    width: 0.44em;
+    height: 0.034em;
+    background: currentColor;
   }
 
   .mo-menu-icon::before,
@@ -891,16 +893,16 @@ body:has(.site-header--project) .post-detail-des {
     position: absolute;
     left: 0;
     width: 100%;
-    height: 1px;
-    background: var(--text);
+    height: 100%;
+    background: currentColor;
   }
 
   .mo-menu-icon::before {
-    top: -6px;
+    top: -0.2em;
   }
 
   .mo-menu-icon::after {
-    top: 6px;
+    top: 0.2em;
   }
 
   .mo-nav {
@@ -1139,6 +1141,10 @@ body:has(.site-header--project) .post-detail-des {
     border-right: none;
   }
 
+  .filter-checks--tech > li:nth-child(-n+2) {
+    border-bottom: none;
+  }
+
   .filter-checks--tech > li:not(:last-child) {
     border-right: 1px solid var(--line);
   }
@@ -1199,6 +1205,10 @@ body:has(.site-header--project) .post-detail-des {
     width: 33.33%;
     max-width: 33.33%;
     flex: 1 1 30%;
+  }
+
+  .lab-post-caption {
+    font-size: 0.66em;
   }
 
   .about-box {
