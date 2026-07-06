@@ -223,11 +223,19 @@ main:has(.contact-box) {
   border-right: 1px solid var(--line);
 }
 
-.filter-checks--type > li:nth-child(odd) {
+.filter-checks--type {
+  flex-wrap: wrap;
+}
+
+.filter-checks--type > li {
+  flex: 1 1 33.33%;
+}
+
+.filter-checks--type > li:not(:nth-child(3n)) {
   border-right: 1px solid var(--line);
 }
 
-.filter-checks--type > li:nth-child(-n+4) {
+.filter-checks--type > li:nth-child(-n+3) {
   border-bottom: 1px solid var(--line);
 }
 
