@@ -1422,19 +1422,18 @@ body:has(.site-header--project) .post-detail-des {
   body:has(.site-header--project) .post-text {
     position: relative;
     z-index: 1;
+    padding-top: var(--project-text-gap);
   }
 
   body:has(.site-header--project) .post-des {
-    display: flex;
-    flex-direction: column;
-    gap: var(--project-text-gap);
-    margin-top: var(--project-text-gap);
+    display: block;
+    margin: 0;
   }
 
   body:has(.site-header--project) .post-des-box1 {
     border-top: none;
     margin: 0;
-    padding: 0;
+    padding: 0 0 var(--project-text-gap);
   }
 
   body:has(.site-header--project) .post-des-box1 .post-des-list {
