@@ -1379,7 +1379,7 @@ body:has(.site-header--project) .post-detail-des {
   body:has(.site-header--project) .post-hero {
     position: relative;
     z-index: 0;
-    margin: 0;
+    margin: 12px 0 22px;
   }
 
   body:has(.site-header--project) .post-hero.reveal,
@@ -1392,9 +1392,9 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   body:has(.site-header--project) .post-title {
-    margin: 0 0 var(--project-text-gap);
+    margin: 0;
     width: 100%;
-    padding: 10px 0 2px 3px;
+    padding: 2px 0 2px 3px;
     font-size: 1.1em;
     font-weight: 350;
     line-height: 1.4;
@@ -1420,9 +1420,13 @@ body:has(.site-header--project) .post-detail-des {
 
   body:has(.site-header--project) .post-des-box1 {
     border-top: none;
-    margin-top: 0;
-    padding-top: 0;
+    margin: 0;
+    padding-top: var(--project-text-gap);
     padding-bottom: var(--project-text-gap);
+  }
+
+  body:has(.site-header--project) .post-des-box1 .post-des-list {
+    margin-bottom: 2px;
   }
 
   body:has(.site-header--project) .post-des-box1 .post-des-list:last-child {
@@ -1450,8 +1454,9 @@ body:has(.site-header--project) .post-detail-des {
   .post-title { margin-top: 0; }
 
   body:has(.site-header--project) .post-detail-des {
-    margin-top: 0;
+    margin: 0;
     padding: var(--project-text-gap) 12px 40px 3px;
+    border-top: 1px solid var(--line);
   }
 
   .post-img-box {
