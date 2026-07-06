@@ -704,16 +704,14 @@ main:has(.contact-box) {
 body:has(.site-header--project) .post-title {
   position: relative;
   border-top: none;
-  margin: 0 0 15px;
-  padding: 3px 0 12px 3px;
+  margin: 0 0 8px;
+  padding: 2px 0 0 3px;
 }
 
 body:has(.site-header--project) .post-title::after {
   content: '';
-  position: absolute;
-  left: 3px;
-  right: 0;
-  bottom: 0;
+  display: block;
+  margin-top: 2px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -1325,13 +1323,8 @@ body:has(.site-header--project) .post-detail-des {
   .post-title { margin-top: 0; }
 
   body:has(.site-header--project) .post-title {
-    margin-bottom: 14px;
-    padding-bottom: 10px;
-  }
-
-  body:has(.site-header--project) .post-title::after {
-    left: 0;
-    right: 0;
+    margin-bottom: 8px;
+    padding: 2px 0 0 3px;
   }
 
   .post-img-box {
