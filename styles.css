@@ -1348,11 +1348,19 @@ body:has(.site-header--project) .post-detail-des {
 
   body:has(.site-header--project) .post-title {
     margin-bottom: 2px;
+    margin-left: -12px;
+    margin-right: -12px;
+    width: calc(100% + 24px);
+    padding: 2px 12px 2px 15px;
+    font-size: 1.1em;
+    font-weight: 350;
+    line-height: 1.4;
     position: -webkit-sticky;
     position: sticky;
     top: calc(var(--mobile-bar-h) + var(--mobile-subheader-h));
     z-index: 1000;
     background: var(--bg);
+    box-sizing: border-box;
   }
 
   body:has(.site-header--project) .post-detail-des {
