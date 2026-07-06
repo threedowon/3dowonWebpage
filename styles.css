@@ -240,19 +240,15 @@ main:has(.contact-box) {
 }
 
 .filter-checks--tech {
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .filter-checks--tech > li {
-  flex: 1 1 50%;
+  flex: 1 1 25%;
 }
 
-.filter-checks--tech > li:nth-child(odd) {
+.filter-checks--tech > li:not(:last-child) {
   border-right: 1px solid var(--line);
-}
-
-.filter-checks--tech > li:nth-child(-n+2) {
-  border-bottom: 1px solid var(--line);
 }
 
 .view-toggle > li.active,
