@@ -1391,7 +1391,7 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   body:has(.site-header--project) .post-title {
-    margin: 0;
+    margin: 0 0 var(--project-text-gap);
     width: 100%;
     padding: 2px 0 2px 3px;
     font-size: 1.1em;
@@ -1419,9 +1419,13 @@ body:has(.site-header--project) .post-detail-des {
 
   body:has(.site-header--project) .post-des-box1 {
     border-top: none;
-    margin-top: var(--project-text-gap);
+    margin-top: 0;
     padding-top: 0;
     padding-bottom: var(--project-text-gap);
+  }
+
+  body:has(.site-header--project) .post-des-box1 .post-des-list:last-child {
+    margin-bottom: 0;
   }
 
   body:has(.site-header--project) .post-des-box1::before {
@@ -1446,7 +1450,7 @@ body:has(.site-header--project) .post-detail-des {
 
   body:has(.site-header--project) .post-detail-des {
     margin-top: 0;
-    padding-top: var(--project-text-gap);
+    padding: var(--project-text-gap) 12px 40px 3px;
   }
 
   .post-img-box {
