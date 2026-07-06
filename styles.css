@@ -713,10 +713,13 @@ body:has(.site-header--project) .post-title {
   border-bottom: none;
   margin: 0 0 2px;
   padding: 2px 0 2px 3px;
+  grid-column: 1;
+  grid-row: 1;
 }
 
 body:has(.site-header--project) .post-text {
   grid-column: 1;
+  grid-row: 2;
 }
 
 body:has(.site-header--project) .post-img-box {
@@ -1384,7 +1387,7 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   body:has(.site-header--project) .post-title {
-    margin: 0;
+    margin: 0 0 2px;
     width: 100%;
     padding: 2px 0 2px 3px;
     font-size: 1.1em;
@@ -1403,6 +1406,11 @@ body:has(.site-header--project) .post-detail-des {
 
   body:has(.site-header--project) .post-title::after {
     display: none;
+  }
+
+  body:has(.site-header--project) .post-text {
+    position: relative;
+    z-index: 1;
   }
 
   body:has(.site-header--project) .post-des-box1 {
