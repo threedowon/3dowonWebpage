@@ -507,13 +507,14 @@ main:has(.contact-box) {
   background: var(--bg);
   z-index: 1;
   padding-right: 0;
+  padding-left: 3px;
 }
 
 .about-left::-webkit-scrollbar { display: none; }
 
 .about-selector {
   margin-bottom: 2rem;
-  padding-left: 3px;
+  padding-left: 1px;
 }
 
 .about-name {
@@ -531,7 +532,7 @@ main:has(.contact-box) {
   font-size: 1.05em;
   line-height: 1.85rem;
   word-break: keep-all;
-  padding-left: 3px;
+  padding-left: 1px;
 }
 
 .about-section2 p {
@@ -549,7 +550,7 @@ main:has(.contact-box) {
   font-size: 0.8rem;
   line-height: 1.6em;
   font-weight: 350;
-  padding-left: 3px;
+  padding-left: 1px;
 }
 
 .about-info a:hover { opacity: 0.5; }
@@ -1258,7 +1259,7 @@ body:has(.site-header--project) .post-detail-des {
 
   .about-box {
     grid-template-columns: 1fr;
-    padding: 20px 16px 60px;
+    padding: 20px 12px 60px;
     gap: 36px;
   }
 
