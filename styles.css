@@ -884,7 +884,7 @@ body:has(.site-header--project) .post-detail-des {
 /* ── Responsive ── */
 @media (max-width: 768px) {
   :root {
-    --mobile-subheader-h: 40px;
+    --mobile-subheader-h: 44px;
   }
 
   .mo-header {
@@ -1080,12 +1080,15 @@ body:has(.site-header--project) .post-detail-des {
     left: 0;
     width: 100%;
     height: auto;
-    padding: 9px 12px 6px;
+    min-height: var(--mobile-subheader-h);
+    padding: 9px 12px 8px;
     background: var(--bg);
     border-bottom: none;
     z-index: 1001;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   .site-header--simple .sidebar-logo,
@@ -1107,6 +1110,7 @@ body:has(.site-header--project) .post-detail-des {
     font-weight: 350;
     padding: 2px 0 2px 3px;
     border-bottom: 1px solid var(--line);
+    background: var(--bg);
   }
 
   .site-header .sidebar-logo {
@@ -1220,8 +1224,21 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   body:has(.lab-view) .img-post-box {
+    --lab-col-gap: 7px;
     margin-left: 12px;
     width: calc(100% - 24px);
+    column-gap: var(--lab-col-gap);
+    row-gap: 10px;
+  }
+
+  .lab-view .img-post {
+    width: calc((100% - (2 * var(--lab-col-gap))) / 3);
+    max-width: calc((100% - (2 * var(--lab-col-gap))) / 3);
+    flex: 0 0 calc((100% - (2 * var(--lab-col-gap))) / 3);
+  }
+
+  .lab-view .img-post-thumbimg {
+    width: 100%;
   }
 
   .index-box,
@@ -1255,12 +1272,6 @@ body:has(.site-header--project) .post-detail-des {
   #imgPostBox > .img-post .img-post-thumbimg,
   .works-view .img-post-thumbimg {
     width: 100%;
-  }
-
-  .lab-view .img-post {
-    width: 33.33%;
-    max-width: 33.33%;
-    flex: 1 1 30%;
   }
 
   .lab-post-caption {
