@@ -480,7 +480,7 @@ main:has(.contact-box) {
 
 .lab-post-caption {
   padding-left: 1px;
-  font-size: 0.72em;
+  font-size: 0.68em;
   line-height: 1.2;
 }
 
@@ -1219,6 +1219,11 @@ body:has(.site-header--project) .post-detail-des {
     padding-top: calc(var(--mobile-bar-h) + var(--mobile-subheader-h));
   }
 
+  body:has(.lab-view) .img-post-box {
+    margin-left: 15px;
+    width: calc(100% - 27px);
+  }
+
   .index-box,
   .img-post-box,
   .contact-box {
@@ -1258,8 +1263,12 @@ body:has(.site-header--project) .post-detail-des {
     flex: 1 1 30%;
   }
 
+  .lab-view .img-post-thumbimg {
+    width: 100%;
+  }
+
   .lab-post-caption {
-    font-size: 0.66em;
+    font-size: 0.62em;
   }
 
   .about-box {
