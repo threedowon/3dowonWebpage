@@ -1426,7 +1426,7 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   body:has(.site-header--project) .post-title {
-    margin: 0;
+    margin: 0 0 var(--project-text-gap);
     width: 100%;
     padding: 2px 0 2px 3px;
     font-size: 1.1em;
@@ -1452,11 +1452,16 @@ body:has(.site-header--project) .post-detail-des {
     z-index: 1;
   }
 
+  body:has(.site-header--project) .post-des {
+    display: flex;
+    flex-direction: column;
+    gap: var(--project-text-gap);
+  }
+
   body:has(.site-header--project) .post-des-box1 {
     border-top: none;
     margin: 0;
-    padding-top: var(--project-text-gap);
-    padding-bottom: var(--project-text-gap);
+    padding: 0;
   }
 
   body:has(.site-header--project) .post-des-box1 .post-des-list {
