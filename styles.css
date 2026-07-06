@@ -1422,7 +1422,7 @@ body:has(.site-header--project) .post-detail-des {
   body:has(.site-header--project) .post-text {
     position: relative;
     z-index: 1;
-    padding-top: var(--project-text-gap);
+    padding-top: 0;
   }
 
   body:has(.site-header--project) .post-des {
@@ -1433,7 +1433,12 @@ body:has(.site-header--project) .post-detail-des {
   body:has(.site-header--project) .post-des-box1 {
     border-top: none;
     margin: 0;
-    padding: 0 0 var(--project-text-gap);
+    padding: var(--project-text-gap) 0 var(--project-text-gap) 3px;
+  }
+
+  body:has(.site-header--project) .post-des-box1.reveal,
+  body:has(.site-header--project) .post-des-box1.reveal.visible {
+    transform: none;
   }
 
   body:has(.site-header--project) .post-des-box1 .post-des-list {
