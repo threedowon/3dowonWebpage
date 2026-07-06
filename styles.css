@@ -1363,6 +1363,38 @@ body:has(.site-header--project) .post-detail-des {
   body:has(.site-header--project) .post-projects {
     padding-left: 12px;
     padding-right: 12px;
+    padding-top: calc(4px + 1.1em * 1.4 + 1px);
+  }
+
+  body:has(.site-header--project) .post-hero {
+    position: relative;
+    z-index: 0;
+  }
+
+  body:has(.site-header--project) .post-hero.reveal,
+  body:has(.site-header--project) .post-hero.reveal.visible {
+    transform: none;
+  }
+
+  body:has(.site-header--project) .post-title {
+    margin: 0;
+    width: auto;
+    padding: 2px 0 2px 3px;
+    font-size: 1.1em;
+    font-weight: 350;
+    line-height: 1.4;
+    position: fixed;
+    top: calc(var(--mobile-bar-h) + var(--mobile-subheader-h));
+    left: 12px;
+    right: 12px;
+    z-index: 1002;
+    background: var(--bg);
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--line);
+  }
+
+  body:has(.site-header--project) .post-title::after {
+    display: none;
   }
 
   .post-hero {
@@ -1380,49 +1412,6 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   .post-title { margin-top: 0; }
-
-  body:has(.site-header--project) .post-hero {
-    position: relative;
-    z-index: 0;
-  }
-
-  body:has(.site-header--project) .post-hero.reveal,
-  body:has(.site-header--project) .post-hero.reveal.visible {
-    transform: none;
-  }
-
-  body:has(.site-header--project) .post-title {
-    margin: 0;
-    width: 100%;
-    padding: 2px 0 2px 3px;
-    font-size: 1.1em;
-    font-weight: 350;
-    line-height: 1.4;
-    position: -webkit-sticky;
-    position: sticky;
-    top: calc(var(--mobile-bar-h) + var(--mobile-subheader-h));
-    z-index: 1002;
-    background: var(--bg);
-    box-sizing: border-box;
-    border-bottom: 1px solid var(--line);
-    isolation: isolate;
-  }
-
-  body:has(.site-header--project) .post-title.is-scroll-cover::before {
-    content: '';
-    position: absolute;
-    left: -12px;
-    right: -12px;
-    bottom: 100%;
-    height: 100vh;
-    background: var(--bg);
-    z-index: -1;
-    pointer-events: none;
-  }
-
-  body:has(.site-header--project) .post-title::after {
-    display: none;
-  }
 
   body:has(.site-header--project) .post-detail-des {
     margin-top: 2px;
