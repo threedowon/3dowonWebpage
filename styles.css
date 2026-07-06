@@ -702,9 +702,19 @@ main:has(.contact-box) {
 }
 
 body:has(.site-header--project) .post-title {
+  position: relative;
   border-top: none;
   margin: 0 0 15px;
-  padding: 3px 0 5px 3px;
+  padding: 3px 0 12px 3px;
+}
+
+body:has(.site-header--project) .post-title::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  right: 0;
+  bottom: 0;
+  border-bottom: 1px solid var(--line);
 }
 
 body:has(.site-header--project) .post-des-box1,
@@ -1313,6 +1323,16 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   .post-title { margin-top: 0; }
+
+  body:has(.site-header--project) .post-title {
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+  }
+
+  body:has(.site-header--project) .post-title::after {
+    left: 0;
+    right: 0;
+  }
 
   .post-img-box {
     width: 100%;
