@@ -1149,7 +1149,7 @@ body:has(.site-header--project) .post-detail-des {
     margin-top: var(--works-filter-gap, 6px);
     margin-bottom: 0;
     padding-top: 0;
-    padding-bottom: var(--works-filter-gap, 6px);
+    padding-bottom: calc(var(--works-filter-gap, 6px) - 1px);
     flex-direction: column;
     flex-wrap: nowrap;
     gap: var(--works-filter-gap, 6px);
@@ -1220,7 +1220,7 @@ body:has(.site-header--project) .post-detail-des {
   }
 
   body:has(.site-header--works) main {
-    padding-top: calc(var(--mobile-bar-h) + 178px);
+    padding-top: calc(var(--mobile-bar-h) + 177px);
   }
 
   body:has(.site-header--works) .img-post-box {
