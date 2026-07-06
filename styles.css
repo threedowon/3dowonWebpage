@@ -615,7 +615,7 @@ main:has(.contact-box) {
 }
 
 .cv-section {
-  margin-bottom: 1.35rem;
+  margin-bottom: 1.85rem;
   padding-left: 3px;
 }
 
@@ -624,10 +624,12 @@ main:has(.contact-box) {
 }
 
 .cv-section h3 {
-  font-size: 0.88rem;
+  font-size: 1.08em;
   font-weight: 400;
-  margin: 0 0 3px;
-  padding: 0;
+  margin: 0 0 10px;
+  padding: 0 0 3px 1px;
+  border-bottom: 1px solid var(--line);
+  width: fit-content;
 }
 
 .cv-entries {
@@ -648,6 +650,11 @@ main:has(.contact-box) {
 .cv-year {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+}
+
+.cv-desc {
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .cv-desc em {
@@ -1246,6 +1253,15 @@ body:has(.site-header--project) .post-detail-des {
 
   .cv-year {
     margin-bottom: 2px;
+  }
+
+  .cv-section {
+    margin-bottom: 2.1rem;
+  }
+
+  .cv-section h3 {
+    font-size: 1.12em;
+    margin-bottom: 12px;
   }
 
   main:has(.post-projects),
