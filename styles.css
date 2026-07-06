@@ -1390,7 +1390,7 @@ body:has(.site-header--project) .post-detail-des {
     font-weight: 350;
     line-height: 1.4;
     position: fixed;
-    top: var(--mobile-sticky-top, calc(var(--mobile-bar-h) + var(--mobile-subheader-h)));
+    top: calc(var(--mobile-bar-h) + var(--mobile-subheader-h));
     left: 12px;
     right: 12px;
     z-index: 1002;
@@ -1399,7 +1399,6 @@ body:has(.site-header--project) .post-detail-des {
     border-bottom: 1px solid var(--line);
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
-    pointer-events: none;
   }
 
   body:has(.site-header--project) .post-title::after {

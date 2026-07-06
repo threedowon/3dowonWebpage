@@ -355,7 +355,6 @@ function initMobileHeaderHeight() {
   const sync = () => {
     if (!mq.matches) {
       document.documentElement.style.removeProperty('--mobile-subheader-h');
-      document.documentElement.style.removeProperty('--mobile-sticky-top');
       return;
     }
 
@@ -363,13 +362,10 @@ function initMobileHeaderHeight() {
     if (!header) return;
 
     const height = header.getBoundingClientRect().height;
-    const bottom = Math.ceil(header.getBoundingClientRect().bottom);
     document.documentElement.style.setProperty('--mobile-subheader-h', `${height}px`);
-    document.documentElement.style.setProperty('--mobile-sticky-top', `${bottom}px`);
   };
 
   window.addEventListener('resize', sync);
-  window.addEventListener('scroll', sync, { passive: true });
   window.addEventListener('orientationchange', sync);
   if (document.fonts?.ready) document.fonts.ready.then(sync);
   sync();
