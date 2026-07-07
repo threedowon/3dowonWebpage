@@ -1,6 +1,7 @@
 // Local-only content admin for the site. Do not expose this beyond localhost —
 // it writes directly to the filesystem with no authentication.
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
@@ -98,14 +99,48 @@ const upload = multer({
 const MAX_DIMENSION = 2400;
 const JPEG_QUALITY = 82;
 
-async function saveImage(buffer, slugPrefix = '') {
-  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
-  const filename = `${slugPrefix ? `${slugPrefix}-` : ''}${Date.now()}-${Math.round(Math.random() * 1e6)}.jpg`;
-  const jpeg = await sharp(buffer)
+function resizeAndCompress(buffer) {
+  return sharp(buffer)
     .rotate() // apply EXIF orientation before stripping metadata
     .resize({ width: MAX_DIMENSION, height: MAX_DIMENSION, fit: 'inside', withoutEnlargement: true })
     .jpeg({ quality: JPEG_QUALITY, mozjpeg: true })
     .toBuffer();
+}
+
+// Some iPhone Portrait-mode HEIC files embed enough auxiliary images (depth
+// maps, thumbnails) to trip libheif's built-in security limit on item
+// references, which sharp has no option to raise. macOS's own `sips` tool
+// decodes them fine (different decoder, no such limit), so fall back to it
+// — converting to a plain JPEG first — before giving up.
+async function convertViaSips(buffer) {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'admin-heic-'));
+  try {
+    const inPath = path.join(tmpDir, 'input');
+    const outPath = path.join(tmpDir, 'output.jpg');
+    fs.writeFileSync(inPath, buffer);
+    execFileSync('sips', ['-s', 'format', 'jpeg', inPath, '--out', outPath], { timeout: 30000 });
+    return fs.readFileSync(outPath);
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+}
+
+async function saveImage(buffer, slugPrefix = '') {
+  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+  const filename = `${slugPrefix ? `${slugPrefix}-` : ''}${Date.now()}-${Math.round(Math.random() * 1e6)}.jpg`;
+
+  let jpeg;
+  try {
+    jpeg = await resizeAndCompress(buffer);
+  } catch (err) {
+    if (process.platform !== 'darwin') throw err;
+    try {
+      jpeg = await resizeAndCompress(await convertViaSips(buffer));
+    } catch {
+      throw err; // fallback didn't help either — surface the original sharp error
+    }
+  }
+
   fs.writeFileSync(path.join(UPLOADS_DIR, filename), jpeg);
   return filename;
 }
