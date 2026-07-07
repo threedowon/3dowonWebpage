@@ -42,6 +42,36 @@ function loadWork(slug) {
   return loadJson(`content/works/${slug}.json`);
 }
 
+function escapeHtml(str) {
+  return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// The description field is stored as HTML for scripts/build.mjs to drop in as-is,
+// but the admin only exposes a plain-text box (each Enter = a new paragraph).
+function plainTextToDescriptionHtml(text) {
+  return String(text || '')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => `<p>${escapeHtml(line)}</p>`)
+    .join('\n            ');
+}
+function descriptionHtmlToPlainText(html) {
+  return String(html || '')
+    .replace(/<\/(p|li|div|h[1-6])>/gi, '\n')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .join('\n');
+}
+
 // Images are held in memory, then re-encoded to JPEG (resized, compressed) before
 // hitting disk — normalizes PNG/HEIC/WebP uploads and keeps file sizes reasonable.
 const upload = multer({
@@ -98,7 +128,7 @@ function removeUploadedFile(publicPath) {
 app.get('/api/works', (req, res) => {
   const works = listWorkSlugs().map(loadWork);
   works.sort((a, b) => b.year - a.year || String(a.title).localeCompare(String(b.title), 'ko'));
-  res.json(works);
+  res.json(works.map((w) => ({ ...w, description: descriptionHtmlToPlainText(w.description) })));
 });
 
 app.post('/api/works', (req, res) => {
@@ -106,21 +136,23 @@ app.post('/api/works', (req, res) => {
   if (!isValidSlug(slug)) return res.status(400).json({ error: '슬러그는 영문 소문자/숫자/하이픈만 가능해요.' });
   if (listWorkSlugs().includes(slug)) return res.status(400).json({ error: '이미 존재하는 슬러그예요.' });
 
+  const resolvedYear = Number(year) || new Date().getFullYear();
+  const resolvedType = type || '설치';
   const work = {
     slug,
     title: title || '',
-    year: Number(year) || new Date().getFullYear(),
-    type: type || '설치',
+    year: resolvedYear,
+    type: resolvedType,
     tags: [],
     tech: [],
     production: '개인',
     thumbnail: '',
-    grid_type_label: type || '',
-    index_type_label: type || '',
+    grid_type_label: resolvedType,
+    index_type_label: resolvedType,
     preview_bg: '',
     hero_image: '',
-    meta_year: String(year || ''),
-    meta_type: type || '',
+    meta_year: String(resolvedYear),
+    meta_type: resolvedType,
     meta_medium: '',
     meta_tech: '',
     meta_production: '',
@@ -138,12 +170,16 @@ app.put('/api/works/:slug', (req, res) => {
   const work = loadWork(req.params.slug);
   const editable = [
     'title', 'year', 'type', 'tags', 'tech', 'production', 'grid_type_label', 'index_type_label',
-    'meta_year', 'meta_type', 'meta_medium', 'meta_tech', 'meta_production', 'description', 'vimeo_url',
+    'meta_medium', 'meta_tech', 'meta_production', 'vimeo_url',
   ];
   for (const key of editable) {
     if (req.body[key] !== undefined) work[key] = req.body[key];
   }
+  if (req.body.description !== undefined) work.description = plainTextToDescriptionHtml(req.body.description);
   if (work.year !== undefined) work.year = Number(work.year) || work.year;
+  // 상세 페이지의 연도/유형은 항상 목록 연도/유형과 같게 유지한다.
+  work.meta_year = String(work.year);
+  work.meta_type = work.type;
   saveJson(`content/works/${req.params.slug}.json`, work);
   build();
   res.json(work);
@@ -159,22 +195,21 @@ app.delete('/api/works/:slug', (req, res) => {
   res.json({ ok: true });
 });
 
-function singleImageRoute(field) {
-  app.post(`/api/works/:slug/${field}`, upload.single('image'), async (req, res) => {
-    const work = loadWork(req.params.slug);
-    if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });
-    const oldPath = work[field];
-    const filename = await saveImage(req.file.buffer, req.params.slug);
-    work[field] = publicUploadPath(filename);
-    saveJson(`content/works/${req.params.slug}.json`, work);
-    removeUploadedFile(oldPath);
-    build();
-    res.json(work);
-  });
-}
-singleImageRoute('thumbnail');
-singleImageRoute('preview_bg');
-singleImageRoute('hero_image');
+// 썸네일 / 인덱스 미리보기 / 상세 히어로 이미지는 항상 같은 사진을 쓴다.
+app.post('/api/works/:slug/thumbnail', upload.single('image'), async (req, res) => {
+  const work = loadWork(req.params.slug);
+  if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });
+  const oldPaths = [work.thumbnail, work.preview_bg, work.hero_image];
+  const filename = await saveImage(req.file.buffer, req.params.slug);
+  const newPath = publicUploadPath(filename);
+  work.thumbnail = newPath;
+  work.preview_bg = newPath;
+  work.hero_image = newPath;
+  saveJson(`content/works/${req.params.slug}.json`, work);
+  oldPaths.forEach(removeUploadedFile);
+  build();
+  res.json(work);
+});
 
 app.post('/api/works/:slug/gallery', upload.array('images', 20), async (req, res) => {
   const work = loadWork(req.params.slug);

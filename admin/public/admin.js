@@ -69,15 +69,7 @@ function renderWorkCard(work) {
       <div class="thumb-row">
         <div>
           <img src="${imgUrl(work.thumbnail)}" alt="" />
-          <div class="thumb-label">썸네일<input type="file" accept="image/*" class="img-input" data-field="thumbnail" /></div>
-        </div>
-        <div>
-          <img src="${imgUrl(work.preview_bg)}" alt="" />
-          <div class="thumb-label">인덱스 미리보기<input type="file" accept="image/*" class="img-input" data-field="preview_bg" /></div>
-        </div>
-        <div>
-          <img src="${imgUrl(work.hero_image)}" alt="" />
-          <div class="thumb-label">히어로 이미지<input type="file" accept="image/*" class="img-input" data-field="hero_image" /></div>
+          <div class="thumb-label">썸네일 (그리드/미리보기/히어로 공통)<input type="file" accept="image/*" class="img-input" data-field="thumbnail" /></div>
         </div>
       </div>
       <form class="admin-form edit-form">
@@ -96,15 +88,11 @@ function renderWorkCard(work) {
           <label>인덱스 유형 표시<input name="index_type_label" value="${escapeAttr(work.index_type_label)}" /></label>
         </div>
         <div class="field-row">
-          <label>상세-연도<input name="meta_year" value="${escapeAttr(work.meta_year)}" /></label>
-          <label>상세-유형<input name="meta_type" value="${escapeAttr(work.meta_type)}" /></label>
-        </div>
-        <div class="field-row">
           <label>상세-매체<input name="meta_medium" value="${escapeAttr(work.meta_medium)}" /></label>
           <label>상세-기술<input name="meta_tech" value="${escapeAttr(work.meta_tech)}" /></label>
           <label>상세-제작<input name="meta_production" value="${escapeAttr(work.meta_production)}" /></label>
         </div>
-        <label>설명 (HTML)<textarea name="description" rows="3">${escapeHtml(work.description)}</textarea></label>
+        <label>설명 (엔터로 줄바꿈)<textarea name="description" rows="4">${escapeHtml(work.description)}</textarea></label>
         <label>Vimeo URL<input name="vimeo_url" value="${escapeAttr(work.vimeo_url)}" /></label>
         <div class="field-row">
           <button type="submit">저장</button>
@@ -146,8 +134,6 @@ function renderWorkCard(work) {
         tech: fd.getAll('tech'),
         grid_type_label: fd.get('grid_type_label'),
         index_type_label: fd.get('index_type_label'),
-        meta_year: fd.get('meta_year'),
-        meta_type: fd.get('meta_type'),
         meta_medium: fd.get('meta_medium'),
         meta_tech: fd.get('meta_tech'),
         meta_production: fd.get('meta_production'),
