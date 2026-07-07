@@ -6,41 +6,50 @@
   <title>3Dowon — Media Artist</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-  <link rel="stylesheet" href="styles.css?v=157" />
+  <link rel="stylesheet" href="styles.css?v=158" />
 
 </head>
 <body>
-  <header class="site-header site-header--works">
-    <a href="index.html" class="sidebar-logo">3Dowon</a>
-    <nav class="nav-main">
-      <div class="nav-accordion is-open">
-        <a href="index.html" class="nav-cell nav-works active">WORKS</a>
-        <div class="sidebar-controls">
-          <ul class="view-toggle">
-            <li data-view="grid" class="active">그리드</li>
-            <li data-view="index">인덱스</li>
-          </ul>
-          <ul class="filter-checks filter-checks--type">
-            <li data-filter="type" data-value="설치">설치</li>
-            <li data-filter="type" data-value="영상">영상</li>
-            <li data-filter="type" data-value="퍼포먼스">퍼포먼스</li>
-            <li data-filter="type" data-value="전시">전시</li>
-            <li data-filter="type" data-value="인터랙티브">인터랙티브</li>
-            <li data-filter="type" data-value="프로젝션">프로젝션</li>
-          </ul>
-          <ul class="filter-checks filter-checks--tech">
-            <li data-filter="tech" data-value="Unreal">Unreal</li>
-            <li data-filter="tech" data-value="Unity">Unity</li>
-            <li data-filter="tech" data-value="Arduino">Arduino</li>
-            <li data-filter="tech" data-value="3ds Max">3ds Max</li>
-          </ul>
+  <header class="site-header site-header--bar site-header--works">
+    <div class="header-bar">
+      <div class="header-bar-col header-bar-col--logo">
+        <a href="index.html" class="sidebar-logo">3Dowon</a>
+      </div>
+      <div class="header-bar-col header-bar-col--works">
+        <div class="nav-accordion is-open">
+          <a href="index.html" class="nav-cell nav-works active">WORKS</a>
+          <div class="sidebar-controls">
+            <ul class="view-toggle">
+              <li data-view="grid" class="active">그리드</li>
+              <li data-view="index">인덱스</li>
+            </ul>
+            <ul class="filter-checks filter-checks--type">
+              <li data-filter="type" data-value="설치">설치</li>
+              <li data-filter="type" data-value="영상">영상</li>
+              <li data-filter="type" data-value="퍼포먼스">퍼포먼스</li>
+              <li data-filter="type" data-value="전시">전시</li>
+              <li data-filter="type" data-value="인터랙티브">인터랙티브</li>
+              <li data-filter="type" data-value="프로젝션">프로젝션</li>
+            </ul>
+            <ul class="filter-checks filter-checks--tech">
+              <li data-filter="tech" data-value="Unreal">Unreal</li>
+              <li data-filter="tech" data-value="Unity">Unity</li>
+              <li data-filter="tech" data-value="Arduino">Arduino</li>
+              <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+            </ul>
+          </div>
         </div>
       </div>
-      <a href="lab.html" class="nav-cell nav-lab">LAB</a>
-      <a href="about.html" class="nav-cell nav-about">ABOUT</a>
-      <a href="cv.html" class="nav-cell nav-cv">CV</a>
-      <a href="contact.html" class="nav-cell nav-contact">CONTACT</a>
-    </nav>
+      <div class="header-bar-col header-bar-col--nav">
+      <nav class="nav-main nav-main--secondary">
+        <a href="lab.html" class="nav-cell nav-lab">LAB</a>
+        <a href="about.html" class="nav-cell nav-about">ABOUT</a>
+        <a href="cv.html" class="nav-cell nav-cv">CV</a>
+        <a href="contact.html" class="nav-cell nav-contact">CONTACT</a>
+      </nav>
+      </div>
+      <div class="header-bar-col header-bar-col--spacer"></div>
+    </div>
   </header>
 
   <div class="mo-header">
@@ -120,8 +129,8 @@
           <div class="img-post-year">2024</div>
         </a>
         <a href="work/ambient-loop.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/s01.jpg)"></div>
-          <div class="img-post-title">Focus of Sunset</div>
+          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/m01.png)"></div>
+          <div class="img-post-title">Motion Blur</div>
           <div class="img-post-type">전시, 프로젝션</div>
           <div class="img-post-year">2024</div>
         </a>
@@ -307,11 +316,11 @@
               <div class="index-post-line"></div>
             </div>
           </a>
-          <a href="work/ambient-loop.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/s02.jpg" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상">
+          <a href="work/ambient-loop.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/m01.png" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상">
             <div class="index-post-row">
               <div class="index-post-cells">
                 <div class="index-post-year">2024</div>
-                <div class="index-post-title">Focus of Sunset</div>
+                <div class="index-post-title">Motion Blur</div>
                 <div class="index-post-type">전시, 프로젝션</div>
               </div>
               <div class="index-post-line"></div>
@@ -504,6 +513,6 @@
 
     <p class="no-results" style="margin-left:30px">검색 결과가 없습니다.</p>
   </main>
-  <script src="script.js?v=81"></script>
+  <script src="script.js?v=82"></script>
 </body>
 </html>

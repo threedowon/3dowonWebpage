@@ -98,6 +98,7 @@ function initNavAccordion() {
 
   worksLink.addEventListener('click', (e) => {
     if (!document.querySelector('.site-header--works')) return;
+    if (window.matchMedia('(min-width: 769px)').matches) return;
 
     e.preventDefault();
     accordion.classList.toggle('is-open');
@@ -348,21 +349,25 @@ function initCvCommaWrap() {
   window.addEventListener('resize', apply);
 }
 
-// ── Mobile header height sync (exact sticky/fixed alignment) ──
+// ── Header height sync (mobile subheader + desktop top bar) ──
 function initMobileHeaderHeight() {
   const mq = window.matchMedia('(max-width: 768px)');
 
   const sync = () => {
-    if (!mq.matches) {
-      document.documentElement.style.removeProperty('--mobile-subheader-h');
-      return;
-    }
-
     const header = document.querySelector('.site-header');
     if (!header) return;
 
     const height = header.getBoundingClientRect().height;
-    document.documentElement.style.setProperty('--mobile-subheader-h', `${height}px`);
+
+    if (mq.matches) {
+      document.documentElement.style.setProperty('--mobile-subheader-h', `${height}px`);
+      document.documentElement.style.removeProperty('--desktop-header-h');
+      return;
+    }
+
+    document.documentElement.style.setProperty('--desktop-header-h', `${height}px`);
+    document.documentElement.style.setProperty('--logo-bar-h', `${height}px`);
+    document.documentElement.style.removeProperty('--mobile-subheader-h');
   };
 
   window.addEventListener('resize', sync);

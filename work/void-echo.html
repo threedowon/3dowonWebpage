@@ -5,19 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Void Echo — 3Dowon</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-  <link rel="stylesheet" href="../styles.css?v=157" />
+  <link rel="stylesheet" href="../styles.css?v=158" />
 </head>
 <body>
-  <header class="site-header site-header--project">
-    <a href="../index.html" class="sidebar-logo sidebar-logo--mark"><img src="../assets/logo-mark.svg" alt="3Dowon" class="sidebar-logo-img" width="28" height="36" /></a>
-        <nav class="nav-main">
-      <a href="../index.html" class="nav-cell nav-works active">WORKS</a>
-      <a href="../lab.html" class="nav-cell nav-lab">LAB</a>
-      <a href="../about.html" class="nav-cell nav-about">ABOUT</a>
-      <a href="../cv.html" class="nav-cell nav-cv">CV</a>
-      <a href="../contact.html" class="nav-cell nav-contact">CONTACT</a>
-    </nav>
-    <button class="btn-back" onclick="history.back()" aria-label="뒤로">←</button>
+  <header class="site-header site-header--bar site-header--project">
+    <div class="header-bar">
+      <div class="header-bar-col header-bar-col--logo">
+        <a href="../index.html" class="sidebar-logo sidebar-logo--mark"><img src="../assets/logo-mark.svg" alt="3Dowon" class="sidebar-logo-img" width="28" height="36" /></a>
+      </div>
+      <div class="header-bar-col header-bar-col--works">
+        <a href="../index.html" class="nav-cell nav-works active">WORKS</a>
+      </div>
+      <div class="header-bar-col header-bar-col--nav">
+      <nav class="nav-main nav-main--secondary">
+        <a href="../lab.html" class="nav-cell nav-lab">LAB</a>
+        <a href="../about.html" class="nav-cell nav-about">ABOUT</a>
+        <a href="../cv.html" class="nav-cell nav-cv">CV</a>
+        <a href="../contact.html" class="nav-cell nav-contact">CONTACT</a>
+      </nav>
+      </div>
+      <div class="header-bar-col header-bar-col--spacer"><button class="btn-back" onclick="history.back()" aria-label="뒤로">←</button></div>
+    </div>
   </header>
   <div class="mo-header">
     <a href="../index.html" class="mo-logo">3Dowon</a>
@@ -74,6 +82,6 @@
       </div>
     </div>
   </main>
-  <script src="../script.js?v=81"></script>
+  <script src="../script.js?v=82"></script>
 </body>
 </html>

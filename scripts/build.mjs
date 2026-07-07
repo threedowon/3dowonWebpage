@@ -1,8 +1,8 @@
 import { loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '157';
-const JS_VERSION = '81';
+const CSS_VERSION = '158';
+const JS_VERSION = '82';
 
 function siteFooter(site) {
   return `        E. <a href="mailto:${escapeHtml(site.email)}">${escapeHtml(site.email)}</a><br />
@@ -42,18 +42,79 @@ function mobileShell(site, activeNav = '') {
   return `${mobileHeader()}${mobileNav(site, activeNav)}`;
 }
 
-function simpleHeader(site, activeNav) {
+function worksControls() {
+  return `          <div class="sidebar-controls">
+            <ul class="view-toggle">
+              <li data-view="grid" class="active">그리드</li>
+              <li data-view="index">인덱스</li>
+            </ul>
+            <ul class="filter-checks filter-checks--type">
+              <li data-filter="type" data-value="설치">설치</li>
+              <li data-filter="type" data-value="영상">영상</li>
+              <li data-filter="type" data-value="퍼포먼스">퍼포먼스</li>
+              <li data-filter="type" data-value="전시">전시</li>
+              <li data-filter="type" data-value="인터랙티브">인터랙티브</li>
+              <li data-filter="type" data-value="프로젝션">프로젝션</li>
+            </ul>
+            <ul class="filter-checks filter-checks--tech">
+              <li data-filter="tech" data-value="Unreal">Unreal</li>
+              <li data-filter="tech" data-value="Unity">Unity</li>
+              <li data-filter="tech" data-value="Arduino">Arduino</li>
+              <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+            </ul>
+          </div>`;
+}
+
+function secondaryNav(prefix = '', activeNav = '') {
   const navClass = (name) => `nav-cell nav-${name}${activeNav === name ? ' active' : ''}`;
-  return `  <header class="site-header site-header--simple">
-    <a href="index.html" class="sidebar-logo">3Dowon</a>
-    <nav class="nav-main">
-      <a href="index.html" class="${navClass('works')}">WORKS</a>
-      <a href="lab.html" class="${navClass('lab')}">LAB</a>
-      <a href="about.html" class="${navClass('about')}">ABOUT</a>
-      <a href="cv.html" class="${navClass('cv')}">CV</a>
-      <a href="contact.html" class="${navClass('contact')}">CONTACT</a>
-    </nav>
-  </header>
+  return `      <nav class="nav-main nav-main--secondary">
+        <a href="${prefix}lab.html" class="${navClass('lab')}">LAB</a>
+        <a href="${prefix}about.html" class="${navClass('about')}">ABOUT</a>
+        <a href="${prefix}cv.html" class="${navClass('cv')}">CV</a>
+        <a href="${prefix}contact.html" class="${navClass('contact')}">CONTACT</a>
+      </nav>`;
+}
+
+function headerBar({ prefix = '', home = `${prefix}index.html`, activeNav = '', worksOpen = false, logoHtml, extraCol4 = '', variant = '' }) {
+  const worksClass = `nav-cell nav-works${activeNav === 'works' ? ' active' : ''}`;
+  const showWorksControls = worksOpen || (activeNav === 'works' && variant !== 'project');
+  const worksBlock = showWorksControls
+      ? `        <div class="nav-accordion is-open">
+          <a href="${home}" class="${worksClass}">WORKS</a>
+${worksControls()}
+        </div>`
+      : `        <a href="${home}" class="${worksClass}">WORKS</a>`;
+
+  const variantClass =
+    variant === 'project'
+      ? ' site-header--project'
+      : activeNav === 'works'
+        ? ' site-header--works'
+        : activeNav
+          ? ' site-header--simple'
+          : '';
+
+  return `  <header class="site-header site-header--bar${variantClass}">
+    <div class="header-bar">
+      <div class="header-bar-col header-bar-col--logo">
+        ${logoHtml}
+      </div>
+      <div class="header-bar-col header-bar-col--works">
+${worksBlock}
+      </div>
+      <div class="header-bar-col header-bar-col--nav">
+${secondaryNav(prefix, activeNav)}
+      </div>
+      <div class="header-bar-col header-bar-col--spacer">${extraCol4}</div>
+    </div>
+  </header>`;
+}
+
+function simpleHeader(site, activeNav) {
+  return `${headerBar({
+    activeNav,
+    logoHtml: `<a href="index.html" class="sidebar-logo">3Dowon</a>`,
+  })}
 ${mobileShell(site, activeNav)}`;
 }
 
@@ -153,38 +214,11 @@ ${indexPosts}
 
     <p class="no-results" style="margin-left:30px">검색 결과가 없습니다.</p>`;
 
-  const header = `  <header class="site-header site-header--works">
-    <a href="index.html" class="sidebar-logo">3Dowon</a>
-    <nav class="nav-main">
-      <div class="nav-accordion is-open">
-        <a href="index.html" class="nav-cell nav-works active">WORKS</a>
-        <div class="sidebar-controls">
-          <ul class="view-toggle">
-            <li data-view="grid" class="active">그리드</li>
-            <li data-view="index">인덱스</li>
-          </ul>
-          <ul class="filter-checks filter-checks--type">
-            <li data-filter="type" data-value="설치">설치</li>
-            <li data-filter="type" data-value="영상">영상</li>
-            <li data-filter="type" data-value="퍼포먼스">퍼포먼스</li>
-            <li data-filter="type" data-value="전시">전시</li>
-            <li data-filter="type" data-value="인터랙티브">인터랙티브</li>
-            <li data-filter="type" data-value="프로젝션">프로젝션</li>
-          </ul>
-          <ul class="filter-checks filter-checks--tech">
-            <li data-filter="tech" data-value="Unreal">Unreal</li>
-            <li data-filter="tech" data-value="Unity">Unity</li>
-            <li data-filter="tech" data-value="Arduino">Arduino</li>
-            <li data-filter="tech" data-value="3ds Max">3ds Max</li>
-          </ul>
-        </div>
-      </div>
-      <a href="lab.html" class="nav-cell nav-lab">LAB</a>
-      <a href="about.html" class="nav-cell nav-about">ABOUT</a>
-      <a href="cv.html" class="nav-cell nav-cv">CV</a>
-      <a href="contact.html" class="nav-cell nav-contact">CONTACT</a>
-    </nav>
-  </header>
+  const header = `${headerBar({
+    activeNav: 'works',
+    worksOpen: true,
+    logoHtml: `<a href="index.html" class="sidebar-logo">3Dowon</a>`,
+  })}
 
 ${mobileHeader()}
   <div class="mo-filters mo-filters--type">
@@ -244,17 +278,14 @@ ${gallery}
       </div>
     </div>`;
 
-  const header = `  <header class="site-header site-header--project">
-    <a href="../index.html" class="sidebar-logo sidebar-logo--mark"><img src="../assets/logo-mark.svg" alt="3Dowon" class="sidebar-logo-img" width="28" height="36" /></a>
-        <nav class="nav-main">
-      <a href="../index.html" class="nav-cell nav-works active">WORKS</a>
-      <a href="../lab.html" class="nav-cell nav-lab">LAB</a>
-      <a href="../about.html" class="nav-cell nav-about">ABOUT</a>
-      <a href="../cv.html" class="nav-cell nav-cv">CV</a>
-      <a href="../contact.html" class="nav-cell nav-contact">CONTACT</a>
-    </nav>
-    <button class="btn-back" onclick="history.back()" aria-label="뒤로">←</button>
-  </header>
+  const header = `${headerBar({
+    prefix: '../',
+    home: '../index.html',
+    activeNav: 'works',
+    variant: 'project',
+    logoHtml: `<a href="../index.html" class="sidebar-logo sidebar-logo--mark"><img src="../assets/logo-mark.svg" alt="3Dowon" class="sidebar-logo-img" width="28" height="36" /></a>`,
+    extraCol4: `<button class="btn-back" onclick="history.back()" aria-label="뒤로">←</button>`,
+  })}
 ${mobileHeader('../index.html')}
 ${mobileNav(site, '', '../')}`;
 
