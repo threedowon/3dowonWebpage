@@ -3,23 +3,26 @@
   "title": "Light Archive",
   "year": 2025,
   "type": "영상",
-  "tags": [],
+  "tags": [
+    "영상"
+  ],
   "tech": [],
   "production": "개인",
-  "thumbnail": "https://picsum.photos/seed/light-archive/600/750",
-  "grid_type_label": "영상, 프로젝션",
-  "index_type_label": "영상, 프로젝션",
-  "preview_bg": "https://picsum.photos/seed/light-archive/600/750",
-  "hero_image": "https://picsum.photos/seed/light-archive/600/750",
+  "thumbnail": "/3dowonWebpage/assets/uploads/light-archive-1783466565780-590609.jpg",
+  "grid_type_label": "영상",
+  "index_type_label": "영상",
+  "preview_bg": "/3dowonWebpage/assets/uploads/light-archive-1783466565780-590609.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/light-archive-1783466565780-590609.jpg",
   "description": "<p>빛의 기록을 아카이브 형식으로 재구성한 대형 영상 설치입니다.</p>",
   "meta_year": "2025",
   "meta_type": "영상",
-  "meta_medium": "아카이브 영상, 프로젝션",
+  "meta_medium": "영상",
   "meta_tech": "Premiere, TouchDesigner",
-  "meta_production": "개인 제작",
+  "meta_production": "개인",
   "gallery": [
     "https://picsum.photos/seed/lightarc1/1920/1440",
     "https://picsum.photos/seed/lightarc2/1920/1440",
     "https://picsum.photos/seed/lightarc3/1920/1440"
-  ]
+  ],
+  "vimeo_url": ""
 }
