@@ -114,6 +114,23 @@ function publicUploadPath(filename) {
   return `${PUBLIC_UPLOADS_PREFIX}/${filename}`;
 }
 
+// Wraps async route handlers so a rejected promise (e.g. sharp failing on a
+// malformed image) becomes a normal error response instead of an unhandled
+// rejection that crashes the whole server (Node terminates the process on
+// those by default) — one bad upload shouldn't take the admin tool down.
+function asyncHandler(fn) {
+  return (req, res, next) => {
+    Promise.resolve(fn(req, res, next)).catch((err) => {
+      console.error(err);
+      const isImageError = /heif|jpeg|png|webp|corrupt|Input buffer|unsupported image format/i.test(err.message || '');
+      const message = isImageError
+        ? '이미지 파일을 처리할 수 없어요 (손상되었거나 지원하지 않는 형식/구조일 수 있어요 — 아이폰 인물사진 모드 HEIC에서 종종 발생해요). 사진 앱에서 JPG로 내보낸 뒤 다시 올려보시거나 다른 사진으로 시도해주세요.'
+        : err.message || '요청 처리 중 오류가 발생했어요.';
+      res.status(400).json({ error: message });
+    });
+  };
+}
+
 // The same uploaded file can legitimately be reused across multiple fields/works
 // (e.g. thumbnail and hero_image pointing at the same photo), so before deleting
 // an old file on replace/remove we confirm nothing else on disk still points to it.
@@ -207,7 +224,7 @@ app.delete('/api/works/:slug', (req, res) => {
 });
 
 // 썸네일 / 인덱스 미리보기 / 상세 히어로 이미지는 항상 같은 사진을 쓴다.
-app.post('/api/works/:slug/thumbnail', upload.single('image'), async (req, res) => {
+app.post('/api/works/:slug/thumbnail', upload.single('image'), asyncHandler(async (req, res) => {
   const work = loadWork(req.params.slug);
   if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });
   const oldPaths = [work.thumbnail, work.preview_bg, work.hero_image];
@@ -220,9 +237,9 @@ app.post('/api/works/:slug/thumbnail', upload.single('image'), async (req, res) 
   oldPaths.forEach(removeUploadedFile);
   build();
   res.json(work);
-});
+}));
 
-app.post('/api/works/:slug/gallery', upload.array('images', 20), async (req, res) => {
+app.post('/api/works/:slug/gallery', upload.array('images', 20), asyncHandler(async (req, res) => {
   const work = loadWork(req.params.slug);
   for (const file of req.files || []) {
     const filename = await saveImage(file.buffer, req.params.slug);
@@ -231,7 +248,7 @@ app.post('/api/works/:slug/gallery', upload.array('images', 20), async (req, res
   saveJson(`content/works/${req.params.slug}.json`, work);
   build();
   res.json(work);
-});
+}));
 
 app.delete('/api/works/:slug/gallery/:index', (req, res) => {
   const work = loadWork(req.params.slug);
@@ -261,7 +278,7 @@ app.put('/api/about', (req, res) => {
   res.json(about);
 });
 
-app.post('/api/about/image', upload.single('image'), async (req, res) => {
+app.post('/api/about/image', upload.single('image'), asyncHandler(async (req, res) => {
   if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });
   const about = loadJson('content/about.json');
   const oldImage = about.image;
@@ -271,7 +288,7 @@ app.post('/api/about/image', upload.single('image'), async (req, res) => {
   removeUploadedFile(oldImage);
   build();
   res.json(about);
-});
+}));
 
 app.put('/api/cv', (req, res) => {
   saveJson('content/cv.json', { sections: req.body.sections || [] });
@@ -287,7 +304,7 @@ app.put('/api/lab', (req, res) => {
   res.json(lab);
 });
 
-app.post('/api/lab/items', upload.single('image'), async (req, res) => {
+app.post('/api/lab/items', upload.single('image'), asyncHandler(async (req, res) => {
   if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });
   const lab = loadJson('content/lab.json');
   const filename = await saveImage(req.file.buffer);
@@ -295,7 +312,7 @@ app.post('/api/lab/items', upload.single('image'), async (req, res) => {
   saveJson('content/lab.json', lab);
   build();
   res.json(lab);
-});
+}));
 
 app.delete('/api/lab/items/:index', (req, res) => {
   const lab = loadJson('content/lab.json');
@@ -358,6 +375,12 @@ app.post('/api/deploy', (req, res) => {
       : err.message;
     res.status(500).json({ error: detail });
   }
+});
+
+// Defense in depth: a rejected promise anywhere we forgot to catch should log
+// and keep running, not take down the whole admin server on one bad request.
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled rejection (server stayed up):', err);
 });
 
 app.listen(PORT, HOST, () => {

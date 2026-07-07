@@ -141,8 +141,13 @@ function renderWorkCard(work) {
       if (!file) return;
       const fd = new FormData();
       fd.append('image', file);
-      await api(`/api/works/${work.slug}/${input.dataset.field}`, { method: 'POST', body: fd });
-      loadWorks();
+      try {
+        await api(`/api/works/${work.slug}/${input.dataset.field}`, { method: 'POST', body: fd });
+        loadWorks();
+      } catch (err) {
+        alert(err.message);
+        e.target.value = '';
+      }
     });
   });
 
@@ -151,8 +156,13 @@ function renderWorkCard(work) {
     if (!files.length) return;
     const fd = new FormData();
     for (const f of files) fd.append('images', f);
-    await api(`/api/works/${work.slug}/gallery`, { method: 'POST', body: fd });
-    loadWorks();
+    try {
+      await api(`/api/works/${work.slug}/gallery`, { method: 'POST', body: fd });
+      loadWorks();
+    } catch (err) {
+      alert(err.message);
+      e.target.value = '';
+    }
   });
 
   return card;
@@ -207,8 +217,13 @@ document.getElementById('aboutImageInput').addEventListener('change', async (e) 
   if (!file) return;
   const fd = new FormData();
   fd.append('image', file);
-  await api('/api/about/image', { method: 'POST', body: fd });
-  loadAbout();
+  try {
+    await api('/api/about/image', { method: 'POST', body: fd });
+    loadAbout();
+  } catch (err) {
+    alert(err.message);
+    e.target.value = '';
+  }
 });
 
 // ── CV ──
@@ -321,9 +336,13 @@ document.getElementById('newLabForm').addEventListener('submit', async (e) => {
   const fd = new FormData();
   fd.append('image', file);
   fd.append('caption', e.target.caption.value);
-  await api('/api/lab/items', { method: 'POST', body: fd });
-  e.target.reset();
-  loadLab();
+  try {
+    await api('/api/lab/items', { method: 'POST', body: fd });
+    e.target.reset();
+    loadLab();
+  } catch (err) {
+    alert(err.message);
+  }
 });
 
 // ── Site (contact/SNS) ──
