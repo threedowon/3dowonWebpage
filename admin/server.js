@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import express from 'express';
 import multer from 'multer';
+import sharp from 'sharp';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -41,29 +42,53 @@ function loadWork(slug) {
   return loadJson(`content/works/${slug}.json`);
 }
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    fs.mkdirSync(UPLOADS_DIR, { recursive: true });
-    cb(null, UPLOADS_DIR);
-  },
-  filename(req, file, cb) {
-    const ext = path.extname(file.originalname) || '.jpg';
-    const prefix = req.params.slug ? `${req.params.slug}-` : '';
-    cb(null, `${prefix}${Date.now()}-${Math.round(Math.random() * 1e6)}${ext}`);
-  },
-});
+// Images are held in memory, then re-encoded to JPEG (resized, compressed) before
+// hitting disk — normalizes PNG/HEIC/WebP uploads and keeps file sizes reasonable.
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 30 * 1024 * 1024 },
   fileFilter(req, file, cb) {
     cb(null, /^image\//.test(file.mimetype));
   },
 });
+
+const MAX_DIMENSION = 2400;
+const JPEG_QUALITY = 82;
+
+async function saveImage(buffer, slugPrefix = '') {
+  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+  const filename = `${slugPrefix ? `${slugPrefix}-` : ''}${Date.now()}-${Math.round(Math.random() * 1e6)}.jpg`;
+  const jpeg = await sharp(buffer)
+    .rotate() // apply EXIF orientation before stripping metadata
+    .resize({ width: MAX_DIMENSION, height: MAX_DIMENSION, fit: 'inside', withoutEnlargement: true })
+    .jpeg({ quality: JPEG_QUALITY, mozjpeg: true })
+    .toBuffer();
+  fs.writeFileSync(path.join(UPLOADS_DIR, filename), jpeg);
+  return filename;
+}
+
 function publicUploadPath(filename) {
   return `${PUBLIC_UPLOADS_PREFIX}/${filename}`;
 }
+
+// The same uploaded file can legitimately be reused across multiple fields/works
+// (e.g. thumbnail and hero_image pointing at the same photo), so before deleting
+// an old file on replace/remove we confirm nothing else on disk still points to it.
+function isImagePathReferenced(publicPath) {
+  for (const slug of listWorkSlugs()) {
+    const w = loadWork(slug);
+    if ([w.thumbnail, w.preview_bg, w.hero_image, ...(w.gallery || [])].includes(publicPath)) return true;
+  }
+  if (loadJson('content/about.json').image === publicPath) return true;
+  if (loadJson('content/lab.json').items.some((item) => item.image === publicPath)) return true;
+  return false;
+}
+
+// Call this only AFTER the content JSON no longer references publicPath (i.e. after
+// saveJson), otherwise the reference check will always find it and refuse to delete.
 function removeUploadedFile(publicPath) {
   if (!publicPath || !publicPath.startsWith(PUBLIC_UPLOADS_PREFIX)) return;
+  if (isImagePathReferenced(publicPath)) return;
   const filename = publicPath.slice(PUBLIC_UPLOADS_PREFIX.length + 1);
   fs.rmSync(path.join(UPLOADS_DIR, filename), { force: true });
 }
@@ -128,19 +153,21 @@ app.delete('/api/works/:slug', (req, res) => {
   const file = path.join(WORKS_DIR, `${req.params.slug}.json`);
   if (!fs.existsSync(file)) return res.status(404).json({ error: 'not found' });
   const work = loadWork(req.params.slug);
+  fs.unlinkSync(file); // remove the JSON first so the reference check below doesn't see its own entries
   [work.thumbnail, work.preview_bg, work.hero_image, ...(work.gallery || [])].forEach(removeUploadedFile);
-  fs.unlinkSync(file);
   build();
   res.json({ ok: true });
 });
 
 function singleImageRoute(field) {
-  app.post(`/api/works/:slug/${field}`, upload.single('image'), (req, res) => {
+  app.post(`/api/works/:slug/${field}`, upload.single('image'), async (req, res) => {
     const work = loadWork(req.params.slug);
     if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });
-    removeUploadedFile(work[field]);
-    work[field] = publicUploadPath(req.file.filename);
+    const oldPath = work[field];
+    const filename = await saveImage(req.file.buffer, req.params.slug);
+    work[field] = publicUploadPath(filename);
     saveJson(`content/works/${req.params.slug}.json`, work);
+    removeUploadedFile(oldPath);
     build();
     res.json(work);
   });
@@ -149,10 +176,11 @@ singleImageRoute('thumbnail');
 singleImageRoute('preview_bg');
 singleImageRoute('hero_image');
 
-app.post('/api/works/:slug/gallery', upload.array('images', 20), (req, res) => {
+app.post('/api/works/:slug/gallery', upload.array('images', 20), async (req, res) => {
   const work = loadWork(req.params.slug);
   for (const file of req.files || []) {
-    work.gallery.push(publicUploadPath(file.filename));
+    const filename = await saveImage(file.buffer, req.params.slug);
+    work.gallery.push(publicUploadPath(filename));
   }
   saveJson(`content/works/${req.params.slug}.json`, work);
   build();
@@ -162,8 +190,8 @@ app.post('/api/works/:slug/gallery', upload.array('images', 20), (req, res) => {
 app.delete('/api/works/:slug/gallery/:index', (req, res) => {
   const work = loadWork(req.params.slug);
   const [removed] = work.gallery.splice(Number(req.params.index), 1);
-  removeUploadedFile(removed);
   saveJson(`content/works/${req.params.slug}.json`, work);
+  removeUploadedFile(removed);
   build();
   res.json(work);
 });
@@ -187,12 +215,14 @@ app.put('/api/about', (req, res) => {
   res.json(about);
 });
 
-app.post('/api/about/image', upload.single('image'), (req, res) => {
+app.post('/api/about/image', upload.single('image'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });
   const about = loadJson('content/about.json');
-  removeUploadedFile(about.image);
-  about.image = publicUploadPath(req.file.filename);
+  const oldImage = about.image;
+  const filename = await saveImage(req.file.buffer);
+  about.image = publicUploadPath(filename);
   saveJson('content/about.json', about);
+  removeUploadedFile(oldImage);
   build();
   res.json(about);
 });
@@ -211,10 +241,11 @@ app.put('/api/lab', (req, res) => {
   res.json(lab);
 });
 
-app.post('/api/lab/items', upload.single('image'), (req, res) => {
+app.post('/api/lab/items', upload.single('image'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });
   const lab = loadJson('content/lab.json');
-  lab.items.push({ image: publicUploadPath(req.file.filename), caption: req.body.caption || '' });
+  const filename = await saveImage(req.file.buffer);
+  lab.items.push({ image: publicUploadPath(filename), caption: req.body.caption || '' });
   saveJson('content/lab.json', lab);
   build();
   res.json(lab);
@@ -223,8 +254,8 @@ app.post('/api/lab/items', upload.single('image'), (req, res) => {
 app.delete('/api/lab/items/:index', (req, res) => {
   const lab = loadJson('content/lab.json');
   const [removed] = lab.items.splice(Number(req.params.index), 1);
-  if (removed) removeUploadedFile(removed.image);
   saveJson('content/lab.json', lab);
+  if (removed) removeUploadedFile(removed.image);
   build();
   res.json(lab);
 });
