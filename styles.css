@@ -361,6 +361,19 @@ main:has(.contact-box) {
   .site-header--works .filter-checks--tech > li:not(:last-child) {
     border-right: 1px solid var(--line);
   }
+
+  .site-header--works {
+    border-bottom: none;
+  }
+
+  .site-header--works .view-toggle,
+  .site-header--works .filter-checks {
+    border-bottom: none;
+  }
+
+  main:has(.works-view) .img-post-box {
+    margin-top: 24px;
+  }
 }
 
 /* Legacy — removed */
