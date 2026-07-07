@@ -34,6 +34,18 @@ function build() {
 function isValidSlug(slug) {
   return /^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug);
 }
+
+// 유형/태그는 사이트 필터에서 하나로 합쳐져 보이므로 admin에서도 다중선택 하나로 다룬다.
+// 선택된 값 전체가 tags(필터용)로 들어가고, type/grid_type_label/index_type_label/meta_type은
+// 그 선택값들로부터 자동으로 채워진다.
+function applySelectedTypes(work, selected) {
+  const types = Array.isArray(selected) ? selected.filter(Boolean) : [];
+  work.type = types[0] || '';
+  work.tags = types;
+  work.grid_type_label = types.join(', ');
+  work.index_type_label = types.join(', ');
+  work.meta_type = types.join(', ');
+}
 function listWorkSlugs() {
   fs.mkdirSync(WORKS_DIR, { recursive: true });
   return fs.readdirSync(WORKS_DIR).filter((f) => f.endsWith('.json')).map((f) => f.replace(/\.json$/, ''));
@@ -132,27 +144,26 @@ app.get('/api/works', (req, res) => {
 });
 
 app.post('/api/works', (req, res) => {
-  const { slug, title, year, type } = req.body;
+  const { slug, title, year, types } = req.body;
   if (!isValidSlug(slug)) return res.status(400).json({ error: '슬러그는 영문 소문자/숫자/하이픈만 가능해요.' });
   if (listWorkSlugs().includes(slug)) return res.status(400).json({ error: '이미 존재하는 슬러그예요.' });
 
   const resolvedYear = Number(year) || new Date().getFullYear();
-  const resolvedType = type || '설치';
   const work = {
     slug,
     title: title || '',
     year: resolvedYear,
-    type: resolvedType,
+    type: '',
     tags: [],
     tech: [],
     production: '개인',
     thumbnail: '',
-    grid_type_label: resolvedType,
-    index_type_label: resolvedType,
+    grid_type_label: '',
+    index_type_label: '',
     preview_bg: '',
     hero_image: '',
     meta_year: String(resolvedYear),
-    meta_type: resolvedType,
+    meta_type: '',
     meta_medium: '',
     meta_tech: '',
     meta_production: '',
@@ -160,6 +171,7 @@ app.post('/api/works', (req, res) => {
     vimeo_url: '',
     gallery: [],
   };
+  applySelectedTypes(work, types && types.length ? types : ['설치']);
   saveJson(`content/works/${slug}.json`, work);
   build();
   res.json(work);
@@ -168,18 +180,15 @@ app.post('/api/works', (req, res) => {
 app.put('/api/works/:slug', (req, res) => {
   if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({ error: 'not found' });
   const work = loadWork(req.params.slug);
-  const editable = [
-    'title', 'year', 'type', 'tags', 'tech', 'production', 'grid_type_label', 'index_type_label',
-    'meta_medium', 'meta_tech', 'meta_production', 'vimeo_url',
-  ];
+  const editable = ['title', 'year', 'tech', 'production', 'meta_medium', 'meta_tech', 'meta_production', 'vimeo_url'];
   for (const key of editable) {
     if (req.body[key] !== undefined) work[key] = req.body[key];
   }
   if (req.body.description !== undefined) work.description = plainTextToDescriptionHtml(req.body.description);
   if (work.year !== undefined) work.year = Number(work.year) || work.year;
-  // 상세 페이지의 연도/유형은 항상 목록 연도/유형과 같게 유지한다.
+  if (req.body.types !== undefined) applySelectedTypes(work, req.body.types);
+  // 상세 페이지의 연도는 항상 목록 연도와 같게 유지한다.
   work.meta_year = String(work.year);
-  work.meta_type = work.type;
   saveJson(`content/works/${req.params.slug}.json`, work);
   build();
   res.json(work);

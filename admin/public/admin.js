@@ -1,6 +1,7 @@
-const TAG_OPTIONS = ['인터랙티브', '프로젝션'];
+// 사이트 필터에서는 유형(설치~전시)과 태그(인터랙티브/프로젝션)가 한 목록으로 합쳐져 보이므로
+// admin에서도 이 6개를 하나의 다중선택으로 다룬다.
+const TYPE_OPTIONS = ['설치', '영상', '퍼포먼스', '전시', '인터랙티브', '프로젝션'];
 const TECH_OPTIONS = ['Unreal', 'Unity', 'Arduino', '3ds Max'];
-const TYPE_OPTIONS = ['설치', '영상', '퍼포먼스', '전시'];
 const PRODUCTION_OPTIONS = ['개인', '공동', '회사'];
 
 function imgUrl(p) {
@@ -77,16 +78,9 @@ function renderWorkCard(work) {
           <label>작업명<input name="title" value="${escapeAttr(work.title)}" /></label>
           <label>연도<input name="year" type="number" value="${escapeAttr(work.year)}" /></label>
         </div>
-        <div class="field-row">
-          <label>유형<select name="type">${selectOptions(TYPE_OPTIONS, work.type)}</select></label>
-          <label>제작<select name="production">${selectOptions(PRODUCTION_OPTIONS, work.production)}</select></label>
-        </div>
-        <label>태그<div class="chk-group">${checkboxGroup('tags', TAG_OPTIONS, work.tags || [])}</div></label>
+        <label>유형<div class="chk-group">${checkboxGroup('types', TYPE_OPTIONS, [work.type, ...(work.tags || [])])}</div></label>
+        <label>제작<select name="production">${selectOptions(PRODUCTION_OPTIONS, work.production)}</select></label>
         <label>기술<div class="chk-group">${checkboxGroup('tech', TECH_OPTIONS, work.tech || [])}</div></label>
-        <div class="field-row">
-          <label>그리드 유형 표시<input name="grid_type_label" value="${escapeAttr(work.grid_type_label)}" /></label>
-          <label>인덱스 유형 표시<input name="index_type_label" value="${escapeAttr(work.index_type_label)}" /></label>
-        </div>
         <div class="field-row">
           <label>상세-매체<input name="meta_medium" value="${escapeAttr(work.meta_medium)}" /></label>
           <label>상세-기술<input name="meta_tech" value="${escapeAttr(work.meta_tech)}" /></label>
@@ -128,12 +122,9 @@ function renderWorkCard(work) {
       body: JSON.stringify({
         title: fd.get('title'),
         year: fd.get('year'),
-        type: fd.get('type'),
+        types: fd.getAll('types'),
         production: fd.get('production'),
-        tags: fd.getAll('tags'),
         tech: fd.getAll('tech'),
-        grid_type_label: fd.get('grid_type_label'),
-        index_type_label: fd.get('index_type_label'),
         meta_medium: fd.get('meta_medium'),
         meta_tech: fd.get('meta_tech'),
         meta_production: fd.get('meta_production'),
@@ -173,6 +164,8 @@ function renderWorkCard(work) {
   return card;
 }
 
+document.getElementById('newWorkTypes').innerHTML = checkboxGroup('types', TYPE_OPTIONS, []);
+
 document.getElementById('newWorkForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const fd = new FormData(e.target);
@@ -184,7 +177,7 @@ document.getElementById('newWorkForm').addEventListener('submit', async (e) => {
         slug: fd.get('slug'),
         title: fd.get('title'),
         year: fd.get('year'),
-        type: fd.get('type'),
+        types: fd.getAll('types'),
       }),
     });
     e.target.reset();

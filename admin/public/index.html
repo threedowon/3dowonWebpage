@@ -26,14 +26,8 @@
           <label>슬러그 (영문/숫자/하이픈)<input name="slug" required pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="new-work" /></label>
           <label>작업명<input name="title" required /></label>
         </div>
-        <div class="field-row">
-          <label>연도<input name="year" type="number" /></label>
-          <label>유형
-            <select name="type">
-              <option>설치</option><option>영상</option><option>퍼포먼스</option><option>전시</option>
-            </select>
-          </label>
-        </div>
+        <label>연도<input name="year" type="number" /></label>
+        <label>유형<div class="chk-group" id="newWorkTypes"></div></label>
         <button type="submit">추가</button>
       </form>
 
