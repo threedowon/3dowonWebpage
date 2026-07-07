@@ -510,6 +510,24 @@ main:has(.contact-box) {
     font-size: var(--type-nav);
     line-height: 1.4;
   }
+
+  body:has(.site-header--bar):has(.cv-box) {
+    overflow-x: auto;
+  }
+
+  .cv-box {
+    max-width: none;
+  }
+
+  .cv-entry {
+    grid-template-columns: 120px auto;
+  }
+
+  .cv-desc {
+    white-space: nowrap;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
 }
 
 /* Legacy — removed */

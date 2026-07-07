@@ -1,7 +1,7 @@
 import { loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '180';
+const CSS_VERSION = '181';
 const JS_VERSION = '82';
 const LOGO_VERSION = '2';
 
