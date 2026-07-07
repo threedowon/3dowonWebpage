@@ -1,7 +1,7 @@
 import { loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '185';
+const CSS_VERSION = '186';
 const JS_VERSION = '82';
 const LOGO_VERSION = '2';
 
@@ -80,7 +80,7 @@ function secondaryNav(prefix = '', activeNav = '') {
       </nav>`;
 }
 
-function headerBar({ prefix = '', home = `${prefix}index.html`, activeNav = '', worksOpen = false, logoHtml, extraCol4 = '', variant = '' }) {
+function headerBar({ prefix = '', home = `${prefix}index.html`, activeNav = '', worksOpen = false, logoHtml, extraCol2 = '', variant = '' }) {
   const worksClass = `nav-cell nav-works${activeNav === 'works' ? ' active' : ''}`;
   const showWorksControls = worksOpen || activeNav === 'works';
   const worksBlock = showWorksControls
@@ -104,13 +104,13 @@ ${worksControls()}
       <div class="header-bar-col header-bar-col--logo">
         ${logoHtml}
       </div>
+      <div class="header-bar-col header-bar-col--back">${extraCol2}</div>
       <div class="header-bar-col header-bar-col--works">
 ${worksBlock}
       </div>
       <div class="header-bar-col header-bar-col--nav">
 ${secondaryNav(prefix, activeNav)}
       </div>
-      <div class="header-bar-col header-bar-col--spacer">${extraCol4}</div>
     </div>
   </header>`;
 }
@@ -289,7 +289,7 @@ ${gallery}
     activeNav: 'works',
     variant: 'project',
     logoHtml: siteLogo('../'),
-    extraCol4: `<button class="btn-back" onclick="history.back()" aria-label="뒤로">←</button>`,
+    extraCol2: `<button class="btn-back" onclick="history.back()" aria-label="뒤로">←</button>`,
   })}
 ${mobileHeader('../index.html')}
 ${mobileNav(site, '', '../')}`;
