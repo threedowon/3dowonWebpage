@@ -607,6 +607,35 @@ main:has(.contact-box) {
     word-break: normal;
     overflow-wrap: normal;
   }
+
+  .about-box {
+    grid-template-columns: var(--site-grid-cols);
+    column-gap: 0;
+    padding: 20px 0 80px;
+    width: 100%;
+  }
+
+  .about-left {
+    grid-column: 1 / 3;
+    max-width: none;
+    width: auto;
+    padding: 0 12px;
+  }
+
+  .about-right {
+    grid-column: 3 / 5;
+    padding: 0 12px 80px;
+    margin-left: 0;
+  }
+
+  .about-img {
+    width: 100%;
+  }
+
+  .about-section2 {
+    word-break: normal;
+    overflow-wrap: normal;
+  }
 }
 
 /* Legacy — removed */
