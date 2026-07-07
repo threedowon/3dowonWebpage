@@ -1,0 +1,27 @@
+{
+  "grid_type_label": "전시, 프로젝션",
+  "slug": "ambient-loop",
+  "thumbnail": "/3dowonWebpage/assets/uploads/m01.png",
+  "meta_medium": "멀티채널 영상, 프로젝션",
+  "meta_tech": "Unity, 영상 스케줄링",
+  "gallery": [
+    "/3dowonWebpage/assets/uploads/m03.jpg",
+    "/3dowonWebpage/assets/uploads/m02.jpg",
+    "/3dowonWebpage/assets/uploads/m04.jpg"
+  ],
+  "meta_production": "공동 제작",
+  "meta_type": "전시",
+  "hero_image": "/3dowonWebpage/assets/uploads/s01.jpg",
+  "tech": [
+    "Unreal"
+  ],
+  "meta_year": "2022",
+  "title": "Motion Blur",
+  "tags": [],
+  "production": "개인",
+  "type": "영상",
+  "preview_bg": "/3dowonWebpage/assets/uploads/m01.png",
+  "index_type_label": "전시, 프로젝션",
+  "description": "<p>환경 데이터를 순환 구조로 전시하는 미디어 아트 큐레이션 프로젝트이다. 여러 채널의 영상이 루프되며 하나의 공간적 서사를 형성한다.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">담당</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>멀티채널 영상 스케줄링 시스템 구축</li>\r\n              <li>Unity 기반 재생·동기화 환경 제작</li>\r\n              <li>전시 공간 사운드·영상 배치 협업</li>\r\n            </ul>",
+  "year": 2024
+}

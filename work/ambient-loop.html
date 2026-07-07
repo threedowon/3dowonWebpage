@@ -3,61 +3,113 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ambient Loop — 3Dowon</title>
+  <title>Motion Blur — 3Dowon</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-  <link rel="stylesheet" href="../styles.css?v=57" />
+  <link rel="stylesheet" href="../styles.css?v=191" />
 </head>
 <body>
-  <header class="site-header site-header--project">
-    <a href="../index.html" class="sidebar-logo sidebar-logo--mark"><img src="../assets/logo-mark.svg" alt="3Dowon" class="sidebar-logo-img" width="28" height="36" /></a>
-        <nav class="nav-main">
-      <a href="../index.html" class="nav-cell nav-works active">WORKS</a>
-      <a href="../lab.html" class="nav-cell nav-lab">LAB</a>
-      <a href="../about.html" class="nav-cell nav-about">ABOUT</a>
-      <a href="../cv.html" class="nav-cell nav-cv">CV</a>
-      <a href="../contact.html" class="nav-cell nav-contact">CONTACT</a>
-    </nav>
-    <button class="btn-back" onclick="history.back()" aria-label="뒤로">←</button>
-  </header>
-  <p class="site-tagline">인터랙티브 미디어 아티스트</p>
-  <div class="mo-header">
-    <a href="../index.html" class="mo-logo">3Dowon</a>
-    <button class="mo-menu-btn" id="moMenuBtn">메뉴</button>
-  </div>
-    <nav class="mo-nav" id="moNav">
-    <a href="../index.html">WORKS</a>
-    <a href="../lab.html">LAB</a>
-    <a href="../about.html">ABOUT</a>
-    <a href="../cv.html">CV</a>
-    <a href="../contact.html">CONTACT</a>
-  </nav>
-  <main>
-    <div class="post-projects">
-      <div class="post-text">
-        <div class="post-title reveal">Ambient Loop</div>
-        <div class="post-des">
-          <div class="post-des-box1 reveal">
-            <div class="post-des-list"><div class="post-q">작업명</div><div class="post-a">Ambient Loop</div></div>
-            <div class="post-des-list"><div class="post-q">의뢰인</div><div class="post-a">Daelim Museum</div></div>
-            <div class="post-des-list"><div class="post-q">위치</div><div class="post-a">서울, KR</div></div>
-            <div class="post-des-list"><div class="post-q">연도</div><div class="post-a">2022</div></div>
-            <div class="post-des-list"><div class="post-q">유형</div><div class="post-a">전시</div></div>
-            <div class="post-des-list"><div class="post-q">규모</div><div class="post-a">—</div></div>
-          </div>
-          <div class="post-detail-des reveal">
-            <p>환경 데이터를 순환 구조로 전시하는 미디어 아트 큐레이션입니다.</p>
+  <header class="site-header site-header--bar site-header--project">
+    <div class="header-bar">
+      <div class="header-bar-col header-bar-col--logo">
+        <a href="../index.html" class="sidebar-logo sidebar-logo--img"><img src="../assets/logo.png?v=2" alt="3Dowon" class="sidebar-logo-img" /></a>
+      </div>
+      <div class="header-bar-col header-bar-col--back"><button class="btn-back" onclick="history.back()" aria-label="뒤로">←</button></div>
+      <div class="header-bar-col header-bar-col--works">
+        <div class="nav-accordion is-open">
+          <a href="../index.html" class="nav-cell nav-works active">WORKS</a>
+          <div class="sidebar-controls">
+            <ul class="view-toggle">
+              <li data-view="grid" class="active">그리드</li>
+              <li data-view="index">인덱스</li>
+            </ul>
+            <ul class="filter-checks filter-checks--type">
+              <li data-filter="type" data-value="설치">설치</li>
+              <li data-filter="type" data-value="영상">영상</li>
+              <li data-filter="type" data-value="퍼포먼스">퍼포먼스</li>
+              <li data-filter="type" data-value="전시">전시</li>
+              <li data-filter="type" data-value="인터랙티브">인터랙티브</li>
+              <li data-filter="type" data-value="프로젝션">프로젝션</li>
+            </ul>
+            <ul class="filter-checks filter-checks--tech">
+              <li data-filter="tech" data-value="Unreal">Unreal</li>
+              <li data-filter="tech" data-value="Unity">Unity</li>
+              <li data-filter="tech" data-value="Arduino">Arduino</li>
+              <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+            </ul>
           </div>
         </div>
       </div>
+      <div class="header-bar-col header-bar-col--nav">
+      <nav class="nav-main nav-main--secondary">
+        <a href="../lab.html" class="nav-cell nav-lab">LAB</a>
+        <a href="../about.html" class="nav-cell nav-about">ABOUT</a>
+        <a href="../cv.html" class="nav-cell nav-cv">CV</a>
+        <a href="../contact.html" class="nav-cell nav-contact">CONTACT</a>
+      </nav>
+      </div>
+    </div>
+  </header>
+  <div class="mo-header">
+    <a href="../index.html" class="mo-logo mo-logo--img"><img src="../assets/logo.png?v=2" alt="3Dowon" class="mo-logo-img" /></a>
+    <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
+  </div>
+  <div class="mo-overlay" id="moOverlay"></div>
+  <nav class="mo-nav" id="moNav" aria-hidden="true">
+    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="닫기">×</button>
+    <div class="mo-nav-links">
+      <a href="../index.html">WORKS</a>
+      <a href="../lab.html">LAB</a>
+      <a href="../about.html">ABOUT</a>
+      <a href="../cv.html">CV</a>
+    </div>
+    <div class="mo-nav-footer">
+      <div class="mo-nav-footer-info">
+        E. <a href="mailto:3dowon@gmail.com">3dowon@gmail.com</a><br />
+        <a href="https://instagram.com/3dowon" target="_blank" rel="noopener">I. instagram.com/3dowon</a><br />
+        <a href="https://vimeo.com/3dowon" target="_blank" rel="noopener">V. vimeo.com/3dowon</a><br />
+        <a href="https://youtube.com/@3dowon" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>
+      </div>
+    </div>
+  </nav>
+  <main>
+    <div class="post-projects">
+      <div class="post-hero reveal">
+        <img src="/3dowonWebpage/assets/uploads/s01.jpg" alt="Motion Blur" class="post-hero-image" />
+      </div>
+      <div class="post-left">
+      <div class="post-title reveal">Motion Blur</div>
+      <div class="post-text">
+        <div class="post-des">
+          <div class="post-des-box1 reveal">
+            <div class="post-des-list"><div class="post-q">연도</div><div class="post-a">2022</div></div>
+            <div class="post-des-list"><div class="post-q">유형</div><div class="post-a">전시</div></div>
+            <div class="post-des-list"><div class="post-q">매체</div><div class="post-a">멀티채널 영상, 프로젝션</div></div>
+            <div class="post-des-list"><div class="post-q">기술</div><div class="post-a">Unity, 영상 스케줄링</div></div>
+            <div class="post-des-list"><div class="post-q">제작</div><div class="post-a">공동 제작</div></div>
+          </div>
+          <div class="post-detail-des reveal">
+            <p>환경 데이터를 순환 구조로 전시하는 미디어 아트 큐레이션 프로젝트이다. 여러 채널의 영상이 루프되며 하나의 공간적 서사를 형성한다.</p>
+            <div class="post-detail-block">
+              <h4 class="post-detail-label">담당</h4>
+              <ul class="post-detail-list">
+              <li>멀티채널 영상 스케줄링 시스템 구축</li>
+              <li>Unity 기반 재생·동기화 환경 제작</li>
+              <li>전시 공간 사운드·영상 배치 협업</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      </div>
       <div class="post-img-box">
+
         <ul class="project-detail-gallery">
-          <li class="reveal"><img src="https://picsum.photos/seed/ambientl1/1920/1440" alt="Ambient Loop 1" class="project-detail-image" /></li>
-          <li class="reveal"><img src="https://picsum.photos/seed/ambientl2/1920/1440" alt="Ambient Loop 2" class="project-detail-image" /></li>
-          <li class="reveal"><img src="https://picsum.photos/seed/ambientl3/1920/1440" alt="Ambient Loop 3" class="project-detail-image" /></li>
+          <li class="reveal"><img src="/3dowonWebpage/assets/uploads/m03.jpg" alt="Motion Blur 1" class="project-detail-image" /></li>
+          <li class="reveal"><img src="/3dowonWebpage/assets/uploads/m02.jpg" alt="Motion Blur 2" class="project-detail-image" /></li>
+          <li class="reveal"><img src="/3dowonWebpage/assets/uploads/m04.jpg" alt="Motion Blur 3" class="project-detail-image" /></li>
         </ul>
       </div>
     </div>
   </main>
-  <script src="../script.js?v=57"></script>
+  <script src="../script.js?v=83"></script>
 </body>
 </html>

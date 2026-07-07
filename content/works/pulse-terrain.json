@@ -1,0 +1,27 @@
+{
+  "slug": "pulse-terrain",
+  "title": "Pulse Terrain",
+  "year": 2021,
+  "type": "영상",
+  "tags": [],
+  "tech": [
+    "Unreal"
+  ],
+  "production": "공동",
+  "thumbnail": "https://picsum.photos/seed/pulse-terrain/600/750",
+  "grid_type_label": "영상, 프로젝션",
+  "index_type_label": "영상, 프로젝션",
+  "preview_bg": "https://picsum.photos/seed/pulse-terrain/600/750",
+  "hero_image": "https://picsum.photos/seed/pulse-terrain/600/750",
+  "description": "<p>지형 데이터를 기반으로 한 추상 영상이 바닥 전체를 덮는 몰입형 프로젝션입니다.</p>",
+  "meta_year": "2021",
+  "meta_type": "영상",
+  "meta_medium": "생성 영상, 프로젝션",
+  "meta_tech": "Unreal Engine, TouchDesigner",
+  "meta_production": "공동 제작",
+  "gallery": [
+    "https://picsum.photos/seed/pulseter1/1920/1440",
+    "https://picsum.photos/seed/pulseter2/1920/1440",
+    "https://picsum.photos/seed/pulseter3/1920/1440"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "slug": "mirror-phase",
+  "title": "Mirror Phase",
+  "year": 2021,
+  "type": "퍼포먼스",
+  "tags": [
+    "인터랙티브"
+  ],
+  "tech": [],
+  "production": "공동",
+  "thumbnail": "https://picsum.photos/seed/mirror-phase/600/750",
+  "grid_type_label": "퍼포먼스",
+  "index_type_label": "퍼포먼스, 인터랙티브",
+  "preview_bg": "https://picsum.photos/seed/mirror-phase/600/750",
+  "hero_image": "https://picsum.photos/seed/mirror-phase/600/750",
+  "description": "<p>거울과 영상이 겹치며 관객의 움직임을 실시간으로 반사하는 퍼포먼스입니다.</p>",
+  "meta_year": "2021",
+  "meta_type": "인터랙티브 퍼포먼스",
+  "meta_medium": "거울, 실시간 영상",
+  "meta_tech": "Kinect, TouchDesigner",
+  "meta_production": "공동 제작",
+  "gallery": [
+    "https://picsum.photos/seed/mirrorph1/1920/1440",
+    "https://picsum.photos/seed/mirrorph2/1920/1440",
+    "https://picsum.photos/seed/mirrorph3/1920/1440"
+  ]
+}

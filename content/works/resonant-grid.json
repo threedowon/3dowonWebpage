@@ -1,0 +1,29 @@
+{
+  "slug": "resonant-grid",
+  "title": "Resonant Grid",
+  "year": 2020,
+  "type": "설치",
+  "tags": [
+    "인터랙티브"
+  ],
+  "tech": [
+    "Arduino"
+  ],
+  "production": "회사",
+  "thumbnail": "https://picsum.photos/seed/resonant-grid/600/750",
+  "grid_type_label": "설치, 인터랙티브",
+  "index_type_label": "설치, 인터랙티브, 프로젝션",
+  "preview_bg": "https://picsum.photos/seed/resonant-grid/600/750",
+  "hero_image": "https://picsum.photos/seed/resonant-grid/600/750",
+  "description": "<p>브랜드 런칭 이벤트용 인터랙티브 미디어 설치이다. 그리드 형태의 조명과 센서 입력이 결합되어 관객의 참여에 따라 공간이 반응한다.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">담당</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Arduino 기반 센서·조명 제어 시스템 개발</li>\r\n              <li>DMX 조명 시퀀스 프로그래밍</li>\r\n              <li>현장 설치 및 인터랙션 테스트</li>\r\n            </ul>",
+  "meta_year": "2020",
+  "meta_type": "인터랙티브 설치",
+  "meta_medium": "그리드 조명, 센서",
+  "meta_tech": "Arduino, DMX",
+  "meta_production": "Nerdy Artist Union",
+  "gallery": [
+    "https://picsum.photos/seed/resonant1/1920/1440",
+    "https://picsum.photos/seed/resonant2/1920/1440",
+    "https://picsum.photos/seed/resonant3/1920/1440"
+  ]
+}

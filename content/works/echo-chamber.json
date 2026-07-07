@@ -1,0 +1,28 @@
+{
+  "grid_type_label": "설치, 인터랙티브",
+  "slug": "echo-chamber",
+  "thumbnail": "/3dowonWebpage/assets/uploads/01.jpg",
+  "meta_medium": "프로젝션, 공간음향",
+  "meta_tech": "Arduino, Unreal Engine, 센서",
+  "gallery": [
+    "/3dowonWebpage/assets/uploads/02.jpg",
+    "/3dowonWebpage/assets/uploads/03.jpg"
+  ],
+  "meta_production": "개인 제작",
+  "meta_type": "인터랙티브 설치",
+  "hero_image": "/3dowonWebpage/assets/uploads/01.jpg",
+  "tech": [
+    "Unreal"
+  ],
+  "meta_year": "2024",
+  "title": "The Piano Room",
+  "tags": [
+    "인터랙티브"
+  ],
+  "production": "개인",
+  "type": "설치",
+  "preview_bg": "/3dowonWebpage/assets/uploads/01.jpg",
+  "index_type_label": "설치, 인터랙티브, 프로젝션",
+  "description": "<p>빛과 소리가 공명하는 설치 작품입니다. 관객의 움직임에 반응하여 실시간으로 변화하는 사운드스케이프와 빛의 패턴이 생성됩니다.</p>",
+  "year": 2024
+}

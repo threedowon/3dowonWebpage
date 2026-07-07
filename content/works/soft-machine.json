@@ -1,0 +1,28 @@
+{
+  "slug": "soft-machine",
+  "title": "Soft Machine",
+  "year": 2025,
+  "type": "전시",
+  "tags": [],
+  "tech": [
+    "Arduino",
+    "Unity"
+  ],
+  "production": "개인",
+  "thumbnail": "https://picsum.photos/seed/soft-machine/600/750",
+  "grid_type_label": "전시, 인터랙티브",
+  "index_type_label": "전시, 인터랙티브",
+  "preview_bg": "https://picsum.photos/seed/soft-machine/600/750",
+  "hero_image": "https://picsum.photos/seed/soft-machine/600/750",
+  "description": "<p>기계와 유기체의 경계를 탐구하는 인터랙티브 전시입니다.</p>",
+  "meta_year": "2025",
+  "meta_type": "전시",
+  "meta_medium": "인터랙티브 오브제, 영상",
+  "meta_tech": "Arduino, Unity",
+  "meta_production": "개인 제작",
+  "gallery": [
+    "https://picsum.photos/seed/softmach1/1920/1440",
+    "https://picsum.photos/seed/softmach2/1920/1440",
+    "https://picsum.photos/seed/softmach3/1920/1440"
+  ]
+}

@@ -4,31 +4,51 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>about — 3Dowon</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-  <link rel="stylesheet" href="styles.css?v=57" />
+  <link rel="stylesheet" href="styles.css?v=191" />
+
 </head>
 <body>
-  <header class="site-header site-header--simple">
-    <a href="index.html" class="sidebar-logo">3Dowon</a>
-    <nav class="nav-main">
-      <a href="index.html" class="nav-cell nav-works">WORKS</a>
-      <a href="lab.html" class="nav-cell nav-lab">LAB</a>
-      <a href="about.html" class="nav-cell nav-about active">ABOUT</a>
-      <a href="cv.html" class="nav-cell nav-cv">CV</a>
-      <a href="contact.html" class="nav-cell nav-contact">CONTACT</a>
-    </nav>
+  <header class="site-header site-header--bar site-header--simple">
+    <div class="header-bar">
+      <div class="header-bar-col header-bar-col--logo">
+        <a href="index.html" class="sidebar-logo sidebar-logo--img"><img src="assets/logo.png?v=2" alt="3Dowon" class="sidebar-logo-img" /></a>
+      </div>
+      <div class="header-bar-col header-bar-col--back"></div>
+      <div class="header-bar-col header-bar-col--works">
+        <a href="index.html" class="nav-cell nav-works">WORKS</a>
+      </div>
+      <div class="header-bar-col header-bar-col--nav">
+      <nav class="nav-main nav-main--secondary">
+        <a href="lab.html" class="nav-cell nav-lab">LAB</a>
+        <a href="about.html" class="nav-cell nav-about active">ABOUT</a>
+        <a href="cv.html" class="nav-cell nav-cv">CV</a>
+        <a href="contact.html" class="nav-cell nav-contact">CONTACT</a>
+      </nav>
+      </div>
+    </div>
   </header>
-  <p class="site-tagline">인터랙티브 미디어 아티스트</p>
   <div class="mo-header">
-    <a href="index.html" class="mo-logo">3Dowon</a>
-    <button class="mo-menu-btn" id="moMenuBtn">메뉴</button>
-  </div>
-  <nav class="mo-nav" id="moNav">
-    <a href="index.html">WORKS</a>
-    <a href="lab.html">LAB</a>
-    <a href="about.html">ABOUT</a>
-    <a href="cv.html">CV</a>
-    <a href="contact.html">CONTACT</a>
+    <a href="index.html" class="mo-logo mo-logo--img"><img src="assets/logo.png?v=2" alt="3Dowon" class="mo-logo-img" /></a>
+    <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
+  </div>  <div class="mo-overlay" id="moOverlay"></div>
+  <nav class="mo-nav" id="moNav" aria-hidden="true">
+    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="닫기">×</button>
+    <div class="mo-nav-links">
+      <a href="index.html">WORKS</a>
+      <a href="lab.html">LAB</a>
+      <a href="about.html" class="active">ABOUT</a>
+      <a href="cv.html">CV</a>
+    </div>
+    <div class="mo-nav-footer">
+      <div class="mo-nav-footer-info">
+        E. <a href="mailto:3dowon@gmail.com">3dowon@gmail.com</a><br />
+        <a href="https://instagram.com/3dowon" target="_blank" rel="noopener">I. instagram.com/3dowon</a><br />
+        <a href="https://vimeo.com/3dowon" target="_blank" rel="noopener">V. vimeo.com/3dowon</a><br />
+        <a href="https://youtube.com/@3dowon" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>
+      </div>
+    </div>
   </nav>
   <main>
     <div class="about-box">
@@ -46,18 +66,12 @@
           <p>삼도원의 작업에서 기술은 보여주기 위한 대상이 아니라 경험을 위한 재료이다. 센서와 코드, 프로젝션, 피지컬 컴퓨팅은 조용히 뒤에서 작동하며, 관객이 기술보다 공간과 경험 자체에 몰입하도록 돕는다. 그의 작업은 사람들이 잠시 걸음을 늦추고, 눈앞의 경험을 믿어보며, 익숙한 공간을 새로운 감각으로 마주하도록 이끈다.</p>
           <p>최근에는 익숙한 사물, 기억, 지각, 그리고 디지털 공간의 관계를 탐구하는 작업을 이어가고 있다. 일상의 경험이 잠시 낯설어지는 순간을 통해, 현실과 상상이 자연스럽게 맞닿는 공간을 만드는 것이 현재 작업의 중심에 있다.</p>
         </div>
-        <div class="about-info">
-          서울, KR<br /><br />
-          E. 3dowon@gmail.com<br />
-          <a href="#" target="_blank">I. instagram.com/3dowon</a><br />
-          <a href="#" target="_blank">V. vimeo.com/3dowon</a>
-        </div>
       </div>
       <div class="about-right">
         <div class="about-img" style="background-image:url(https://picsum.photos/seed/3dowon-about/1200/800)"></div>
       </div>
     </div>
   </main>
-  <script src="script.js?v=57"></script>
+  <script src="script.js?v=83"></script>
 </body>
 </html>

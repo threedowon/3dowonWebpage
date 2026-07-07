@@ -1,0 +1,27 @@
+{
+  "slug": "layered-city",
+  "title": "Layered City",
+  "year": 2023,
+  "type": "전시",
+  "tags": [],
+  "tech": [
+    "Unity"
+  ],
+  "production": "개인",
+  "thumbnail": "https://picsum.photos/seed/layered-city/600/750",
+  "grid_type_label": "전시, 인터랙티브",
+  "index_type_label": "전시, 인터랙티브",
+  "preview_bg": "https://picsum.photos/seed/layered-city/600/750",
+  "hero_image": "https://picsum.photos/seed/layered-city/600/750",
+  "description": "<p>도시의 시간적 층위를 인터랙티브 매핑으로 탐구하는 전시 프로젝트입니다.</p>",
+  "meta_year": "2023",
+  "meta_type": "전시",
+  "meta_medium": "혼합 매체, 공간 설치",
+  "meta_tech": "Unity, 프로젝션",
+  "meta_production": "개인 제작",
+  "gallery": [
+    "https://picsum.photos/seed/layeredc1/1920/1440",
+    "https://picsum.photos/seed/layeredc2/1920/1440",
+    "https://picsum.photos/seed/layeredc3/1920/1440"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "slug": "fractal-memory",
+  "title": "Fractal Memory",
+  "year": 2023,
+  "type": "설치",
+  "tags": [
+    "프로젝션"
+  ],
+  "tech": [],
+  "production": "공동",
+  "thumbnail": "https://picsum.photos/seed/fractal-memory/600/750",
+  "grid_type_label": "설치, 프로젝션",
+  "index_type_label": "설치, 프로젝션",
+  "preview_bg": "https://picsum.photos/seed/fractal-memory/600/750",
+  "hero_image": "https://picsum.photos/seed/fractal-memory/600/750",
+  "description": "<p>기억의 층위를 프랙탈 구조로 시각화한 프로젝션 설치이다. 관객의 움직임에 따라 영상 레이어가 분기·중첩되며 새로운 패턴을 만든다.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">담당</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>TouchDesigner 프로젝션 매핑 설계</li>\r\n              <li>MadMapper 출력·블렌딩 구성</li>\r\n              <li>설치 공간 레이아웃 협의</li>\r\n            </ul>",
+  "meta_year": "2023",
+  "meta_type": "프로젝션 설치",
+  "meta_medium": "프로젝션 매핑, 영상",
+  "meta_tech": "TouchDesigner, MadMapper",
+  "meta_production": "공동 제작",
+  "gallery": [
+    "https://picsum.photos/seed/fractalm1/1920/1440",
+    "https://picsum.photos/seed/fractalm2/1920/1440",
+    "https://picsum.photos/seed/fractalm3/1920/1440"
+  ]
+}

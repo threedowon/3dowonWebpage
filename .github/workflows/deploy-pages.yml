@@ -23,12 +23,30 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build site from content
+        run: npm run build
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
+      - name: Stage public site files
+        run: |
+          mkdir _site
+          cp -r . _site/
+          rm -rf _site/admin _site/scripts _site/content _site/node_modules \
+            _site/package.json _site/package-lock.json _site/.github _site/.git _site/_site
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: '_site'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

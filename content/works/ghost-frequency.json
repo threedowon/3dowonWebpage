@@ -1,0 +1,29 @@
+{
+  "slug": "ghost-frequency",
+  "title": "Ghost Frequency",
+  "year": 2023,
+  "type": "설치",
+  "tags": [
+    "인터랙티브"
+  ],
+  "tech": [
+    "Arduino"
+  ],
+  "production": "개인",
+  "thumbnail": "https://picsum.photos/seed/ghost-frequency/600/750",
+  "grid_type_label": "설치, 인터랙티브",
+  "index_type_label": "설치, 인터랙티브",
+  "preview_bg": "https://picsum.photos/seed/ghost-frequency/600/750",
+  "hero_image": "https://picsum.photos/seed/ghost-frequency/600/750",
+  "description": "<p>보이지 않는 주파수 대역을 빛으로 번역한 인터랙티브 설치입니다.</p>",
+  "meta_year": "2023",
+  "meta_type": "인터랙티브 설치",
+  "meta_medium": "RF 센서, 프로젝션",
+  "meta_tech": "ESP32, TouchOSC",
+  "meta_production": "개인 제작",
+  "gallery": [
+    "https://picsum.photos/seed/ghostfre1/1920/1440",
+    "https://picsum.photos/seed/ghostfre2/1920/1440",
+    "https://picsum.photos/seed/ghostfre3/1920/1440"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "3dowon-webpage",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "extract": "node scripts/extract-content.mjs",
+    "build": "node scripts/build.mjs",
+    "dev:admin": "npx decap-server"
+  }
+}

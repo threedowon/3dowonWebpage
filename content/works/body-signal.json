@@ -1,0 +1,29 @@
+{
+  "slug": "body-signal",
+  "title": "Body Signal",
+  "year": 2024,
+  "type": "퍼포먼스",
+  "tags": [
+    "인터랙티브"
+  ],
+  "tech": [
+    "Arduino"
+  ],
+  "production": "공동",
+  "thumbnail": "https://picsum.photos/seed/body-signal/600/750",
+  "grid_type_label": "퍼포먼스",
+  "index_type_label": "퍼포먼스, 인터랙티브",
+  "preview_bg": "https://picsum.photos/seed/body-signal/600/750",
+  "hero_image": "https://picsum.photos/seed/body-signal/600/750",
+  "description": "<p>공연자의 생체 신호를 실시간으로 시각·청각 요소로 변환하는 퍼포먼스 작업이다. 심박과 호흡의 변화가 빛과 소리로 확장된다.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">담당</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>ESP32 바이오 센서 인터페이스 개발</li>\r\n              <li>Max/MSP 실시간 오디오 비주얼라이제이션</li>\r\n              <li>공연 연출·리허설 협업</li>\r\n            </ul>",
+  "meta_year": "2024",
+  "meta_type": "인터랙티브 퍼포먼스",
+  "meta_medium": "바이오 센서, 라이브 영상",
+  "meta_tech": "ESP32, Max/MSP",
+  "meta_production": "공동 제작",
+  "gallery": [
+    "https://picsum.photos/seed/bodysign1/1920/1440",
+    "https://picsum.photos/seed/bodysign2/1920/1440",
+    "https://picsum.photos/seed/bodysign3/1920/1440"
+  ]
+}

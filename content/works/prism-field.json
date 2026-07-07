@@ -1,0 +1,27 @@
+{
+  "slug": "prism-field",
+  "title": "Prism Field",
+  "year": 2022,
+  "type": "설치",
+  "tags": [
+    "프로젝션"
+  ],
+  "tech": [],
+  "production": "회사",
+  "thumbnail": "https://picsum.photos/seed/prism-field/600/750",
+  "grid_type_label": "설치, 프로젝션",
+  "index_type_label": "설치, 프로젝션",
+  "preview_bg": "https://picsum.photos/seed/prism-field/600/750",
+  "hero_image": "https://picsum.photos/seed/prism-field/600/750",
+  "description": "<p>브랜드 전시 공간에 설치된 대형 프로젝션 미디어월 프로젝트이다. 스펙트럼 빛이 공간을 가로지르며, 관람 동선에 따라 시각적 리듬이 변화한다.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">담당</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>TouchDesigner 영상 파이프라인 구성</li>\r\n              <li>DMX 조명 연동 및 시퀀스 설계</li>\r\n              <li>현장 프로젝션 매핑·셋업</li>\r\n            </ul>",
+  "meta_year": "2022",
+  "meta_type": "프로젝션 설치",
+  "meta_medium": "빛, 거울, 프로젝션",
+  "meta_tech": "TouchDesigner, DMX",
+  "meta_production": "d'strict",
+  "gallery": [
+    "https://picsum.photos/seed/prismfie1/1920/1440",
+    "https://picsum.photos/seed/prismfie2/1920/1440",
+    "https://picsum.photos/seed/prismfie3/1920/1440"
+  ]
+}

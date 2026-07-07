@@ -1,0 +1,129 @@
+backend:
+  name: github
+  repo: threedowon/3dowonWebpage
+  branch: main
+  site_domain: threedowon.github.io
+
+# 로컬에서 Admin 테스트 시 아래 주석 해제 후 `npx decap-server` 실행
+# local_backend: true
+
+site_url: https://threedowon.github.io/3dowonWebpage
+display_url: https://threedowon.github.io/3dowonWebpage
+
+media_folder: assets/uploads
+public_folder: /3dowonWebpage/assets/uploads
+
+locale: ko
+
+slug:
+  encoding: unicode
+  clean_accents: true
+
+collections:
+  - name: works
+    label: 작품 (Works)
+    label_singular: 작품
+    folder: content/works
+    create: true
+    slug: "{{slug}}"
+    extension: json
+    format: json
+    identifier_field: title
+    summary: "{{year}} — {{title}}"
+    sortable_fields: [year, title, type]
+    fields:
+      - { label: 슬러그 (URL), name: slug, widget: string, hint: "예: echo-chamber (영문, 하이픈)" }
+      - { label: 제목, name: title, widget: string }
+      - { label: 연도, name: year, widget: number }
+      - label: 유형 (필터)
+        name: type
+        widget: select
+        options: [설치, 영상, 퍼포먼스, 전시]
+      - label: 태그
+        name: tags
+        widget: list
+        default: []
+        field: { label: 태그, name: tag, widget: select, options: [인터랙티브, 프로젝션] }
+      - label: 기술 (필터)
+        name: tech
+        widget: list
+        default: []
+        field: { label: 기술, name: item, widget: select, options: [Unreal, Unity, Arduino, "3ds Max"] }
+      - label: 제작
+        name: production
+        widget: select
+        options: [개인, 공동, 회사]
+      - { label: 썸네일, name: thumbnail, widget: image }
+      - { label: 그리드 유형 표시, name: grid_type_label, widget: string, hint: "예: 설치, 인터랙티브" }
+      - { label: 인덱스 유형 표시, name: index_type_label, widget: string, hint: "예: 설치, 인터랙티브, 프로젝션" }
+      - { label: 인덱스 미리보기, name: preview_bg, widget: image, required: false }
+      - { label: 상세 히어로 이미지, name: hero_image, widget: image, required: false }
+      - { label: 상세 — 연도, name: meta_year, widget: string, required: false }
+      - { label: 상세 — 유형, name: meta_type, widget: string, required: false }
+      - { label: 상세 — 매체, name: meta_medium, widget: string, required: false }
+      - { label: 상세 — 기술, name: meta_tech, widget: string, required: false }
+      - { label: 상세 — 제작, name: meta_production, widget: string, required: false }
+      - { label: 설명 (HTML), name: description, widget: text, required: false }
+      - { label: Vimeo URL, name: vimeo_url, widget: string, required: false, hint: "예: https://vimeo.com/123456789" }
+      - label: 갤러리
+        name: gallery
+        widget: list
+        default: []
+        field: { label: 이미지, name: image, widget: image }
+
+  - name: about
+    label: About
+    files:
+      - label: About 페이지
+        name: about
+        file: content/about.json
+        fields:
+          - { label: 이름, name: name, widget: string }
+          - { label: 메타 (줄바꿈 가능), name: meta, widget: text }
+          - { label: 본문 (단락은 빈 줄로 구분), name: body, widget: text }
+          - { label: 프로필 이미지, name: image, widget: image }
+
+  - name: cv
+    label: CV
+    files:
+      - label: CV 페이지
+        name: cv
+        file: content/cv.json
+        fields:
+          - label: 섹션
+            name: sections
+            widget: list
+            fields:
+              - { label: 섹션 제목, name: title, widget: string }
+              - label: 항목
+                name: entries
+                widget: list
+                fields:
+                  - { label: 연도, name: year, widget: string }
+                  - { label: 내용 (HTML 가능), name: description, widget: text }
+
+  - name: lab
+    label: Lab
+    files:
+      - label: Lab 페이지
+        name: lab
+        file: content/lab.json
+        fields:
+          - label: Lab 포스트
+            name: items
+            widget: list
+            fields:
+              - { label: 이미지, name: image, widget: image }
+              - { label: 캡션, name: caption, widget: string }
+
+  - name: site
+    label: 사이트 설정
+    files:
+      - label: 연락처 / SNS
+        name: site
+        file: content/site.json
+        fields:
+          - { label: 이메일, name: email, widget: string }
+          - { label: Instagram URL, name: instagram, widget: string }
+          - { label: Vimeo URL, name: vimeo, widget: string }
+          - { label: YouTube URL, name: youtube, widget: string }

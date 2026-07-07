@@ -1,0 +1,27 @@
+{
+  "slug": "data-bloom",
+  "title": "Data Bloom",
+  "year": 2020,
+  "type": "설치",
+  "tags": [
+    "프로젝션"
+  ],
+  "tech": [],
+  "production": "개인",
+  "thumbnail": "https://picsum.photos/seed/data-bloom/600/750",
+  "grid_type_label": "설치, 프로젝션",
+  "index_type_label": "설치, 프로젝션",
+  "preview_bg": "https://picsum.photos/seed/data-bloom/600/750",
+  "hero_image": "https://picsum.photos/seed/data-bloom/600/750",
+  "description": "<p>실시간 데이터가 꽃의 형태로 피어나는 생성 프로젝션 설치입니다.</p>",
+  "meta_year": "2020",
+  "meta_type": "프로젝션 설치",
+  "meta_medium": "데이터 시각화, 프로젝션",
+  "meta_tech": "Processing, Python",
+  "meta_production": "개인 제작",
+  "gallery": [
+    "https://picsum.photos/seed/databloo1/1920/1440",
+    "https://picsum.photos/seed/databloo2/1920/1440",
+    "https://picsum.photos/seed/databloo3/1920/1440"
+  ]
+}

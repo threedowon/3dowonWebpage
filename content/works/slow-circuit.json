@@ -1,0 +1,29 @@
+{
+  "slug": "slow-circuit",
+  "title": "Slow Circuit",
+  "year": 2025,
+  "type": "설치",
+  "tags": [
+    "프로젝션"
+  ],
+  "tech": [
+    "Arduino"
+  ],
+  "production": "개인",
+  "thumbnail": "https://picsum.photos/seed/slow-circuit/600/750",
+  "grid_type_label": "설치, 프로젝션",
+  "index_type_label": "설치, 프로젝션",
+  "preview_bg": "https://picsum.photos/seed/slow-circuit/600/750",
+  "hero_image": "https://picsum.photos/seed/slow-circuit/600/750",
+  "description": "<p>느린 시간의 흐름을 회로의 속도로 시각화한 프로젝션 설치입니다.</p>",
+  "meta_year": "2025",
+  "meta_type": "프로젝션 설치",
+  "meta_medium": "회로, 프로젝션",
+  "meta_tech": "Arduino, TouchDesigner",
+  "meta_production": "개인 제작",
+  "gallery": [
+    "https://picsum.photos/seed/slowcirc1/1920/1440",
+    "https://picsum.photos/seed/slowcirc2/1920/1440",
+    "https://picsum.photos/seed/slowcirc3/1920/1440"
+  ]
+}
