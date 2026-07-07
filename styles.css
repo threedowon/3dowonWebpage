@@ -302,6 +302,16 @@ main:has(.contact-box) {
 }
 
 @media (min-width: 769px) {
+  .header-bar-col--logo .sidebar-logo--img {
+    width: 100%;
+  }
+
+  .header-bar-col--logo .sidebar-logo-img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+
   .header-bar-col--works .nav-cell {
     font-size: var(--type-nav);
     padding: 3px 0 3px 3px;
@@ -1153,8 +1163,8 @@ body:has(.site-header--project) .post-detail-des::before {
   .mo-logo-img {
     display: block;
     width: auto;
-    height: 22px;
-    max-width: min(42vw, 140px);
+    height: calc(var(--mobile-bar-h) - 10px);
+    max-width: min(56vw, 200px);
   }
 
   .mo-menu-btn {
