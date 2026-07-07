@@ -1,7 +1,7 @@
 import { loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '170';
+const CSS_VERSION = '171';
 const JS_VERSION = '82';
 
 function siteFooter(site) {
@@ -11,9 +11,14 @@ function siteFooter(site) {
         <a href="${escapeHtml(site.youtube)}" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>`;
 }
 
+function siteLogo(prefix = '') {
+  return `<a href="${prefix}index.html" class="sidebar-logo sidebar-logo--img"><img src="${prefix}assets/logo.png" alt="3Dowon" class="sidebar-logo-img" /></a>`;
+}
+
 function mobileHeader(home = 'index.html') {
+  const assetPrefix = home.startsWith('../') ? '../' : '';
   return `  <div class="mo-header">
-    <a href="${home}" class="mo-logo">3Dowon</a>
+    <a href="${home}" class="mo-logo mo-logo--img"><img src="${assetPrefix}assets/logo.png" alt="3Dowon" class="mo-logo-img" /></a>
     <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
   </div>`;
 }
@@ -112,7 +117,7 @@ ${secondaryNav(prefix, activeNav)}
 function simpleHeader(site, activeNav) {
   return `${headerBar({
     activeNav,
-    logoHtml: `<a href="index.html" class="sidebar-logo">3Dowon</a>`,
+    logoHtml: siteLogo(),
   })}
 ${mobileShell(site, activeNav)}`;
 }
@@ -216,7 +221,7 @@ ${indexPosts}
   const header = `${headerBar({
     activeNav: 'works',
     worksOpen: true,
-    logoHtml: `<a href="index.html" class="sidebar-logo">3Dowon</a>`,
+    logoHtml: siteLogo(),
   })}
 
 ${mobileHeader()}
@@ -282,7 +287,7 @@ ${gallery}
     home: '../index.html',
     activeNav: 'works',
     variant: 'project',
-    logoHtml: `<a href="../index.html" class="sidebar-logo sidebar-logo--mark"><img src="../assets/logo-mark.svg" alt="3Dowon" class="sidebar-logo-img" width="28" height="36" /></a>`,
+    logoHtml: siteLogo('../'),
     extraCol4: `<button class="btn-back" onclick="history.back()" aria-label="뒤로">←</button>`,
   })}
 ${mobileHeader('../index.html')}

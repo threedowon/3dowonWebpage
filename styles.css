@@ -135,6 +135,21 @@ main:has(.contact-box) {
   transition: opacity 0.3s;
 }
 
+.sidebar-logo--img {
+  font-size: 0;
+  line-height: 0;
+  padding: 0;
+}
+
+.sidebar-logo:hover { opacity: 0.5; }
+
+.sidebar-logo-img {
+  display: block;
+  width: auto;
+  height: 34px;
+  max-width: 100%;
+}
+
 .header-bar-col--logo {
   display: flex;
   align-items: flex-start;
@@ -148,14 +163,6 @@ main:has(.contact-box) {
   display: flex;
   flex-direction: column;
   width: 100%;
-}
-
-.sidebar-logo:hover { opacity: 0.5; }
-
-.sidebar-logo-img {
-  display: block;
-  width: 28px;
-  height: auto;
 }
 
 .site-header--project .header-bar-col--spacer {
@@ -1128,6 +1135,20 @@ body:has(.site-header--project) .post-detail-des::before {
     letter-spacing: 0.04em;
     line-height: 1;
     padding: 0;
+  }
+
+  .mo-logo--img {
+    font-size: 0;
+    line-height: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .mo-logo-img {
+    display: block;
+    width: auto;
+    height: 22px;
+    max-width: min(42vw, 140px);
   }
 
   .mo-menu-btn {
