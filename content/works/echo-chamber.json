@@ -1,30 +1,28 @@
 {
+  "grid_type_label": "설치, 인터랙티브",
   "slug": "echo-chamber",
-  "title": "Echo Chamber",
-  "year": 2025,
-  "type": "설치",
+  "thumbnail": "/3dowonWebpage/assets/uploads/01.jpg",
+  "meta_medium": "프로젝션, 공간음향",
+  "meta_tech": "Arduino, Unreal Engine, 센서",
+  "gallery": [
+    "/3dowonWebpage/assets/uploads/02.jpg",
+    "/3dowonWebpage/assets/uploads/03.jpg"
+  ],
+  "meta_production": "개인 제작",
+  "meta_type": "인터랙티브 설치",
+  "hero_image": "/3dowonWebpage/assets/uploads/01.jpg",
+  "tech": [
+    "Unreal"
+  ],
+  "meta_year": "2024",
+  "title": "The Piano Room",
   "tags": [
     "인터랙티브"
   ],
-  "tech": [
-    "Arduino",
-    "Unreal"
-  ],
   "production": "개인",
-  "thumbnail": "https://picsum.photos/seed/echo-chamber/600/750",
-  "grid_type_label": "설치, 인터랙티브",
+  "type": "설치",
+  "preview_bg": "/3dowonWebpage/assets/uploads/01.jpg",
   "index_type_label": "설치, 인터랙티브, 프로젝션",
-  "preview_bg": "https://picsum.photos/seed/echo-chamber/600/750",
-  "hero_image": "https://picsum.photos/seed/echo-chamber/600/750",
   "description": "<p>빛과 소리가 공명하는 설치 작품입니다. 관객의 움직임에 반응하여 실시간으로 변화하는 사운드스케이프와 빛의 패턴이 생성됩니다.</p>",
-  "meta_year": "2025",
-  "meta_type": "인터랙티브 설치",
-  "meta_medium": "프로젝션, 공간음향",
-  "meta_tech": "Arduino, Unreal Engine, 센서",
-  "meta_production": "개인 제작",
-  "gallery": [
-    "https://picsum.photos/seed/echocham1/1920/1440",
-    "https://picsum.photos/seed/echocham2/1920/1440",
-    "https://picsum.photos/seed/echocham3/1920/1440"
-  ]
+  "year": 2024
 }
