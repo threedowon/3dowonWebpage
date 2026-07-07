@@ -396,6 +396,8 @@ main:has(.contact-box) {
   width: 53%;
   margin: 0 0.25%;
   flex-shrink: 0;
+  font-size: var(--type-card-title);
+  line-height: var(--type-card-line);
 }
 
 .index-post-type {
