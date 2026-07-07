@@ -1503,7 +1503,8 @@ body:has(.site-header--project) .post-detail-des::before {
   }
 
   .cv-year {
-    margin-bottom: 2px;
+    margin-bottom: 0;
+    line-height: 1.25rem;
   }
 
   .cv-section {
