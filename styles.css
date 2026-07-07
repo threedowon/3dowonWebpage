@@ -11,6 +11,11 @@
   --logo-bar-h: 140px;
   --desktop-header-h: 140px;
   --mobile-bar-h: 38px;
+  --site-grid-cols: repeat(4, minmax(0, 1fr));
+  --site-col-lines:
+    linear-gradient(var(--line), var(--line)),
+    linear-gradient(var(--line), var(--line)),
+    linear-gradient(var(--line), var(--line));
 
   /* Typography — desktop scale */
   --type-logo: 1.7em;
@@ -67,7 +72,7 @@ ul { list-style: none; }
 
 .header-bar {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: var(--site-grid-cols);
   width: 100%;
   align-items: stretch;
 }
@@ -302,6 +307,37 @@ main:has(.contact-box) {
 }
 
 @media (min-width: 769px) {
+  body:has(.site-header--bar) {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  body:has(.site-header--bar) main:has(.works-view),
+  body:has(.site-header--bar) main:has(.lab-view),
+  body:has(.site-header--bar) main:has(.about-box),
+  body:has(.site-header--bar) main:has(.cv-box),
+  body:has(.site-header--bar) main:has(.contact-box),
+  body:has(.site-header--bar) main:has(.post-projects) {
+    position: static;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    overflow: visible;
+    padding-top: var(--desktop-header-h);
+  }
+
+  .header-bar {
+    background-image: var(--site-col-lines);
+    background-size: 1px 100%;
+    background-position: 25% 0, 50% 0, 75% 0;
+    background-repeat: no-repeat;
+  }
+
+  .header-bar-col {
+    border-right: none;
+  }
+
   .header-bar-col--logo .sidebar-logo--img {
     width: 100%;
   }
@@ -392,7 +428,11 @@ main:has(.contact-box) {
     margin: 24px 0 10%;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: var(--site-grid-cols);
+    background-image: var(--site-col-lines);
+    background-size: 1px 100%;
+    background-position: 25% 0, 50% 0, 75% 0;
+    background-repeat: no-repeat;
   }
 
   .works-view--grid .img-post {
@@ -403,7 +443,7 @@ main:has(.contact-box) {
     padding: 0 12px;
     box-sizing: border-box;
     border-left: none;
-    border-right: 1px solid var(--line);
+    border-right: none;
   }
 
   .works-view--grid .img-post:nth-child(4n) {
