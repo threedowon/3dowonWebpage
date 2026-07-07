@@ -1136,12 +1136,6 @@ body:has(.site-header--project) .post-detail-des::before {
     line-height: 1.5;
   }
 
-  .mo-nav-footer-logo {
-    font-size: 1.05em;
-    letter-spacing: 0.04em;
-    margin-bottom: 10px;
-  }
-
   .mo-nav-footer-info a {
     color: inherit;
     text-decoration: none;

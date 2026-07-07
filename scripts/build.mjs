@@ -30,7 +30,6 @@ function mobileNav(site, activeNav = '', prefix = '') {
       <a href="${prefix}cv.html"${navClass('cv')}>CV</a>
     </div>
     <div class="mo-nav-footer">
-      <div class="mo-nav-footer-logo">3Dowon</div>
       <div class="mo-nav-footer-info">
 ${siteFooter(site)}
       </div>
