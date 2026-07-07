@@ -3,7 +3,7 @@ backend:
   repo: threedowon/3dowonWebpage
   branch: main
   # Netlify OAuth 연동 후 아래 주석 해제하고 Netlify 사이트 주소로 변경
-  # site_domain: your-site-name.netlify.app
+  site_domain: comfy-boba-0e6f66.netlify.app
 
 # 로컬에서 Admin 테스트 시 아래 주석 해제 후 `npx decap-server` 실행
 # local_backend: true
