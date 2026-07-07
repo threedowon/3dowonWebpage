@@ -374,6 +374,17 @@ main:has(.contact-box) {
   main:has(.works-view) .img-post-box {
     margin-top: 24px;
   }
+
+  .index-category-year,
+  .index-category-title,
+  .index-category-type,
+  .index-post-cells > div,
+  .index-post-year,
+  .index-post-title,
+  .index-post-type {
+    font-size: var(--type-nav);
+    line-height: 1.4;
+  }
 }
 
 /* Legacy — removed */
