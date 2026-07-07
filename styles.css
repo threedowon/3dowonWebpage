@@ -566,6 +566,12 @@ main:has(.contact-box) {
     flex: 1 1 24%;
     max-width: 25%;
   }
+
+  .works-view--grid .img-post:nth-child(4n + 1) {
+    border-left: none;
+    margin-left: 0;
+    padding-left: 1px;
+  }
 }
 
 .img-post-thumbimg {
