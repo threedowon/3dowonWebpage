@@ -11,20 +11,23 @@ function siteFooter(site) {
         <a href="${escapeHtml(site.youtube)}" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>`;
 }
 
-function mobileShell(site, activeNav = '') {
-  const navClass = (name) => (activeNav === name ? ' active' : '');
+function mobileHeader(home = 'index.html') {
   return `  <div class="mo-header">
-    <a href="index.html" class="mo-logo">3Dowon</a>
+    <a href="${home}" class="mo-logo">3Dowon</a>
     <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
-  </div>
-  <div class="mo-overlay" id="moOverlay"></div>
+  </div>`;
+}
+
+function mobileNav(site, activeNav = '', prefix = '') {
+  const navClass = (name) => (activeNav === name ? ' class="active"' : '');
+  return `  <div class="mo-overlay" id="moOverlay"></div>
   <nav class="mo-nav" id="moNav" aria-hidden="true">
     <button type="button" class="mo-nav-close" id="moNavClose" aria-label="닫기">×</button>
     <div class="mo-nav-links">
-      <a href="index.html"${navClass('works')}>WORKS</a>
-      <a href="lab.html"${navClass('lab')}>LAB</a>
-      <a href="about.html"${navClass('about')}>ABOUT</a>
-      <a href="cv.html"${navClass('cv')}>CV</a>
+      <a href="${prefix}index.html"${navClass('works')}>WORKS</a>
+      <a href="${prefix}lab.html"${navClass('lab')}>LAB</a>
+      <a href="${prefix}about.html"${navClass('about')}>ABOUT</a>
+      <a href="${prefix}cv.html"${navClass('cv')}>CV</a>
     </div>
     <div class="mo-nav-footer">
       <div class="mo-nav-footer-logo">3Dowon</div>
@@ -33,6 +36,10 @@ ${siteFooter(site)}
       </div>
     </div>
   </nav>`;
+}
+
+function mobileShell(site, activeNav = '') {
+  return `${mobileHeader()}${mobileNav(site, activeNav)}`;
 }
 
 function simpleHeader(site, activeNav) {
@@ -179,10 +186,7 @@ ${indexPosts}
     </nav>
   </header>
 
-  <div class="mo-header">
-    <a href="index.html" class="mo-logo">3Dowon</a>
-    <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
-  </div>
+${mobileHeader()}
   <div class="mo-filters mo-filters--type">
     <span class="mo-filter" data-filter="type" data-value="설치">설치</span>
     <span class="mo-filter" data-filter="type" data-value="영상">영상</span>
@@ -197,7 +201,7 @@ ${indexPosts}
     <span class="mo-filter" data-filter="tech" data-value="Arduino">Arduino</span>
     <span class="mo-filter" data-filter="tech" data-value="3ds Max">3ds Max</span>
   </div>
-${mobileShell(site, 'works')}`;
+${mobileNav(site, 'works')}`;
 
   return pageShell({ title: '3Dowon — Media Artist', body, header });
 }
@@ -251,26 +255,8 @@ ${gallery}
     </nav>
     <button class="btn-back" onclick="history.back()" aria-label="뒤로">←</button>
   </header>
-  <div class="mo-header">
-    <a href="../index.html" class="mo-logo">3Dowon</a>
-    <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
-  </div>
-    <div class="mo-overlay" id="moOverlay"></div>
-  <nav class="mo-nav" id="moNav" aria-hidden="true">
-    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="닫기">×</button>
-    <div class="mo-nav-links">
-      <a href="../index.html">WORKS</a>
-      <a href="../lab.html">LAB</a>
-      <a href="../about.html">ABOUT</a>
-      <a href="../cv.html">CV</a>
-    </div>
-    <div class="mo-nav-footer">
-      <div class="mo-nav-footer-logo">3Dowon</div>
-      <div class="mo-nav-footer-info">
-${siteFooter(site)}
-      </div>
-    </div>
-  </nav>`;
+${mobileHeader('../index.html')}
+${mobileNav(site, '', '../')}`;
 
   return `<!DOCTYPE html>
 <html lang="ko">
