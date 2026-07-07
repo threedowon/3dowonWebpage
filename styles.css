@@ -450,10 +450,12 @@ main:has(.contact-box) {
   color: inherit;
 }
 
-.works-view--grid .img-post {
-  width: 25%;
-  flex: 1 1 24%;
-  max-width: 25%;
+@media (min-width: 769px) {
+  .works-view--grid .img-post {
+    width: 25%;
+    flex: 1 1 24%;
+    max-width: 25%;
+  }
 }
 
 .img-post-thumbimg {
@@ -1374,6 +1376,17 @@ body:has(.site-header--project) .post-detail-des::before {
     border-left: none;
     padding-left: 0;
     margin-left: 0;
+  }
+
+  .works-view--grid .img-post {
+    width: 33.333%;
+    max-width: 33.333%;
+    flex: 0 0 33.333%;
+  }
+
+  .index-post-title {
+    font-size: var(--type-small);
+    line-height: var(--type-meta-line);
   }
 
   #imgPostBox > .img-post .img-post-thumbimg,
