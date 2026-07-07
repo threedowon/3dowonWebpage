@@ -308,35 +308,27 @@ main:has(.contact-box) {
   }
 
   .site-header--works .sidebar-controls {
-    gap: 4px;
-  }
-
-  .site-header--works .view-toggle,
-  .site-header--works .filter-checks {
-    border-top: none;
-    border-bottom: none;
+    gap: 6px;
   }
 
   .site-header--works .view-toggle > li,
   .site-header--works .filter-checks > li {
-    font-size: var(--type-nav);
-    padding: 3px 0 3px 3px;
-    line-height: 1.4;
-  }
-
-  .site-header--works .view-toggle > li:first-child {
-    border-right: none;
-  }
-
-  .site-header--works .filter-checks--type {
-    flex-wrap: wrap;
+    font-size: var(--type-nav-sub);
+    padding: 6px 4px 7px 5px;
+    line-height: 1.35;
   }
 
   .site-header--works .filter-checks--type > li {
     flex: 0 0 50%;
     max-width: 50%;
-    border-right: none;
-    border-bottom: none;
+  }
+
+  .site-header--works .filter-checks--type > li:nth-child(odd) {
+    border-right: 1px solid var(--line);
+  }
+
+  .site-header--works .filter-checks--type > li:nth-child(-n+4) {
+    border-bottom: 1px solid var(--line);
   }
 
   .site-header--works .filter-checks--tech {
@@ -349,6 +341,10 @@ main:has(.contact-box) {
     width: 100%;
     border-right: none;
     border-bottom: none;
+  }
+
+  .site-header--works .filter-checks--tech > li:not(:last-child) {
+    border-bottom: 1px solid var(--line);
   }
 }
 
@@ -1556,11 +1552,11 @@ body:has(.site-header--project) .post-detail-des::before {
 
   .cv-year {
     margin-bottom: 0;
-    line-height: 1.05rem;
+    line-height: 1.12rem;
   }
 
   .cv-desc {
-    margin-top: -3px;
+    margin-top: -1px;
     line-height: 1.35rem;
   }
 
