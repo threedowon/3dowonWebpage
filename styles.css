@@ -294,6 +294,64 @@ main:has(.contact-box) {
   background: var(--hover-bg);
 }
 
+@media (min-width: 769px) {
+  .header-bar-col--works .nav-cell {
+    font-size: var(--type-nav);
+    padding: 3px 0 3px 3px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+
+  .header-bar-col--works .nav-cell:hover,
+  .header-bar-col--works .nav-cell.active {
+    border-bottom-color: var(--line);
+  }
+
+  .site-header--works .sidebar-controls {
+    gap: 4px;
+  }
+
+  .site-header--works .view-toggle,
+  .site-header--works .filter-checks {
+    border-top: none;
+    border-bottom: none;
+  }
+
+  .site-header--works .view-toggle > li,
+  .site-header--works .filter-checks > li {
+    font-size: var(--type-nav);
+    padding: 3px 0 3px 3px;
+    line-height: 1.4;
+  }
+
+  .site-header--works .view-toggle > li:first-child {
+    border-right: none;
+  }
+
+  .site-header--works .filter-checks--type {
+    flex-wrap: wrap;
+  }
+
+  .site-header--works .filter-checks--type > li {
+    flex: 0 0 50%;
+    max-width: 50%;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .site-header--works .filter-checks--tech {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .site-header--works .filter-checks--tech > li {
+    flex: 0 0 auto;
+    width: 100%;
+    border-right: none;
+    border-bottom: none;
+  }
+}
+
 /* Legacy — removed */
 .h-section1,
 .h-section2,
