@@ -339,12 +339,12 @@ main:has(.contact-box) {
   }
 
   .header-bar-col--logo .sidebar-logo--img {
-    width: 100%;
+    width: auto;
   }
 
   .header-bar-col--logo .sidebar-logo-img {
-    width: 100%;
-    height: auto;
+    width: auto;
+    height: var(--type-nav);
     max-width: 100%;
   }
 
@@ -420,8 +420,12 @@ main:has(.contact-box) {
   }
 
   .site-header--works .view-toggle,
-  .site-header--works .filter-checks {
+  .site-header--works .filter-checks--type {
     border-bottom: none;
+  }
+
+  .site-header--works .filter-checks--tech {
+    border-bottom: 1px solid var(--line);
   }
 
   .works-view--grid .img-post-box {
@@ -1203,8 +1207,8 @@ body:has(.site-header--project) .post-detail-des::before {
   .mo-logo-img {
     display: block;
     width: auto;
-    height: calc(var(--mobile-bar-h) - 10px);
-    max-width: min(56vw, 200px);
+    height: 1.12em;
+    max-width: min(48vw, 160px);
   }
 
   .mo-menu-btn {
