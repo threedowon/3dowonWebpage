@@ -63,8 +63,8 @@ ul { list-style: none; }
   display: block;
   border-right: none;
   border-bottom: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.97);
-  z-index: 999;
+  background: var(--bg);
+  z-index: 1000;
   overflow: visible;
 }
 
@@ -336,20 +336,21 @@ main:has(.contact-box) {
 
   .header-bar-col {
     border-right: none;
+    background: var(--bg);
   }
 
   .header-bar-col--logo {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .header-bar-col--logo .sidebar-logo--img {
     width: auto;
     height: calc(var(--desktop-header-h, 140px) - 22px);
     display: flex;
-    align-items: flex-start;
+    align-items: center;
   }
 
   .header-bar-col--logo .sidebar-logo-img {
@@ -357,7 +358,7 @@ main:has(.contact-box) {
     height: 100%;
     max-width: 100%;
     object-fit: contain;
-    object-position: left top;
+    object-position: left center;
   }
 
   .header-bar-col--works .nav-cell {
