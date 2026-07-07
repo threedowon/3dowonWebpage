@@ -1,8 +1,9 @@
 import { loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '175';
+const CSS_VERSION = '176';
 const JS_VERSION = '82';
+const LOGO_VERSION = '2';
 
 function siteFooter(site) {
   return `        E. <a href="mailto:${escapeHtml(site.email)}">${escapeHtml(site.email)}</a><br />
@@ -12,13 +13,13 @@ function siteFooter(site) {
 }
 
 function siteLogo(prefix = '') {
-  return `<a href="${prefix}index.html" class="sidebar-logo sidebar-logo--img"><img src="${prefix}assets/logo.png" alt="3Dowon" class="sidebar-logo-img" /></a>`;
+  return `<a href="${prefix}index.html" class="sidebar-logo sidebar-logo--img"><img src="${prefix}assets/logo.png?v=${LOGO_VERSION}" alt="3Dowon" class="sidebar-logo-img" /></a>`;
 }
 
 function mobileHeader(home = 'index.html') {
   const assetPrefix = home.startsWith('../') ? '../' : '';
   return `  <div class="mo-header">
-    <a href="${home}" class="mo-logo mo-logo--img"><img src="${assetPrefix}assets/logo.png" alt="3Dowon" class="mo-logo-img" /></a>
+    <a href="${home}" class="mo-logo mo-logo--img"><img src="${assetPrefix}assets/logo.png?v=${LOGO_VERSION}" alt="3Dowon" class="mo-logo-img" /></a>
     <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
   </div>`;
 }

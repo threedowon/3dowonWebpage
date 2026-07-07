@@ -338,14 +338,26 @@ main:has(.contact-box) {
     border-right: none;
   }
 
+  .header-bar-col--logo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
   .header-bar-col--logo .sidebar-logo--img {
     width: auto;
+    height: calc(var(--desktop-header-h, 140px) - 22px);
+    display: flex;
+    align-items: flex-start;
   }
 
   .header-bar-col--logo .sidebar-logo-img {
     width: auto;
-    height: var(--type-nav);
+    height: 100%;
     max-width: 100%;
+    object-fit: contain;
+    object-position: left top;
   }
 
   .header-bar-col--works .nav-cell {
