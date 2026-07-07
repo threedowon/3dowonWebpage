@@ -368,6 +368,9 @@ main:has(.contact-box) {
   }
 
   .header-bar-col--works .nav-cell {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
     font-size: var(--type-nav);
     padding: 3px 0 3px 3px;
     border-bottom: 1px solid transparent;
