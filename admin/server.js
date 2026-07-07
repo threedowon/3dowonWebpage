@@ -45,6 +45,7 @@ function applySelectedTypes(work, selected) {
   work.grid_type_label = types.join(', ');
   work.index_type_label = types.join(', ');
   work.meta_type = types.join(', ');
+  work.meta_medium = types.join(', ');
 }
 function listWorkSlugs() {
   fs.mkdirSync(WORKS_DIR, { recursive: true });
@@ -166,7 +167,7 @@ app.post('/api/works', (req, res) => {
     meta_type: '',
     meta_medium: '',
     meta_tech: '',
-    meta_production: '',
+    meta_production: '개인',
     description: '',
     vimeo_url: '',
     gallery: [],
@@ -180,15 +181,16 @@ app.post('/api/works', (req, res) => {
 app.put('/api/works/:slug', (req, res) => {
   if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({ error: 'not found' });
   const work = loadWork(req.params.slug);
-  const editable = ['title', 'year', 'tech', 'production', 'meta_medium', 'meta_tech', 'meta_production', 'vimeo_url'];
+  const editable = ['title', 'year', 'tech', 'production', 'meta_tech', 'vimeo_url'];
   for (const key of editable) {
     if (req.body[key] !== undefined) work[key] = req.body[key];
   }
   if (req.body.description !== undefined) work.description = plainTextToDescriptionHtml(req.body.description);
   if (work.year !== undefined) work.year = Number(work.year) || work.year;
   if (req.body.types !== undefined) applySelectedTypes(work, req.body.types);
-  // 상세 페이지의 연도는 항상 목록 연도와 같게 유지한다.
+  // 상세 페이지의 연도/매체/제작은 항상 목록 연도·유형·제작과 같게 유지한다.
   work.meta_year = String(work.year);
+  work.meta_production = work.production;
   saveJson(`content/works/${req.params.slug}.json`, work);
   build();
   res.json(work);
