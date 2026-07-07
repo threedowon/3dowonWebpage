@@ -1,7 +1,7 @@
-import { loadJson, loadWorks, writeOutput } from './lib/content.mjs';
+import { cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '186';
+const CSS_VERSION = '187';
 const JS_VERSION = '82';
 const LOGO_VERSION = '2';
 
@@ -414,5 +414,7 @@ writeOutput('contact.html', buildContact(site));
 for (const work of works) {
   writeOutput(`work/${work.slug}.html`, buildWorkPage(work, site));
 }
+
+cleanOrphanWorkPages(works.map((work) => work.slug));
 
 console.log(`Built ${works.length} works and site pages from content/`);

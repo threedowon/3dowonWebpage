@@ -22,3 +22,14 @@ export function writeOutput(relPath, html) {
   fs.mkdirSync(path.dirname(full), { recursive: true });
   fs.writeFileSync(full, html, 'utf8');
 }
+
+export function cleanOrphanWorkPages(slugs) {
+  const workDir = path.join(ROOT, 'work');
+  if (!fs.existsSync(workDir)) return;
+
+  const keep = new Set(slugs.map((slug) => `${slug}.html`));
+  for (const name of fs.readdirSync(workDir)) {
+    if (!name.endsWith('.html') || keep.has(name)) continue;
+    fs.unlinkSync(path.join(workDir, name));
+  }
+}
