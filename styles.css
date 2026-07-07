@@ -1475,9 +1475,9 @@ body:has(.site-header--project) .post-detail-des::before {
   }
 
   .works-view--grid .img-post {
-    width: calc((100% - (2 * var(--works-col-gap, 7px))) / 3);
-    max-width: calc((100% - (2 * var(--works-col-gap, 7px))) / 3);
-    flex: 0 0 calc((100% - (2 * var(--works-col-gap, 7px))) / 3);
+    width: calc((100% - var(--works-col-gap, 7px)) / 2);
+    max-width: calc((100% - var(--works-col-gap, 7px)) / 2);
+    flex: 0 0 calc((100% - var(--works-col-gap, 7px)) / 2);
   }
 
   .works-view .img-post-title {
