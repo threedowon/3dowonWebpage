@@ -368,8 +368,6 @@ main:has(.contact-box) {
   }
 
   .header-bar-col--works .nav-cell {
-    display: block;
-    width: 100%;
     box-sizing: border-box;
     font-size: var(--type-nav);
     padding: 3px 0 3px 3px;
@@ -377,9 +375,30 @@ main:has(.contact-box) {
     transition: border-color 0.15s;
   }
 
+  .header-bar-col--works .nav-cell:not(.active) {
+    display: block;
+    width: 100%;
+  }
+
+  .header-bar-col--works .nav-cell.active {
+    display: inline-block;
+    width: auto;
+  }
+
   .header-bar-col--works .nav-cell:hover,
   .header-bar-col--works .nav-cell.active {
     border-bottom-color: var(--line);
+  }
+
+  .nav-main .nav-cell:not(.active) {
+    display: block;
+    width: 100%;
+  }
+
+  .nav-main .nav-cell.active {
+    display: inline-block;
+    width: auto;
+    align-self: flex-start;
   }
 
   .site-header--works .sidebar-controls,
