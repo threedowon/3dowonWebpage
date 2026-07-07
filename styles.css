@@ -1430,23 +1430,29 @@ body:has(.site-header--project) .post-detail-des::before {
 
   .works-view .img-post-title {
     font-size: 0.9rem;
-    line-height: 1.2rem;
+    line-height: 1.05rem;
+    margin-bottom: 1px;
   }
 
   .works-view .img-post-type,
   .works-view .img-post-year {
     font-size: 0.78rem;
-    line-height: 1.15rem;
+    line-height: 1.05rem;
   }
 
-  .index-post-title {
-    font-size: var(--type-small);
-    line-height: var(--type-meta-line);
+  .works-view .img-post-type {
+    margin-bottom: 0;
   }
 
   #imgPostBox > .img-post .img-post-thumbimg,
   .works-view .img-post-thumbimg {
     width: 100%;
+    margin-bottom: 6px;
+  }
+
+  .index-post-title {
+    font-size: var(--type-small);
+    line-height: var(--type-meta-line);
   }
 
   .lab-post-caption {
