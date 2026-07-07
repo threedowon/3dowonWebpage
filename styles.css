@@ -354,6 +354,15 @@ main:has(.contact-box) {
     justify-content: flex-start;
   }
 
+  .site-header--project .btn-back {
+    width: auto;
+    height: auto;
+    min-height: 0;
+    font-size: 7em;
+    line-height: 0.85;
+    padding: 0 0 0 3px;
+  }
+
   .header-bar-col--logo {
     display: flex;
     flex-direction: column;
