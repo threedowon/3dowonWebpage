@@ -24,6 +24,22 @@ body {
 }
 .admin-tab.active { background: #fff; color: #1a1a1a; border-color: #fff; }
 
+.deploy-bar { display: flex; align-items: center; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+.deploy-bar input {
+  flex: 1;
+  min-width: 200px;
+  background: #2a2a2a;
+  border: 1px solid #555;
+  color: #fff;
+}
+.deploy-bar button {
+  background: #2d7a3e;
+  white-space: nowrap;
+}
+.deploy-status { font-size: 13px; color: #bbb; }
+.deploy-status.ok { color: #6fd68a; }
+.deploy-status.error { color: #ff8a80; }
+
 main { max-width: 900px; margin: 0 auto; padding: 24px; }
 .admin-panel { display: none; }
 .admin-panel.active { display: block; }

@@ -314,6 +314,32 @@ app.put('/api/site', (req, res) => {
   res.json(site);
 });
 
+// ── Deploy (git add + commit + push) ──
+
+function git(args) {
+  return execFileSync('git', args, { cwd: ROOT }).toString().trim();
+}
+
+app.post('/api/deploy', (req, res) => {
+  try {
+    const status = git(['status', '--porcelain']);
+    if (!status) {
+      return res.json({ ok: true, deployed: false, message: '변경사항이 없어요.' });
+    }
+
+    git(['add', '-A']);
+    const message = (req.body.message || '').trim() || `Update content via admin (${new Date().toISOString()})`;
+    git(['commit', '-m', message]);
+    const branch = git(['rev-parse', '--abbrev-ref', 'HEAD']);
+    git(['push', 'origin', branch]);
+
+    res.json({ ok: true, deployed: true, branch, message: `"${branch}" 브랜치로 push 완료했어요. 잠시 후 사이트에 반영돼요.` });
+  } catch (err) {
+    const detail = err.stderr ? err.stderr.toString() : err.message;
+    res.status(500).json({ error: detail });
+  }
+});
+
 app.listen(PORT, HOST, () => {
   console.log(`Admin running at http://localhost:${PORT} (local only)`);
 });

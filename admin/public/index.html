@@ -8,7 +8,7 @@
 <body>
   <header class="admin-header">
     <h1>3Dowon Admin</h1>
-    <p class="admin-note">로컬 전용 도구입니다. 저장하면 content/*.json과 HTML이 바로 수정되니, 완료 후 git으로 확인하고 커밋하세요.</p>
+    <p class="admin-note">로컬 전용 도구입니다. 저장하면 content/*.json과 HTML이 바로 수정돼요. 다 마쳤으면 아래 배포 버튼으로 실제 사이트에 올리세요.</p>
     <nav class="admin-tabs">
       <button class="admin-tab active" data-tab="works">Works</button>
       <button class="admin-tab" data-tab="about">About</button>
@@ -16,6 +16,11 @@
       <button class="admin-tab" data-tab="lab">Lab</button>
       <button class="admin-tab" data-tab="site">Site</button>
     </nav>
+    <div class="deploy-bar">
+      <input type="text" id="deployMessage" placeholder="배포 메시지 (선택, 비우면 자동 생성)" />
+      <button id="deployBtn" type="button">🚀 배포</button>
+      <span id="deployStatus" class="deploy-status"></span>
+    </div>
   </header>
 
   <main>
