@@ -1138,7 +1138,7 @@ body:has(.site-header--project) .post-text {
 
 body:has(.site-header--project) .post-img-box {
   grid-column: 2;
-  grid-row: 1 / -1;
+  grid-row: 2 / -1;
 }
 
 .post-video {
