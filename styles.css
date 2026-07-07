@@ -340,6 +340,11 @@ main:has(.contact-box) {
     border-right: none;
   }
 
+  .header-bar-col--works,
+  .header-bar-col--nav {
+    padding-top: 18px;
+  }
+
   .header-bar-col--logo {
     display: flex;
     flex-direction: column;
