@@ -2,8 +2,7 @@ backend:
   name: github
   repo: threedowon/3dowonWebpage
   branch: main
-  # Netlify OAuth 연동 후 아래 주석 해제하고 Netlify 사이트 주소로 변경
-  site_domain: comfy-boba-0e6f66.netlify.app
+  site_domain: threedowon.github.io
 
 # 로컬에서 Admin 테스트 시 아래 주석 해제 후 `npx decap-server` 실행
 # local_backend: true
@@ -65,6 +64,7 @@ collections:
       - { label: 상세 — 기술, name: meta_tech, widget: string, required: false }
       - { label: 상세 — 제작, name: meta_production, widget: string, required: false }
       - { label: 설명 (HTML), name: description, widget: text, required: false }
+      - { label: Vimeo URL, name: vimeo_url, widget: string, required: false, hint: "예: https://vimeo.com/123456789" }
       - label: 갤러리
         name: gallery
         widget: list

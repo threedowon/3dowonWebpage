@@ -1,7 +1,7 @@
 import { loadJson, loadWorks, writeOutput } from './lib/content.mjs';
-import { dataAttrs, escapeHtml } from './lib/html.mjs';
+import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '145';
+const CSS_VERSION = '148';
 const JS_VERSION = '81';
 
 function siteFooter(site) {
@@ -209,6 +209,7 @@ function buildWorkPage(work, site) {
         `          <li class="reveal"><img src="${src}" alt="${escapeHtml(work.title)} ${index + 1}" class="project-detail-image" /></li>`
     )
     .join('\n');
+  const video = vimeoEmbedHtml(work.vimeo_url, work.title);
 
   const body = `    <div class="post-projects">
       <div class="post-hero reveal">
@@ -232,6 +233,7 @@ function buildWorkPage(work, site) {
       </div>
       </div>
       <div class="post-img-box">
+${video}
         <ul class="project-detail-gallery">
 ${gallery}
         </ul>
@@ -295,7 +297,12 @@ function buildAbout(about, site) {
     .split(/\n{2,}/)
     .map((p) => `          <p>${p.trim()}</p>`)
     .join('\n');
-  const meta = about.meta.replace(/\n/g, '<br />\n            ');
+  const meta = about.meta
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => escapeHtml(line))
+    .join('<br />\n            ');
   const body = `    <div class="about-box">
       <div class="about-left">
         <div class="about-selector">
