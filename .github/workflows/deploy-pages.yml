@@ -37,15 +37,16 @@ jobs:
 
       - name: Stage public site files
         run: |
-          mkdir _site
-          cp -r . _site/
-          rm -rf _site/admin _site/scripts _site/content _site/node_modules \
-            _site/package.json _site/package-lock.json _site/.github _site/.git _site/_site
+          SITE_DIR="$RUNNER_TEMP/_site"
+          mkdir -p "$SITE_DIR"
+          cp -r . "$SITE_DIR/"
+          rm -rf "$SITE_DIR"/admin "$SITE_DIR"/scripts "$SITE_DIR"/content "$SITE_DIR"/node_modules \
+            "$SITE_DIR"/package.json "$SITE_DIR"/package-lock.json "$SITE_DIR"/.github "$SITE_DIR"/.git
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '_site'
+          path: '${{ runner.temp }}/_site'
 
       - name: Deploy to GitHub Pages
         id: deployment
