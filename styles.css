@@ -10,6 +10,22 @@
   --index-line-inset: 80px;
   --logo-bar-h: 82px;
   --mobile-bar-h: 38px;
+
+  /* Typography — desktop scale */
+  --type-logo: 1.7em;
+  --type-nav: 1.25rem;
+  --type-nav-sub: 1rem;
+  --type-title: 1.35rem;
+  --type-title-line: 1.8rem;
+  --type-section: 1.15rem;
+  --type-card-title: 1.2rem;
+  --type-card-line: 1.5rem;
+  --type-body: 1.05rem;
+  --type-body-line: 1.65rem;
+  --type-body-loose: 1.85rem;
+  --type-meta: 1rem;
+  --type-meta-line: 1.45rem;
+  --type-small: 0.95rem;
 }
 
 html { font-size: 16px; scroll-behavior: smooth; }
@@ -100,7 +116,7 @@ main:has(.contact-box) {
 .sidebar-logo {
   display: block;
   width: 100%;
-  font-size: 1.7em;
+  font-size: var(--type-logo);
   font-weight: 350;
   letter-spacing: 0.04em;
   padding: 4px 0 14px 3px;
@@ -144,7 +160,7 @@ main:has(.contact-box) {
 }
 
 .nav-main .nav-cell {
-  font-size: 1.28em;
+  font-size: var(--type-nav);
   padding: 3px 0 3px 3px;
   border-bottom: 1px solid transparent;
   transition: border-color 0.15s;
@@ -205,7 +221,7 @@ main:has(.contact-box) {
   padding: 6px 4px 7px 5px;
   cursor: pointer;
   user-select: none;
-  font-size: 1.05em;
+  font-size: var(--type-nav-sub);
   text-align: left;
   line-height: 1.35;
 }
@@ -337,9 +353,9 @@ main:has(.contact-box) {
   padding-left: 17px;
   margin: 0 0.25%;
   padding-bottom: 2px;
-  line-height: 1.4rem;
+  line-height: var(--type-meta-line);
   padding-top: 2px;
-  font-size: 0.95em;
+  font-size: var(--type-small);
   text-align: left;
 }
 
@@ -361,8 +377,8 @@ main:has(.contact-box) {
 }
 
 .index-post-cells > div {
-  font-size: 0.95em;
-  line-height: 1.4rem;
+  font-size: var(--type-small);
+  line-height: var(--type-meta-line);
   margin-bottom: 0;
   padding: 2px 0;
 }
@@ -372,7 +388,7 @@ main:has(.contact-box) {
   width: 11%;
   margin: 0 0.25%;
   flex-shrink: 0;
-  font-size: 0.84em;
+  font-size: var(--type-meta);
 }
 
 .index-post-title {
@@ -386,7 +402,7 @@ main:has(.contact-box) {
   padding-left: 17px;
   width: 33%;
   margin: 0 0.25%;
-  font-size: 0.84em;
+  font-size: var(--type-meta);
 }
 
 .index-post-thumbimg {
@@ -448,8 +464,8 @@ main:has(.contact-box) {
 }
 
 .img-post-title {
-  font-size: 1.2rem;
-  line-height: 1.5rem;
+  font-size: var(--type-card-title);
+  line-height: var(--type-card-line);
   font-weight: 400;
   margin-bottom: 4px;
   padding-left: 1px;
@@ -458,14 +474,14 @@ main:has(.contact-box) {
 .img-post-type {
   margin-bottom: 2px;
   padding-left: 1px;
-  font-size: 0.82em;
-  line-height: 1.2;
+  font-size: var(--type-meta);
+  line-height: var(--type-meta-line);
 }
 
 .img-post-year {
   padding-left: 1px;
-  font-size: 0.82em;
-  line-height: 1.2;
+  font-size: var(--type-meta);
+  line-height: var(--type-meta-line);
 }
 
 .img-post.hidden { display: none; }
@@ -486,8 +502,8 @@ main:has(.contact-box) {
 
 .lab-post-caption {
   padding-left: 1px;
-  font-size: 1.64em;
-  line-height: 1.35;
+  font-size: var(--type-card-title);
+  line-height: var(--type-card-line);
 }
 
 /* ── About Page ── */
@@ -524,19 +540,19 @@ main:has(.contact-box) {
 }
 
 .about-name {
-  font-size: 1.2rem;
-  line-height: 1.6rem;
+  font-size: var(--type-title);
+  line-height: var(--type-title-line);
   margin-bottom: 6px;
 }
 
 .about-meta {
-  font-size: 0.92rem;
-  line-height: 1.35;
+  font-size: var(--type-meta);
+  line-height: var(--type-meta-line);
 }
 
 .about-section2 {
-  font-size: 1.05em;
-  line-height: 1.85rem;
+  font-size: var(--type-body);
+  line-height: var(--type-body-loose);
   word-break: keep-all;
   padding-left: 1px;
 }
@@ -553,8 +569,8 @@ main:has(.contact-box) {
   margin-top: 2.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--line);
-  font-size: 0.8rem;
-  line-height: 1.6em;
+  font-size: var(--type-meta);
+  line-height: var(--type-body-line);
   font-weight: 350;
   padding-left: 1px;
 }
@@ -592,7 +608,7 @@ main:has(.contact-box) {
 }
 
 .contact-box h2 {
-  font-size: 1.2rem;
+  font-size: var(--type-title);
   font-weight: 400;
   border-top: none;
   padding: 0 0 20px 3px;
@@ -600,16 +616,16 @@ main:has(.contact-box) {
 }
 
 .contact-box p {
-  font-size: 1.05em;
-  line-height: 1.85rem;
+  font-size: var(--type-body);
+  line-height: var(--type-body-loose);
   margin-bottom: 1.5em;
   word-break: keep-all;
   padding-left: 3px;
 }
 
 .contact-info {
-  font-size: 1.05rem;
-  line-height: 1.75em;
+  font-size: var(--type-body);
+  line-height: var(--type-body-loose);
   padding-left: 3px;
 }
 
@@ -632,7 +648,7 @@ main:has(.contact-box) {
 }
 
 .cv-section h3 {
-  font-size: 1.12em;
+  font-size: var(--type-section);
   font-weight: 400;
   margin: 0 0 10px;
   padding: 0 0 3px 3px;
@@ -654,8 +670,8 @@ main:has(.contact-box) {
   grid-template-columns: 120px 1fr;
   column-gap: 40px;
   align-items: start;
-  font-size: 1.05rem;
-  line-height: 1.6rem;
+  font-size: var(--type-body);
+  line-height: var(--type-body-line);
 }
 
 .cv-year {
@@ -829,8 +845,8 @@ body:has(.site-header--project) .post-detail-des::before {
 .post-text::-webkit-scrollbar { display: none; }
 
 .post-title {
-  font-size: 1.48rem;
-  line-height: 1.95rem;
+  font-size: var(--type-title);
+  line-height: var(--type-title-line);
   margin: 20px 0 15px;
   border-top: 1px solid var(--line);
   padding: 3px 0 5px 3px;
@@ -839,21 +855,21 @@ body:has(.site-header--project) .post-detail-des::before {
 .post-des-list {
   display: flex;
   align-items: flex-start;
-  font-size: 1.05em;
+  font-size: var(--type-body);
   margin-bottom: 2px;
 }
 
 .post-q {
   width: 24%;
-  font-size: 1.05rem;
-  line-height: 1.5rem;
+  font-size: var(--type-body);
+  line-height: var(--type-body-line);
   word-break: keep-all;
 }
 
 .post-a {
   width: 70%;
-  font-size: 1.05rem;
-  line-height: 1.5rem;
+  font-size: var(--type-body);
+  line-height: var(--type-body-line);
   word-break: keep-all;
 }
 
@@ -865,8 +881,8 @@ body:has(.site-header--project) .post-detail-des::before {
 
 .post-detail-des {
   margin-top: 1%;
-  font-size: 1.05rem;
-  line-height: 1.65rem;
+  font-size: var(--type-body);
+  line-height: var(--type-body-line);
   word-break: keep-all;
   padding: 3px 10% 40px 3px;
   border-top: 1px solid var(--line);
@@ -883,7 +899,7 @@ body:has(.site-header--project) .post-detail-des::before {
 }
 
 .post-detail-label {
-  font-size: 0.9rem;
+  font-size: var(--type-meta);
   font-weight: 400;
   margin: 0 0 6px;
   padding: 0;
@@ -947,7 +963,7 @@ body:has(.site-header--project) .post-detail-des::before {
 /* ── No results ── */
 .no-results {
   padding: 40px 17px;
-  font-size: 0.95em;
+  font-size: var(--type-small);
   display: none;
 }
 
