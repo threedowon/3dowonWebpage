@@ -352,6 +352,32 @@ document.getElementById('siteForm').addEventListener('submit', async (e) => {
   alert('저장했어요.');
 });
 
+// ── Deploy ──
+document.getElementById('deployBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('deployBtn');
+  const status = document.getElementById('deployStatus');
+  const messageInput = document.getElementById('deployMessage');
+
+  btn.disabled = true;
+  status.textContent = '배포 중...';
+  status.className = 'deploy-status';
+  try {
+    const result = await api('/api/deploy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: messageInput.value }),
+    });
+    status.textContent = result.message;
+    status.className = `deploy-status ${result.deployed ? 'ok' : ''}`;
+    if (result.deployed) messageInput.value = '';
+  } catch (err) {
+    status.textContent = `실패: ${err.message}`;
+    status.className = 'deploy-status error';
+  } finally {
+    btn.disabled = false;
+  }
+});
+
 loadWorks();
 loadAbout();
 loadCv();
