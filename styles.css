@@ -1317,9 +1317,12 @@ body:has(.site-header--project) .post-detail-des::before {
   }
 
   body:has(.site-header--works) .img-post-box {
+    --works-col-gap: 7px;
     margin-left: 12px;
     width: calc(100% - 24px);
     margin-top: 0;
+    column-gap: var(--works-col-gap);
+    row-gap: 12px;
   }
 
   body:has(.site-header--simple) main,
@@ -1379,9 +1382,20 @@ body:has(.site-header--project) .post-detail-des::before {
   }
 
   .works-view--grid .img-post {
-    width: 33.333%;
-    max-width: 33.333%;
-    flex: 0 0 33.333%;
+    width: calc((100% - (2 * var(--works-col-gap, 7px))) / 3);
+    max-width: calc((100% - (2 * var(--works-col-gap, 7px))) / 3);
+    flex: 0 0 calc((100% - (2 * var(--works-col-gap, 7px))) / 3);
+  }
+
+  .works-view .img-post-title {
+    font-size: 0.9rem;
+    line-height: 1.2rem;
+  }
+
+  .works-view .img-post-type,
+  .works-view .img-post-year {
+    font-size: 0.78rem;
+    line-height: 1.15rem;
   }
 
   .index-post-title {

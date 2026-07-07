@@ -1,7 +1,7 @@
 import { loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '156';
+const CSS_VERSION = '157';
 const JS_VERSION = '81';
 
 function siteFooter(site) {
