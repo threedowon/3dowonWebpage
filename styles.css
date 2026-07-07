@@ -328,15 +328,16 @@ main:has(.contact-box) {
   }
 
   .header-bar {
-    background-image: var(--site-col-lines);
-    background-size: 1px 100%;
-    background-position: 25% 0, 50% 0, 75% 0;
-    background-repeat: no-repeat;
+    background-image: none;
   }
 
   .header-bar-col {
-    border-right: none;
     background: var(--bg);
+    border-right: 1px solid var(--line);
+  }
+
+  .header-bar-col--spacer {
+    border-right: none;
   }
 
   .header-bar-col--logo {
