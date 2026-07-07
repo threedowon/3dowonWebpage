@@ -81,11 +81,7 @@ function renderWorkCard(work) {
         <label>유형<div class="chk-group">${checkboxGroup('types', TYPE_OPTIONS, [work.type, ...(work.tags || [])])}</div></label>
         <label>제작<select name="production">${selectOptions(PRODUCTION_OPTIONS, work.production)}</select></label>
         <label>기술<div class="chk-group">${checkboxGroup('tech', TECH_OPTIONS, work.tech || [])}</div></label>
-        <div class="field-row">
-          <label>상세-매체<input name="meta_medium" value="${escapeAttr(work.meta_medium)}" /></label>
-          <label>상세-기술<input name="meta_tech" value="${escapeAttr(work.meta_tech)}" /></label>
-          <label>상세-제작<input name="meta_production" value="${escapeAttr(work.meta_production)}" /></label>
-        </div>
+        <label>상세-기술<input name="meta_tech" value="${escapeAttr(work.meta_tech)}" /></label>
         <label>설명 (엔터로 줄바꿈)<textarea name="description" rows="4">${escapeHtml(work.description)}</textarea></label>
         <label>Vimeo URL<input name="vimeo_url" value="${escapeAttr(work.vimeo_url)}" /></label>
         <div class="field-row">
@@ -125,9 +121,7 @@ function renderWorkCard(work) {
         types: fd.getAll('types'),
         production: fd.get('production'),
         tech: fd.getAll('tech'),
-        meta_medium: fd.get('meta_medium'),
         meta_tech: fd.get('meta_tech'),
-        meta_production: fd.get('meta_production'),
         description: fd.get('description'),
         vimeo_url: fd.get('vimeo_url'),
       }),
