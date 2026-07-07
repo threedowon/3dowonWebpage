@@ -33,3 +33,23 @@ export function cleanOrphanWorkPages(slugs) {
     fs.unlinkSync(path.join(workDir, name));
   }
 }
+
+export function assertWorkPageHeaders(slugs) {
+  for (const slug of slugs) {
+    const relPath = `work/${slug}.html`;
+    const html = fs.readFileSync(path.join(ROOT, relPath), 'utf8');
+    const required = [
+      'site-header--bar',
+      'header-bar-col--back',
+      'header-bar-col--works',
+      'header-bar-col--nav',
+    ];
+    const missing = required.filter((token) => !html.includes(token));
+    if (missing.length) {
+      throw new Error(`Invalid header in ${relPath}: missing ${missing.join(', ')}`);
+    }
+    if (html.includes('header-bar-col--spacer')) {
+      throw new Error(`Invalid header in ${relPath}: legacy spacer column found`);
+    }
+  }
+}

@@ -1,5 +1,7 @@
 // ── Filter functionality (유형 + 기술) ──
 function initFilters() {
+  if (document.querySelector('.post-projects')) return;
+
   const checkItems = document.querySelectorAll('.filter-checks > li, .mo-filter');
   const containers = document.querySelectorAll('.img-post-box, .index-post-box');
 
@@ -113,6 +115,8 @@ function initNavAccordion() {
 
 // ── Grid / Index view toggle ──
 function initViewToggle() {
+  if (document.querySelector('.post-projects')) return;
+
   const toggles = document.querySelectorAll('.view-toggle > li');
   const gridView = document.getElementById('gridView');
   const indexView = document.getElementById('indexView');

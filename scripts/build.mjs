@@ -1,8 +1,8 @@
-import { cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
+import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '188';
-const JS_VERSION = '82';
+const CSS_VERSION = '189';
+const JS_VERSION = '83';
 const LOGO_VERSION = '2';
 
 function siteFooter(site) {
@@ -416,5 +416,6 @@ for (const work of works) {
 }
 
 cleanOrphanWorkPages(works.map((work) => work.slug));
+assertWorkPageHeaders(works.map((work) => work.slug));
 
 console.log(`Built ${works.length} works and site pages from content/`);
