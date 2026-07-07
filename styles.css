@@ -410,7 +410,7 @@ main:has(.contact-box) {
   position: fixed;
   top: -9999px;
   left: -9999px;
-  width: min(21vw, 250px);
+  width: min(31.5vw, 375px);
   aspect-ratio: 4 / 5;
   height: auto;
   background-repeat: no-repeat;
