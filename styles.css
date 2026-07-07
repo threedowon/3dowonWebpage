@@ -555,11 +555,12 @@ main:has(.contact-box) {
   }
 
   .cv-section h3 {
-    grid-column: 2;
+    grid-column: 1;
     width: auto;
     margin: 0 0 10px;
     padding: 0 12px 3px;
-    border-bottom: 1px solid var(--line);
+    border-bottom: none;
+    text-align: left;
   }
 
   .cv-entries {
@@ -576,12 +577,13 @@ main:has(.contact-box) {
   }
 
   .cv-year {
-    grid-column: 3;
+    grid-column: 2;
     padding: 0 12px;
+    border-left: 1px solid var(--line);
   }
 
   .cv-desc {
-    grid-column: 4;
+    grid-column: 3;
     padding: 0 12px;
     white-space: nowrap;
     word-break: normal;
@@ -1804,6 +1806,7 @@ body:has(.site-header--project) .post-detail-des::before {
   .cv-year {
     margin-bottom: 0;
     line-height: 1.12rem;
+    border-left: none;
   }
 
   .cv-desc {
