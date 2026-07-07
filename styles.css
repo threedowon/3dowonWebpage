@@ -371,8 +371,11 @@ main:has(.contact-box) {
     border-bottom: none;
   }
 
-  main:has(.works-view) .img-post-box {
-    margin-top: 24px;
+  .works-view--grid .img-post-box {
+    margin: 24px 0 10%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .index-category-year,
@@ -562,15 +565,20 @@ main:has(.contact-box) {
 
 @media (min-width: 769px) {
   .works-view--grid .img-post {
-    width: 25%;
-    flex: 1 1 24%;
-    max-width: 25%;
+    width: auto;
+    max-width: none;
+    flex: none;
+    margin-left: 0;
+    padding: 0 12px;
+    box-sizing: border-box;
   }
 
   .works-view--grid .img-post:nth-child(4n + 1) {
     border-left: none;
-    margin-left: 0;
-    padding-left: 1px;
+  }
+
+  .works-view--grid .img-post:not(:nth-child(4n + 1)) {
+    border-left: 1px solid var(--line);
   }
 }
 
