@@ -1,0 +1,27 @@
+{
+  "slug": "digital-tides",
+  "title": "Digital Tides",
+  "year": 2024,
+  "type": "영상",
+  "tags": [],
+  "tech": [
+    "Unity"
+  ],
+  "production": "개인",
+  "thumbnail": "https://picsum.photos/seed/digital-tides/600/750",
+  "grid_type_label": "영상, 프로젝션",
+  "index_type_label": "영상, 프로젝션",
+  "preview_bg": "https://picsum.photos/seed/digital-tides/600/750",
+  "hero_image": "https://picsum.photos/seed/digital-tides/600/750",
+  "description": "<p>데이터와 조수의 리듬을 시각화한 대형 영상 설치입니다. 실시간 해양 데이터가 파도의 형태로 변환됩니다.</p>",
+  "meta_year": "2024",
+  "meta_type": "영상",
+  "meta_medium": "실시간 영상, 프로젝션",
+  "meta_tech": "TouchDesigner, Unity",
+  "meta_production": "개인 제작",
+  "gallery": [
+    "https://picsum.photos/seed/digitalt1/1920/1440",
+    "https://picsum.photos/seed/digitalt2/1920/1440",
+    "https://picsum.photos/seed/digitalt3/1920/1440"
+  ]
+}

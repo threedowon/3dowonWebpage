@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
   <link rel="stylesheet" href="styles.css?v=145" />
+
 </head>
 <body>
   <header class="site-header site-header--works">
@@ -60,11 +61,15 @@
     <span class="mo-filter" data-filter="tech" data-value="Arduino">Arduino</span>
     <span class="mo-filter" data-filter="tech" data-value="3ds Max">3ds Max</span>
   </div>
+  <div class="mo-header">
+    <a href="index.html" class="mo-logo">3Dowon</a>
+    <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
+  </div>
   <div class="mo-overlay" id="moOverlay"></div>
   <nav class="mo-nav" id="moNav" aria-hidden="true">
     <button type="button" class="mo-nav-close" id="moNavClose" aria-label="닫기">×</button>
     <div class="mo-nav-links">
-      <a href="index.html">WORKS</a>
+      <a href="index.html" active>WORKS</a>
       <a href="lab.html">LAB</a>
       <a href="about.html">ABOUT</a>
       <a href="cv.html">CV</a>
@@ -73,13 +78,12 @@
       <div class="mo-nav-footer-logo">3Dowon</div>
       <div class="mo-nav-footer-info">
         E. <a href="mailto:3dowon@gmail.com">3dowon@gmail.com</a><br />
-        <a href="#" target="_blank" rel="noopener">I. instagram.com/3dowon</a><br />
-        <a href="#" target="_blank" rel="noopener">V. vimeo.com/3dowon</a><br />
-        <a href="#" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>
+        <a href="https://instagram.com/3dowon" target="_blank" rel="noopener">I. instagram.com/3dowon</a><br />
+        <a href="https://vimeo.com/3dowon" target="_blank" rel="noopener">V. vimeo.com/3dowon</a><br />
+        <a href="https://youtube.com/@3dowon" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>
       </div>
     </div>
   </nav>
-
   <main>
     <div class="works-view works-view--grid" id="gridView">
       <div class="img-post-box" id="imgPostBox">
@@ -89,77 +93,17 @@
           <div class="img-post-type">설치, 인터랙티브</div>
           <div class="img-post-year">2025</div>
         </a>
-        <a href="work/digital-tides.html" class="img-post reveal" data-production="개인" data-tech="Unity" data-year="2024" data-type="영상">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/digital-tides/600/750)"></div>
-          <div class="img-post-title">Digital Tides</div>
+        <a href="work/light-archive.html" class="img-post reveal" data-production="개인" data-tech="" data-year="2025" data-type="영상">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/light-archive/600/750)"></div>
+          <div class="img-post-title">Light Archive</div>
           <div class="img-post-type">영상, 프로젝션</div>
-          <div class="img-post-year">2024</div>
+          <div class="img-post-year">2025</div>
         </a>
-        <a href="work/body-signal.html" class="img-post reveal" data-production="공동" data-tech="Arduino" data-year="2024" data-type="퍼포먼스" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/body-signal/600/750)"></div>
-          <div class="img-post-title">Body Signal</div>
-          <div class="img-post-type">퍼포먼스</div>
-          <div class="img-post-year">2024</div>
-        </a>
-        <a href="work/neural-garden.html" class="img-post reveal" data-production="개인" data-tech="Arduino" data-year="2024" data-type="설치" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/neural-garden/600/750)"></div>
-          <div class="img-post-title">Neural Garden</div>
-          <div class="img-post-type">설치, 인터랙티브</div>
-          <div class="img-post-year">2024</div>
-        </a>
-        <a href="work/fractal-memory.html" class="img-post reveal" data-production="공동" data-tech="" data-year="2023" data-type="설치" data-tags="프로젝션">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/fractal-memory/600/750)"></div>
-          <div class="img-post-title">Fractal Memory</div>
+        <a href="work/slow-circuit.html" class="img-post reveal" data-production="개인" data-tech="Arduino" data-year="2025" data-type="설치" data-tags="프로젝션">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/slow-circuit/600/750)"></div>
+          <div class="img-post-title">Slow Circuit</div>
           <div class="img-post-type">설치, 프로젝션</div>
-          <div class="img-post-year">2023</div>
-        </a>
-        <a href="work/layered-city.html" class="img-post reveal" data-production="개인" data-tech="Unity" data-year="2023" data-type="전시">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/layered-city/600/750)"></div>
-          <div class="img-post-title">Layered City</div>
-          <div class="img-post-type">전시, 인터랙티브</div>
-          <div class="img-post-year">2023</div>
-        </a>
-        <a href="work/prism-field.html" class="img-post reveal" data-production="회사" data-tech="" data-year="2022" data-type="설치" data-tags="프로젝션">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/prism-field/600/750)"></div>
-          <div class="img-post-title">Prism Field</div>
-          <div class="img-post-type">설치, 프로젝션</div>
-          <div class="img-post-year">2022</div>
-        </a>
-        <a href="work/void-echo.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2022" data-type="설치" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/void-echo/600/750)"></div>
-          <div class="img-post-title">Void Echo</div>
-          <div class="img-post-type">설치, 인터랙티브</div>
-          <div class="img-post-year">2022</div>
-        </a>
-        <a href="work/pulse-terrain.html" class="img-post reveal" data-production="공동" data-tech="Unreal" data-year="2021" data-type="영상">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/pulse-terrain/600/750)"></div>
-          <div class="img-post-title">Pulse Terrain</div>
-          <div class="img-post-type">영상, 프로젝션</div>
-          <div class="img-post-year">2021</div>
-        </a>
-        <a href="work/silent-circuit.html" class="img-post reveal" data-production="개인" data-tech="Arduino" data-year="2021" data-type="설치" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/silent-circuit/600/750)"></div>
-          <div class="img-post-title">Silent Circuit</div>
-          <div class="img-post-type">설치, 인터랙티브</div>
-          <div class="img-post-year">2021</div>
-        </a>
-        <a href="work/mirror-phase.html" class="img-post reveal" data-production="공동" data-tech="" data-year="2021" data-type="퍼포먼스" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/mirror-phase/600/750)"></div>
-          <div class="img-post-title">Mirror Phase</div>
-          <div class="img-post-type">퍼포먼스</div>
-          <div class="img-post-year">2021</div>
-        </a>
-        <a href="work/data-bloom.html" class="img-post reveal" data-production="개인" data-tech="" data-year="2020" data-type="설치" data-tags="프로젝션">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/data-bloom/600/750)"></div>
-          <div class="img-post-title">Data Bloom</div>
-          <div class="img-post-type">설치, 프로젝션</div>
-          <div class="img-post-year">2020</div>
-        </a>
-        <a href="work/gravity-well.html" class="img-post reveal" data-production="회사" data-tech="Unreal" data-year="2020" data-type="설치" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/gravity-well/600/750)"></div>
-          <div class="img-post-title">Gravity Well</div>
-          <div class="img-post-type">설치, 인터랙티브</div>
-          <div class="img-post-year">2020</div>
+          <div class="img-post-year">2025</div>
         </a>
         <a href="work/soft-machine.html" class="img-post reveal" data-production="개인" data-tech="Arduino,Unity" data-year="2025" data-type="전시">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/soft-machine/600/750)"></div>
@@ -167,16 +111,10 @@
           <div class="img-post-type">전시, 인터랙티브</div>
           <div class="img-post-year">2025</div>
         </a>
-        <a href="work/light-archive.html" class="img-post reveal" data-production="개인" data-tech="" data-year="2025" data-type="영상">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/light-archive/600/750)"></div>
-          <div class="img-post-title">Light Archive</div>
-          <div class="img-post-type">영상, 프로젝션</div>
-          <div class="img-post-year">2025</div>
-        </a>
-        <a href="work/sonic-veil.html" class="img-post reveal" data-production="공동" data-tech="" data-year="2024" data-type="설치" data-tags="프로젝션">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/sonic-veil/600/750)"></div>
-          <div class="img-post-title">Sonic Veil</div>
-          <div class="img-post-type">설치, 프로젝션</div>
+        <a href="work/body-signal.html" class="img-post reveal" data-production="공동" data-tech="Arduino" data-year="2024" data-type="퍼포먼스" data-tags="인터랙티브">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/body-signal/600/750)"></div>
+          <div class="img-post-title">Body Signal</div>
+          <div class="img-post-type">퍼포먼스</div>
           <div class="img-post-year">2024</div>
         </a>
         <a href="work/breath-map.html" class="img-post reveal" data-production="개인" data-tech="Arduino" data-year="2024" data-type="퍼포먼스" data-tags="인터랙티브">
@@ -185,16 +123,46 @@
           <div class="img-post-type">퍼포먼스</div>
           <div class="img-post-year">2024</div>
         </a>
-        <a href="work/pixel-tide.html" class="img-post reveal" data-production="회사" data-tech="" data-year="2023" data-type="영상">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/pixel-tide/600/750)"></div>
-          <div class="img-post-title">Pixel Tide</div>
+        <a href="work/digital-tides.html" class="img-post reveal" data-production="개인" data-tech="Unity" data-year="2024" data-type="영상">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/digital-tides/600/750)"></div>
+          <div class="img-post-title">Digital Tides</div>
           <div class="img-post-type">영상, 프로젝션</div>
+          <div class="img-post-year">2024</div>
+        </a>
+        <a href="work/neural-garden.html" class="img-post reveal" data-production="개인" data-tech="Arduino" data-year="2024" data-type="설치" data-tags="인터랙티브">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/neural-garden/600/750)"></div>
+          <div class="img-post-title">Neural Garden</div>
+          <div class="img-post-type">설치, 인터랙티브</div>
+          <div class="img-post-year">2024</div>
+        </a>
+        <a href="work/sonic-veil.html" class="img-post reveal" data-production="공동" data-tech="" data-year="2024" data-type="설치" data-tags="프로젝션">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/sonic-veil/600/750)"></div>
+          <div class="img-post-title">Sonic Veil</div>
+          <div class="img-post-type">설치, 프로젝션</div>
+          <div class="img-post-year">2024</div>
+        </a>
+        <a href="work/fractal-memory.html" class="img-post reveal" data-production="공동" data-tech="" data-year="2023" data-type="설치" data-tags="프로젝션">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/fractal-memory/600/750)"></div>
+          <div class="img-post-title">Fractal Memory</div>
+          <div class="img-post-type">설치, 프로젝션</div>
           <div class="img-post-year">2023</div>
         </a>
         <a href="work/ghost-frequency.html" class="img-post reveal" data-production="개인" data-tech="Arduino" data-year="2023" data-type="설치" data-tags="인터랙티브">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/ghost-frequency/600/750)"></div>
           <div class="img-post-title">Ghost Frequency</div>
           <div class="img-post-type">설치, 인터랙티브</div>
+          <div class="img-post-year">2023</div>
+        </a>
+        <a href="work/layered-city.html" class="img-post reveal" data-production="개인" data-tech="Unity" data-year="2023" data-type="전시">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/layered-city/600/750)"></div>
+          <div class="img-post-title">Layered City</div>
+          <div class="img-post-type">전시, 인터랙티브</div>
+          <div class="img-post-year">2023</div>
+        </a>
+        <a href="work/pixel-tide.html" class="img-post reveal" data-production="회사" data-tech="" data-year="2023" data-type="영상">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/pixel-tide/600/750)"></div>
+          <div class="img-post-title">Pixel Tide</div>
+          <div class="img-post-type">영상, 프로젝션</div>
           <div class="img-post-year">2023</div>
         </a>
         <a href="work/ambient-loop.html" class="img-post reveal" data-production="공동" data-tech="Unity" data-year="2022" data-type="전시">
@@ -209,17 +177,41 @@
           <div class="img-post-type">설치, 인터랙티브</div>
           <div class="img-post-year">2022</div>
         </a>
+        <a href="work/prism-field.html" class="img-post reveal" data-production="회사" data-tech="" data-year="2022" data-type="설치" data-tags="프로젝션">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/prism-field/600/750)"></div>
+          <div class="img-post-title">Prism Field</div>
+          <div class="img-post-type">설치, 프로젝션</div>
+          <div class="img-post-year">2022</div>
+        </a>
+        <a href="work/void-echo.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2022" data-type="설치" data-tags="인터랙티브">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/void-echo/600/750)"></div>
+          <div class="img-post-title">Void Echo</div>
+          <div class="img-post-type">설치, 인터랙티브</div>
+          <div class="img-post-year">2022</div>
+        </a>
         <a href="work/code-landscape.html" class="img-post reveal" data-production="개인" data-tech="" data-year="2021" data-type="영상" data-tags="인터랙티브">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/code-landscape/600/750)"></div>
           <div class="img-post-title">Code Landscape</div>
           <div class="img-post-type">영상, 인터랙티브</div>
           <div class="img-post-year">2021</div>
         </a>
-        <a href="work/resonant-grid.html" class="img-post reveal" data-production="회사" data-tech="Arduino" data-year="2020" data-type="설치" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/resonant-grid/600/750)"></div>
-          <div class="img-post-title">Resonant Grid</div>
+        <a href="work/mirror-phase.html" class="img-post reveal" data-production="공동" data-tech="" data-year="2021" data-type="퍼포먼스" data-tags="인터랙티브">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/mirror-phase/600/750)"></div>
+          <div class="img-post-title">Mirror Phase</div>
+          <div class="img-post-type">퍼포먼스</div>
+          <div class="img-post-year">2021</div>
+        </a>
+        <a href="work/pulse-terrain.html" class="img-post reveal" data-production="공동" data-tech="Unreal" data-year="2021" data-type="영상">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/pulse-terrain/600/750)"></div>
+          <div class="img-post-title">Pulse Terrain</div>
+          <div class="img-post-type">영상, 프로젝션</div>
+          <div class="img-post-year">2021</div>
+        </a>
+        <a href="work/silent-circuit.html" class="img-post reveal" data-production="개인" data-tech="Arduino" data-year="2021" data-type="설치" data-tags="인터랙티브">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/silent-circuit/600/750)"></div>
+          <div class="img-post-title">Silent Circuit</div>
           <div class="img-post-type">설치, 인터랙티브</div>
-          <div class="img-post-year">2020</div>
+          <div class="img-post-year">2021</div>
         </a>
         <a href="work/after-image.html" class="img-post reveal" data-production="공동" data-tech="" data-year="2020" data-type="퍼포먼스">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/after-image/600/750)"></div>
@@ -227,11 +219,23 @@
           <div class="img-post-type">퍼포먼스</div>
           <div class="img-post-year">2020</div>
         </a>
-        <a href="work/slow-circuit.html" class="img-post reveal" data-production="개인" data-tech="Arduino" data-year="2025" data-type="설치" data-tags="프로젝션">
-          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/slow-circuit/600/750)"></div>
-          <div class="img-post-title">Slow Circuit</div>
+        <a href="work/data-bloom.html" class="img-post reveal" data-production="개인" data-tech="" data-year="2020" data-type="설치" data-tags="프로젝션">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/data-bloom/600/750)"></div>
+          <div class="img-post-title">Data Bloom</div>
           <div class="img-post-type">설치, 프로젝션</div>
-          <div class="img-post-year">2025</div>
+          <div class="img-post-year">2020</div>
+        </a>
+        <a href="work/gravity-well.html" class="img-post reveal" data-production="회사" data-tech="Unreal" data-year="2020" data-type="설치" data-tags="인터랙티브">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/gravity-well/600/750)"></div>
+          <div class="img-post-title">Gravity Well</div>
+          <div class="img-post-type">설치, 인터랙티브</div>
+          <div class="img-post-year">2020</div>
+        </a>
+        <a href="work/resonant-grid.html" class="img-post reveal" data-production="회사" data-tech="Arduino" data-year="2020" data-type="설치" data-tags="인터랙티브">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/resonant-grid/600/750)"></div>
+          <div class="img-post-title">Resonant Grid</div>
+          <div class="img-post-type">설치, 인터랙티브</div>
+          <div class="img-post-year">2020</div>
         </a>
       </div>
     </div>
@@ -257,122 +261,22 @@
               <div class="index-post-line"></div>
             </div>
           </a>
-          <a href="work/digital-tides.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/digital-tides/600/750" data-production="개인" data-tech="Unity" data-year="2024" data-type="영상">
+          <a href="work/light-archive.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/light-archive/600/750" data-production="개인" data-tech="" data-year="2025" data-type="영상">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
-                <div class="index-post-title">Digital Tides</div>
+                <div class="index-post-year">2025</div>
+                <div class="index-post-title">Light Archive</div>
                 <div class="index-post-type">영상, 프로젝션</div>
               </div>
               <div class="index-post-line"></div>
             </div>
           </a>
-          <a href="work/body-signal.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/body-signal/600/750" data-production="공동" data-tech="Arduino" data-year="2024" data-type="퍼포먼스" data-tags="인터랙티브">
+          <a href="work/slow-circuit.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/slow-circuit/600/750" data-production="개인" data-tech="Arduino" data-year="2025" data-type="설치" data-tags="프로젝션">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
-                <div class="index-post-title">Body Signal</div>
-                <div class="index-post-type">퍼포먼스, 인터랙티브</div>
-              </div>
-              <div class="index-post-line"></div>
-            </div>
-          </a>
-          <a href="work/neural-garden.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/neural-garden/600/750" data-production="개인" data-tech="Arduino" data-year="2024" data-type="설치" data-tags="인터랙티브">
-            <div class="index-post-row">
-              <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
-                <div class="index-post-title">Neural Garden</div>
-                <div class="index-post-type">설치, 인터랙티브</div>
-              </div>
-              <div class="index-post-line"></div>
-            </div>
-          </a>
-          <a href="work/fractal-memory.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/fractal-memory/600/750" data-production="공동" data-tech="" data-year="2023" data-type="설치" data-tags="프로젝션">
-            <div class="index-post-row">
-              <div class="index-post-cells">
-                <div class="index-post-year">2023</div>
-                <div class="index-post-title">Fractal Memory</div>
+                <div class="index-post-year">2025</div>
+                <div class="index-post-title">Slow Circuit</div>
                 <div class="index-post-type">설치, 프로젝션</div>
-              </div>
-              <div class="index-post-line"></div>
-            </div>
-          </a>
-          <a href="work/layered-city.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/layered-city/600/750" data-production="개인" data-tech="Unity" data-year="2023" data-type="전시">
-            <div class="index-post-row">
-              <div class="index-post-cells">
-                <div class="index-post-year">2023</div>
-                <div class="index-post-title">Layered City</div>
-                <div class="index-post-type">전시, 인터랙티브</div>
-              </div>
-              <div class="index-post-line"></div>
-            </div>
-          </a>
-          <a href="work/prism-field.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/prism-field/600/750" data-production="회사" data-tech="" data-year="2022" data-type="설치" data-tags="프로젝션">
-            <div class="index-post-row">
-              <div class="index-post-cells">
-                <div class="index-post-year">2022</div>
-                <div class="index-post-title">Prism Field</div>
-                <div class="index-post-type">설치, 프로젝션</div>
-              </div>
-              <div class="index-post-line"></div>
-            </div>
-          </a>
-          <a href="work/void-echo.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/void-echo/600/750" data-production="개인" data-tech="Unreal" data-year="2022" data-type="설치" data-tags="인터랙티브">
-            <div class="index-post-row">
-              <div class="index-post-cells">
-                <div class="index-post-year">2022</div>
-                <div class="index-post-title">Void Echo</div>
-                <div class="index-post-type">설치, 인터랙티브, 프로젝션</div>
-              </div>
-              <div class="index-post-line"></div>
-            </div>
-          </a>
-          <a href="work/pulse-terrain.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/pulse-terrain/600/750" data-production="공동" data-tech="Unreal" data-year="2021" data-type="영상">
-            <div class="index-post-row">
-              <div class="index-post-cells">
-                <div class="index-post-year">2021</div>
-                <div class="index-post-title">Pulse Terrain</div>
-                <div class="index-post-type">영상, 프로젝션</div>
-              </div>
-              <div class="index-post-line"></div>
-            </div>
-          </a>
-          <a href="work/silent-circuit.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/silent-circuit/600/750" data-production="개인" data-tech="Arduino" data-year="2021" data-type="설치" data-tags="인터랙티브">
-            <div class="index-post-row">
-              <div class="index-post-cells">
-                <div class="index-post-year">2021</div>
-                <div class="index-post-title">Silent Circuit</div>
-                <div class="index-post-type">설치, 인터랙티브</div>
-              </div>
-              <div class="index-post-line"></div>
-            </div>
-          </a>
-          <a href="work/mirror-phase.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/mirror-phase/600/750" data-production="공동" data-tech="" data-year="2021" data-type="퍼포먼스" data-tags="인터랙티브">
-            <div class="index-post-row">
-              <div class="index-post-cells">
-                <div class="index-post-year">2021</div>
-                <div class="index-post-title">Mirror Phase</div>
-                <div class="index-post-type">퍼포먼스, 인터랙티브</div>
-              </div>
-              <div class="index-post-line"></div>
-            </div>
-          </a>
-          <a href="work/data-bloom.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/data-bloom/600/750" data-production="개인" data-tech="" data-year="2020" data-type="설치" data-tags="프로젝션">
-            <div class="index-post-row">
-              <div class="index-post-cells">
-                <div class="index-post-year">2020</div>
-                <div class="index-post-title">Data Bloom</div>
-                <div class="index-post-type">설치, 프로젝션</div>
-              </div>
-              <div class="index-post-line"></div>
-            </div>
-          </a>
-          <a href="work/gravity-well.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/gravity-well/600/750" data-production="회사" data-tech="Unreal" data-year="2020" data-type="설치" data-tags="인터랙티브">
-            <div class="index-post-row">
-              <div class="index-post-cells">
-                <div class="index-post-year">2020</div>
-                <div class="index-post-title">Gravity Well</div>
-                <div class="index-post-type">설치, 인터랙티브, 프로젝션</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -387,22 +291,12 @@
               <div class="index-post-line"></div>
             </div>
           </a>
-          <a href="work/light-archive.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/light-archive/600/750" data-production="개인" data-tech="" data-year="2025" data-type="영상">
-            <div class="index-post-row">
-              <div class="index-post-cells">
-                <div class="index-post-year">2025</div>
-                <div class="index-post-title">Light Archive</div>
-                <div class="index-post-type">영상, 프로젝션</div>
-              </div>
-              <div class="index-post-line"></div>
-            </div>
-          </a>
-          <a href="work/sonic-veil.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/sonic-veil/600/750" data-production="공동" data-tech="" data-year="2024" data-type="설치" data-tags="프로젝션">
+          <a href="work/body-signal.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/body-signal/600/750" data-production="공동" data-tech="Arduino" data-year="2024" data-type="퍼포먼스" data-tags="인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
                 <div class="index-post-year">2024</div>
-                <div class="index-post-title">Sonic Veil</div>
-                <div class="index-post-type">설치, 프로젝션</div>
+                <div class="index-post-title">Body Signal</div>
+                <div class="index-post-type">퍼포먼스, 인터랙티브</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -417,12 +311,42 @@
               <div class="index-post-line"></div>
             </div>
           </a>
-          <a href="work/pixel-tide.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/pixel-tide/600/750" data-production="회사" data-tech="" data-year="2023" data-type="영상">
+          <a href="work/digital-tides.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/digital-tides/600/750" data-production="개인" data-tech="Unity" data-year="2024" data-type="영상">
+            <div class="index-post-row">
+              <div class="index-post-cells">
+                <div class="index-post-year">2024</div>
+                <div class="index-post-title">Digital Tides</div>
+                <div class="index-post-type">영상, 프로젝션</div>
+              </div>
+              <div class="index-post-line"></div>
+            </div>
+          </a>
+          <a href="work/neural-garden.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/neural-garden/600/750" data-production="개인" data-tech="Arduino" data-year="2024" data-type="설치" data-tags="인터랙티브">
+            <div class="index-post-row">
+              <div class="index-post-cells">
+                <div class="index-post-year">2024</div>
+                <div class="index-post-title">Neural Garden</div>
+                <div class="index-post-type">설치, 인터랙티브</div>
+              </div>
+              <div class="index-post-line"></div>
+            </div>
+          </a>
+          <a href="work/sonic-veil.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/sonic-veil/600/750" data-production="공동" data-tech="" data-year="2024" data-type="설치" data-tags="프로젝션">
+            <div class="index-post-row">
+              <div class="index-post-cells">
+                <div class="index-post-year">2024</div>
+                <div class="index-post-title">Sonic Veil</div>
+                <div class="index-post-type">설치, 프로젝션</div>
+              </div>
+              <div class="index-post-line"></div>
+            </div>
+          </a>
+          <a href="work/fractal-memory.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/fractal-memory/600/750" data-production="공동" data-tech="" data-year="2023" data-type="설치" data-tags="프로젝션">
             <div class="index-post-row">
               <div class="index-post-cells">
                 <div class="index-post-year">2023</div>
-                <div class="index-post-title">Pixel Tide</div>
-                <div class="index-post-type">영상, 프로젝션</div>
+                <div class="index-post-title">Fractal Memory</div>
+                <div class="index-post-type">설치, 프로젝션</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -433,6 +357,26 @@
                 <div class="index-post-year">2023</div>
                 <div class="index-post-title">Ghost Frequency</div>
                 <div class="index-post-type">설치, 인터랙티브</div>
+              </div>
+              <div class="index-post-line"></div>
+            </div>
+          </a>
+          <a href="work/layered-city.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/layered-city/600/750" data-production="개인" data-tech="Unity" data-year="2023" data-type="전시">
+            <div class="index-post-row">
+              <div class="index-post-cells">
+                <div class="index-post-year">2023</div>
+                <div class="index-post-title">Layered City</div>
+                <div class="index-post-type">전시, 인터랙티브</div>
+              </div>
+              <div class="index-post-line"></div>
+            </div>
+          </a>
+          <a href="work/pixel-tide.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/pixel-tide/600/750" data-production="회사" data-tech="" data-year="2023" data-type="영상">
+            <div class="index-post-row">
+              <div class="index-post-cells">
+                <div class="index-post-year">2023</div>
+                <div class="index-post-title">Pixel Tide</div>
+                <div class="index-post-type">영상, 프로젝션</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -457,6 +401,26 @@
               <div class="index-post-line"></div>
             </div>
           </a>
+          <a href="work/prism-field.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/prism-field/600/750" data-production="회사" data-tech="" data-year="2022" data-type="설치" data-tags="프로젝션">
+            <div class="index-post-row">
+              <div class="index-post-cells">
+                <div class="index-post-year">2022</div>
+                <div class="index-post-title">Prism Field</div>
+                <div class="index-post-type">설치, 프로젝션</div>
+              </div>
+              <div class="index-post-line"></div>
+            </div>
+          </a>
+          <a href="work/void-echo.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/void-echo/600/750" data-production="개인" data-tech="Unreal" data-year="2022" data-type="설치" data-tags="인터랙티브">
+            <div class="index-post-row">
+              <div class="index-post-cells">
+                <div class="index-post-year">2022</div>
+                <div class="index-post-title">Void Echo</div>
+                <div class="index-post-type">설치, 인터랙티브, 프로젝션</div>
+              </div>
+              <div class="index-post-line"></div>
+            </div>
+          </a>
           <a href="work/code-landscape.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/code-landscape/600/750" data-production="개인" data-tech="" data-year="2021" data-type="영상" data-tags="인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
@@ -467,12 +431,32 @@
               <div class="index-post-line"></div>
             </div>
           </a>
-          <a href="work/resonant-grid.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/resonant-grid/600/750" data-production="회사" data-tech="Arduino" data-year="2020" data-type="설치" data-tags="인터랙티브">
+          <a href="work/mirror-phase.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/mirror-phase/600/750" data-production="공동" data-tech="" data-year="2021" data-type="퍼포먼스" data-tags="인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2020</div>
-                <div class="index-post-title">Resonant Grid</div>
-                <div class="index-post-type">설치, 인터랙티브, 프로젝션</div>
+                <div class="index-post-year">2021</div>
+                <div class="index-post-title">Mirror Phase</div>
+                <div class="index-post-type">퍼포먼스, 인터랙티브</div>
+              </div>
+              <div class="index-post-line"></div>
+            </div>
+          </a>
+          <a href="work/pulse-terrain.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/pulse-terrain/600/750" data-production="공동" data-tech="Unreal" data-year="2021" data-type="영상">
+            <div class="index-post-row">
+              <div class="index-post-cells">
+                <div class="index-post-year">2021</div>
+                <div class="index-post-title">Pulse Terrain</div>
+                <div class="index-post-type">영상, 프로젝션</div>
+              </div>
+              <div class="index-post-line"></div>
+            </div>
+          </a>
+          <a href="work/silent-circuit.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/silent-circuit/600/750" data-production="개인" data-tech="Arduino" data-year="2021" data-type="설치" data-tags="인터랙티브">
+            <div class="index-post-row">
+              <div class="index-post-cells">
+                <div class="index-post-year">2021</div>
+                <div class="index-post-title">Silent Circuit</div>
+                <div class="index-post-type">설치, 인터랙티브</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -487,12 +471,32 @@
               <div class="index-post-line"></div>
             </div>
           </a>
-          <a href="work/slow-circuit.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/slow-circuit/600/750" data-production="개인" data-tech="Arduino" data-year="2025" data-type="설치" data-tags="프로젝션">
+          <a href="work/data-bloom.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/data-bloom/600/750" data-production="개인" data-tech="" data-year="2020" data-type="설치" data-tags="프로젝션">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2025</div>
-                <div class="index-post-title">Slow Circuit</div>
+                <div class="index-post-year">2020</div>
+                <div class="index-post-title">Data Bloom</div>
                 <div class="index-post-type">설치, 프로젝션</div>
+              </div>
+              <div class="index-post-line"></div>
+            </div>
+          </a>
+          <a href="work/gravity-well.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/gravity-well/600/750" data-production="회사" data-tech="Unreal" data-year="2020" data-type="설치" data-tags="인터랙티브">
+            <div class="index-post-row">
+              <div class="index-post-cells">
+                <div class="index-post-year">2020</div>
+                <div class="index-post-title">Gravity Well</div>
+                <div class="index-post-type">설치, 인터랙티브, 프로젝션</div>
+              </div>
+              <div class="index-post-line"></div>
+            </div>
+          </a>
+          <a href="work/resonant-grid.html" class="index-post reveal" data-preview-bg="https://picsum.photos/seed/resonant-grid/600/750" data-production="회사" data-tech="Arduino" data-year="2020" data-type="설치" data-tags="인터랙티브">
+            <div class="index-post-row">
+              <div class="index-post-cells">
+                <div class="index-post-year">2020</div>
+                <div class="index-post-title">Resonant Grid</div>
+                <div class="index-post-type">설치, 인터랙티브, 프로젝션</div>
               </div>
               <div class="index-post-line"></div>
             </div>

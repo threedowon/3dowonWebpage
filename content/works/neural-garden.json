@@ -1,0 +1,29 @@
+{
+  "slug": "neural-garden",
+  "title": "Neural Garden",
+  "year": 2024,
+  "type": "설치",
+  "tags": [
+    "인터랙티브"
+  ],
+  "tech": [
+    "Arduino"
+  ],
+  "production": "개인",
+  "thumbnail": "https://picsum.photos/seed/neural-garden/600/750",
+  "grid_type_label": "설치, 인터랙티브",
+  "index_type_label": "설치, 인터랙티브",
+  "preview_bg": "https://picsum.photos/seed/neural-garden/600/750",
+  "hero_image": "https://picsum.photos/seed/neural-garden/600/750",
+  "description": "<p>인공신경망이 생성한 식물 형태가 공간 안에서 자라나고 소멸하는 생성 설치 작품입니다.</p>",
+  "meta_year": "2024",
+  "meta_type": "인터랙티브 설치",
+  "meta_medium": "식물, 센서, 프로젝션",
+  "meta_tech": "Arduino, 실시간 그래픽",
+  "meta_production": "개인 제작",
+  "gallery": [
+    "https://picsum.photos/seed/neuralga1/1920/1440",
+    "https://picsum.photos/seed/neuralga2/1920/1440",
+    "https://picsum.photos/seed/neuralga3/1920/1440"
+  ]
+}

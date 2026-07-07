@@ -1,0 +1,389 @@
+import { loadJson, loadWorks, writeOutput } from './lib/content.mjs';
+import { dataAttrs, escapeHtml } from './lib/html.mjs';
+
+const CSS_VERSION = '145';
+const JS_VERSION = '81';
+
+function siteFooter(site) {
+  return `        E. <a href="mailto:${escapeHtml(site.email)}">${escapeHtml(site.email)}</a><br />
+        <a href="${escapeHtml(site.instagram)}" target="_blank" rel="noopener">I. instagram.com/3dowon</a><br />
+        <a href="${escapeHtml(site.vimeo)}" target="_blank" rel="noopener">V. vimeo.com/3dowon</a><br />
+        <a href="${escapeHtml(site.youtube)}" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>`;
+}
+
+function mobileShell(site, activeNav = '') {
+  const navClass = (name) => (activeNav === name ? ' active' : '');
+  return `  <div class="mo-header">
+    <a href="index.html" class="mo-logo">3Dowon</a>
+    <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
+  </div>
+  <div class="mo-overlay" id="moOverlay"></div>
+  <nav class="mo-nav" id="moNav" aria-hidden="true">
+    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="닫기">×</button>
+    <div class="mo-nav-links">
+      <a href="index.html"${navClass('works')}>WORKS</a>
+      <a href="lab.html"${navClass('lab')}>LAB</a>
+      <a href="about.html"${navClass('about')}>ABOUT</a>
+      <a href="cv.html"${navClass('cv')}>CV</a>
+    </div>
+    <div class="mo-nav-footer">
+      <div class="mo-nav-footer-logo">3Dowon</div>
+      <div class="mo-nav-footer-info">
+${siteFooter(site)}
+      </div>
+    </div>
+  </nav>`;
+}
+
+function simpleHeader(site, activeNav) {
+  const navClass = (name) => `nav-cell nav-${name}${activeNav === name ? ' active' : ''}`;
+  return `  <header class="site-header site-header--simple">
+    <a href="index.html" class="sidebar-logo">3Dowon</a>
+    <nav class="nav-main">
+      <a href="index.html" class="${navClass('works')}">WORKS</a>
+      <a href="lab.html" class="${navClass('lab')}">LAB</a>
+      <a href="about.html" class="${navClass('about')}">ABOUT</a>
+      <a href="cv.html" class="${navClass('cv')}">CV</a>
+      <a href="contact.html" class="${navClass('contact')}">CONTACT</a>
+    </nav>
+  </header>
+${mobileShell(site, activeNav)}`;
+}
+
+function pageShell({ title, body, header, extraHead = '' }) {
+  return `<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${escapeHtml(title)}</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="stylesheet" href="styles.css?v=${CSS_VERSION}" />
+${extraHead}
+</head>
+<body>
+${header}
+  <main>
+${body}
+  </main>
+  <script src="script.js?v=${JS_VERSION}"></script>
+</body>
+</html>
+`;
+}
+
+function normalizeList(values) {
+  if (!Array.isArray(values)) return [];
+  return values
+    .map((value) => {
+      if (typeof value === 'string') return value;
+      if (value && typeof value === 'object') {
+        return value.tag || value.item || value.image || value.url || '';
+      }
+      return '';
+    })
+    .filter(Boolean);
+}
+
+function normalizeWork(work) {
+  return {
+    ...work,
+    tags: normalizeList(work.tags),
+    tech: normalizeList(work.tech),
+    gallery: normalizeList(work.gallery),
+  };
+}
+
+function renderGridPost(work) {
+  return `        <a href="work/${work.slug}.html" class="img-post reveal" ${dataAttrs(work)}>
+          <div class="img-post-thumbimg" style="background-image:url(${work.thumbnail})"></div>
+          <div class="img-post-title">${escapeHtml(work.title)}</div>
+          <div class="img-post-type">${escapeHtml(work.grid_type_label)}</div>
+          <div class="img-post-year">${work.year}</div>
+        </a>`;
+}
+
+function renderIndexPost(work) {
+  const preview = work.preview_bg || work.thumbnail;
+  return `          <a href="work/${work.slug}.html" class="index-post reveal" data-preview-bg="${preview}" ${dataAttrs(work)}>
+            <div class="index-post-row">
+              <div class="index-post-cells">
+                <div class="index-post-year">${work.year}</div>
+                <div class="index-post-title">${escapeHtml(work.title)}</div>
+                <div class="index-post-type">${escapeHtml(work.index_type_label)}</div>
+              </div>
+              <div class="index-post-line"></div>
+            </div>
+          </a>`;
+}
+
+function buildIndex(works, site) {
+  const gridPosts = works.map(renderGridPost).join('\n');
+  const indexPosts = works.map(renderIndexPost).join('\n');
+  const body = `    <div class="works-view works-view--grid" id="gridView">
+      <div class="img-post-box" id="imgPostBox">
+${gridPosts}
+      </div>
+    </div>
+
+    <div class="works-view works-view--index hidden" id="indexView">
+      <div class="index-box">
+        <div class="index-category">
+          <div class="index-category-cells">
+            <div class="index-category-year">년도</div>
+            <div class="index-category-title">작업</div>
+            <div class="index-category-type">유형</div>
+          </div>
+          <div class="index-category-line"></div>
+        </div>
+        <div class="index-post-box" id="indexPostBox">
+${indexPosts}
+        </div>
+        <div id="indexPreview" class="index-post-thumbimg"></div>
+      </div>
+    </div>
+
+    <p class="no-results" style="margin-left:30px">검색 결과가 없습니다.</p>`;
+
+  const header = `  <header class="site-header site-header--works">
+    <a href="index.html" class="sidebar-logo">3Dowon</a>
+    <nav class="nav-main">
+      <div class="nav-accordion is-open">
+        <a href="index.html" class="nav-cell nav-works active">WORKS</a>
+        <div class="sidebar-controls">
+          <ul class="view-toggle">
+            <li data-view="grid" class="active">그리드</li>
+            <li data-view="index">인덱스</li>
+          </ul>
+          <ul class="filter-checks filter-checks--type">
+            <li data-filter="type" data-value="설치">설치</li>
+            <li data-filter="type" data-value="영상">영상</li>
+            <li data-filter="type" data-value="퍼포먼스">퍼포먼스</li>
+            <li data-filter="type" data-value="전시">전시</li>
+            <li data-filter="type" data-value="인터랙티브">인터랙티브</li>
+            <li data-filter="type" data-value="프로젝션">프로젝션</li>
+          </ul>
+          <ul class="filter-checks filter-checks--tech">
+            <li data-filter="tech" data-value="Unreal">Unreal</li>
+            <li data-filter="tech" data-value="Unity">Unity</li>
+            <li data-filter="tech" data-value="Arduino">Arduino</li>
+            <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+          </ul>
+        </div>
+      </div>
+      <a href="lab.html" class="nav-cell nav-lab">LAB</a>
+      <a href="about.html" class="nav-cell nav-about">ABOUT</a>
+      <a href="cv.html" class="nav-cell nav-cv">CV</a>
+      <a href="contact.html" class="nav-cell nav-contact">CONTACT</a>
+    </nav>
+  </header>
+
+  <div class="mo-header">
+    <a href="index.html" class="mo-logo">3Dowon</a>
+    <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
+  </div>
+  <div class="mo-filters mo-filters--type">
+    <span class="mo-filter" data-filter="type" data-value="설치">설치</span>
+    <span class="mo-filter" data-filter="type" data-value="영상">영상</span>
+    <span class="mo-filter" data-filter="type" data-value="퍼포먼스">퍼포먼스</span>
+    <span class="mo-filter" data-filter="type" data-value="전시">전시</span>
+    <span class="mo-filter" data-filter="type" data-value="인터랙티브">인터랙티브</span>
+    <span class="mo-filter" data-filter="type" data-value="프로젝션">프로젝션</span>
+  </div>
+  <div class="mo-filters mo-filters--tech">
+    <span class="mo-filter" data-filter="tech" data-value="Unreal">Unreal</span>
+    <span class="mo-filter" data-filter="tech" data-value="Unity">Unity</span>
+    <span class="mo-filter" data-filter="tech" data-value="Arduino">Arduino</span>
+    <span class="mo-filter" data-filter="tech" data-value="3ds Max">3ds Max</span>
+  </div>
+${mobileShell(site, 'works')}`;
+
+  return pageShell({ title: '3Dowon — Media Artist', body, header });
+}
+
+function buildWorkPage(work, site) {
+  const gallery = (work.gallery || [])
+    .map(
+      (src, index) =>
+        `          <li class="reveal"><img src="${src}" alt="${escapeHtml(work.title)} ${index + 1}" class="project-detail-image" /></li>`
+    )
+    .join('\n');
+
+  const body = `    <div class="post-projects">
+      <div class="post-hero reveal">
+        <img src="${work.hero_image || work.thumbnail}" alt="${escapeHtml(work.title)}" class="post-hero-image" />
+      </div>
+      <div class="post-left">
+      <div class="post-title reveal">${escapeHtml(work.title)}</div>
+      <div class="post-text">
+        <div class="post-des">
+          <div class="post-des-box1 reveal">
+            <div class="post-des-list"><div class="post-q">연도</div><div class="post-a">${escapeHtml(work.meta_year || String(work.year))}</div></div>
+            <div class="post-des-list"><div class="post-q">유형</div><div class="post-a">${escapeHtml(work.meta_type || '')}</div></div>
+            <div class="post-des-list"><div class="post-q">매체</div><div class="post-a">${escapeHtml(work.meta_medium || '')}</div></div>
+            <div class="post-des-list"><div class="post-q">기술</div><div class="post-a">${escapeHtml(work.meta_tech || '')}</div></div>
+            <div class="post-des-list"><div class="post-q">제작</div><div class="post-a">${escapeHtml(work.meta_production || '')}</div></div>
+          </div>
+          <div class="post-detail-des reveal">
+            ${work.description || ''}
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="post-img-box">
+        <ul class="project-detail-gallery">
+${gallery}
+        </ul>
+      </div>
+    </div>`;
+
+  const header = `  <header class="site-header site-header--project">
+    <a href="../index.html" class="sidebar-logo sidebar-logo--mark"><img src="../assets/logo-mark.svg" alt="3Dowon" class="sidebar-logo-img" width="28" height="36" /></a>
+        <nav class="nav-main">
+      <a href="../index.html" class="nav-cell nav-works active">WORKS</a>
+      <a href="../lab.html" class="nav-cell nav-lab">LAB</a>
+      <a href="../about.html" class="nav-cell nav-about">ABOUT</a>
+      <a href="../cv.html" class="nav-cell nav-cv">CV</a>
+      <a href="../contact.html" class="nav-cell nav-contact">CONTACT</a>
+    </nav>
+    <button class="btn-back" onclick="history.back()" aria-label="뒤로">←</button>
+  </header>
+  <div class="mo-header">
+    <a href="../index.html" class="mo-logo">3Dowon</a>
+    <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
+  </div>
+    <div class="mo-overlay" id="moOverlay"></div>
+  <nav class="mo-nav" id="moNav" aria-hidden="true">
+    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="닫기">×</button>
+    <div class="mo-nav-links">
+      <a href="../index.html">WORKS</a>
+      <a href="../lab.html">LAB</a>
+      <a href="../about.html">ABOUT</a>
+      <a href="../cv.html">CV</a>
+    </div>
+    <div class="mo-nav-footer">
+      <div class="mo-nav-footer-logo">3Dowon</div>
+      <div class="mo-nav-footer-info">
+${siteFooter(site)}
+      </div>
+    </div>
+  </nav>`;
+
+  return `<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${escapeHtml(work.title)} — 3Dowon</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="stylesheet" href="../styles.css?v=${CSS_VERSION}" />
+</head>
+<body>
+${header}
+  <main>
+${body}
+  </main>
+  <script src="../script.js?v=${JS_VERSION}"></script>
+</body>
+</html>
+`;
+}
+
+function buildAbout(about, site) {
+  const paragraphs = about.body
+    .split(/\n{2,}/)
+    .map((p) => `          <p>${p.trim()}</p>`)
+    .join('\n');
+  const meta = about.meta.replace(/\n/g, '<br />\n            ');
+  const body = `    <div class="about-box">
+      <div class="about-left">
+        <div class="about-selector">
+          <div class="about-name">${escapeHtml(about.name)}</div>
+          <div class="about-meta">
+            ${meta}
+          </div>
+        </div>
+        <div class="about-section2">
+${paragraphs}
+        </div>
+      </div>
+      <div class="about-right">
+        <div class="about-img" style="background-image:url(${about.image})"></div>
+      </div>
+    </div>`;
+  return pageShell({ title: 'about — 3Dowon', body, header: simpleHeader(site, 'about') });
+}
+
+function buildCv(cv, site) {
+  const sections = cv.sections
+    .map((section) => {
+      const entries = section.entries
+        .map(
+          (entry) => `          <div class="cv-entry">
+            <div class="cv-year">${entry.year}</div>
+            <div class="cv-desc">${entry.description}</div>
+          </div>`
+        )
+        .join('\n');
+      return `      <section class="cv-section reveal">
+        <h3>${escapeHtml(section.title)}</h3>
+        <div class="cv-entries">
+${entries}
+        </div>
+      </section>`;
+    })
+    .join('\n\n');
+  const body = `    <div class="cv-box">
+
+${sections}
+    </div>`;
+  return pageShell({ title: 'CV — 3Dowon', body, header: simpleHeader(site, 'cv') });
+}
+
+function buildLab(lab, site) {
+  const items = lab.items
+    .map(
+      (item) => `        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(${item.image})"></div>
+          <div class="lab-post-caption">${escapeHtml(item.caption)}</div>
+        </div>`
+    )
+    .join('\n');
+  const body = `    <div class="lab-view">
+      <div class="img-post-box" id="labPostBox">
+${items}
+      </div>
+    </div>`;
+  return pageShell({ title: 'LAB — 3Dowon', body, header: simpleHeader(site, 'lab') });
+}
+
+function buildContact(site) {
+  const body = `    <div class="contact-box">
+      <div class="contact-info reveal">
+        E. <a href="mailto:${escapeHtml(site.email)}">${escapeHtml(site.email)}</a><br />
+        <a href="${escapeHtml(site.instagram)}" target="_blank">I. instagram.com/3dowon</a><br />
+        <a href="${escapeHtml(site.vimeo)}" target="_blank">V. vimeo.com/3dowon</a><br />
+        <a href="${escapeHtml(site.youtube)}" target="_blank">Y. youtube.com/@3dowon</a>
+      </div>
+    </div>`;
+  return pageShell({ title: 'contact — 3Dowon', body, header: simpleHeader(site, 'contact') });
+}
+
+const site = loadJson('content/site.json');
+const about = loadJson('content/about.json');
+const cv = loadJson('content/cv.json');
+const lab = loadJson('content/lab.json');
+const works = loadWorks().map(normalizeWork);
+
+writeOutput('index.html', buildIndex(works, site));
+writeOutput('about.html', buildAbout(about, site));
+writeOutput('cv.html', buildCv(cv, site));
+writeOutput('lab.html', buildLab(lab, site));
+writeOutput('contact.html', buildContact(site));
+
+for (const work of works) {
+  writeOutput(`work/${work.slug}.html`, buildWorkPage(work, site));
+}
+
+console.log(`Built ${works.length} works and site pages from content/`);

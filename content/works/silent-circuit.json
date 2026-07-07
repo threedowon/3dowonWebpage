@@ -1,0 +1,29 @@
+{
+  "slug": "silent-circuit",
+  "title": "Silent Circuit",
+  "year": 2021,
+  "type": "설치",
+  "tags": [
+    "인터랙티브"
+  ],
+  "tech": [
+    "Arduino"
+  ],
+  "production": "개인",
+  "thumbnail": "https://picsum.photos/seed/silent-circuit/600/750",
+  "grid_type_label": "설치, 인터랙티브",
+  "index_type_label": "설치, 인터랙티브",
+  "preview_bg": "https://picsum.photos/seed/silent-circuit/600/750",
+  "hero_image": "https://picsum.photos/seed/silent-circuit/600/750",
+  "description": "<p>전기 신호의 흐름을 빛의 회로로 시각화한 인터랙티브 설치입니다.</p>",
+  "meta_year": "2021",
+  "meta_type": "인터랙티브 설치",
+  "meta_medium": "피지컬 컴퓨팅, LED",
+  "meta_tech": "Arduino, 시리얼 통신",
+  "meta_production": "개인 제작",
+  "gallery": [
+    "https://picsum.photos/seed/silentci1/1920/1440",
+    "https://picsum.photos/seed/silentci2/1920/1440",
+    "https://picsum.photos/seed/silentci3/1920/1440"
+  ]
+}

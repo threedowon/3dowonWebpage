@@ -1,0 +1,64 @@
+{
+  "items": [
+    {
+      "image": "https://picsum.photos/seed/lab-sensor/600/750",
+      "caption": "센서 반응 매핑 테스트"
+    },
+    {
+      "image": "https://picsum.photos/seed/lab-unreal/600/750",
+      "caption": "언리얼 조명·그림자 테스트"
+    },
+    {
+      "image": "https://picsum.photos/seed/lab-window/600/750",
+      "caption": "창문 인터랙션 프로토타입"
+    },
+    {
+      "image": "https://picsum.photos/seed/lab-pcomp/600/750",
+      "caption": "피지컬 컴퓨팅 회로 실험"
+    },
+    {
+      "image": "https://picsum.photos/seed/lab-projection/600/750",
+      "caption": "프로젝션 캘리브레이션"
+    },
+    {
+      "image": "https://picsum.photos/seed/lab-archive/600/750",
+      "caption": "이전 작업 아카이브 정리"
+    },
+    {
+      "image": "https://picsum.photos/seed/lab-touch/600/750",
+      "caption": "터치 반응 속도 테스트"
+    },
+    {
+      "image": "https://picsum.photos/seed/lab-plant/600/750",
+      "caption": "식물 신호 센서 실험"
+    },
+    {
+      "image": "https://picsum.photos/seed/lab-water/600/750",
+      "caption": "물 표면 투사 테스트"
+    },
+    {
+      "image": "https://picsum.photos/seed/lab-light/600/750",
+      "caption": "DMX 조명 시퀀스 테스트"
+    },
+    {
+      "image": "https://picsum.photos/seed/lab-audio/600/750",
+      "caption": "오디오 반응 매핑 실험"
+    },
+    {
+      "image": "https://picsum.photos/seed/lab-map/600/750",
+      "caption": "프로젝션 맵핑 스케치"
+    },
+    {
+      "image": "https://picsum.photos/seed/lab-servo/600/750",
+      "caption": "서보 모터 프로토타입"
+    },
+    {
+      "image": "https://picsum.photos/seed/lab-shader/600/750",
+      "caption": "실시간 셰이더 실험"
+    },
+    {
+      "image": "https://picsum.photos/seed/lab-field/600/750",
+      "caption": "현장 설치 시뮬레이션"
+    }
+  ]
+}

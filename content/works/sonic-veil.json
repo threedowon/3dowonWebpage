@@ -1,0 +1,27 @@
+{
+  "slug": "sonic-veil",
+  "title": "Sonic Veil",
+  "year": 2024,
+  "type": "설치",
+  "tags": [
+    "프로젝션"
+  ],
+  "tech": [],
+  "production": "공동",
+  "thumbnail": "https://picsum.photos/seed/sonic-veil/600/750",
+  "grid_type_label": "설치, 프로젝션",
+  "index_type_label": "설치, 프로젝션",
+  "preview_bg": "https://picsum.photos/seed/sonic-veil/600/750",
+  "hero_image": "https://picsum.photos/seed/sonic-veil/600/750",
+  "description": "<p>공간음향과 프로젝션을 결합한 설치 작업이다. 관객의 위치에 따라 소리의 밀도와 빛의 결이 달라지는 경험을 설계했다.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">담당</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Max/MSP 공간음향 패치 개발</li>\r\n              <li>TouchDesigner 비주얼 연동</li>\r\n              <li>설치·시연 환경 세팅</li>\r\n            </ul>",
+  "meta_year": "2024",
+  "meta_type": "프로젝션 설치",
+  "meta_medium": "공간음향, 프로젝션",
+  "meta_tech": "Max/MSP, TouchDesigner",
+  "meta_production": "공동 제작",
+  "gallery": [
+    "https://picsum.photos/seed/sonicvei1/1920/1440",
+    "https://picsum.photos/seed/sonicvei2/1920/1440",
+    "https://picsum.photos/seed/sonicvei3/1920/1440"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "slug": "gravity-well",
+  "title": "Gravity Well",
+  "year": 2020,
+  "type": "설치",
+  "tags": [
+    "인터랙티브"
+  ],
+  "tech": [
+    "Unreal"
+  ],
+  "production": "회사",
+  "thumbnail": "https://picsum.photos/seed/gravity-well/600/750",
+  "grid_type_label": "설치, 인터랙티브",
+  "index_type_label": "설치, 인터랙티브, 프로젝션",
+  "preview_bg": "https://picsum.photos/seed/gravity-well/600/750",
+  "hero_image": "https://picsum.photos/seed/gravity-well/600/750",
+  "description": "<p>관객의 움직임에 반응하는 인터랙티브 설치 프로젝트이다. 중력 데이터를 시각·청각 요소로 변환해 공간 전체의 몰입감을 높였다.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">담당</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Unreal Engine 인터랙션 환경 제작</li>\r\n              <li>ZigSim 센서 데이터 연동</li>\r\n              <li>물리 시뮬레이션·사운드 디자인 협업</li>\r\n            </ul>",
+  "meta_year": "2020",
+  "meta_type": "인터랙티브 설치",
+  "meta_medium": "프로젝션, 물리 시뮬레이션",
+  "meta_tech": "Unreal Engine, ZigSim",
+  "meta_production": "I M fine",
+  "gallery": [
+    "https://picsum.photos/seed/gravityw1/1920/1440",
+    "https://picsum.photos/seed/gravityw2/1920/1440",
+    "https://picsum.photos/seed/gravityw3/1920/1440"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "slug": "after-image",
+  "title": "After Image",
+  "year": 2020,
+  "type": "퍼포먼스",
+  "tags": [],
+  "tech": [],
+  "production": "공동",
+  "thumbnail": "https://picsum.photos/seed/after-image/600/750",
+  "grid_type_label": "퍼포먼스",
+  "index_type_label": "퍼포먼스, 프로젝션",
+  "preview_bg": "https://picsum.photos/seed/after-image/600/750",
+  "hero_image": "https://picsum.photos/seed/after-image/600/750",
+  "description": "<p>잔상의 개념을 몸과 영상으로 탐구하는 라이브 퍼포먼스입니다.</p>",
+  "meta_year": "2020",
+  "meta_type": "퍼포먼스",
+  "meta_medium": "프로젝션, 라이브 액션",
+  "meta_tech": "TouchDesigner, Kinect",
+  "meta_production": "공동 제작",
+  "gallery": [
+    "https://picsum.photos/seed/afterima1/1920/1440",
+    "https://picsum.photos/seed/afterima2/1920/1440",
+    "https://picsum.photos/seed/afterima3/1920/1440"
+  ]
+}
