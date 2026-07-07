@@ -317,25 +317,45 @@ app.put('/api/site', (req, res) => {
 // ── Deploy (git add + commit + push) ──
 
 function git(args) {
-  return execFileSync('git', args, { cwd: ROOT }).toString().trim();
+  return execFileSync('git', args, {
+    cwd: ROOT,
+    timeout: 20000, // fail fast instead of hanging the request if something goes wrong
+    // Without this, `git push` over HTTPS with no cached credentials silently waits
+    // for a username/password prompt that has nowhere to render (no TTY) and hangs
+    // forever — this makes it fail immediately with a clear error instead.
+    env: { ...process.env, GIT_TERMINAL_PROMPT: '0' },
+  }).toString().trim();
 }
 
 app.post('/api/deploy', (req, res) => {
   try {
+    const branch = git(['rev-parse', '--abbrev-ref', 'HEAD']);
     const status = git(['status', '--porcelain']);
-    if (!status) {
+    if (status) {
+      git(['add', '-A']);
+      const message = (req.body.message || '').trim() || `Update content via admin (${new Date().toISOString()})`;
+      git(['commit', '-m', message]);
+    }
+
+    // A previous deploy may have committed but failed to push — check for unpushed
+    // commits too, not just working-tree changes, so retrying actually retries.
+    let ahead = '0';
+    try {
+      ahead = git(['rev-list', '--count', `origin/${branch}..${branch}`]);
+    } catch {
+      ahead = '1'; // no upstream info (e.g. never pushed) — attempt the push anyway
+    }
+
+    if (!status && ahead === '0') {
       return res.json({ ok: true, deployed: false, message: '변경사항이 없어요.' });
     }
 
-    git(['add', '-A']);
-    const message = (req.body.message || '').trim() || `Update content via admin (${new Date().toISOString()})`;
-    git(['commit', '-m', message]);
-    const branch = git(['rev-parse', '--abbrev-ref', 'HEAD']);
     git(['push', 'origin', branch]);
-
     res.json({ ok: true, deployed: true, branch, message: `"${branch}" 브랜치로 push 완료했어요. 잠시 후 사이트에 반영돼요.` });
   } catch (err) {
-    const detail = err.stderr ? err.stderr.toString() : err.message;
+    const detail = err.stderr && err.stderr.length ? err.stderr.toString()
+      : err.signal === 'SIGTERM' ? 'git 명령이 응답 없이 멈춰서 중단했어요 (인증 문제일 가능성이 높아요 — 터미널에서 git push가 정상 동작하는지 먼저 확인해주세요).'
+      : err.message;
     res.status(500).json({ error: detail });
   }
 });
