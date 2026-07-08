@@ -1111,24 +1111,22 @@ main:has(.contact-box) {
     margin-bottom: 24px;
   }
 
-  body:has(.site-header--project) .post-left {
-    grid-row: 1 / span 2;
-  }
-
   body:has(.site-header--project) .post-img-box {
     grid-column: 2;
     grid-row: 2;
   }
 }
 
+/* Fixed (not sticky) — the text never moves at all as the gallery scrolls,
+   so it's taken out of grid flow entirely and pinned to the viewport. */
 body:has(.site-header--project) .post-left {
-  grid-column: 1;
-  position: sticky;
-  top: 20px;
-  height: calc(100vh - var(--logo-bar-h) - 40px);
+  position: fixed;
+  top: calc(var(--desktop-header-h) + 20px);
+  left: 27px;
+  width: 22.5%;
+  height: calc(100vh - var(--desktop-header-h) - 40px);
   overflow-y: auto;
   scrollbar-width: none;
-  width: 100%;
   z-index: 1;
   background: var(--bg);
 }
