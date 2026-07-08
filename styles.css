@@ -1201,6 +1201,15 @@ main:has(.contact-box) {
     word-break: normal;
     overflow-wrap: normal;
   }
+
+  /* English CV entries run noticeably longer than their Korean counterparts
+     and can overflow past column 3 into the viewport's horizontal scroll —
+     since the header is position:fixed, scrolling then desyncs it from the
+     grid below. Shrink the English text enough to keep entries on one line
+     within the available width at common desktop sizes. */
+  html[lang="en"] .cv-desc {
+    font-size: 0.88rem;
+  }
 }
 
 /* ── Single / Project Page ── */
