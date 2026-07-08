@@ -465,12 +465,7 @@ main:has(.contact-box) {
     transition: border-color 0.15s;
   }
 
-  .header-bar-col--works .nav-cell:not(.active) {
-    display: block;
-    width: 100%;
-  }
-
-  .header-bar-col--works .nav-cell.active {
+  .header-bar-col--works .nav-cell {
     display: inline-block;
     width: auto;
   }
@@ -480,12 +475,7 @@ main:has(.contact-box) {
     border-bottom-color: var(--line);
   }
 
-  .nav-main .nav-cell:not(.active) {
-    display: block;
-    width: 100%;
-  }
-
-  .nav-main .nav-cell.active {
+  .nav-main .nav-cell {
     display: inline-block;
     width: auto;
     align-self: flex-start;
