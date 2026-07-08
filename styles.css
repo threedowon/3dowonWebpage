@@ -1573,6 +1573,15 @@ body:has(.site-header--project) .post-detail-des::before {
   .about-right {
     grid-column: 2 / 4;
   }
+
+  .cv-section,
+  .cv-entry {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .cv-desc {
+    grid-column: 2 / 4;
+  }
 }
 
 /* ── Responsive ── */
