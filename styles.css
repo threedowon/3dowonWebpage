@@ -46,7 +46,7 @@
   --index-line-inset: 80px;
   --logo-bar-h: 140px;
   --desktop-header-h: 140px;
-  --mobile-bar-h: 200px;
+  --mobile-bar-h: 140px;
   --site-grid-cols: repeat(4, minmax(0, 1fr));
   --site-col-lines:
     linear-gradient(var(--line), var(--line)),
@@ -1440,7 +1440,7 @@ body:has(.site-header--project) .post-detail-des::before {
     display: block;
     width: auto;
     font-size: 1rem;
-    height: 11.2em;
+    height: 7.84em;
     max-width: min(calc(100vw - 80px), 340px);
   }
 
