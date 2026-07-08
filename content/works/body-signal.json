@@ -25,5 +25,12 @@
     "https://picsum.photos/seed/bodysign1/1920/1440",
     "https://picsum.photos/seed/bodysign2/1920/1440",
     "https://picsum.photos/seed/bodysign3/1920/1440"
-  ]
+  ],
+  "grid_type_label_en": "Performance",
+  "index_type_label_en": "Performance, Interactive",
+  "meta_type_en": "Interactive Performance",
+  "meta_medium_en": "Bio sensors, live video",
+  "meta_tech_en": "ESP32, Max/MSP",
+  "meta_production_en": "Collaborative Production",
+  "description_en": "<p>A performance work that converts a performer's biometric signals into visual and auditory elements in real time. Changes in heartbeat and breath expand into light and sound.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">Role</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Developed an ESP32 bio-sensor interface</li>\r\n              <li>Built real-time audio visualization in Max/MSP</li>\r\n              <li>Collaborated on performance direction and rehearsals</li>\r\n            </ul>"
 }

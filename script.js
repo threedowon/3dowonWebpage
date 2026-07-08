@@ -1,3 +1,34 @@
+// ── Language: browser-based first-visit redirect + persistence ──
+(function initLangRedirect() {
+  var STORAGE_KEY = 'lang-pref';
+  try {
+    var switchLinks = document.querySelectorAll('.lang-switch-link[data-lang]');
+    switchLinks.forEach(function (link) {
+      link.addEventListener('click', function () {
+        try {
+          localStorage.setItem(STORAGE_KEY, link.dataset.lang);
+        } catch (e) {}
+      });
+    });
+
+    var stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) return;
+
+    var browserLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+    var preferKo = browserLang.indexOf('ko') === 0;
+    var currentLang = document.documentElement.lang === 'ko' ? 'ko' : 'en';
+    localStorage.setItem(STORAGE_KEY, preferKo ? 'ko' : 'en');
+
+    if ((preferKo && currentLang === 'en') || (!preferKo && currentLang === 'ko')) {
+      var target = preferKo ? 'ko' : 'en';
+      var targetLink = document.querySelector('.lang-switch-link[data-lang="' + target + '"]');
+      if (targetLink) {
+        window.location.replace(targetLink.getAttribute('href'));
+      }
+    }
+  } catch (e) {}
+})();
+
 // ── Filter functionality (유형 + 기술) ──
 function initFilters() {
   if (document.querySelector('.post-projects')) return;

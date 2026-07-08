@@ -23,5 +23,12 @@
   "preview_bg": "/3dowonWebpage/assets/uploads/00.png",
   "index_type_label": "퍼포먼스, 프로젝션",
   "description": "<p>잔상의 개념을 몸과 영상으로 탐구하는 라이브 퍼포먼스입니다.</p>",
-  "year": 2024
+  "year": 2024,
+  "grid_type_label_en": "Performance",
+  "index_type_label_en": "Performance, Projection",
+  "meta_medium_en": "Projection, live action",
+  "meta_tech_en": "TouchDesigner, Kinect",
+  "meta_production_en": "Collaborative Production",
+  "meta_type_en": "Performance",
+  "description_en": "<p>A live performance exploring the concept of afterimage through body and video.</p>"
 }

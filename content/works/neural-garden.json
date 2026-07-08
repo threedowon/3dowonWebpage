@@ -25,5 +25,12 @@
     "https://picsum.photos/seed/neuralga1/1920/1440",
     "https://picsum.photos/seed/neuralga2/1920/1440",
     "https://picsum.photos/seed/neuralga3/1920/1440"
-  ]
+  ],
+  "grid_type_label_en": "Installation, Interactive",
+  "index_type_label_en": "Installation, Interactive",
+  "meta_type_en": "Interactive Installation",
+  "meta_medium_en": "Plants, sensors, projection",
+  "meta_tech_en": "Arduino, real-time graphics",
+  "meta_production_en": "Solo Production",
+  "description_en": "<p>A generative installation in which plant forms produced by a neural network grow and dissolve within the space.</p>"
 }

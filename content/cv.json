@@ -5,7 +5,8 @@
       "entries": [
         {
           "year": "2017–2019",
-          "description": "명지전문대학 소프트웨어콘텐츠"
+          "description": "명지전문대학 소프트웨어콘텐츠",
+          "description_en": "Myongji College, Software Content"
         }
       ]
     },
@@ -14,19 +15,23 @@
       "entries": [
         {
           "year": "2026.03–",
-          "description": "Nerdy Artist Union, 테크니컬 아티스트"
+          "description": "Nerdy Artist Union, 테크니컬 아티스트",
+          "description_en": "Nerdy Artist Union, Technical Artist"
         },
         {
           "year": "2024.01–",
-          "description": "3Dowon, 인터랙티브 미디어 아티스트"
+          "description": "3Dowon, 인터랙티브 미디어 아티스트",
+          "description_en": "3Dowon, Interactive Media Artist"
         },
         {
           "year": "2025.02–2026.01",
-          "description": "I M fine, 미디어아트 개발자"
+          "description": "I M fine, 미디어아트 개발자",
+          "description_en": "I M fine, Media Art Developer"
         },
         {
           "year": "2022.01–2023.12",
-          "description": "d'strict, 미디어아트 개발자"
+          "description": "d'strict, 미디어아트 개발자",
+          "description_en": "d'strict, Media Art Developer"
         }
       ]
     },
@@ -35,11 +40,13 @@
       "entries": [
         {
           "year": "2025.11",
-          "description": "단체전, <em>3Dowon's workdesk</em>, Uprising Festa vol.1, SETEC, 서울"
+          "description": "단체전, <em>3Dowon's workdesk</em>, Uprising Festa vol.1, SETEC, 서울",
+          "description_en": "Group Exhibition, <em>3Dowon's workdesk</em>, Uprising Festa vol.1, SETEC, Seoul"
         },
         {
           "year": "2025.03",
-          "description": "개인전, <em>몇 동 몇 호 (Postcode)</em>, CICA Museum, 김포"
+          "description": "개인전, <em>몇 동 몇 호 (Postcode)</em>, CICA Museum, 김포",
+          "description_en": "Solo Exhibition, <em>Postcode</em>, CICA Museum, Gimpo"
         }
       ]
     },
@@ -48,31 +55,38 @@
       "entries": [
         {
           "year": "2021",
-          "description": "대상, 실감형 콘텐츠 창작자 양성사업, KOCCA"
+          "description": "대상, 실감형 콘텐츠 창작자 양성사업, KOCCA",
+          "description_en": "Grand Prize, Immersive Content Creator Training Program, KOCCA"
         },
         {
           "year": "2019",
-          "description": "대상, VR 콘텐츠 공모, 문화체육관광부/KOCCA"
+          "description": "대상, VR 콘텐츠 공모, 문화체육관광부/KOCCA",
+          "description_en": "Grand Prize, VR Content Competition, Ministry of Culture, Sports and Tourism / KOCCA"
         },
         {
           "year": "2018",
-          "description": "대상, 성남 커넥트 게임캠프, 성남산업진흥원"
+          "description": "대상, 성남 커넥트 게임캠프, 성남산업진흥원",
+          "description_en": "Grand Prize, Seongnam Connect Game Camp, Seongnam Industry Promotion Agency"
         },
         {
           "year": "2018",
-          "description": "특별상, 공학밴드 페스티벌, 공학교육혁신협의회"
+          "description": "특별상, 공학밴드 페스티벌, 공학교육혁신협의회",
+          "description_en": "Special Prize, Engineering Band Festival, Council for Innovation in Engineering Education"
         },
         {
           "year": "2018",
-          "description": "대상, MR/AR/VR 콘텐츠 개발자 프로젝트 평가, SBA/명지전문대학"
+          "description": "대상, MR/AR/VR 콘텐츠 개발자 프로젝트 평가, SBA/명지전문대학",
+          "description_en": "Grand Prize, MR/AR/VR Content Developer Project Evaluation, SBA / Myongji College"
         },
         {
           "year": "2017",
-          "description": "대상, VR 개발 경진대회, 명지전문대학"
+          "description": "대상, VR 개발 경진대회, 명지전문대학",
+          "description_en": "Grand Prize, VR Development Competition, Myongji College"
         },
         {
           "year": "2017",
-          "description": "대상, 가상현실 콘텐츠 기획 경진대회, 명지전문대학"
+          "description": "대상, 가상현실 콘텐츠 기획 경진대회, 명지전문대학",
+          "description_en": "Grand Prize, Virtual Reality Content Planning Competition, Myongji College"
         }
       ]
     },
@@ -81,19 +95,23 @@
       "entries": [
         {
           "year": "2021.05–2021.11",
-          "description": "실감형 콘텐츠 창작자 양성사업, 한국콘텐츠진흥원 (KOCCA)"
+          "description": "실감형 콘텐츠 창작자 양성사업, 한국콘텐츠진흥원 (KOCCA)",
+          "description_en": "Immersive Content Creator Training Program, Korea Creative Content Agency (KOCCA)"
         },
         {
           "year": "2019.02–2019.08",
-          "description": "3D 그래픽 아티스트 과정, 한국전파진흥협회 (RAPA)"
+          "description": "3D 그래픽 아티스트 과정, 한국전파진흥협회 (RAPA)",
+          "description_en": "3D Graphic Artist Course, Korea Radio Promotion Association (RAPA)"
         },
         {
           "year": "2018.06–2018.12",
-          "description": "산업 맞춤형 MR/AR/VR 콘텐츠 개발 과정, 한국전파진흥협회(RAPA)"
+          "description": "산업 맞춤형 MR/AR/VR 콘텐츠 개발 과정, 한국전파진흥협회(RAPA)",
+          "description_en": "Industry-Tailored MR/AR/VR Content Development Course, Korea Radio Promotion Association (RAPA)"
         },
         {
           "year": "2018.03–2018.09",
-          "description": "가상/증강현실 콘텐츠 개발자 양성, 서울산업진흥원 (SBA)"
+          "description": "가상/증강현실 콘텐츠 개발자 양성, 서울산업진흥원 (SBA)",
+          "description_en": "Virtual/Augmented Reality Content Developer Training, Seoul Business Agency (SBA)"
         }
       ]
     }

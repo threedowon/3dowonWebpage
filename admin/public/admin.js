@@ -82,7 +82,9 @@ function renderWorkCard(work) {
         <label>제작<select name="production">${selectOptions(PRODUCTION_OPTIONS, work.production)}</select></label>
         <label>기술<div class="chk-group">${checkboxGroup('tech', TECH_OPTIONS, work.tech || [])}</div></label>
         <label>상세-기술<input name="meta_tech" value="${escapeAttr(work.meta_tech)}" /></label>
+        <label>상세-기술 (EN)<input name="meta_tech_en" value="${escapeAttr(work.meta_tech_en)}" /></label>
         <label>설명 (엔터로 줄바꿈)<textarea name="description" rows="4">${escapeHtml(work.description)}</textarea></label>
+        <label>설명 (EN)<textarea name="description_en" rows="4">${escapeHtml(work.description_en)}</textarea></label>
         <label>Vimeo URL<input name="vimeo_url" value="${escapeAttr(work.vimeo_url)}" /></label>
         <div class="field-row">
           <button type="submit">저장</button>
@@ -122,7 +124,9 @@ function renderWorkCard(work) {
         production: fd.get('production'),
         tech: fd.getAll('tech'),
         meta_tech: fd.get('meta_tech'),
+        meta_tech_en: fd.get('meta_tech_en'),
         description: fd.get('description'),
+        description_en: fd.get('description_en'),
         vimeo_url: fd.get('vimeo_url'),
       }),
     });
@@ -196,8 +200,11 @@ async function loadAbout() {
   const { about } = await api('/api/site');
   const form = document.getElementById('aboutForm');
   form.name.value = about.name;
+  form.name_en.value = about.name_en || '';
   form.meta.value = about.meta;
+  form.meta_en.value = about.meta_en || '';
   form.body.value = about.body;
+  form.body_en.value = about.body_en || '';
   document.getElementById('aboutImagePreview').src = imgUrl(about.image);
 }
 
@@ -207,7 +214,14 @@ document.getElementById('aboutForm').addEventListener('submit', async (e) => {
   await api('/api/about', {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name: fd.get('name'), meta: fd.get('meta'), body: fd.get('body') }),
+    body: JSON.stringify({
+      name: fd.get('name'),
+      name_en: fd.get('name_en'),
+      meta: fd.get('meta'),
+      meta_en: fd.get('meta_en'),
+      body: fd.get('body'),
+      body_en: fd.get('body_en'),
+    }),
   });
   alert('저장했어요.');
 });
@@ -264,11 +278,13 @@ function renderCv() {
       row.innerHTML = `
         <input value="${escapeAttr(entry.year)}" placeholder="연도" />
         <input value="${escapeAttr(entry.description)}" placeholder="내용 (HTML 가능, 예: <em>제목</em>, 장소)" />
+        <input value="${escapeAttr(entry.description_en || '')}" placeholder="내용 (EN)" />
         <button type="button" class="danger">×</button>
       `;
-      const [yearInput, descInput, removeBtn] = row.children;
+      const [yearInput, descInput, descEnInput, removeBtn] = row.children;
       yearInput.addEventListener('input', (e) => { entry.year = e.target.value; });
       descInput.addEventListener('input', (e) => { entry.description = e.target.value; });
+      descEnInput.addEventListener('input', (e) => { entry.description_en = e.target.value; });
       removeBtn.addEventListener('click', () => {
         section.entries.splice(ei, 1);
         renderCv();
@@ -277,7 +293,7 @@ function renderCv() {
     });
 
     card.querySelector('.add-entry').addEventListener('click', () => {
-      section.entries.push({ year: '', description: '' });
+      section.entries.push({ year: '', description: '', description_en: '' });
       renderCv();
     });
 
@@ -309,18 +325,23 @@ async function loadLab() {
     card.className = 'lab-card thumb-row';
     card.innerHTML = `
       <img src="${imgUrl(item.image)}" alt="" />
-      <input value="${escapeAttr(item.caption)}" class="lab-caption" />
+      <input value="${escapeAttr(item.caption)}" class="lab-caption" placeholder="캡션" />
+      <input value="${escapeAttr(item.caption_en || '')}" class="lab-caption" placeholder="캡션 (EN)" />
       <button type="button" class="danger">삭제</button>
     `;
-    const [img, captionInput, removeBtn] = card.children;
-    captionInput.addEventListener('change', async () => {
-      const items = lab.items.map((it, idx) => (idx === i ? { ...it, caption: captionInput.value } : it));
+    const [img, captionInput, captionEnInput, removeBtn] = card.children;
+    const saveCaptions = async () => {
+      const items = lab.items.map((it, idx) =>
+        idx === i ? { ...it, caption: captionInput.value, caption_en: captionEnInput.value } : it
+      );
       await api('/api/lab', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items }),
       });
-    });
+    };
+    captionInput.addEventListener('change', saveCaptions);
+    captionEnInput.addEventListener('change', saveCaptions);
     removeBtn.addEventListener('click', async () => {
       await api(`/api/lab/items/${i}`, { method: 'DELETE' });
       loadLab();
@@ -336,6 +357,7 @@ document.getElementById('newLabForm').addEventListener('submit', async (e) => {
   const fd = new FormData();
   fd.append('image', file);
   fd.append('caption', e.target.caption.value);
+  fd.append('caption_en', e.target.caption_en.value);
   try {
     await api('/api/lab/items', { method: 'POST', body: fd });
     e.target.reset();

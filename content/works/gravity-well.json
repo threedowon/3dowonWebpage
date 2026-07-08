@@ -25,5 +25,12 @@
     "https://picsum.photos/seed/gravityw1/1920/1440",
     "https://picsum.photos/seed/gravityw2/1920/1440",
     "https://picsum.photos/seed/gravityw3/1920/1440"
-  ]
+  ],
+  "grid_type_label_en": "Installation, Interactive",
+  "index_type_label_en": "Installation, Interactive, Projection",
+  "meta_type_en": "Interactive Installation",
+  "meta_medium_en": "Projection, physics simulation",
+  "meta_tech_en": "Unreal Engine, ZigSim",
+  "meta_production_en": "I M fine",
+  "description_en": "<p>An interactive installation project responding to the audience's movement. Gravity data is converted into visual and auditory elements to deepen the sense of immersion throughout the space.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">Role</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Built the interaction environment in Unreal Engine</li>\r\n              <li>Integrated ZigSim sensor data</li>\r\n              <li>Collaborated on physics simulation and sound design</li>\r\n            </ul>"
 }

@@ -23,5 +23,12 @@
     "https://picsum.photos/seed/fractalm1/1920/1440",
     "https://picsum.photos/seed/fractalm2/1920/1440",
     "https://picsum.photos/seed/fractalm3/1920/1440"
-  ]
+  ],
+  "grid_type_label_en": "Installation, Projection",
+  "index_type_label_en": "Installation, Projection",
+  "meta_type_en": "Projection Installation",
+  "meta_medium_en": "Projection mapping, video",
+  "meta_tech_en": "TouchDesigner, MadMapper",
+  "meta_production_en": "Collaborative Production",
+  "description_en": "<p>A projection installation visualizing layers of memory through a fractal structure. As the audience moves, video layers branch and overlap to create new patterns.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">Role</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Designed projection mapping in TouchDesigner</li>\r\n              <li>Configured output and blending in MadMapper</li>\r\n              <li>Coordinated the installation space layout</li>\r\n            </ul>"
 }
