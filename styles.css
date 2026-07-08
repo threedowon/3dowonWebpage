@@ -1509,6 +1509,53 @@ body:has(.site-header--project) .post-detail-des::before {
 
 .no-results.show { display: block; }
 
+/* ── Narrow desktop: collapse to a 3-column layout ──
+   Below this width the 4-column header/grid start clipping and overlapping
+   (filter labels run into each other). Drop one column everywhere instead:
+   the menu loses its otherwise-empty back/lang column (or, on the project
+   page where that column holds the back arrow, loses the WORKS column
+   instead); the works grid and Lab grid gain one fewer column; About's
+   bio text is confined to a single column. */
+@media (min-width: 769px) and (max-width: 1180px) {
+  .header-bar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .header-bar-col--back {
+    display: none;
+  }
+
+  .site-header--project .header-bar-col--back {
+    display: flex;
+  }
+
+  .site-header--project .header-bar-col--works {
+    display: none;
+  }
+
+  .works-view--grid .img-post-box {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    background-image:
+      linear-gradient(var(--line), var(--line)),
+      linear-gradient(var(--line), var(--line));
+    background-position: 33.3333% 0, 66.6667% 0;
+  }
+
+  .lab-view .img-post {
+    width: 16.6667%;
+    flex: 1 1 16.6667%;
+    max-width: 16.6667%;
+  }
+
+  .about-left {
+    grid-column: 1 / 2;
+  }
+
+  .about-right {
+    grid-column: 2 / 5;
+  }
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   :root {
