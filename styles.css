@@ -1554,7 +1554,7 @@ body:has(.site-header--project) .post-detail-des::before {
     flex: none;
     margin-left: 0;
     padding: 0 12px;
-    border-left: none;
+    border-left: 1px solid var(--line);
     box-sizing: border-box;
   }
 
