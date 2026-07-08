@@ -583,15 +583,6 @@ main:has(.contact-box) {
     border-right: 1px solid var(--line);
   }
 
-  .site-header--works .view-toggle,
-  .site-header--works .filter-checks--type,
-  .site-header--project .view-toggle,
-  .site-header--project .filter-checks--type,
-  .site-header--simple .view-toggle,
-  .site-header--simple .filter-checks--type {
-    border-bottom: none;
-  }
-
   .site-header--works .filter-checks--tech,
   .site-header--project .filter-checks--tech,
   .site-header--simple .filter-checks--tech {
@@ -1171,10 +1162,8 @@ main:has(.contact-box) {
 
   .cv-section h3 {
     grid-column: 1;
-    grid-row: 1;
-    align-self: start;
     width: auto;
-    margin: 0;
+    margin: 0 0 10px;
     padding: 0 12px;
     border-bottom: none;
     text-align: left;
@@ -1182,7 +1171,6 @@ main:has(.contact-box) {
 
   .cv-entries {
     grid-column: 1 / -1;
-    grid-row: 1;
     gap: 0;
     padding-left: 0;
   }
@@ -1195,27 +1183,16 @@ main:has(.contact-box) {
   }
 
   .cv-year {
-    grid-column: 2;
+    grid-column: 1;
     padding: 0 12px;
-    border-left: 1px solid var(--line);
   }
 
   .cv-desc {
-    grid-column: 3;
+    grid-column: 2 / -1;
     padding: 0 12px;
     white-space: nowrap;
     word-break: normal;
     overflow-wrap: normal;
-  }
-
-  /* English CV entries run noticeably longer than their Korean counterparts
-     and can overflow past column 3 into the viewport's horizontal scroll —
-     since the header is position:fixed, scrolling then desyncs it from the
-     grid below. Shrink the English text enough to keep entries on one line
-     within the available width at common desktop sizes. */
-  html[lang="en"] .cv-desc,
-  html[lang="en"] .cv-year {
-    font-size: 0.88rem;
   }
 }
 
@@ -1393,14 +1370,16 @@ body:has(.site-header--project) .post-detail-des::before {
 }
 
 .post-q {
-  width: 24%;
+  width: 30%;
+  flex-shrink: 0;
   font-size: var(--type-body);
   line-height: var(--type-body-line);
   word-break: keep-all;
 }
 
 .post-a {
-  width: 70%;
+  flex: 1;
+  width: auto;
   font-size: var(--type-body);
   line-height: var(--type-body-line);
   word-break: keep-all;
