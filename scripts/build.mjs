@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '208';
+const CSS_VERSION = '209';
 const JS_VERSION = '84';
 const LOGO_VERSION = '2';
 
