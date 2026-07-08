@@ -23,5 +23,12 @@
     "https://picsum.photos/seed/digitalt1/1920/1440",
     "https://picsum.photos/seed/digitalt2/1920/1440",
     "https://picsum.photos/seed/digitalt3/1920/1440"
-  ]
+  ],
+  "grid_type_label_en": "Video, Projection",
+  "index_type_label_en": "Video, Projection",
+  "meta_type_en": "Video",
+  "meta_medium_en": "Real-time video, projection",
+  "meta_tech_en": "TouchDesigner, Unity",
+  "meta_production_en": "Solo Production",
+  "description_en": "<p>A large-scale video installation visualizing the rhythm of data and tides. Real-time ocean data is transformed into the shape of waves.</p>"
 }

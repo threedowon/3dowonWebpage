@@ -24,5 +24,12 @@
   "preview_bg": "/3dowonWebpage/assets/uploads/01.jpg",
   "index_type_label": "설치, 인터랙티브, 프로젝션",
   "description": "<p>빛과 소리가 공명하는 설치 작품입니다. 관객의 움직임에 반응하여 실시간으로 변화하는 사운드스케이프와 빛의 패턴이 생성됩니다.</p>",
-  "year": 2024
+  "year": 2024,
+  "grid_type_label_en": "Installation, Interactive",
+  "index_type_label_en": "Installation, Interactive, Projection",
+  "meta_medium_en": "Projection, spatial audio",
+  "meta_tech_en": "Arduino, Unreal Engine, sensors",
+  "meta_production_en": "Solo Production",
+  "meta_type_en": "Interactive Installation",
+  "description_en": "<p>An installation where light and sound resonate together. Responding to the audience's movement, a soundscape and pattern of light shift in real time.</p>"
 }

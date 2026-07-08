@@ -23,5 +23,12 @@
     "https://picsum.photos/seed/mirrorph1/1920/1440",
     "https://picsum.photos/seed/mirrorph2/1920/1440",
     "https://picsum.photos/seed/mirrorph3/1920/1440"
-  ]
+  ],
+  "grid_type_label_en": "Performance",
+  "index_type_label_en": "Performance, Interactive",
+  "meta_type_en": "Interactive Performance",
+  "meta_medium_en": "Mirror, real-time video",
+  "meta_tech_en": "Kinect, TouchDesigner",
+  "meta_production_en": "Collaborative Production",
+  "description_en": "<p>A performance where mirror and video overlap, reflecting the audience's movement in real time.</p>"
 }

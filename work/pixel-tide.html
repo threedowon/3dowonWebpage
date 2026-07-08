@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pixel Tide — 3Dowon</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-  <link rel="stylesheet" href="../styles.css?v=198" />
+  <link rel="stylesheet" href="../styles.css?v=199" />
+
 </head>
 <body>
   <header class="site-header site-header--bar site-header--project">
@@ -13,7 +15,7 @@
       <div class="header-bar-col header-bar-col--logo">
         <a href="../index.html" class="sidebar-logo sidebar-logo--img"><img src="../assets/logo.png?v=2" alt="3Dowon" class="sidebar-logo-img" /></a>
       </div>
-      <div class="header-bar-col header-bar-col--back"><button class="btn-back" onclick="history.back()" aria-label="뒤로">←</button></div>
+      <div class="header-bar-col header-bar-col--back"><button class="btn-back" onclick="history.back()" aria-label="Back">←</button><div class="header-lang-switch"><a href="../work/pixel-tide.html" class="lang-switch-link active" data-lang="en" aria-current="true">EN</a><span class="lang-switch-sep">/</span><a href="../ko/work/pixel-tide.html" class="lang-switch-link" data-lang="ko">KO</a></div></div>
       <div class="header-bar-col header-bar-col--works">
         <div class="nav-accordion">
           <a href="../index.html" class="nav-cell nav-works active">WORKS</a>
@@ -31,17 +33,18 @@
   </header>
   <div class="mo-header">
     <a href="../index.html" class="mo-logo mo-logo--img"><img src="../assets/logo.png?v=2" alt="3Dowon" class="mo-logo-img" /></a>
-    <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
+    <button class="mo-menu-btn" id="moMenuBtn" aria-label="Menu"><span class="mo-menu-icon" aria-hidden="true"></span></button>
   </div>
   <div class="mo-overlay" id="moOverlay"></div>
   <nav class="mo-nav" id="moNav" aria-hidden="true">
-    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="닫기">×</button>
+    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="Close">×</button>
     <div class="mo-nav-links">
       <a href="../index.html">WORKS</a>
       <a href="../lab.html">LAB</a>
       <a href="../about.html">ABOUT</a>
       <a href="../cv.html">CV</a>
     </div>
+    <div class="mo-lang-switch"><a href="../work/pixel-tide.html" class="lang-switch-link active" data-lang="en" aria-current="true">EN</a><span class="lang-switch-sep">/</span><a href="../ko/work/pixel-tide.html" class="lang-switch-link" data-lang="ko">KO</a></div>
     <div class="mo-nav-footer">
       <div class="mo-nav-footer-info">
         E. <a href="mailto:3dowon@gmail.com">3dowon@gmail.com</a><br />
@@ -61,20 +64,20 @@
       <div class="post-text">
         <div class="post-des">
           <div class="post-des-box1 reveal">
-            <div class="post-des-list"><div class="post-q">연도</div><div class="post-a">2023</div></div>
-            <div class="post-des-list"><div class="post-q">유형</div><div class="post-a">영상</div></div>
-            <div class="post-des-list"><div class="post-q">매체</div><div class="post-a">실시간 그래픽, 스크린</div></div>
-            <div class="post-des-list"><div class="post-q">기술</div><div class="post-a">TouchDesigner, GLSL</div></div>
-            <div class="post-des-list"><div class="post-q">제작</div><div class="post-a">d'strict</div></div>
+            <div class="post-des-list"><div class="post-q">Year</div><div class="post-a">2023</div></div>
+            <div class="post-des-list"><div class="post-q">Type</div><div class="post-a">Video</div></div>
+            <div class="post-des-list"><div class="post-q">Medium</div><div class="post-a">Real-time graphics, screen</div></div>
+            <div class="post-des-list"><div class="post-q">Technology</div><div class="post-a">TouchDesigner, GLSL</div></div>
+            <div class="post-des-list"><div class="post-q">Production</div><div class="post-a">d'strict</div></div>
           </div>
           <div class="post-detail-des reveal">
-            <p>실시간 그래픽 기반의 대형 스크린 영상 프로젝트이다. 픽셀 단위의 흐름이 파도처럼 쌓이고 소멸하는 시각 경험을 구현했다.</p>
+            <p>A large-scale screen video project driven by real-time graphics. Pixel-level flows build up and dissolve like waves, forming a visual experience.</p>
             <div class="post-detail-block">
-              <h4 class="post-detail-label">담당</h4>
+              <h4 class="post-detail-label">Role</h4>
               <ul class="post-detail-list">
-              <li>실시간 영상 생성 시스템 개발</li>
-              <li>TouchDesigner·GLSL 셰이더 제작</li>
-              <li>재생 안정화 및 현장 튜닝</li>
+              <li>Developed a real-time video generation system</li>
+              <li>Built TouchDesigner and GLSL shaders</li>
+              <li>Stabilized playback and tuned the on-site setup</li>
             </ul>
           </div>
         </div>
@@ -90,6 +93,6 @@
       </div>
     </div>
   </main>
-  <script src="../script.js?v=83"></script>
+  <script src="../script.js?v=84"></script>
 </body>
 </html>

@@ -25,5 +25,12 @@
     "https://picsum.photos/seed/breathma1/1920/1440",
     "https://picsum.photos/seed/breathma2/1920/1440",
     "https://picsum.photos/seed/breathma3/1920/1440"
-  ]
+  ],
+  "grid_type_label_en": "Performance",
+  "index_type_label_en": "Performance, Interactive",
+  "meta_type_en": "Interactive Performance",
+  "meta_medium_en": "Breath sensor, video",
+  "meta_tech_en": "Arduino, Max/MSP",
+  "meta_production_en": "Solo Production",
+  "description_en": "<p>A live performance in which the rhythm of breath maps the entire space.</p>"
 }
