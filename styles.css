@@ -1073,6 +1073,7 @@ main:has(.contact-box) {
   background: transparent;
   color: var(--text);
   font-size: 1.4em;
+  font-weight: 200;
   cursor: pointer;
   display: flex;
   align-items: flex-start;
@@ -1122,7 +1123,6 @@ main:has(.contact-box) {
 
 body:has(.site-header--project) .post-left {
   grid-column: 1;
-  grid-row: 1;
   position: sticky;
   top: 20px;
   height: calc(100vh - var(--logo-bar-h) - 40px);
