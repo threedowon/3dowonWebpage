@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '194';
+const CSS_VERSION = '195';
 const JS_VERSION = '83';
 const LOGO_VERSION = '2';
 
@@ -82,13 +82,15 @@ function secondaryNav(prefix = '', activeNav = '') {
 
 function headerBar({ prefix = '', home = `${prefix}index.html`, activeNav = '', worksOpen = false, logoHtml, extraCol2 = '', variant = '' }) {
   const worksClass = `nav-cell nav-works${activeNav === 'works' ? ' active' : ''}`;
-  const showWorksControls = worksOpen || activeNav === 'works';
+  const showWorksControls = worksOpen || (activeNav === 'works' && variant !== 'project');
   const worksBlock = showWorksControls
       ? `        <div class="nav-accordion is-open">
           <a href="${home}" class="${worksClass}">WORKS</a>
 ${worksControls()}
         </div>`
-      : `        <a href="${home}" class="${worksClass}">WORKS</a>`;
+      : `        <div class="nav-accordion">
+          <a href="${home}" class="${worksClass}">WORKS</a>
+        </div>`;
 
   const variantClass =
     variant === 'project'
