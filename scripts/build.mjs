@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '207';
+const CSS_VERSION = '208';
 const JS_VERSION = '84';
 const LOGO_VERSION = '2';
 
@@ -152,13 +152,12 @@ function headerBar({
 }) {
   const worksClass = `nav-cell nav-works${activeNav === 'works' ? ' active' : ''}`;
   const showWorksControls = worksOpen || (activeNav === 'works' && variant !== 'project');
-  const worksBlock = showWorksControls
-      ? `        <div class="nav-accordion is-open">
+  // Always render the filter controls markup (even when visually hidden) so the
+  // header-bar-col--works column — and therefore the whole header row, via
+  // align-items:stretch — reserves the same height on every desktop page.
+  const worksBlock = `        <div class="nav-accordion${showWorksControls ? ' is-open' : ''}">
           <a href="${home}" class="${worksClass}">WORKS</a>
 ${worksControls()}
-        </div>`
-      : `        <div class="nav-accordion">
-          <a href="${home}" class="${worksClass}">WORKS</a>
         </div>`;
 
   const variantClass =
