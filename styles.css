@@ -963,9 +963,9 @@ main:has(.contact-box) {
 }
 
 @media (min-width: 769px) {
-  /* Align the About page to the header's 4-column grid: bio text spans
-     columns 1-2 (logo + back/lang-switch), image spans columns 3-4
-     (works + nav). */
+  /* Align the About page to the header's 4-column grid: bio text stays
+     within column 1 (logo column), image spans columns 3-4 (works + nav);
+     column 2 (back/lang-switch) is left empty, matching the header. */
   .about-box {
     grid-template-columns: var(--site-grid-cols);
     column-gap: 0;
@@ -974,7 +974,7 @@ main:has(.contact-box) {
   }
 
   .about-left {
-    grid-column: 1 / 3;
+    grid-column: 1;
     max-width: none;
     width: auto;
     padding: 0 12px;
