@@ -23,5 +23,12 @@
     "https://picsum.photos/seed/lightarc2/1920/1440",
     "https://picsum.photos/seed/lightarc3/1920/1440"
   ],
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "grid_type_label_en": "Video",
+  "index_type_label_en": "Video",
+  "meta_type_en": "Video",
+  "meta_medium_en": "Video",
+  "meta_tech_en": "Premiere, TouchDesigner",
+  "meta_production_en": "Solo",
+  "description_en": "<p>A large-scale video installation reconstructing a record of light in an archival format.</p>"
 }

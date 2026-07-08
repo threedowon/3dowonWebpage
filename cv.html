@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CV — 3Dowon</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-  <link rel="stylesheet" href="styles.css?v=196" />
+  <link rel="stylesheet" href="styles.css?v=219" />
 
 </head>
 <body>
@@ -19,6 +19,26 @@
       <div class="header-bar-col header-bar-col--works">
         <div class="nav-accordion">
           <a href="index.html" class="nav-cell nav-works">WORKS</a>
+          <div class="sidebar-controls">
+            <ul class="view-toggle">
+              <li data-view="grid" class="active">Grid</li>
+              <li data-view="index">Index</li>
+            </ul>
+            <ul class="filter-checks filter-checks--type">
+              <li data-filter="type" data-value="설치">Installation</li>
+              <li data-filter="type" data-value="영상">Video</li>
+              <li data-filter="type" data-value="퍼포먼스">Performance</li>
+              <li data-filter="type" data-value="전시">Exhibition</li>
+              <li data-filter="type" data-value="인터랙티브">Interactive</li>
+              <li data-filter="type" data-value="프로젝션">Projection</li>
+            </ul>
+            <ul class="filter-checks filter-checks--tech">
+              <li data-filter="tech" data-value="Unreal">Unreal</li>
+              <li data-filter="tech" data-value="Unity">Unity</li>
+              <li data-filter="tech" data-value="Arduino">Arduino</li>
+              <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="header-bar-col header-bar-col--nav">
@@ -28,21 +48,23 @@
         <a href="cv.html" class="nav-cell nav-cv active">CV</a>
         <a href="contact.html" class="nav-cell nav-contact">CONTACT</a>
       </nav>
+<div class="header-lang-switch"><a href="cv.html" class="lang-switch-link active" data-lang="en" aria-current="true">EN</a><span class="lang-switch-sep">/</span><a href="ko/cv.html" class="lang-switch-link" data-lang="ko">KO</a></div>
       </div>
     </div>
   </header>
   <div class="mo-header">
     <a href="index.html" class="mo-logo mo-logo--img"><img src="assets/logo.png?v=2" alt="3Dowon" class="mo-logo-img" /></a>
-    <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
+    <button class="mo-menu-btn" id="moMenuBtn" aria-label="Menu"><span class="mo-menu-icon" aria-hidden="true"></span></button>
   </div>  <div class="mo-overlay" id="moOverlay"></div>
   <nav class="mo-nav" id="moNav" aria-hidden="true">
-    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="닫기">×</button>
+    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="Close">×</button>
     <div class="mo-nav-links">
       <a href="index.html">WORKS</a>
       <a href="lab.html">LAB</a>
       <a href="about.html">ABOUT</a>
       <a href="cv.html" class="active">CV</a>
     </div>
+    <div class="mo-lang-switch"><a href="cv.html" class="lang-switch-link active" data-lang="en" aria-current="true">EN</a><span class="lang-switch-sep">/</span><a href="ko/cv.html" class="lang-switch-link" data-lang="ko">KO</a></div>
     <div class="mo-nav-footer">
       <div class="mo-nav-footer-info">
         E. <a href="mailto:3dowon@gmail.com">3dowon@gmail.com</a><br />
@@ -60,7 +82,7 @@
         <div class="cv-entries">
           <div class="cv-entry">
             <div class="cv-year">2017–2019</div>
-            <div class="cv-desc">명지전문대학 소프트웨어콘텐츠</div>
+            <div class="cv-desc">Myongji College, Software Content</div>
           </div>
         </div>
       </section>
@@ -70,19 +92,19 @@
         <div class="cv-entries">
           <div class="cv-entry">
             <div class="cv-year">2026.03–</div>
-            <div class="cv-desc">Nerdy Artist Union, 테크니컬 아티스트</div>
+            <div class="cv-desc">Nerdy Artist Union, Technical Artist</div>
           </div>
           <div class="cv-entry">
             <div class="cv-year">2024.01–</div>
-            <div class="cv-desc">3Dowon, 인터랙티브 미디어 아티스트</div>
+            <div class="cv-desc">3Dowon, Interactive Media Artist</div>
           </div>
           <div class="cv-entry">
             <div class="cv-year">2025.02–2026.01</div>
-            <div class="cv-desc">I M fine, 미디어아트 개발자</div>
+            <div class="cv-desc">I M fine, Media Art Developer</div>
           </div>
           <div class="cv-entry">
             <div class="cv-year">2022.01–2023.12</div>
-            <div class="cv-desc">d'strict, 미디어아트 개발자</div>
+            <div class="cv-desc">d'strict, Media Art Developer</div>
           </div>
         </div>
       </section>
@@ -92,11 +114,11 @@
         <div class="cv-entries">
           <div class="cv-entry">
             <div class="cv-year">2025.11</div>
-            <div class="cv-desc">단체전, <em>3Dowon's workdesk</em>, Uprising Festa vol.1, SETEC, 서울</div>
+            <div class="cv-desc">Group Exhibition, <em>3Dowon's workdesk</em>, Uprising Festa vol.1, SETEC, Seoul</div>
           </div>
           <div class="cv-entry">
             <div class="cv-year">2025.03</div>
-            <div class="cv-desc">개인전, <em>몇 동 몇 호 (Postcode)</em>, CICA Museum, 김포</div>
+            <div class="cv-desc">Solo Exhibition, <em>Postcode</em>, CICA Museum, Gimpo</div>
           </div>
         </div>
       </section>
@@ -106,31 +128,31 @@
         <div class="cv-entries">
           <div class="cv-entry">
             <div class="cv-year">2021</div>
-            <div class="cv-desc">대상, 실감형 콘텐츠 창작자 양성사업, KOCCA</div>
+            <div class="cv-desc">Grand Prize, Immersive Content Creator Training Program, KOCCA</div>
           </div>
           <div class="cv-entry">
             <div class="cv-year">2019</div>
-            <div class="cv-desc">대상, VR 콘텐츠 공모, 문화체육관광부/KOCCA</div>
+            <div class="cv-desc">Grand Prize, VR Content Competition, Ministry of Culture, Sports and Tourism / KOCCA</div>
           </div>
           <div class="cv-entry">
             <div class="cv-year">2018</div>
-            <div class="cv-desc">대상, 성남 커넥트 게임캠프, 성남산업진흥원</div>
+            <div class="cv-desc">Grand Prize, Seongnam Connect Game Camp, Seongnam Industry Promotion Agency</div>
           </div>
           <div class="cv-entry">
             <div class="cv-year">2018</div>
-            <div class="cv-desc">특별상, 공학밴드 페스티벌, 공학교육혁신협의회</div>
+            <div class="cv-desc">Special Prize, Engineering Band Festival, Council for Innovation in Engineering Education</div>
           </div>
           <div class="cv-entry">
             <div class="cv-year">2018</div>
-            <div class="cv-desc">대상, MR/AR/VR 콘텐츠 개발자 프로젝트 평가, SBA/명지전문대학</div>
+            <div class="cv-desc">Grand Prize, MR/AR/VR Content Developer Project Evaluation, SBA / Myongji College</div>
           </div>
           <div class="cv-entry">
             <div class="cv-year">2017</div>
-            <div class="cv-desc">대상, VR 개발 경진대회, 명지전문대학</div>
+            <div class="cv-desc">Grand Prize, VR Development Competition, Myongji College</div>
           </div>
           <div class="cv-entry">
             <div class="cv-year">2017</div>
-            <div class="cv-desc">대상, 가상현실 콘텐츠 기획 경진대회, 명지전문대학</div>
+            <div class="cv-desc">Grand Prize, Virtual Reality Content Planning Competition, Myongji College</div>
           </div>
         </div>
       </section>
@@ -140,24 +162,24 @@
         <div class="cv-entries">
           <div class="cv-entry">
             <div class="cv-year">2021.05–2021.11</div>
-            <div class="cv-desc">실감형 콘텐츠 창작자 양성사업, 한국콘텐츠진흥원 (KOCCA)</div>
+            <div class="cv-desc">Immersive Content Creator Training Program, Korea Creative Content Agency (KOCCA)</div>
           </div>
           <div class="cv-entry">
             <div class="cv-year">2019.02–2019.08</div>
-            <div class="cv-desc">3D 그래픽 아티스트 과정, 한국전파진흥협회 (RAPA)</div>
+            <div class="cv-desc">3D Graphic Artist Course, Korea Radio Promotion Association (RAPA)</div>
           </div>
           <div class="cv-entry">
             <div class="cv-year">2018.06–2018.12</div>
-            <div class="cv-desc">산업 맞춤형 MR/AR/VR 콘텐츠 개발 과정, 한국전파진흥협회(RAPA)</div>
+            <div class="cv-desc">Industry-Tailored MR/AR/VR Content Development Course, Korea Radio Promotion Association (RAPA)</div>
           </div>
           <div class="cv-entry">
             <div class="cv-year">2018.03–2018.09</div>
-            <div class="cv-desc">가상/증강현실 콘텐츠 개발자 양성, 서울산업진흥원 (SBA)</div>
+            <div class="cv-desc">Virtual/Augmented Reality Content Developer Training, Seoul Business Agency (SBA)</div>
           </div>
         </div>
       </section>
     </div>
   </main>
-  <script src="script.js?v=83"></script>
+  <script src="script.js?v=84"></script>
 </body>
 </html>

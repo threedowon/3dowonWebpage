@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LAB — 3Dowon</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="stylesheet" href="../styles.css?v=219" />
+
+</head>
+<body>
+  <header class="site-header site-header--bar site-header--simple">
+    <div class="header-bar">
+      <div class="header-bar-col header-bar-col--logo">
+        <a href="index.html" class="sidebar-logo sidebar-logo--img"><img src="../assets/logo.png?v=2" alt="3Dowon" class="sidebar-logo-img" /></a>
+      </div>
+      <div class="header-bar-col header-bar-col--back"></div>
+      <div class="header-bar-col header-bar-col--works">
+        <div class="nav-accordion">
+          <a href="index.html" class="nav-cell nav-works">WORKS</a>
+          <div class="sidebar-controls">
+            <ul class="view-toggle">
+              <li data-view="grid" class="active">Grid</li>
+              <li data-view="index">Index</li>
+            </ul>
+            <ul class="filter-checks filter-checks--type">
+              <li data-filter="type" data-value="설치">Installation</li>
+              <li data-filter="type" data-value="영상">Video</li>
+              <li data-filter="type" data-value="퍼포먼스">Performance</li>
+              <li data-filter="type" data-value="전시">Exhibition</li>
+              <li data-filter="type" data-value="인터랙티브">Interactive</li>
+              <li data-filter="type" data-value="프로젝션">Projection</li>
+            </ul>
+            <ul class="filter-checks filter-checks--tech">
+              <li data-filter="tech" data-value="Unreal">Unreal</li>
+              <li data-filter="tech" data-value="Unity">Unity</li>
+              <li data-filter="tech" data-value="Arduino">Arduino</li>
+              <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="header-bar-col header-bar-col--nav">
+      <nav class="nav-main nav-main--secondary">
+        <a href="lab.html" class="nav-cell nav-lab active">LAB</a>
+        <a href="about.html" class="nav-cell nav-about">ABOUT</a>
+        <a href="cv.html" class="nav-cell nav-cv">CV</a>
+        <a href="contact.html" class="nav-cell nav-contact">CONTACT</a>
+      </nav>
+<div class="header-lang-switch"><a href="../lab.html" class="lang-switch-link" data-lang="en">EN</a><span class="lang-switch-sep">/</span><a href="../ko/lab.html" class="lang-switch-link active" data-lang="ko" aria-current="true">KO</a></div>
+      </div>
+    </div>
+  </header>
+  <div class="mo-header">
+    <a href="index.html" class="mo-logo mo-logo--img"><img src="../assets/logo.png?v=2" alt="3Dowon" class="mo-logo-img" /></a>
+    <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
+  </div>  <div class="mo-overlay" id="moOverlay"></div>
+  <nav class="mo-nav" id="moNav" aria-hidden="true">
+    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="닫기">×</button>
+    <div class="mo-nav-links">
+      <a href="index.html">WORKS</a>
+      <a href="lab.html" class="active">LAB</a>
+      <a href="about.html">ABOUT</a>
+      <a href="cv.html">CV</a>
+    </div>
+    <div class="mo-lang-switch"><a href="../lab.html" class="lang-switch-link" data-lang="en">EN</a><span class="lang-switch-sep">/</span><a href="../ko/lab.html" class="lang-switch-link active" data-lang="ko" aria-current="true">KO</a></div>
+    <div class="mo-nav-footer">
+      <div class="mo-nav-footer-info">
+        E. <a href="mailto:3dowon@gmail.com">3dowon@gmail.com</a><br />
+        <a href="https://instagram.com/3dowon" target="_blank" rel="noopener">I. instagram.com/3dowon</a><br />
+        <a href="https://vimeo.com/3dowon" target="_blank" rel="noopener">V. vimeo.com/3dowon</a><br />
+        <a href="https://youtube.com/@3dowon" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>
+      </div>
+    </div>
+  </nav>
+  <main>
+    <div class="lab-view">
+      <div class="img-post-box" id="labPostBox">
+        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/lab-sensor/600/750)"></div>
+          <div class="lab-post-caption">센서 반응 매핑 테스트</div>
+        </div>
+        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/lab-unreal/600/750)"></div>
+          <div class="lab-post-caption">언리얼 조명·그림자 테스트</div>
+        </div>
+        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/lab-window/600/750)"></div>
+          <div class="lab-post-caption">창문 인터랙션 프로토타입</div>
+        </div>
+        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/lab-pcomp/600/750)"></div>
+          <div class="lab-post-caption">피지컬 컴퓨팅 회로 실험</div>
+        </div>
+        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/lab-projection/600/750)"></div>
+          <div class="lab-post-caption">프로젝션 캘리브레이션</div>
+        </div>
+        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/lab-archive/600/750)"></div>
+          <div class="lab-post-caption">이전 작업 아카이브 정리</div>
+        </div>
+        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/lab-touch/600/750)"></div>
+          <div class="lab-post-caption">터치 반응 속도 테스트</div>
+        </div>
+        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/lab-plant/600/750)"></div>
+          <div class="lab-post-caption">식물 신호 센서 실험</div>
+        </div>
+        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/lab-water/600/750)"></div>
+          <div class="lab-post-caption">물 표면 투사 테스트</div>
+        </div>
+        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/lab-light/600/750)"></div>
+          <div class="lab-post-caption">DMX 조명 시퀀스 테스트</div>
+        </div>
+        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/lab-audio/600/750)"></div>
+          <div class="lab-post-caption">오디오 반응 매핑 실험</div>
+        </div>
+        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/lab-map/600/750)"></div>
+          <div class="lab-post-caption">프로젝션 맵핑 스케치</div>
+        </div>
+        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/lab-servo/600/750)"></div>
+          <div class="lab-post-caption">서보 모터 프로토타입</div>
+        </div>
+        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/lab-shader/600/750)"></div>
+          <div class="lab-post-caption">실시간 셰이더 실험</div>
+        </div>
+        <div class="img-post lab-post reveal">
+          <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/lab-field/600/750)"></div>
+          <div class="lab-post-caption">현장 설치 시뮬레이션</div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="../script.js?v=84"></script>
+</body>
+</html>

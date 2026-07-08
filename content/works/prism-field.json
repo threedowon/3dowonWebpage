@@ -23,5 +23,12 @@
     "https://picsum.photos/seed/prismfie1/1920/1440",
     "https://picsum.photos/seed/prismfie2/1920/1440",
     "https://picsum.photos/seed/prismfie3/1920/1440"
-  ]
+  ],
+  "grid_type_label_en": "Installation, Projection",
+  "index_type_label_en": "Installation, Projection",
+  "meta_type_en": "Projection Installation",
+  "meta_medium_en": "Light, mirror, projection",
+  "meta_tech_en": "TouchDesigner, DMX",
+  "meta_production_en": "d'strict",
+  "description_en": "<p>A large-scale projection media-wall project installed in a brand exhibition space. Spectral light crosses the space, and the visual rhythm shifts along the viewing path.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">Role</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Built the video pipeline in TouchDesigner</li>\r\n              <li>Integrated DMX lighting and designed the sequence</li>\r\n              <li>Handled on-site projection mapping and setup</li>\r\n            </ul>"
 }

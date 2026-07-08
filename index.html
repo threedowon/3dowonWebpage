@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3Dowon — Media Artist</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-  <link rel="stylesheet" href="styles.css?v=196" />
+  <link rel="stylesheet" href="styles.css?v=219" />
 
 </head>
 <body>
@@ -21,16 +21,16 @@
           <a href="index.html" class="nav-cell nav-works active">WORKS</a>
           <div class="sidebar-controls">
             <ul class="view-toggle">
-              <li data-view="grid" class="active">그리드</li>
-              <li data-view="index">인덱스</li>
+              <li data-view="grid" class="active">Grid</li>
+              <li data-view="index">Index</li>
             </ul>
             <ul class="filter-checks filter-checks--type">
-              <li data-filter="type" data-value="설치">설치</li>
-              <li data-filter="type" data-value="영상">영상</li>
-              <li data-filter="type" data-value="퍼포먼스">퍼포먼스</li>
-              <li data-filter="type" data-value="전시">전시</li>
-              <li data-filter="type" data-value="인터랙티브">인터랙티브</li>
-              <li data-filter="type" data-value="프로젝션">프로젝션</li>
+              <li data-filter="type" data-value="설치">Installation</li>
+              <li data-filter="type" data-value="영상">Video</li>
+              <li data-filter="type" data-value="퍼포먼스">Performance</li>
+              <li data-filter="type" data-value="전시">Exhibition</li>
+              <li data-filter="type" data-value="인터랙티브">Interactive</li>
+              <li data-filter="type" data-value="프로젝션">Projection</li>
             </ul>
             <ul class="filter-checks filter-checks--tech">
               <li data-filter="tech" data-value="Unreal">Unreal</li>
@@ -48,21 +48,22 @@
         <a href="cv.html" class="nav-cell nav-cv">CV</a>
         <a href="contact.html" class="nav-cell nav-contact">CONTACT</a>
       </nav>
+<div class="header-lang-switch"><a href="index.html" class="lang-switch-link active" data-lang="en" aria-current="true">EN</a><span class="lang-switch-sep">/</span><a href="ko/index.html" class="lang-switch-link" data-lang="ko">KO</a></div>
       </div>
     </div>
   </header>
 
   <div class="mo-header">
     <a href="index.html" class="mo-logo mo-logo--img"><img src="assets/logo.png?v=2" alt="3Dowon" class="mo-logo-img" /></a>
-    <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
+    <button class="mo-menu-btn" id="moMenuBtn" aria-label="Menu"><span class="mo-menu-icon" aria-hidden="true"></span></button>
   </div>
   <div class="mo-filters mo-filters--type">
-    <span class="mo-filter" data-filter="type" data-value="설치">설치</span>
-    <span class="mo-filter" data-filter="type" data-value="영상">영상</span>
-    <span class="mo-filter" data-filter="type" data-value="퍼포먼스">퍼포먼스</span>
-    <span class="mo-filter" data-filter="type" data-value="전시">전시</span>
-    <span class="mo-filter" data-filter="type" data-value="인터랙티브">인터랙티브</span>
-    <span class="mo-filter" data-filter="type" data-value="프로젝션">프로젝션</span>
+    <span class="mo-filter" data-filter="type" data-value="설치">Installation</span>
+    <span class="mo-filter" data-filter="type" data-value="영상">Video</span>
+    <span class="mo-filter" data-filter="type" data-value="퍼포먼스">Performance</span>
+    <span class="mo-filter" data-filter="type" data-value="전시">Exhibition</span>
+    <span class="mo-filter" data-filter="type" data-value="인터랙티브">Interactive</span>
+    <span class="mo-filter" data-filter="type" data-value="프로젝션">Projection</span>
   </div>
   <div class="mo-filters mo-filters--tech">
     <span class="mo-filter" data-filter="tech" data-value="Unreal">Unreal</span>
@@ -72,13 +73,14 @@
   </div>
   <div class="mo-overlay" id="moOverlay"></div>
   <nav class="mo-nav" id="moNav" aria-hidden="true">
-    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="닫기">×</button>
+    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="Close">×</button>
     <div class="mo-nav-links">
       <a href="index.html" class="active">WORKS</a>
       <a href="lab.html">LAB</a>
       <a href="about.html">ABOUT</a>
       <a href="cv.html">CV</a>
     </div>
+    <div class="mo-lang-switch"><a href="index.html" class="lang-switch-link active" data-lang="en" aria-current="true">EN</a><span class="lang-switch-sep">/</span><a href="ko/index.html" class="lang-switch-link" data-lang="ko">KO</a></div>
     <div class="mo-nav-footer">
       <div class="mo-nav-footer-info">
         E. <a href="mailto:3dowon@gmail.com">3dowon@gmail.com</a><br />
@@ -94,151 +96,151 @@
         <a href="work/light-archive.html" class="img-post reveal" data-production="개인" data-tech="" data-year="2025" data-type="영상" data-tags="영상">
           <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/light-archive-1783466565780-590609.jpg)"></div>
           <div class="img-post-title">Light Archive</div>
-          <div class="img-post-type">영상</div>
+          <div class="img-post-type">Video</div>
           <div class="img-post-year">2025</div>
         </a>
         <a href="work/slow-circuit.html" class="img-post reveal" data-production="개인" data-tech="Arduino" data-year="2025" data-type="설치" data-tags="프로젝션">
           <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/slow-circuit-1783468215070-755084.jpg)"></div>
           <div class="img-post-title">Slow Circuit</div>
-          <div class="img-post-type">설치, 프로젝션</div>
+          <div class="img-post-type">Installation, Projection</div>
           <div class="img-post-year">2025</div>
         </a>
         <a href="work/soft-machine.html" class="img-post reveal" data-production="개인" data-tech="Arduino,Unity" data-year="2025" data-type="전시">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/soft-machine/600/750)"></div>
           <div class="img-post-title">Soft Machine</div>
-          <div class="img-post-type">전시, 인터랙티브</div>
+          <div class="img-post-type">Exhibition, Interactive</div>
           <div class="img-post-year">2025</div>
         </a>
         <a href="work/body-signal.html" class="img-post reveal" data-production="공동" data-tech="Arduino" data-year="2024" data-type="퍼포먼스" data-tags="인터랙티브">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/body-signal/600/750)"></div>
           <div class="img-post-title">Body Signal</div>
-          <div class="img-post-type">퍼포먼스</div>
+          <div class="img-post-type">Performance</div>
           <div class="img-post-year">2024</div>
         </a>
         <a href="work/breath-map.html" class="img-post reveal" data-production="개인" data-tech="Arduino" data-year="2024" data-type="퍼포먼스" data-tags="인터랙티브">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/breath-map/600/750)"></div>
           <div class="img-post-title">Breath Map</div>
-          <div class="img-post-type">퍼포먼스</div>
+          <div class="img-post-type">Performance</div>
           <div class="img-post-year">2024</div>
         </a>
         <a href="work/digital-tides.html" class="img-post reveal" data-production="개인" data-tech="Unity" data-year="2024" data-type="영상">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/digital-tides/600/750)"></div>
           <div class="img-post-title">Digital Tides</div>
-          <div class="img-post-type">영상, 프로젝션</div>
+          <div class="img-post-type">Video, Projection</div>
           <div class="img-post-year">2024</div>
         </a>
         <a href="work/ambient-loop.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상">
           <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/m01.png)"></div>
           <div class="img-post-title">Motion Blur</div>
-          <div class="img-post-type">전시, 프로젝션</div>
+          <div class="img-post-type">Exhibition, Projection</div>
           <div class="img-post-year">2024</div>
         </a>
         <a href="work/neural-garden.html" class="img-post reveal" data-production="개인" data-tech="Arduino" data-year="2024" data-type="설치" data-tags="인터랙티브">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/neural-garden/600/750)"></div>
           <div class="img-post-title">Neural Garden</div>
-          <div class="img-post-type">설치, 인터랙티브</div>
+          <div class="img-post-type">Installation, Interactive</div>
           <div class="img-post-year">2024</div>
         </a>
         <a href="work/sonic-veil.html" class="img-post reveal" data-production="공동" data-tech="" data-year="2024" data-type="설치" data-tags="프로젝션">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/sonic-veil/600/750)"></div>
           <div class="img-post-title">Sonic Veil</div>
-          <div class="img-post-type">설치, 프로젝션</div>
+          <div class="img-post-type">Installation, Projection</div>
           <div class="img-post-year">2024</div>
         </a>
         <a href="work/dd.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상">
           <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/00.png)"></div>
           <div class="img-post-title">The Forest</div>
-          <div class="img-post-type">퍼포먼스</div>
+          <div class="img-post-type">Performance</div>
           <div class="img-post-year">2024</div>
         </a>
-        <a href="work/echo-chamber.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="설치" data-tags="설치,인터랙티브">
+        <a href="work/echo-chamber.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="설치" data-tags="인터랙티브">
           <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/01.jpg)"></div>
           <div class="img-post-title">The Piano Room</div>
-          <div class="img-post-type">설치, 인터랙티브</div>
+          <div class="img-post-type">Installation, Interactive</div>
           <div class="img-post-year">2024</div>
         </a>
         <a href="work/fractal-memory.html" class="img-post reveal" data-production="공동" data-tech="" data-year="2023" data-type="설치" data-tags="프로젝션">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/fractal-memory/600/750)"></div>
           <div class="img-post-title">Fractal Memory</div>
-          <div class="img-post-type">설치, 프로젝션</div>
+          <div class="img-post-type">Installation, Projection</div>
           <div class="img-post-year">2023</div>
         </a>
         <a href="work/ghost-frequency.html" class="img-post reveal" data-production="개인" data-tech="Arduino" data-year="2023" data-type="설치" data-tags="인터랙티브">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/ghost-frequency/600/750)"></div>
           <div class="img-post-title">Ghost Frequency</div>
-          <div class="img-post-type">설치, 인터랙티브</div>
+          <div class="img-post-type">Installation, Interactive</div>
           <div class="img-post-year">2023</div>
         </a>
         <a href="work/layered-city.html" class="img-post reveal" data-production="개인" data-tech="Unity" data-year="2023" data-type="전시">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/layered-city/600/750)"></div>
           <div class="img-post-title">Layered City</div>
-          <div class="img-post-type">전시, 인터랙티브</div>
+          <div class="img-post-type">Exhibition, Interactive</div>
           <div class="img-post-year">2023</div>
         </a>
         <a href="work/pixel-tide.html" class="img-post reveal" data-production="회사" data-tech="" data-year="2023" data-type="영상">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/pixel-tide/600/750)"></div>
           <div class="img-post-title">Pixel Tide</div>
-          <div class="img-post-type">영상, 프로젝션</div>
+          <div class="img-post-type">Video, Projection</div>
           <div class="img-post-year">2023</div>
         </a>
         <a href="work/haptic-sky.html" class="img-post reveal" data-production="개인" data-tech="Arduino,Unreal" data-year="2022" data-type="설치" data-tags="인터랙티브">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/haptic-sky/600/750)"></div>
           <div class="img-post-title">Haptic Sky</div>
-          <div class="img-post-type">설치, 인터랙티브</div>
+          <div class="img-post-type">Installation, Interactive</div>
           <div class="img-post-year">2022</div>
         </a>
         <a href="work/prism-field.html" class="img-post reveal" data-production="회사" data-tech="" data-year="2022" data-type="설치" data-tags="프로젝션">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/prism-field/600/750)"></div>
           <div class="img-post-title">Prism Field</div>
-          <div class="img-post-type">설치, 프로젝션</div>
+          <div class="img-post-type">Installation, Projection</div>
           <div class="img-post-year">2022</div>
         </a>
         <a href="work/void-echo.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2022" data-type="설치" data-tags="인터랙티브">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/void-echo/600/750)"></div>
           <div class="img-post-title">Void Echo</div>
-          <div class="img-post-type">설치, 인터랙티브</div>
+          <div class="img-post-type">Installation, Interactive</div>
           <div class="img-post-year">2022</div>
         </a>
         <a href="work/code-landscape.html" class="img-post reveal" data-production="개인" data-tech="" data-year="2021" data-type="영상" data-tags="인터랙티브">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/code-landscape/600/750)"></div>
           <div class="img-post-title">Code Landscape</div>
-          <div class="img-post-type">영상, 인터랙티브</div>
+          <div class="img-post-type">Video, Interactive</div>
           <div class="img-post-year">2021</div>
         </a>
         <a href="work/mirror-phase.html" class="img-post reveal" data-production="공동" data-tech="" data-year="2021" data-type="퍼포먼스" data-tags="인터랙티브">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/mirror-phase/600/750)"></div>
           <div class="img-post-title">Mirror Phase</div>
-          <div class="img-post-type">퍼포먼스</div>
+          <div class="img-post-type">Performance</div>
           <div class="img-post-year">2021</div>
         </a>
         <a href="work/pulse-terrain.html" class="img-post reveal" data-production="공동" data-tech="Unreal" data-year="2021" data-type="영상">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/pulse-terrain/600/750)"></div>
           <div class="img-post-title">Pulse Terrain</div>
-          <div class="img-post-type">영상, 프로젝션</div>
+          <div class="img-post-type">Video, Projection</div>
           <div class="img-post-year">2021</div>
         </a>
         <a href="work/silent-circuit.html" class="img-post reveal" data-production="개인" data-tech="Arduino" data-year="2021" data-type="설치" data-tags="인터랙티브">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/silent-circuit/600/750)"></div>
           <div class="img-post-title">Silent Circuit</div>
-          <div class="img-post-type">설치, 인터랙티브</div>
+          <div class="img-post-type">Installation, Interactive</div>
           <div class="img-post-year">2021</div>
         </a>
         <a href="work/data-bloom.html" class="img-post reveal" data-production="개인" data-tech="" data-year="2020" data-type="설치" data-tags="프로젝션">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/data-bloom/600/750)"></div>
           <div class="img-post-title">Data Bloom</div>
-          <div class="img-post-type">설치, 프로젝션</div>
+          <div class="img-post-type">Installation, Projection</div>
           <div class="img-post-year">2020</div>
         </a>
         <a href="work/gravity-well.html" class="img-post reveal" data-production="회사" data-tech="Unreal" data-year="2020" data-type="설치" data-tags="인터랙티브">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/gravity-well/600/750)"></div>
           <div class="img-post-title">Gravity Well</div>
-          <div class="img-post-type">설치, 인터랙티브</div>
+          <div class="img-post-type">Installation, Interactive</div>
           <div class="img-post-year">2020</div>
         </a>
         <a href="work/resonant-grid.html" class="img-post reveal" data-production="회사" data-tech="Arduino" data-year="2020" data-type="설치" data-tags="인터랙티브">
           <div class="img-post-thumbimg" style="background-image:url(https://picsum.photos/seed/resonant-grid/600/750)"></div>
           <div class="img-post-title">Resonant Grid</div>
-          <div class="img-post-type">설치, 인터랙티브</div>
+          <div class="img-post-type">Installation, Interactive</div>
           <div class="img-post-year">2020</div>
         </a>
       </div>
@@ -248,9 +250,9 @@
       <div class="index-box">
         <div class="index-category">
           <div class="index-category-cells">
-            <div class="index-category-year">년도</div>
-            <div class="index-category-title">작업</div>
-            <div class="index-category-type">유형</div>
+            <div class="index-category-year">Year</div>
+            <div class="index-category-title">Work</div>
+            <div class="index-category-type">Type</div>
           </div>
           <div class="index-category-line"></div>
         </div>
@@ -260,7 +262,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2025</div>
                 <div class="index-post-title">Light Archive</div>
-                <div class="index-post-type">영상</div>
+                <div class="index-post-type">Video</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -270,7 +272,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2025</div>
                 <div class="index-post-title">Slow Circuit</div>
-                <div class="index-post-type">설치, 프로젝션</div>
+                <div class="index-post-type">Installation, Projection</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -280,7 +282,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2025</div>
                 <div class="index-post-title">Soft Machine</div>
-                <div class="index-post-type">전시, 인터랙티브</div>
+                <div class="index-post-type">Exhibition, Interactive</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -290,7 +292,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2024</div>
                 <div class="index-post-title">Body Signal</div>
-                <div class="index-post-type">퍼포먼스, 인터랙티브</div>
+                <div class="index-post-type">Performance, Interactive</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -300,7 +302,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2024</div>
                 <div class="index-post-title">Breath Map</div>
-                <div class="index-post-type">퍼포먼스, 인터랙티브</div>
+                <div class="index-post-type">Performance, Interactive</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -310,7 +312,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2024</div>
                 <div class="index-post-title">Digital Tides</div>
-                <div class="index-post-type">영상, 프로젝션</div>
+                <div class="index-post-type">Video, Projection</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -320,7 +322,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2024</div>
                 <div class="index-post-title">Motion Blur</div>
-                <div class="index-post-type">전시, 프로젝션</div>
+                <div class="index-post-type">Exhibition, Projection</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -330,7 +332,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2024</div>
                 <div class="index-post-title">Neural Garden</div>
-                <div class="index-post-type">설치, 인터랙티브</div>
+                <div class="index-post-type">Installation, Interactive</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -340,7 +342,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2024</div>
                 <div class="index-post-title">Sonic Veil</div>
-                <div class="index-post-type">설치, 프로젝션</div>
+                <div class="index-post-type">Installation, Projection</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -350,17 +352,17 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2024</div>
                 <div class="index-post-title">The Forest</div>
-                <div class="index-post-type">퍼포먼스, 프로젝션</div>
+                <div class="index-post-type">Performance, Projection</div>
               </div>
               <div class="index-post-line"></div>
             </div>
           </a>
-          <a href="work/echo-chamber.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/01.jpg" data-production="개인" data-tech="Unreal" data-year="2024" data-type="설치" data-tags="설치,인터랙티브">
+          <a href="work/echo-chamber.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/01.jpg" data-production="개인" data-tech="Unreal" data-year="2024" data-type="설치" data-tags="인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
                 <div class="index-post-year">2024</div>
                 <div class="index-post-title">The Piano Room</div>
-                <div class="index-post-type">설치, 인터랙티브</div>
+                <div class="index-post-type">Installation, Interactive, Projection</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -370,7 +372,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2023</div>
                 <div class="index-post-title">Fractal Memory</div>
-                <div class="index-post-type">설치, 프로젝션</div>
+                <div class="index-post-type">Installation, Projection</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -380,7 +382,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2023</div>
                 <div class="index-post-title">Ghost Frequency</div>
-                <div class="index-post-type">설치, 인터랙티브</div>
+                <div class="index-post-type">Installation, Interactive</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -390,7 +392,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2023</div>
                 <div class="index-post-title">Layered City</div>
-                <div class="index-post-type">전시, 인터랙티브</div>
+                <div class="index-post-type">Exhibition, Interactive</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -400,7 +402,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2023</div>
                 <div class="index-post-title">Pixel Tide</div>
-                <div class="index-post-type">영상, 프로젝션</div>
+                <div class="index-post-type">Video, Projection</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -410,7 +412,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2022</div>
                 <div class="index-post-title">Haptic Sky</div>
-                <div class="index-post-type">설치, 인터랙티브, 프로젝션</div>
+                <div class="index-post-type">Installation, Interactive, Projection</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -420,7 +422,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2022</div>
                 <div class="index-post-title">Prism Field</div>
-                <div class="index-post-type">설치, 프로젝션</div>
+                <div class="index-post-type">Installation, Projection</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -430,7 +432,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2022</div>
                 <div class="index-post-title">Void Echo</div>
-                <div class="index-post-type">설치, 인터랙티브, 프로젝션</div>
+                <div class="index-post-type">Installation, Interactive, Projection</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -440,7 +442,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2021</div>
                 <div class="index-post-title">Code Landscape</div>
-                <div class="index-post-type">영상, 인터랙티브</div>
+                <div class="index-post-type">Video, Interactive</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -450,7 +452,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2021</div>
                 <div class="index-post-title">Mirror Phase</div>
-                <div class="index-post-type">퍼포먼스, 인터랙티브</div>
+                <div class="index-post-type">Performance, Interactive</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -460,7 +462,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2021</div>
                 <div class="index-post-title">Pulse Terrain</div>
-                <div class="index-post-type">영상, 프로젝션</div>
+                <div class="index-post-type">Video, Projection</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -470,7 +472,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2021</div>
                 <div class="index-post-title">Silent Circuit</div>
-                <div class="index-post-type">설치, 인터랙티브</div>
+                <div class="index-post-type">Installation, Interactive</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -480,7 +482,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2020</div>
                 <div class="index-post-title">Data Bloom</div>
-                <div class="index-post-type">설치, 프로젝션</div>
+                <div class="index-post-type">Installation, Projection</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -490,7 +492,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2020</div>
                 <div class="index-post-title">Gravity Well</div>
-                <div class="index-post-type">설치, 인터랙티브, 프로젝션</div>
+                <div class="index-post-type">Installation, Interactive, Projection</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -500,7 +502,7 @@
               <div class="index-post-cells">
                 <div class="index-post-year">2020</div>
                 <div class="index-post-title">Resonant Grid</div>
-                <div class="index-post-type">설치, 인터랙티브, 프로젝션</div>
+                <div class="index-post-type">Installation, Interactive, Projection</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -510,8 +512,8 @@
       </div>
     </div>
 
-    <p class="no-results" style="margin-left:30px">검색 결과가 없습니다.</p>
+    <p class="no-results" style="margin-left:30px">No results found.</p>
   </main>
-  <script src="script.js?v=83"></script>
+  <script src="script.js?v=84"></script>
 </body>
 </html>

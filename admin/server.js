@@ -36,17 +36,33 @@ function isValidSlug(slug) {
   return /^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug);
 }
 
+const TYPE_EN = {
+  '설치': 'Installation',
+  '영상': 'Video',
+  '퍼포먼스': 'Performance',
+  '전시': 'Exhibition',
+  '인터랙티브': 'Interactive',
+  '프로젝션': 'Projection',
+};
+const PRODUCTION_EN = { '개인': 'Solo', '공동': 'Collaborative', '회사': 'Company' };
+
 // 유형/태그는 사이트 필터에서 하나로 합쳐져 보이므로 admin에서도 다중선택 하나로 다룬다.
 // 선택된 값 전체가 tags(필터용)로 들어가고, type/grid_type_label/index_type_label/meta_type은
-// 그 선택값들로부터 자동으로 채워진다.
+// 그 선택값들로부터 자동으로 채워진다. 필터링에 쓰이는 type/tags는 언어와 무관하게 한국어
+// 원본 값을 유지하고, 화면에 보여지는 라벨만 영문 버전(_en)을 함께 채운다.
 function applySelectedTypes(work, selected) {
   const types = Array.isArray(selected) ? selected.filter(Boolean) : [];
+  const typesEn = types.map((t) => TYPE_EN[t] || t);
   work.type = types[0] || '';
   work.tags = types;
   work.grid_type_label = types.join(', ');
   work.index_type_label = types.join(', ');
   work.meta_type = types.join(', ');
   work.meta_medium = types.join(', ');
+  work.grid_type_label_en = typesEn.join(', ');
+  work.index_type_label_en = typesEn.join(', ');
+  work.meta_type_en = typesEn.join(', ');
+  work.meta_medium_en = typesEn.join(', ');
 }
 function listWorkSlugs() {
   fs.mkdirSync(WORKS_DIR, { recursive: true });
@@ -193,7 +209,13 @@ function removeUploadedFile(publicPath) {
 app.get('/api/works', (req, res) => {
   const works = listWorkSlugs().map(loadWork);
   works.sort((a, b) => b.year - a.year || String(a.title).localeCompare(String(b.title), 'ko'));
-  res.json(works.map((w) => ({ ...w, description: descriptionHtmlToPlainText(w.description) })));
+  res.json(
+    works.map((w) => ({
+      ...w,
+      description: descriptionHtmlToPlainText(w.description),
+      description_en: descriptionHtmlToPlainText(w.description_en),
+    }))
+  );
 });
 
 app.post('/api/works', (req, res) => {
@@ -219,8 +241,11 @@ app.post('/api/works', (req, res) => {
     meta_type: '',
     meta_medium: '',
     meta_tech: '',
+    meta_tech_en: '',
     meta_production: '개인',
+    meta_production_en: PRODUCTION_EN['개인'],
     description: '',
+    description_en: '',
     vimeo_url: '',
     gallery: [],
   };
@@ -233,16 +258,18 @@ app.post('/api/works', (req, res) => {
 app.put('/api/works/:slug', (req, res) => {
   if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({ error: 'not found' });
   const work = loadWork(req.params.slug);
-  const editable = ['title', 'year', 'tech', 'production', 'meta_tech', 'vimeo_url'];
+  const editable = ['title', 'year', 'tech', 'production', 'meta_tech', 'meta_tech_en', 'vimeo_url'];
   for (const key of editable) {
     if (req.body[key] !== undefined) work[key] = req.body[key];
   }
   if (req.body.description !== undefined) work.description = plainTextToDescriptionHtml(req.body.description);
+  if (req.body.description_en !== undefined) work.description_en = plainTextToDescriptionHtml(req.body.description_en);
   if (work.year !== undefined) work.year = Number(work.year) || work.year;
   if (req.body.types !== undefined) applySelectedTypes(work, req.body.types);
   // 상세 페이지의 연도/매체/제작은 항상 목록 연도·유형·제작과 같게 유지한다.
   work.meta_year = String(work.year);
   work.meta_production = work.production;
+  work.meta_production_en = PRODUCTION_EN[work.production] || work.production;
   saveJson(`content/works/${req.params.slug}.json`, work);
   build();
   res.json(work);
@@ -343,7 +370,7 @@ app.post('/api/lab/items', upload.single('image'), asyncHandler(async (req, res)
   if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });
   const lab = loadJson('content/lab.json');
   const filename = await saveImage(req.file.buffer);
-  lab.items.push({ image: publicUploadPath(filename), caption: req.body.caption || '' });
+  lab.items.push({ image: publicUploadPath(filename), caption: req.body.caption || '', caption_en: req.body.caption_en || '' });
   saveJson('content/lab.json', lab);
   build();
   res.json(lab);

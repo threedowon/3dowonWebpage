@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>contact — 3Dowon</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-  <link rel="stylesheet" href="styles.css?v=196" />
+  <link rel="stylesheet" href="styles.css?v=219" />
 
 </head>
 <body>
@@ -19,6 +19,26 @@
       <div class="header-bar-col header-bar-col--works">
         <div class="nav-accordion">
           <a href="index.html" class="nav-cell nav-works">WORKS</a>
+          <div class="sidebar-controls">
+            <ul class="view-toggle">
+              <li data-view="grid" class="active">Grid</li>
+              <li data-view="index">Index</li>
+            </ul>
+            <ul class="filter-checks filter-checks--type">
+              <li data-filter="type" data-value="설치">Installation</li>
+              <li data-filter="type" data-value="영상">Video</li>
+              <li data-filter="type" data-value="퍼포먼스">Performance</li>
+              <li data-filter="type" data-value="전시">Exhibition</li>
+              <li data-filter="type" data-value="인터랙티브">Interactive</li>
+              <li data-filter="type" data-value="프로젝션">Projection</li>
+            </ul>
+            <ul class="filter-checks filter-checks--tech">
+              <li data-filter="tech" data-value="Unreal">Unreal</li>
+              <li data-filter="tech" data-value="Unity">Unity</li>
+              <li data-filter="tech" data-value="Arduino">Arduino</li>
+              <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="header-bar-col header-bar-col--nav">
@@ -28,21 +48,23 @@
         <a href="cv.html" class="nav-cell nav-cv">CV</a>
         <a href="contact.html" class="nav-cell nav-contact active">CONTACT</a>
       </nav>
+<div class="header-lang-switch"><a href="contact.html" class="lang-switch-link active" data-lang="en" aria-current="true">EN</a><span class="lang-switch-sep">/</span><a href="ko/contact.html" class="lang-switch-link" data-lang="ko">KO</a></div>
       </div>
     </div>
   </header>
   <div class="mo-header">
     <a href="index.html" class="mo-logo mo-logo--img"><img src="assets/logo.png?v=2" alt="3Dowon" class="mo-logo-img" /></a>
-    <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
+    <button class="mo-menu-btn" id="moMenuBtn" aria-label="Menu"><span class="mo-menu-icon" aria-hidden="true"></span></button>
   </div>  <div class="mo-overlay" id="moOverlay"></div>
   <nav class="mo-nav" id="moNav" aria-hidden="true">
-    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="닫기">×</button>
+    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="Close">×</button>
     <div class="mo-nav-links">
       <a href="index.html">WORKS</a>
       <a href="lab.html">LAB</a>
       <a href="about.html">ABOUT</a>
       <a href="cv.html">CV</a>
     </div>
+    <div class="mo-lang-switch"><a href="contact.html" class="lang-switch-link active" data-lang="en" aria-current="true">EN</a><span class="lang-switch-sep">/</span><a href="ko/contact.html" class="lang-switch-link" data-lang="ko">KO</a></div>
     <div class="mo-nav-footer">
       <div class="mo-nav-footer-info">
         E. <a href="mailto:3dowon@gmail.com">3dowon@gmail.com</a><br />
@@ -62,6 +84,6 @@
       </div>
     </div>
   </main>
-  <script src="script.js?v=83"></script>
+  <script src="script.js?v=84"></script>
 </body>
 </html>

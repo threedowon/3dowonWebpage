@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fractal Memory — 3Dowon</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-  <link rel="stylesheet" href="../styles.css?v=196" />
+  <link rel="stylesheet" href="../styles.css?v=219" />
+
 </head>
 <body>
   <header class="site-header site-header--bar site-header--project">
@@ -13,10 +15,30 @@
       <div class="header-bar-col header-bar-col--logo">
         <a href="../index.html" class="sidebar-logo sidebar-logo--img"><img src="../assets/logo.png?v=2" alt="3Dowon" class="sidebar-logo-img" /></a>
       </div>
-      <div class="header-bar-col header-bar-col--back"><button class="btn-back" onclick="history.back()" aria-label="뒤로">←</button></div>
+      <div class="header-bar-col header-bar-col--back"><button class="btn-back" onclick="history.back()" aria-label="Back">←</button></div>
       <div class="header-bar-col header-bar-col--works">
         <div class="nav-accordion">
           <a href="../index.html" class="nav-cell nav-works active">WORKS</a>
+          <div class="sidebar-controls">
+            <ul class="view-toggle">
+              <li data-view="grid" class="active">Grid</li>
+              <li data-view="index">Index</li>
+            </ul>
+            <ul class="filter-checks filter-checks--type">
+              <li data-filter="type" data-value="설치">Installation</li>
+              <li data-filter="type" data-value="영상">Video</li>
+              <li data-filter="type" data-value="퍼포먼스">Performance</li>
+              <li data-filter="type" data-value="전시">Exhibition</li>
+              <li data-filter="type" data-value="인터랙티브">Interactive</li>
+              <li data-filter="type" data-value="프로젝션">Projection</li>
+            </ul>
+            <ul class="filter-checks filter-checks--tech">
+              <li data-filter="tech" data-value="Unreal">Unreal</li>
+              <li data-filter="tech" data-value="Unity">Unity</li>
+              <li data-filter="tech" data-value="Arduino">Arduino</li>
+              <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="header-bar-col header-bar-col--nav">
@@ -26,22 +48,24 @@
         <a href="../cv.html" class="nav-cell nav-cv">CV</a>
         <a href="../contact.html" class="nav-cell nav-contact">CONTACT</a>
       </nav>
+<div class="header-lang-switch"><a href="../work/fractal-memory.html" class="lang-switch-link active" data-lang="en" aria-current="true">EN</a><span class="lang-switch-sep">/</span><a href="../ko/work/fractal-memory.html" class="lang-switch-link" data-lang="ko">KO</a></div>
       </div>
     </div>
   </header>
   <div class="mo-header">
     <a href="../index.html" class="mo-logo mo-logo--img"><img src="../assets/logo.png?v=2" alt="3Dowon" class="mo-logo-img" /></a>
-    <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
+    <button class="mo-menu-btn" id="moMenuBtn" aria-label="Menu"><span class="mo-menu-icon" aria-hidden="true"></span></button>
   </div>
   <div class="mo-overlay" id="moOverlay"></div>
   <nav class="mo-nav" id="moNav" aria-hidden="true">
-    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="닫기">×</button>
+    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="Close">×</button>
     <div class="mo-nav-links">
       <a href="../index.html">WORKS</a>
       <a href="../lab.html">LAB</a>
       <a href="../about.html">ABOUT</a>
       <a href="../cv.html">CV</a>
     </div>
+    <div class="mo-lang-switch"><a href="../work/fractal-memory.html" class="lang-switch-link active" data-lang="en" aria-current="true">EN</a><span class="lang-switch-sep">/</span><a href="../ko/work/fractal-memory.html" class="lang-switch-link" data-lang="ko">KO</a></div>
     <div class="mo-nav-footer">
       <div class="mo-nav-footer-info">
         E. <a href="mailto:3dowon@gmail.com">3dowon@gmail.com</a><br />
@@ -61,20 +85,20 @@
       <div class="post-text">
         <div class="post-des">
           <div class="post-des-box1 reveal">
-            <div class="post-des-list"><div class="post-q">연도</div><div class="post-a">2023</div></div>
-            <div class="post-des-list"><div class="post-q">유형</div><div class="post-a">프로젝션 설치</div></div>
-            <div class="post-des-list"><div class="post-q">매체</div><div class="post-a">프로젝션 매핑, 영상</div></div>
-            <div class="post-des-list"><div class="post-q">기술</div><div class="post-a">TouchDesigner, MadMapper</div></div>
-            <div class="post-des-list"><div class="post-q">제작</div><div class="post-a">공동 제작</div></div>
+            <div class="post-des-list"><div class="post-q">Year</div><div class="post-a">2023</div></div>
+            <div class="post-des-list"><div class="post-q">Type</div><div class="post-a">Projection Installation</div></div>
+            <div class="post-des-list"><div class="post-q">Medium</div><div class="post-a">Projection mapping, video</div></div>
+            <div class="post-des-list"><div class="post-q">Technology</div><div class="post-a">TouchDesigner, MadMapper</div></div>
+            <div class="post-des-list"><div class="post-q">Production</div><div class="post-a">Collaborative Production</div></div>
           </div>
           <div class="post-detail-des reveal">
-            <p>기억의 층위를 프랙탈 구조로 시각화한 프로젝션 설치이다. 관객의 움직임에 따라 영상 레이어가 분기·중첩되며 새로운 패턴을 만든다.</p>
+            <p>A projection installation visualizing layers of memory through a fractal structure. As the audience moves, video layers branch and overlap to create new patterns.</p>
             <div class="post-detail-block">
-              <h4 class="post-detail-label">담당</h4>
+              <h4 class="post-detail-label">Role</h4>
               <ul class="post-detail-list">
-              <li>TouchDesigner 프로젝션 매핑 설계</li>
-              <li>MadMapper 출력·블렌딩 구성</li>
-              <li>설치 공간 레이아웃 협의</li>
+              <li>Designed projection mapping in TouchDesigner</li>
+              <li>Configured output and blending in MadMapper</li>
+              <li>Coordinated the installation space layout</li>
             </ul>
           </div>
         </div>
@@ -90,6 +114,6 @@
       </div>
     </div>
   </main>
-  <script src="../script.js?v=83"></script>
+  <script src="../script.js?v=84"></script>
 </body>
 </html>

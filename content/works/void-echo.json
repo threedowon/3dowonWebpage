@@ -25,5 +25,12 @@
     "https://picsum.photos/seed/voidecho1/1920/1440",
     "https://picsum.photos/seed/voidecho2/1920/1440",
     "https://picsum.photos/seed/voidecho3/1920/1440"
-  ]
+  ],
+  "grid_type_label_en": "Installation, Interactive",
+  "index_type_label_en": "Installation, Interactive, Projection",
+  "meta_type_en": "Interactive Installation",
+  "meta_medium_en": "Projection, spatial audio",
+  "meta_tech_en": "Unreal Engine, Leap Motion",
+  "meta_production_en": "Solo Production",
+  "description_en": "<p>An echoing installation in which the audience's footsteps resounding through an empty space return as visual patterns.</p>"
 }

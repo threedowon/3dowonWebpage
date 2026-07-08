@@ -25,5 +25,12 @@
     "https://picsum.photos/seed/resonant1/1920/1440",
     "https://picsum.photos/seed/resonant2/1920/1440",
     "https://picsum.photos/seed/resonant3/1920/1440"
-  ]
+  ],
+  "grid_type_label_en": "Installation, Interactive",
+  "index_type_label_en": "Installation, Interactive, Projection",
+  "meta_type_en": "Interactive Installation",
+  "meta_medium_en": "Grid lighting, sensors",
+  "meta_tech_en": "Arduino, DMX",
+  "meta_production_en": "Nerdy Artist Union",
+  "description_en": "<p>An interactive media installation for a brand launch event. Grid-shaped lighting and sensor input combine so the space responds to audience participation.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">Role</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Developed an Arduino-based sensor and lighting control system</li>\r\n              <li>Programmed the DMX lighting sequence</li>\r\n              <li>Handled on-site installation and interaction testing</li>\r\n            </ul>"
 }
