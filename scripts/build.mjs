@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '216';
+const CSS_VERSION = '218';
 const JS_VERSION = '84';
 const LOGO_VERSION = '2';
 
@@ -169,21 +169,18 @@ ${worksControls()}
           ? ' site-header--simple'
           : '';
 
-  const col2 = variant === 'project'
-    ? `${extraCol2}${headerLangSwitch(assetPrefix, lang, relPath)}`
-    : headerLangSwitch(assetPrefix, lang, relPath);
-
   return `  <header class="site-header site-header--bar${variantClass}">
     <div class="header-bar">
       <div class="header-bar-col header-bar-col--logo">
         ${logoHtml}
       </div>
-      <div class="header-bar-col header-bar-col--back">${col2}</div>
+      <div class="header-bar-col header-bar-col--back">${extraCol2}</div>
       <div class="header-bar-col header-bar-col--works">
 ${worksBlock}
       </div>
       <div class="header-bar-col header-bar-col--nav">
 ${secondaryNav(homePrefix, activeNav)}
+${headerLangSwitch(assetPrefix, lang, relPath)}
       </div>
     </div>
   </header>`;
