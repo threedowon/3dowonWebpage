@@ -1884,6 +1884,7 @@ body:has(.site-header--project) .post-detail-des::before {
 
   .lab-post-caption {
     font-size: 0.62em;
+    line-height: 1.3em;
   }
 
   .about-box {
