@@ -1213,7 +1213,8 @@ main:has(.contact-box) {
      since the header is position:fixed, scrolling then desyncs it from the
      grid below. Shrink the English text enough to keep entries on one line
      within the available width at common desktop sizes. */
-  html[lang="en"] .cv-desc {
+  html[lang="en"] .cv-desc,
+  html[lang="en"] .cv-year {
     font-size: 0.88rem;
   }
 }
