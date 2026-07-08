@@ -18,6 +18,24 @@
   height: 100%;
 }
 
+/* Treat the header/menu chrome as a persistent element across full page
+   navigations instead of letting it cross-fade with the rest of the page —
+   only the active-link state changes, the menu itself never "reloads". */
+.site-header {
+  view-transition-name: site-header;
+}
+
+.mo-header {
+  view-transition-name: mo-header;
+}
+
+::view-transition-old(site-header),
+::view-transition-new(site-header),
+::view-transition-old(mo-header),
+::view-transition-new(mo-header) {
+  animation-duration: 0.15s;
+}
+
 :root {
   --text: rgb(90, 90, 90);
   --line: rgb(90, 90, 90);
