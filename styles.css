@@ -1751,6 +1751,7 @@ body:has(.site-header--project) .post-detail-des::before {
 
   .lab-view .img-post-thumbimg {
     width: 100%;
+    margin-bottom: 3px;
   }
 
   .index-box,
