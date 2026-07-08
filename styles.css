@@ -796,6 +796,62 @@ main:has(.contact-box) {
 
 .index-post.hidden { display: none; }
 
+@media (min-width: 769px) {
+  /* Align the works Index view to the header's 4-column grid: year in
+     column 1, work title in columns 2-3, type in column 4. The row
+     itself spans the true full page width (matching the header) so the
+     grid tracks land on the same pixel boundaries; the divider line
+     keeps its own inset for the hover-preview thumbnail. */
+  .index-box {
+    width: 100%;
+    margin: 20px 0 12% 0;
+  }
+
+  .index-category,
+  .index-post-row {
+    width: 100%;
+  }
+
+  .index-category-line,
+  .index-post-line {
+    width: calc(100% - var(--index-line-inset));
+  }
+
+  .index-category-cells,
+  .index-post-cells {
+    display: grid;
+    grid-template-columns: var(--site-grid-cols);
+    align-items: end;
+    width: 100%;
+  }
+
+  .index-category-year,
+  .index-post-year {
+    grid-column: 1;
+    width: auto;
+    margin: 0;
+    padding: 0 12px;
+    flex-shrink: initial;
+  }
+
+  .index-category-title,
+  .index-post-title {
+    grid-column: 2 / 4;
+    width: auto;
+    margin: 0;
+    padding: 0 12px;
+    flex-shrink: initial;
+  }
+
+  .index-category-type,
+  .index-post-type {
+    grid-column: 4;
+    width: auto;
+    margin: 0;
+    padding: 0 12px;
+  }
+}
+
 /* ── Image Grid Page ── */
 .img-post-box {
   margin: 20px 30px 10% 30px;
@@ -1109,8 +1165,10 @@ main:has(.contact-box) {
 
   .cv-section h3 {
     grid-column: 1;
+    grid-row: 1;
+    align-self: start;
     width: auto;
-    margin: 0 0 10px;
+    margin: 0;
     padding: 0 12px;
     border-bottom: none;
     text-align: left;
@@ -1118,7 +1176,8 @@ main:has(.contact-box) {
 
   .cv-entries {
     grid-column: 1 / -1;
-    gap: 1px;
+    grid-row: 1;
+    gap: 0;
     padding-left: 0;
   }
 
