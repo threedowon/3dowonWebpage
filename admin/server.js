@@ -24,13 +24,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/site/assets', express.static(path.join(ROOT, 'assets')));
 
 function loadJson(relPath) {
-  return JSON.parse(fs.readFileSync(path.join(ROOT, relPath), 'utf8'));
+  const full = path.join(ROOT, relPath);
+  const raw = fs.readFileSync(full, 'utf8');
+  if (/^<<<<<<< /m.test(raw)) {
+    throw new Error(`${relPath}에 git 병합 충돌 표시(<<<<<<<)가 남아 있어요. 파일을 먼저 정리해주세요.`);
+  }
+  try {
+    return JSON.parse(raw);
+  } catch (err) {
+    throw new Error(`${relPath} JSON을 읽을 수 없어요: ${err.message}`);
+  }
 }
 function saveJson(relPath, data) {
   fs.writeFileSync(path.join(ROOT, relPath), JSON.stringify(data, null, 2) + '\n');
 }
 function build() {
-  execFileSync('node', ['scripts/build.mjs'], { cwd: ROOT, stdio: 'inherit' });
+  try {
+    execFileSync('node', ['scripts/build.mjs'], { cwd: ROOT, stdio: 'inherit' });
+  } catch {
+    throw new Error('사이트 빌드에 실패했어요. content/*.json에 문법 오류가 있는지 확인해주세요.');
+  }
 }
 function isValidSlug(slug) {
   return /^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug);
@@ -143,7 +156,10 @@ async function convertViaSips(buffer) {
 
 async function saveImage(buffer, slugPrefix = '') {
   fs.mkdirSync(UPLOADS_DIR, { recursive: true });
-  const filename = `${slugPrefix ? `${slugPrefix}-` : ''}${Date.now()}-${Math.round(Math.random() * 1e6)}.jpg`;
+  let filename;
+  do {
+    filename = `${slugPrefix ? `${slugPrefix}-` : ''}${Date.now()}-${Math.round(Math.random() * 1e6)}.jpg`;
+  } while (fs.existsSync(path.join(UPLOADS_DIR, filename)));
 
   let jpeg;
   try {

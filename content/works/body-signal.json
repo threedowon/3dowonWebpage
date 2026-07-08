@@ -2,35 +2,36 @@
   "slug": "body-signal",
   "title": "Body Signal",
   "year": 2024,
-  "type": "퍼포먼스",
+  "type": "영상",
   "tags": [
-    "인터랙티브"
+    "영상"
   ],
   "tech": [
-    "Arduino"
+    "Unreal"
   ],
   "production": "공동",
-  "thumbnail": "https://picsum.photos/seed/body-signal/600/750",
-  "grid_type_label": "퍼포먼스",
-  "index_type_label": "퍼포먼스, 인터랙티브",
-  "preview_bg": "https://picsum.photos/seed/body-signal/600/750",
-  "hero_image": "https://picsum.photos/seed/body-signal/600/750",
-  "description": "<p>공연자의 생체 신호를 실시간으로 시각·청각 요소로 변환하는 퍼포먼스 작업이다. 심박과 호흡의 변화가 빛과 소리로 확장된다.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">담당</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>ESP32 바이오 센서 인터페이스 개발</li>\r\n              <li>Max/MSP 실시간 오디오 비주얼라이제이션</li>\r\n              <li>공연 연출·리허설 협업</li>\r\n            </ul>",
+  "thumbnail": "/3dowonWebpage/assets/uploads/body-signal-1783535949713-10705.jpg",
+  "grid_type_label": "영상",
+  "index_type_label": "영상",
+  "preview_bg": "/3dowonWebpage/assets/uploads/body-signal-1783535949713-10705.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/body-signal-1783535949713-10705.jpg",
+  "description": "<p>공연자의 생체 신호를 실시간으로 시각·청각 요소로 변환하는 퍼포먼스 작업이다. 심박과 호흡의 변화가 빛과 소리로 확장된다.</p>\n            <p>담당</p>\n            <p>ESP32 바이오 센서 인터페이스 개발</p>\n            <p>Max/MSP 실시간 오디오 비주얼라이제이션</p>\n            <p>공연 연출·리허설 협업</p>",
   "meta_year": "2024",
-  "meta_type": "인터랙티브 퍼포먼스",
-  "meta_medium": "바이오 센서, 라이브 영상",
+  "meta_type": "영상",
+  "meta_medium": "영상",
   "meta_tech": "ESP32, Max/MSP",
-  "meta_production": "공동 제작",
+  "meta_production": "공동",
   "gallery": [
     "https://picsum.photos/seed/bodysign1/1920/1440",
     "https://picsum.photos/seed/bodysign2/1920/1440",
     "https://picsum.photos/seed/bodysign3/1920/1440"
   ],
-  "grid_type_label_en": "Performance",
-  "index_type_label_en": "Performance, Interactive",
-  "meta_type_en": "Interactive Performance",
-  "meta_medium_en": "Bio sensors, live video",
+  "grid_type_label_en": "Video",
+  "index_type_label_en": "Video",
+  "meta_type_en": "Video",
+  "meta_medium_en": "Video",
   "meta_tech_en": "ESP32, Max/MSP",
-  "meta_production_en": "Collaborative Production",
-  "description_en": "<p>A performance work that converts a performer's biometric signals into visual and auditory elements in real time. Changes in heartbeat and breath expand into light and sound.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">Role</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Developed an ESP32 bio-sensor interface</li>\r\n              <li>Built real-time audio visualization in Max/MSP</li>\r\n              <li>Collaborated on performance direction and rehearsals</li>\r\n            </ul>"
+  "meta_production_en": "Collaborative",
+  "description_en": "<p>A performance work that converts a performer's biometric signals into visual and auditory elements in real time. Changes in heartbeat and breath expand into light and sound.</p>\n            <p>Role</p>\n            <p>Developed an ESP32 bio-sensor interface</p>\n            <p>Built real-time audio visualization in Max/MSP</p>\n            <p>Collaborated on performance direction and rehearsals</p>",
+  "vimeo_url": ""
 }

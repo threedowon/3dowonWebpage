@@ -2,34 +2,36 @@
   "slug": "soft-machine",
   "title": "Soft Machine",
   "year": 2025,
-  "type": "전시",
-  "tags": [],
+  "type": "영상",
+  "tags": [
+    "영상"
+  ],
   "tech": [
-    "Arduino",
-    "Unity"
+    "Unreal"
   ],
   "production": "개인",
-  "thumbnail": "https://picsum.photos/seed/soft-machine/600/750",
-  "grid_type_label": "전시, 인터랙티브",
-  "index_type_label": "전시, 인터랙티브",
-  "preview_bg": "https://picsum.photos/seed/soft-machine/600/750",
-  "hero_image": "https://picsum.photos/seed/soft-machine/600/750",
+  "thumbnail": "/3dowonWebpage/assets/uploads/soft-machine-1783535930416-588092.jpg",
+  "grid_type_label": "영상",
+  "index_type_label": "영상",
+  "preview_bg": "/3dowonWebpage/assets/uploads/soft-machine-1783535930416-588092.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/soft-machine-1783535930416-588092.jpg",
   "description": "<p>기계와 유기체의 경계를 탐구하는 인터랙티브 전시입니다.</p>",
   "meta_year": "2025",
-  "meta_type": "전시",
-  "meta_medium": "인터랙티브 오브제, 영상",
+  "meta_type": "영상",
+  "meta_medium": "영상",
   "meta_tech": "Arduino, Unity",
-  "meta_production": "개인 제작",
+  "meta_production": "개인",
   "gallery": [
     "https://picsum.photos/seed/softmach1/1920/1440",
     "https://picsum.photos/seed/softmach2/1920/1440",
     "https://picsum.photos/seed/softmach3/1920/1440"
   ],
-  "grid_type_label_en": "Exhibition, Interactive",
-  "index_type_label_en": "Exhibition, Interactive",
-  "meta_type_en": "Exhibition",
-  "meta_medium_en": "Interactive object, video",
+  "grid_type_label_en": "Video",
+  "index_type_label_en": "Video",
+  "meta_type_en": "Video",
+  "meta_medium_en": "Video",
   "meta_tech_en": "Arduino, Unity",
-  "meta_production_en": "Solo Production",
-  "description_en": "<p>An interactive exhibition exploring the boundary between machine and organism.</p>"
+  "meta_production_en": "Solo",
+  "description_en": "<p>An interactive exhibition exploring the boundary between machine and organism.</p>",
+  "vimeo_url": ""
 }

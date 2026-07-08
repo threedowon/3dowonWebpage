@@ -2,35 +2,37 @@
   "slug": "ghost-frequency",
   "title": "Ghost Frequency",
   "year": 2023,
-  "type": "설치",
+  "type": "인터랙티브",
   "tags": [
     "인터랙티브"
   ],
   "tech": [
-    "Arduino"
+    "Unity",
+    "3ds Max"
   ],
   "production": "개인",
-  "thumbnail": "https://picsum.photos/seed/ghost-frequency/600/750",
-  "grid_type_label": "설치, 인터랙티브",
-  "index_type_label": "설치, 인터랙티브",
-  "preview_bg": "https://picsum.photos/seed/ghost-frequency/600/750",
-  "hero_image": "https://picsum.photos/seed/ghost-frequency/600/750",
+  "thumbnail": "/3dowonWebpage/assets/uploads/ghost-frequency-1783536430417-714178.jpg",
+  "grid_type_label": "인터랙티브",
+  "index_type_label": "인터랙티브",
+  "preview_bg": "/3dowonWebpage/assets/uploads/ghost-frequency-1783536430417-714178.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/ghost-frequency-1783536430417-714178.jpg",
   "description": "<p>보이지 않는 주파수 대역을 빛으로 번역한 인터랙티브 설치입니다.</p>",
   "meta_year": "2023",
-  "meta_type": "인터랙티브 설치",
-  "meta_medium": "RF 센서, 프로젝션",
+  "meta_type": "인터랙티브",
+  "meta_medium": "인터랙티브",
   "meta_tech": "ESP32, TouchOSC",
-  "meta_production": "개인 제작",
+  "meta_production": "개인",
   "gallery": [
     "https://picsum.photos/seed/ghostfre1/1920/1440",
     "https://picsum.photos/seed/ghostfre2/1920/1440",
     "https://picsum.photos/seed/ghostfre3/1920/1440"
   ],
-  "grid_type_label_en": "Installation, Interactive",
-  "index_type_label_en": "Installation, Interactive",
-  "meta_type_en": "Interactive Installation",
-  "meta_medium_en": "RF sensor, projection",
+  "grid_type_label_en": "Interactive",
+  "index_type_label_en": "Interactive",
+  "meta_type_en": "Interactive",
+  "meta_medium_en": "Interactive",
   "meta_tech_en": "ESP32, TouchOSC",
-  "meta_production_en": "Solo Production",
-  "description_en": "<p>An interactive installation translating an invisible frequency band into light.</p>"
+  "meta_production_en": "Solo",
+  "description_en": "<p>An interactive installation translating an invisible frequency band into light.</p>",
+  "vimeo_url": ""
 }

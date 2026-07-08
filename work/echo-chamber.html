@@ -85,34 +85,15 @@
       <div class="post-text">
         <div class="post-des">
           <div class="post-des-box1 reveal">
-<<<<<<< HEAD
-            <div class="post-des-list"><div class="post-q">연도</div><div class="post-a">2024</div></div>
-            <div class="post-des-list"><div class="post-q">유형</div><div class="post-a">설치, 인터랙티브</div></div>
-            <div class="post-des-list"><div class="post-q">매체</div><div class="post-a">설치, 인터랙티브</div></div>
-            <div class="post-des-list"><div class="post-q">기술</div><div class="post-a">Arduino, Unreal Engine, 센서</div></div>
-            <div class="post-des-list"><div class="post-q">제작</div><div class="post-a">개인</div></div>
-          </div>
-          <div class="post-detail-des reveal">
-            <p>아이패드의 Touch OSC 앱과 Unreal Engine을 결합한 이 인터랙티브 콘텐츠를 통해 사용자는 디지털 피아노를 연주하며 실시간으로 언리얼 장면 내에서 음악을 만들어낼 수 있습니다.</p>
-            <p>아이패드 상의 건반 입력이 즉각적으로 언리얼 환경의 피아노로 반영되어, 생동감 있는 연주 경험을 제공합니다.</p>
-=======
             <div class="post-des-list"><div class="post-q">Year</div><div class="post-a">2024</div></div>
-            <div class="post-des-list"><div class="post-q">Type</div><div class="post-a">Interactive Installation</div></div>
-            <div class="post-des-list"><div class="post-q">Medium</div><div class="post-a">Projection, spatial audio</div></div>
+            <div class="post-des-list"><div class="post-q">Type</div><div class="post-a">Interactive</div></div>
+            <div class="post-des-list"><div class="post-q">Medium</div><div class="post-a">Interactive</div></div>
             <div class="post-des-list"><div class="post-q">Technology</div><div class="post-a">Arduino, Unreal Engine, sensors</div></div>
-            <div class="post-des-list"><div class="post-q">Production</div><div class="post-a">Solo Production</div></div>
+            <div class="post-des-list"><div class="post-q">Production</div><div class="post-a">Solo</div></div>
           </div>
           <div class="post-detail-des reveal">
-            <p>An installation where light and sound resonate together. Responding to the audience's movement, a soundscape and pattern of light shift in real time.</p>
-            <p>The work began as a reinterpretation of a room containing a familiar instrument: a piano. Sound emerges without anyone touching a key, and the moment a person simply approaches, the entire space begins to respond as though it were itself an instrument. The audience is no longer a performer but becomes a body that plays the space itself.</p>
-            <p>The room contains twelve infrared proximity sensors and a six-channel spatial audio system. Each sensor collects data in real time through an Arduino-based microcontroller. The resulting distance and velocity data is transmitted via serial communication to Unreal Engine, which simultaneously drives the projection-mapped light patterns and the volume and panning of the multichannel sound.</p>
-            <p>The most technically demanding part of the project was minimizing latency. Even a slight mismatch between the audience's movement and the light or sound response is enough to instantly break the sense that the space is truly responding to them. To address this, the sensor polling interval was tuned to under 20ms, and inside Unreal Engine the audio and visual pipelines were separated onto distinct threads so that the sound response would never stutter even if a frame was dropped.</p>
-            <p>One of the most memorable moments during the exhibition period was watching how children engaged with the space. Adult visitors tended to approach cautiously, trying to understand the rules of the space, while children would immediately run through it, testing its responses with their whole bodies. This produced unexpected combinations of sound and overlapping light that gave the impression the work kept being rewritten even after its completion.</p>
-            <p>In the spatial audio design, the goal went beyond simply reproducing the location of a sound — the length and density of the reverb were designed to change according to the audience's path through the room. Near the center of the room, sound spreads wider and lingers longer; closer to the walls, it becomes narrower and drier. This was built by referencing the acoustic characteristics of an actual room containing a piano and reconstructing them within a digital environment.</p>
-            <p>The light patterns move between three broad states: in a static state, only a faint, breathing-like change in brightness exists; once a single visitor is detected, concentric waves ripple outward centered on that person; and when multiple visitors are detected simultaneously, their individual waves interfere with one another to create unpredictable patterns. This interference pattern is not a pre-made animation but is generated differently in real time at every moment.</p>
-            <p>The question I returned to most while preparing this work was how to make the technology invisible. Sensors, projectors, and speakers physically exist throughout the space, but the instant a visitor becomes aware of these devices, the experience the work offers collapses into an explainable mechanism. For that reason, all hardware was concealed as much as possible within the walls and ceiling, and the wiring was embedded beneath the floor finish so it would disappear entirely from view.</p>
-            <p>In the end, this piece is less a finished, singular result than a score that keeps being rewritten for as long as an audience remains in the space. The same room produces an entirely different combination of sound and light depending on who is moving, how many people, and at what speed — and I plan to extend this into variant installations in other spaces in the future.</p>
->>>>>>> 27a1bf2021211ef7a4c008e8f278184922e5619d
+            <p>This interactive content combines the Touch OSC app on iPad with Unreal Engine, allowing users to play a digital piano and create music in real time within the Unreal scene.</p>
+            <p>Keyboard input on the iPad is instantly reflected in the piano within the Unreal environment, offering a vivid playing experience.</p>
           </div>
         </div>
       </div>

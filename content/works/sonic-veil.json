@@ -2,33 +2,36 @@
   "slug": "sonic-veil",
   "title": "Sonic Veil",
   "year": 2024,
-  "type": "설치",
+  "type": "인터랙티브",
   "tags": [
-    "프로젝션"
+    "인터랙티브"
   ],
-  "tech": [],
-  "production": "공동",
-  "thumbnail": "https://picsum.photos/seed/sonic-veil/600/750",
-  "grid_type_label": "설치, 프로젝션",
-  "index_type_label": "설치, 프로젝션",
-  "preview_bg": "https://picsum.photos/seed/sonic-veil/600/750",
-  "hero_image": "https://picsum.photos/seed/sonic-veil/600/750",
-  "description": "<p>공간음향과 프로젝션을 결합한 설치 작업이다. 관객의 위치에 따라 소리의 밀도와 빛의 결이 달라지는 경험을 설계했다.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">담당</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Max/MSP 공간음향 패치 개발</li>\r\n              <li>TouchDesigner 비주얼 연동</li>\r\n              <li>설치·시연 환경 세팅</li>\r\n            </ul>",
+  "tech": [
+    "Unreal"
+  ],
+  "production": "개인",
+  "thumbnail": "/3dowonWebpage/assets/uploads/sonic-veil-1783536089311-914832.jpg",
+  "grid_type_label": "인터랙티브",
+  "index_type_label": "인터랙티브",
+  "preview_bg": "/3dowonWebpage/assets/uploads/sonic-veil-1783536089311-914832.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/sonic-veil-1783536089311-914832.jpg",
+  "description": "<p>공간음향과 프로젝션을 결합한 설치 작업이다. 관객의 위치에 따라 소리의 밀도와 빛의 결이 달라지는 경험을 설계했다.</p>\n            <p>담당</p>\n            <p>Max/MSP 공간음향 패치 개발</p>\n            <p>TouchDesigner 비주얼 연동</p>\n            <p>설치·시연 환경 세팅</p>",
   "meta_year": "2024",
-  "meta_type": "프로젝션 설치",
-  "meta_medium": "공간음향, 프로젝션",
+  "meta_type": "인터랙티브",
+  "meta_medium": "인터랙티브",
   "meta_tech": "Max/MSP, TouchDesigner",
-  "meta_production": "공동 제작",
+  "meta_production": "개인",
   "gallery": [
     "https://picsum.photos/seed/sonicvei1/1920/1440",
     "https://picsum.photos/seed/sonicvei2/1920/1440",
     "https://picsum.photos/seed/sonicvei3/1920/1440"
   ],
-  "grid_type_label_en": "Installation, Projection",
-  "index_type_label_en": "Installation, Projection",
-  "meta_type_en": "Projection Installation",
-  "meta_medium_en": "Spatial audio, projection",
+  "grid_type_label_en": "Interactive",
+  "index_type_label_en": "Interactive",
+  "meta_type_en": "Interactive",
+  "meta_medium_en": "Interactive",
   "meta_tech_en": "Max/MSP, TouchDesigner",
-  "meta_production_en": "Collaborative Production",
-  "description_en": "<p>An installation combining spatial audio and projection. The experience was designed so that the density of sound and texture of light shift depending on the audience's position.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">Role</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Developed spatial audio patches in Max/MSP</li>\r\n              <li>Integrated visuals in TouchDesigner</li>\r\n              <li>Set up the installation and demonstration environment</li>\r\n            </ul>"
+  "meta_production_en": "Solo",
+  "description_en": "<p>An installation combining spatial audio and projection. The experience was designed so that the density of sound and texture of light shift depending on the audience's position.</p>\n            <p>Role</p>\n            <p>Developed spatial audio patches in Max/MSP</p>\n            <p>Integrated visuals in TouchDesigner</p>\n            <p>Set up the installation and demonstration environment</p>",
+  "vimeo_url": ""
 }

@@ -2,21 +2,26 @@
   "slug": "light-archive",
   "title": "Light Archive",
   "year": 2025,
-  "type": "영상",
+  "type": "설치",
   "tags": [
-    "영상"
+    "설치",
+    "전시",
+    "인터랙티브"
   ],
-  "tech": [],
+  "tech": [
+    "Unreal",
+    "Arduino"
+  ],
   "production": "개인",
   "thumbnail": "/3dowonWebpage/assets/uploads/light-archive-1783466565780-590609.jpg",
-  "grid_type_label": "영상",
-  "index_type_label": "영상",
+  "grid_type_label": "설치, 전시, 인터랙티브",
+  "index_type_label": "설치, 전시, 인터랙티브",
   "preview_bg": "/3dowonWebpage/assets/uploads/light-archive-1783466565780-590609.jpg",
   "hero_image": "/3dowonWebpage/assets/uploads/light-archive-1783466565780-590609.jpg",
   "description": "<p>빛의 기록을 아카이브 형식으로 재구성한 대형 영상 설치입니다.</p>",
   "meta_year": "2025",
-  "meta_type": "영상",
-  "meta_medium": "영상",
+  "meta_type": "설치, 전시, 인터랙티브",
+  "meta_medium": "설치, 전시, 인터랙티브",
   "meta_tech": "Premiere, TouchDesigner",
   "meta_production": "개인",
   "gallery": [
@@ -24,10 +29,10 @@
     "https://picsum.photos/seed/lightarc3/1920/1440"
   ],
   "vimeo_url": "",
-  "grid_type_label_en": "Video",
-  "index_type_label_en": "Video",
-  "meta_type_en": "Video",
-  "meta_medium_en": "Video",
+  "grid_type_label_en": "Installation, Exhibition, Interactive",
+  "index_type_label_en": "Installation, Exhibition, Interactive",
+  "meta_type_en": "Installation, Exhibition, Interactive",
+  "meta_medium_en": "Installation, Exhibition, Interactive",
   "meta_tech_en": "Premiere, TouchDesigner",
   "meta_production_en": "Solo",
   "description_en": "<p>A large-scale video installation reconstructing a record of light in an archival format.</p>"

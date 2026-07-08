@@ -2,33 +2,37 @@
   "slug": "layered-city",
   "title": "Layered City",
   "year": 2023,
-  "type": "전시",
-  "tags": [],
-  "tech": [
-    "Unity"
+  "type": "인터랙티브",
+  "tags": [
+    "인터랙티브"
   ],
-  "production": "개인",
-  "thumbnail": "https://picsum.photos/seed/layered-city/600/750",
-  "grid_type_label": "전시, 인터랙티브",
-  "index_type_label": "전시, 인터랙티브",
-  "preview_bg": "https://picsum.photos/seed/layered-city/600/750",
-  "hero_image": "https://picsum.photos/seed/layered-city/600/750",
+  "tech": [
+    "Unity",
+    "3ds Max"
+  ],
+  "production": "공동",
+  "thumbnail": "/3dowonWebpage/assets/uploads/layered-city-1783536481692-955235.jpg",
+  "grid_type_label": "인터랙티브",
+  "index_type_label": "인터랙티브",
+  "preview_bg": "/3dowonWebpage/assets/uploads/layered-city-1783536481692-955235.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/layered-city-1783536481692-955235.jpg",
   "description": "<p>도시의 시간적 층위를 인터랙티브 매핑으로 탐구하는 전시 프로젝트입니다.</p>",
   "meta_year": "2023",
-  "meta_type": "전시",
-  "meta_medium": "혼합 매체, 공간 설치",
+  "meta_type": "인터랙티브",
+  "meta_medium": "인터랙티브",
   "meta_tech": "Unity, 프로젝션",
-  "meta_production": "개인 제작",
+  "meta_production": "공동",
   "gallery": [
     "https://picsum.photos/seed/layeredc1/1920/1440",
     "https://picsum.photos/seed/layeredc2/1920/1440",
     "https://picsum.photos/seed/layeredc3/1920/1440"
   ],
-  "grid_type_label_en": "Exhibition, Interactive",
-  "index_type_label_en": "Exhibition, Interactive",
-  "meta_type_en": "Exhibition",
-  "meta_medium_en": "Mixed media, spatial installation",
+  "grid_type_label_en": "Interactive",
+  "index_type_label_en": "Interactive",
+  "meta_type_en": "Interactive",
+  "meta_medium_en": "Interactive",
   "meta_tech_en": "Unity, projection",
-  "meta_production_en": "Solo Production",
-  "description_en": "<p>An exhibition project exploring the temporal layers of a city through interactive mapping.</p>"
+  "meta_production_en": "Collaborative",
+  "description_en": "<p>An exhibition project exploring the temporal layers of a city through interactive mapping.</p>",
+  "vimeo_url": ""
 }

@@ -2,35 +2,36 @@
   "slug": "slow-circuit",
   "title": "Slow Circuit",
   "year": 2025,
-  "type": "설치",
+  "type": "인터랙티브",
   "tags": [
-    "프로젝션"
+    "인터랙티브"
   ],
   "tech": [
-    "Arduino"
+    "Unreal"
   ],
   "production": "개인",
-  "thumbnail": "/3dowonWebpage/assets/uploads/slow-circuit-1783468215070-755084.jpg",
-  "grid_type_label": "설치, 프로젝션",
-  "index_type_label": "설치, 프로젝션",
-  "preview_bg": "/3dowonWebpage/assets/uploads/slow-circuit-1783468215070-755084.jpg",
-  "hero_image": "/3dowonWebpage/assets/uploads/slow-circuit-1783468215070-755084.jpg",
+  "thumbnail": "/3dowonWebpage/assets/uploads/slow-circuit-1783535231223-875608.jpg",
+  "grid_type_label": "인터랙티브",
+  "index_type_label": "인터랙티브",
+  "preview_bg": "/3dowonWebpage/assets/uploads/slow-circuit-1783535231223-875608.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/slow-circuit-1783535231223-875608.jpg",
   "description": "<p>느린 시간의 흐름을 회로의 속도로 시각화한 프로젝션 설치입니다.</p>",
   "meta_year": "2025",
-  "meta_type": "프로젝션 설치",
-  "meta_medium": "회로, 프로젝션",
+  "meta_type": "인터랙티브",
+  "meta_medium": "인터랙티브",
   "meta_tech": "Arduino, TouchDesigner",
-  "meta_production": "개인 제작",
+  "meta_production": "개인",
   "gallery": [
     "https://picsum.photos/seed/slowcirc1/1920/1440",
     "https://picsum.photos/seed/slowcirc2/1920/1440",
     "https://picsum.photos/seed/slowcirc3/1920/1440"
   ],
-  "grid_type_label_en": "Installation, Projection",
-  "index_type_label_en": "Installation, Projection",
-  "meta_type_en": "Projection Installation",
-  "meta_medium_en": "Circuit, projection",
+  "grid_type_label_en": "Interactive",
+  "index_type_label_en": "Interactive",
+  "meta_type_en": "Interactive",
+  "meta_medium_en": "Interactive",
   "meta_tech_en": "Arduino, TouchDesigner",
-  "meta_production_en": "Solo Production",
-  "description_en": "<p>A projection installation visualizing the slow flow of time through the speed of a circuit.</p>"
+  "meta_production_en": "Solo",
+  "description_en": "<p>A projection installation visualizing the slow flow of time through the speed of a circuit.</p>",
+  "vimeo_url": ""
 }
