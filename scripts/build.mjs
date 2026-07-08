@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '196';
+const CSS_VERSION = '197';
 const JS_VERSION = '83';
 const LOGO_VERSION = '2';
 
@@ -50,16 +50,16 @@ function mobileShell(site, activeNav = '') {
 function worksControls() {
   return `          <div class="sidebar-controls">
             <ul class="view-toggle">
-              <li data-view="grid" class="active">그리드</li>
-              <li data-view="index">인덱스</li>
+              <li data-view="grid" class="active">Grid</li>
+              <li data-view="index">Index</li>
             </ul>
             <ul class="filter-checks filter-checks--type">
-              <li data-filter="type" data-value="설치">설치</li>
-              <li data-filter="type" data-value="영상">영상</li>
-              <li data-filter="type" data-value="퍼포먼스">퍼포먼스</li>
-              <li data-filter="type" data-value="전시">전시</li>
-              <li data-filter="type" data-value="인터랙티브">인터랙티브</li>
-              <li data-filter="type" data-value="프로젝션">프로젝션</li>
+              <li data-filter="type" data-value="설치">Installation</li>
+              <li data-filter="type" data-value="영상">Video</li>
+              <li data-filter="type" data-value="퍼포먼스">Performance</li>
+              <li data-filter="type" data-value="전시">Exhibition</li>
+              <li data-filter="type" data-value="인터랙티브">Interactive</li>
+              <li data-filter="type" data-value="프로젝션">Projection</li>
             </ul>
             <ul class="filter-checks filter-checks--tech">
               <li data-filter="tech" data-value="Unreal">Unreal</li>
@@ -229,12 +229,12 @@ ${indexPosts}
 
 ${mobileHeader()}
   <div class="mo-filters mo-filters--type">
-    <span class="mo-filter" data-filter="type" data-value="설치">설치</span>
-    <span class="mo-filter" data-filter="type" data-value="영상">영상</span>
-    <span class="mo-filter" data-filter="type" data-value="퍼포먼스">퍼포먼스</span>
-    <span class="mo-filter" data-filter="type" data-value="전시">전시</span>
-    <span class="mo-filter" data-filter="type" data-value="인터랙티브">인터랙티브</span>
-    <span class="mo-filter" data-filter="type" data-value="프로젝션">프로젝션</span>
+    <span class="mo-filter" data-filter="type" data-value="설치">Installation</span>
+    <span class="mo-filter" data-filter="type" data-value="영상">Video</span>
+    <span class="mo-filter" data-filter="type" data-value="퍼포먼스">Performance</span>
+    <span class="mo-filter" data-filter="type" data-value="전시">Exhibition</span>
+    <span class="mo-filter" data-filter="type" data-value="인터랙티브">Interactive</span>
+    <span class="mo-filter" data-filter="type" data-value="프로젝션">Projection</span>
   </div>
   <div class="mo-filters mo-filters--tech">
     <span class="mo-filter" data-filter="tech" data-value="Unreal">Unreal</span>
