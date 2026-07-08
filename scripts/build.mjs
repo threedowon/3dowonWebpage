@@ -400,7 +400,7 @@ function buildAbout(about, site, lang) {
   const relPath = 'about.html';
   const paragraphs = pick(about, 'body', lang)
     .split(/\n{2,}/)
-    .map((p) => `          <p>${p.trim()}</p>`)
+    .map((p) => `          <p>${p.trim().split(/\r?\n/).join('<br />\n            ')}</p>`)
     .join('\n');
   const meta = pick(about, 'meta', lang)
     .split(/\r?\n/)
