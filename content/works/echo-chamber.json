@@ -2,14 +2,14 @@
   "grid_type_label": "설치, 인터랙티브",
   "slug": "echo-chamber",
   "thumbnail": "/3dowonWebpage/assets/uploads/01.jpg",
-  "meta_medium": "프로젝션, 공간음향",
+  "meta_medium": "설치, 인터랙티브",
   "meta_tech": "Arduino, Unreal Engine, 센서",
   "gallery": [
     "/3dowonWebpage/assets/uploads/02.jpg",
     "/3dowonWebpage/assets/uploads/03.jpg"
   ],
-  "meta_production": "개인 제작",
-  "meta_type": "인터랙티브 설치",
+  "meta_production": "개인",
+  "meta_type": "설치, 인터랙티브",
   "hero_image": "/3dowonWebpage/assets/uploads/01.jpg",
   "tech": [
     "Unreal"
@@ -17,12 +17,14 @@
   "meta_year": "2024",
   "title": "The Piano Room",
   "tags": [
+    "설치",
     "인터랙티브"
   ],
   "production": "개인",
   "type": "설치",
   "preview_bg": "/3dowonWebpage/assets/uploads/01.jpg",
-  "index_type_label": "설치, 인터랙티브, 프로젝션",
-  "description": "<p>빛과 소리가 공명하는 설치 작품입니다. 관객의 움직임에 반응하여 실시간으로 변화하는 사운드스케이프와 빛의 패턴이 생성됩니다.</p>",
-  "year": 2024
+  "index_type_label": "설치, 인터랙티브",
+  "description": "<p>아이패드의 Touch OSC 앱과 Unreal Engine을 결합한 이 인터랙티브 콘텐츠를 통해 사용자는 디지털 피아노를 연주하며 실시간으로 언리얼 장면 내에서 음악을 만들어낼 수 있습니다.</p>\n            <p>아이패드 상의 건반 입력이 즉각적으로 언리얼 환경의 피아노로 반영되어, 생동감 있는 연주 경험을 제공합니다.</p>",
+  "year": 2024,
+  "vimeo_url": "https://vimeo.com/1208184865?fl=tl&fe=ec"
 }
