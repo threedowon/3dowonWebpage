@@ -826,8 +826,8 @@ main:has(.contact-box) {
       transparent calc(75% - 8px),
       transparent calc(75% + 8px),
       var(--index-line-color) calc(75% + 8px),
-      var(--index-line-color) calc(100% - var(--index-line-inset) - 16px),
-      transparent calc(100% - var(--index-line-inset) - 16px)
+      var(--index-line-color) calc(100% - 16px),
+      transparent calc(100% - 16px)
     );
   }
 
