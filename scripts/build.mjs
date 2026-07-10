@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '235';
+const CSS_VERSION = '236';
 const JS_VERSION = '87';
 
 const STR = {
@@ -125,17 +125,21 @@ function worksControls(lang) {
               <li data-view="grid" class="active">Grid</li>
               <li data-view="index">Index</li>
             </ul>
-            <button type="button" class="filter-dropdown-btn" data-filter-group="type" data-default-label="${str.type}" data-mixed-label="${str.filterMixed}"><span class="filter-dropdown-label">${str.type}</span></button>
-            <ul class="filter-checks filter-checks--type" data-filter-panel="type">
+            <div class="filter-dropdown">
+              <button type="button" class="filter-dropdown-btn" data-filter-group="type" data-default-label="${str.type}" data-mixed-label="${str.filterMixed}"><span class="filter-dropdown-label">${str.type}</span></button>
+              <ul class="filter-checks filter-checks--type" data-filter-panel="type">
 ${typeItems}
-            </ul>
-            <button type="button" class="filter-dropdown-btn" data-filter-group="tech" data-default-label="${str.tech}" data-mixed-label="${str.filterMixed}"><span class="filter-dropdown-label">${str.tech}</span></button>
-            <ul class="filter-checks filter-checks--tech" data-filter-panel="tech">
-              <li data-filter="tech" data-value="Unreal">Unreal</li>
-              <li data-filter="tech" data-value="Unity">Unity</li>
-              <li data-filter="tech" data-value="Arduino">Arduino</li>
-              <li data-filter="tech" data-value="3ds Max">3ds Max</li>
-            </ul>
+              </ul>
+            </div>
+            <div class="filter-dropdown">
+              <button type="button" class="filter-dropdown-btn" data-filter-group="tech" data-default-label="${str.tech}" data-mixed-label="${str.filterMixed}"><span class="filter-dropdown-label">${str.tech}</span></button>
+              <ul class="filter-checks filter-checks--tech" data-filter-panel="tech">
+                <li data-filter="tech" data-value="Unreal">Unreal</li>
+                <li data-filter="tech" data-value="Unity">Unity</li>
+                <li data-filter="tech" data-value="Arduino">Arduino</li>
+                <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+              </ul>
+            </div>
           </div>`;
 }
 
