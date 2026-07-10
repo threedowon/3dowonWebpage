@@ -1,9 +1,8 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '222';
-const JS_VERSION = '84';
-const LOGO_VERSION = '2';
+const CSS_VERSION = '238';
+const JS_VERSION = '89';
 
 const STR = {
   en: {
@@ -19,6 +18,12 @@ const STR = {
     menu: 'Menu',
     close: 'Close',
     back: 'Back',
+    filterMixed: 'Mixed',
+    navWorks: 'WORKS',
+    navLab: 'LAB',
+    navAbout: 'ABOUT',
+    navCv: 'CV',
+    navContact: 'CONTACT',
   },
   ko: {
     year: '연도',
@@ -33,7 +38,22 @@ const STR = {
     menu: '메뉴',
     close: '닫기',
     back: '뒤로',
+    filterMixed: '혼합',
+    navWorks: '작업',
+    navLab: '랩',
+    navAbout: '소개',
+    navCv: '이력',
+    navContact: '연락처',
   },
+};
+
+const TYPE_FILTER_LABELS = {
+  설치: { en: 'Installation', ko: '설치' },
+  영상: { en: 'Video', ko: '영상' },
+  퍼포먼스: { en: 'Performance', ko: '퍼포먼스' },
+  전시: { en: 'Exhibition', ko: '전시' },
+  인터랙티브: { en: 'Interactive', ko: '인터랙티브' },
+  프로젝션: { en: 'Projection', ko: '프로젝션' },
 };
 
 // homePrefix: relative path back to the top-level pages of the SAME language (index.html, about.html, ...)
@@ -57,7 +77,7 @@ function siteFooter(site) {
 }
 
 function siteLogo(assetPrefix, homeHref) {
-  return `<a href="${homeHref}" class="sidebar-logo sidebar-logo--img"><img src="${assetPrefix}assets/logo.png?v=${LOGO_VERSION}" alt="3Dowon" class="sidebar-logo-img" /></a>`;
+  return `<a href="${homeHref}" class="sidebar-logo">3Dowon</a>`;
 }
 
 function langSwitchLinks(assetPrefix, lang, relPath) {
@@ -76,7 +96,7 @@ function mobileLangSwitch(assetPrefix, lang, relPath) {
 
 function mobileHeader(assetPrefix, homeHref, str) {
   return `  <div class="mo-header">
-    <a href="${homeHref}" class="mo-logo mo-logo--img"><img src="${assetPrefix}assets/logo.png?v=${LOGO_VERSION}" alt="3Dowon" class="mo-logo-img" /></a>
+    <a href="${homeHref}" class="mo-logo">3Dowon</a>
     <button class="mo-menu-btn" id="moMenuBtn" aria-label="${str.menu}"><span class="mo-menu-icon" aria-hidden="true"></span></button>
   </div>`;
 }
@@ -87,10 +107,10 @@ function mobileNav(site, activeNav, homePrefix, assetPrefix, lang, relPath, str)
   <nav class="mo-nav" id="moNav" aria-hidden="true">
     <button type="button" class="mo-nav-close" id="moNavClose" aria-label="${str.close}">×</button>
     <div class="mo-nav-links">
-      <a href="${homePrefix}index.html"${navClass('works')}>WORKS</a>
-      <a href="${homePrefix}lab.html"${navClass('lab')}>LAB</a>
-      <a href="${homePrefix}about.html"${navClass('about')}>ABOUT</a>
-      <a href="${homePrefix}cv.html"${navClass('cv')}>CV</a>
+      <a href="${homePrefix}index.html"${navClass('works')}>${str.navWorks}</a>
+      <a href="${homePrefix}lab.html"${navClass('lab')}>${str.navLab}</a>
+      <a href="${homePrefix}about.html"${navClass('about')}>${str.navAbout}</a>
+      <a href="${homePrefix}cv.html"${navClass('cv')}>${str.navCv}</a>
     </div>
 ${mobileLangSwitch(assetPrefix, lang, relPath)}
     <div class="mo-nav-footer">
@@ -105,38 +125,42 @@ function mobileShell(site, activeNav, homePrefix, assetPrefix, lang, relPath, st
   return `${mobileHeader(assetPrefix, `${homePrefix}index.html`, str)}${mobileNav(site, activeNav, homePrefix, assetPrefix, lang, relPath, str)}`;
 }
 
-function worksControls() {
+function worksControls(lang) {
+  const str = STR[lang];
+  const typeItems = Object.entries(TYPE_FILTER_LABELS)
+    .map(([value, labels]) => `              <li data-filter="type" data-value="${value}">${labels[lang]}</li>`)
+    .join('\n');
   return `          <div class="sidebar-controls">
             <ul class="view-toggle">
               <li data-view="grid" class="active">Grid</li>
               <li data-view="index">Index</li>
             </ul>
-            <ul class="filter-checks filter-checks--type">
-              <li data-filter="type" data-value="설치">Installation</li>
-              <li data-filter="type" data-value="영상">Video</li>
-              <li data-filter="type" data-value="퍼포먼스">Performance</li>
-              <li data-filter="type" data-value="전시">Exhibition</li>
-              <li data-filter="type" data-value="VR/AR">VR/AR</li>
-              <li data-filter="type" data-value="인터랙티브">Interactive</li>
-              <li data-filter="type" data-value="프로젝션">Projection</li>
-            </ul>
-            <ul class="filter-checks filter-checks--tech">
-              <li data-filter="tech" data-value="Unreal">Unreal</li>
-              <li data-filter="tech" data-value="Unity">Unity</li>
-              <li data-filter="tech" data-value="Arduino">Arduino</li>
-              <li data-filter="tech" data-value="3ds Max">3ds Max</li>
-              <li data-filter="tech" data-value="Depth Camera">Depth Camera</li>
-            </ul>
+            <div class="filter-dropdown">
+              <button type="button" class="filter-dropdown-btn" data-filter-group="type" data-default-label="${str.type}" data-mixed-label="${str.filterMixed}"><span class="filter-dropdown-label">${str.type}</span></button>
+              <ul class="filter-checks filter-checks--type" data-filter-panel="type">
+${typeItems}
+              </ul>
+            </div>
+            <div class="filter-dropdown">
+              <button type="button" class="filter-dropdown-btn" data-filter-group="tech" data-default-label="${str.tech}" data-mixed-label="${str.filterMixed}"><span class="filter-dropdown-label">${str.tech}</span></button>
+              <ul class="filter-checks filter-checks--tech" data-filter-panel="tech">
+                <li data-filter="tech" data-value="Unreal">Unreal</li>
+                <li data-filter="tech" data-value="Unity">Unity</li>
+                <li data-filter="tech" data-value="Arduino">Arduino</li>
+                <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+              </ul>
+            </div>
           </div>`;
 }
 
-function secondaryNav(homePrefix = '', activeNav = '') {
+function secondaryNav(homePrefix = '', activeNav = '', lang = 'en') {
+  const str = STR[lang];
   const navClass = (name) => `nav-cell nav-${name}${activeNav === name ? ' active' : ''}`;
   return `      <nav class="nav-main nav-main--secondary">
-        <a href="${homePrefix}lab.html" class="${navClass('lab')}">LAB</a>
-        <a href="${homePrefix}about.html" class="${navClass('about')}">ABOUT</a>
-        <a href="${homePrefix}cv.html" class="${navClass('cv')}">CV</a>
-        <a href="${homePrefix}contact.html" class="${navClass('contact')}">CONTACT</a>
+        <a href="${homePrefix}lab.html" class="${navClass('lab')}">${str.navLab}</a>
+        <a href="${homePrefix}about.html" class="${navClass('about')}">${str.navAbout}</a>
+        <a href="${homePrefix}cv.html" class="${navClass('cv')}">${str.navCv}</a>
+        <a href="${homePrefix}contact.html" class="${navClass('contact')}">${str.navContact}</a>
       </nav>`;
 }
 
@@ -158,8 +182,8 @@ function headerBar({
   // header-bar-col--works column — and therefore the whole header row, via
   // align-items:stretch — reserves the same height on every desktop page.
   const worksBlock = `        <div class="nav-accordion${showWorksControls ? ' is-open' : ''}">
-          <a href="${home}" class="${worksClass}">WORKS</a>
-${worksControls()}
+          <a href="${home}" class="${worksClass}">${STR[lang].navWorks}</a>
+${worksControls(lang)}
         </div>`;
 
   const variantClass =
@@ -181,7 +205,7 @@ ${worksControls()}
 ${worksBlock}
       </div>
       <div class="header-bar-col header-bar-col--nav">
-${secondaryNav(homePrefix, activeNav)}
+${secondaryNav(homePrefix, activeNav, lang)}
 ${headerLangSwitch(assetPrefix, lang, relPath)}
       </div>
     </div>
@@ -312,20 +336,15 @@ ${indexPosts}
 
 ${mobileHeader(assetPrefix, `${homePrefix}index.html`, str)}
   <div class="mo-filters mo-filters--type">
-    <span class="mo-filter" data-filter="type" data-value="설치">Installation</span>
-    <span class="mo-filter" data-filter="type" data-value="영상">Video</span>
-    <span class="mo-filter" data-filter="type" data-value="퍼포먼스">Performance</span>
-    <span class="mo-filter" data-filter="type" data-value="전시">Exhibition</span>
-    <span class="mo-filter" data-filter="type" data-value="VR/AR">VR/AR</span>
-    <span class="mo-filter" data-filter="type" data-value="인터랙티브">Interactive</span>
-    <span class="mo-filter" data-filter="type" data-value="프로젝션">Projection</span>
+${Object.entries(TYPE_FILTER_LABELS)
+  .map(([value, labels]) => `    <span class="mo-filter" data-filter="type" data-value="${value}">${labels[lang]}</span>`)
+  .join('\n')}
   </div>
   <div class="mo-filters mo-filters--tech">
     <span class="mo-filter" data-filter="tech" data-value="Unreal">Unreal</span>
     <span class="mo-filter" data-filter="tech" data-value="Unity">Unity</span>
     <span class="mo-filter" data-filter="tech" data-value="Arduino">Arduino</span>
     <span class="mo-filter" data-filter="tech" data-value="3ds Max">3ds Max</span>
-    <span class="mo-filter" data-filter="tech" data-value="Depth Camera">Depth Camera</span>
   </div>
 ${mobileNav(site, 'works', homePrefix, assetPrefix, lang, relPath, str)}`;
 
