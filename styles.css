@@ -478,17 +478,13 @@ main:has(.contact-box) {
   }
 
   .site-header--project .btn-back-arrow {
-    width: 44px;
-    height: 24px;
-  }
-
-  .site-header--project .btn-back-arrow::before {
-    left: 12px;
+    width: 48px;
+    height: 48px;
   }
 
   .site-header--project .btn-back-arrow::after {
-    width: 16px;
-    height: 16px;
+    width: 48px;
+    height: 48px;
   }
 
   .header-bar-col--logo {
@@ -1263,19 +1259,8 @@ main:has(.contact-box) {
 .btn-back-arrow {
   position: relative;
   display: inline-block;
-  width: 22px;
-  height: 12px;
-}
-
-.btn-back-arrow::before {
-  content: '';
-  position: absolute;
-  left: 6px;
-  right: 0;
-  top: 50%;
-  height: 1px;
-  background: var(--text);
-  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
 }
 
 .btn-back-arrow::after {
@@ -1283,8 +1268,8 @@ main:has(.contact-box) {
   position: absolute;
   left: 0;
   top: 50%;
-  width: 8px;
-  height: 8px;
+  width: 24px;
+  height: 24px;
   border-left: 1px solid var(--text);
   border-bottom: 1px solid var(--text);
   transform: translateY(-50%) rotate(45deg);
@@ -1592,6 +1577,8 @@ body:has(.site-header--project) .post-detail-des::before {
   body:has(.site-header--project) .post-hero,
   body:has(.site-header--project) .post-img-box {
     grid-column: 2 / 4;
+    padding-left: 17px;
+    box-sizing: border-box;
   }
 
   .lab-post-caption {
@@ -1949,15 +1936,6 @@ body:has(.site-header--project) .post-detail-des::before {
   .site-header--works {
     --works-filter-gap: 6px;
     padding-bottom: 0;
-  }
-
-  .site-header--works::after {
-    content: '';
-    position: absolute;
-    left: 12px;
-    right: 12px;
-    bottom: 0;
-    border-bottom: 1px solid var(--line);
   }
 
   .site-header--simple,
