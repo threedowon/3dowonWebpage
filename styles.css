@@ -532,9 +532,11 @@ main:has(.contact-box) {
   /* Always reserve the open accordion's height on desktop so the header row
      (and therefore the menu) is the same size on every page — only opacity
      toggles visibility, the collapse/expand height animation is mobile-only. */
-  .nav-accordion .sidebar-controls {
+  .nav-accordion .sidebar-controls,
+  .site-header--works .nav-accordion .sidebar-controls,
+  .nav-accordion.is-open .sidebar-controls {
     max-height: max-content;
-    margin-top: 8px;
+    margin-top: 6px;
     margin-bottom: 0;
     overflow: visible;
   }
@@ -1568,8 +1570,28 @@ body:has(.site-header--project) .post-detail-des::before {
    instead); the works grid and Lab grid gain one fewer column; About's
    bio text is confined to a single column. */
 @media (min-width: 769px) and (max-width: 1180px) {
-  body:has(.site-header--project) .post-detail-des::before {
-    display: none;
+  .post-q {
+    width: 42%;
+  }
+
+  .post-projects {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  body:has(.site-header--project) .post-left {
+    left: 0;
+    width: 33.333%;
+    padding-left: 27px;
+    box-sizing: border-box;
+  }
+
+  body:has(.site-header--project) .post-video,
+  body:has(.site-header--project) .post-hero,
+  body:has(.site-header--project) .post-img-box {
+    grid-column: 2 / 4;
   }
 
   .lab-post-caption {
@@ -1596,6 +1618,14 @@ body:has(.site-header--project) .post-detail-des::before {
 
   .site-header--project .header-bar-col--works {
     display: none;
+  }
+
+  /* Hiding the works column above removes its height contribution to the
+     header row, so the nav column shrinks to its own content height and
+     the lang-switch's margin-top:auto no longer has room to push it down
+     to the usual position. Restore that gap explicitly. */
+  .site-header--project .header-bar-col--nav .header-lang-switch {
+    margin-top: 22px;
   }
 
   .works-view--grid .img-post-box {
