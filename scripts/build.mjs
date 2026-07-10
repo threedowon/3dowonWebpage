@@ -1,9 +1,8 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '228';
+const CSS_VERSION = '230';
 const JS_VERSION = '84';
-const LOGO_VERSION = '2';
 
 const STR = {
   en: {
@@ -57,7 +56,7 @@ function siteFooter(site) {
 }
 
 function siteLogo(assetPrefix, homeHref) {
-  return `<a href="${homeHref}" class="sidebar-logo sidebar-logo--img"><img src="${assetPrefix}assets/logo.png?v=${LOGO_VERSION}" alt="3Dowon" class="sidebar-logo-img" /></a>`;
+  return `<a href="${homeHref}" class="sidebar-logo">3Dowon</a>`;
 }
 
 function langSwitchLinks(assetPrefix, lang, relPath) {
@@ -76,7 +75,7 @@ function mobileLangSwitch(assetPrefix, lang, relPath) {
 
 function mobileHeader(assetPrefix, homeHref, str) {
   return `  <div class="mo-header">
-    <a href="${homeHref}" class="mo-logo mo-logo--img"><img src="${assetPrefix}assets/logo.png?v=${LOGO_VERSION}" alt="3Dowon" class="mo-logo-img" /></a>
+    <a href="${homeHref}" class="mo-logo">3Dowon</a>
     <button class="mo-menu-btn" id="moMenuBtn" aria-label="${str.menu}"><span class="mo-menu-icon" aria-hidden="true"></span></button>
   </div>`;
 }
