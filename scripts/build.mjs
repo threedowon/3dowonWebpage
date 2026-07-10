@@ -2,7 +2,7 @@ import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, write
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
 const CSS_VERSION = '240';
-const JS_VERSION = '91';
+const JS_VERSION = '92';
 
 const STR = {
   en: {
@@ -403,7 +403,7 @@ ${gallery}
     activeNav: 'works',
     variant: 'project',
     logoHtml: siteLogo(assetPrefix, `${homePrefix}index.html`),
-    extraCol2: `<button class="btn-back" onclick="history.back()" aria-label="${str.back}">←</button>`,
+    extraCol2: `<button class="btn-back" onclick="history.back()" aria-label="${str.back}"><span class="btn-back-arrow" aria-hidden="true"></span></button>`,
     lang,
     relPath,
   })}

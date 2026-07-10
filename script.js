@@ -245,8 +245,6 @@ function initIndexPreview() {
     if (bg) preview.style.backgroundImage = `url(${bg})`;
 
     const lineRect = line.getBoundingClientRect();
-    const titleRect = titleCell.getBoundingClientRect();
-    const textStartX = titleRect.left + (parseFloat(getComputedStyle(titleCell).paddingLeft) || 0);
 
     // Matches the CSS (width: min(31.5vw, 375px); aspect-ratio: 16/9) so we
     // can tell whether the preview would overflow the viewport bottom before
@@ -260,7 +258,7 @@ function initIndexPreview() {
     } else {
       preview.style.top = `${lineRect.bottom + INDEX_PREVIEW_OFFSET_Y}px`;
     }
-    preview.style.left = `${textStartX}px`;
+    preview.style.left = `${lineRect.right - previewWidth}px`;
   };
 
   posts.forEach((post) => {

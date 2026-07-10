@@ -473,9 +473,21 @@ main:has(.contact-box) {
     width: auto;
     height: auto;
     min-height: 0;
-    font-size: 5em;
-    line-height: 0.85;
     padding: 0 0 0 3px;
+  }
+
+  .site-header--project .btn-back-arrow {
+    width: 44px;
+    height: 24px;
+  }
+
+  .site-header--project .btn-back-arrow::before {
+    left: 12px;
+  }
+
+  .site-header--project .btn-back-arrow::after {
+    width: 16px;
+    height: 16px;
   }
 
   .header-bar-col--logo {
@@ -1243,8 +1255,6 @@ main:has(.contact-box) {
   border: none;
   background: transparent;
   color: var(--text);
-  font-size: 1.4em;
-  font-weight: 200;
   cursor: pointer;
   display: flex;
   align-items: flex-start;
@@ -1252,6 +1262,36 @@ main:has(.contact-box) {
 }
 
 .btn-back:hover { opacity: 0.5; }
+
+.btn-back-arrow {
+  position: relative;
+  display: inline-block;
+  width: 22px;
+  height: 12px;
+}
+
+.btn-back-arrow::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--text);
+  transform: translateY(-50%);
+}
+
+.btn-back-arrow::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-left: 1px solid var(--text);
+  border-bottom: 1px solid var(--text);
+  transform: translateY(-50%) rotate(45deg);
+}
 
 .post-projects {
   display: grid;
