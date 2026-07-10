@@ -306,10 +306,15 @@ main:has(.contact-box) {
   border-top: none;
 }
 
-.filter-dropdown-row {
+.controls-row {
   display: flex;
   gap: 6px;
   width: 100%;
+}
+
+.controls-row .view-toggle {
+  flex: 2;
+  width: auto;
 }
 
 .filter-dropdown-btn {

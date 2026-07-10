@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '233';
+const CSS_VERSION = '234';
 const JS_VERSION = '87';
 
 const STR = {
@@ -121,11 +121,11 @@ function worksControls(lang) {
     .map(([value, labels]) => `              <li data-filter="type" data-value="${value}">${labels[lang]}</li>`)
     .join('\n');
   return `          <div class="sidebar-controls">
-            <ul class="view-toggle">
-              <li data-view="grid" class="active">Grid</li>
-              <li data-view="index">Index</li>
-            </ul>
-            <div class="filter-dropdown-row">
+            <div class="controls-row">
+              <ul class="view-toggle">
+                <li data-view="grid" class="active">Grid</li>
+                <li data-view="index">Index</li>
+              </ul>
               <button type="button" class="filter-dropdown-btn" data-filter-group="type" data-default-label="${str.type}" data-mixed-label="${str.filterMixed}"><span class="filter-dropdown-label">${str.type}</span></button>
               <button type="button" class="filter-dropdown-btn" data-filter-group="tech" data-default-label="${str.tech}" data-mixed-label="${str.filterMixed}"><span class="filter-dropdown-label">${str.tech}</span></button>
             </div>
