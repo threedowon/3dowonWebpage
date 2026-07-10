@@ -6,14 +6,14 @@
   <title>Sonic Veil — 3Dowon</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-  <link rel="stylesheet" href="../../styles.css?v=228" />
+  <link rel="stylesheet" href="../../styles.css?v=236" />
 
 </head>
 <body>
   <header class="site-header site-header--bar site-header--project">
     <div class="header-bar">
       <div class="header-bar-col header-bar-col--logo">
-        <a href="../index.html" class="sidebar-logo sidebar-logo--img"><img src="../../assets/logo.png?v=2" alt="3Dowon" class="sidebar-logo-img" /></a>
+        <a href="../index.html" class="sidebar-logo">3Dowon</a>
       </div>
       <div class="header-bar-col header-bar-col--back"><button class="btn-back" onclick="history.back()" aria-label="뒤로">←</button></div>
       <div class="header-bar-col header-bar-col--works">
@@ -24,20 +24,26 @@
               <li data-view="grid" class="active">Grid</li>
               <li data-view="index">Index</li>
             </ul>
-            <ul class="filter-checks filter-checks--type">
-              <li data-filter="type" data-value="설치">Installation</li>
-              <li data-filter="type" data-value="영상">Video</li>
-              <li data-filter="type" data-value="퍼포먼스">Performance</li>
-              <li data-filter="type" data-value="전시">Exhibition</li>
-              <li data-filter="type" data-value="인터랙티브">Interactive</li>
-              <li data-filter="type" data-value="프로젝션">Projection</li>
-            </ul>
-            <ul class="filter-checks filter-checks--tech">
-              <li data-filter="tech" data-value="Unreal">Unreal</li>
-              <li data-filter="tech" data-value="Unity">Unity</li>
-              <li data-filter="tech" data-value="Arduino">Arduino</li>
-              <li data-filter="tech" data-value="3ds Max">3ds Max</li>
-            </ul>
+            <div class="filter-dropdown">
+              <button type="button" class="filter-dropdown-btn" data-filter-group="type" data-default-label="유형" data-mixed-label="혼합"><span class="filter-dropdown-label">유형</span></button>
+              <ul class="filter-checks filter-checks--type" data-filter-panel="type">
+              <li data-filter="type" data-value="설치">설치</li>
+              <li data-filter="type" data-value="영상">영상</li>
+              <li data-filter="type" data-value="퍼포먼스">퍼포먼스</li>
+              <li data-filter="type" data-value="전시">전시</li>
+              <li data-filter="type" data-value="인터랙티브">인터랙티브</li>
+              <li data-filter="type" data-value="프로젝션">프로젝션</li>
+              </ul>
+            </div>
+            <div class="filter-dropdown">
+              <button type="button" class="filter-dropdown-btn" data-filter-group="tech" data-default-label="기술" data-mixed-label="혼합"><span class="filter-dropdown-label">기술</span></button>
+              <ul class="filter-checks filter-checks--tech" data-filter-panel="tech">
+                <li data-filter="tech" data-value="Unreal">Unreal</li>
+                <li data-filter="tech" data-value="Unity">Unity</li>
+                <li data-filter="tech" data-value="Arduino">Arduino</li>
+                <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -53,7 +59,7 @@
     </div>
   </header>
   <div class="mo-header">
-    <a href="../index.html" class="mo-logo mo-logo--img"><img src="../../assets/logo.png?v=2" alt="3Dowon" class="mo-logo-img" /></a>
+    <a href="../index.html" class="mo-logo">3Dowon</a>
     <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
   </div>
   <div class="mo-overlay" id="moOverlay"></div>
@@ -111,6 +117,6 @@
       </div>
     </div>
   </main>
-  <script src="../../script.js?v=84"></script>
+  <script src="../../script.js?v=87"></script>
 </body>
 </html>

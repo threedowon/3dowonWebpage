@@ -119,6 +119,7 @@ function initFilters() {
       const willCheck = !el.classList.contains('checked');
       syncChecks(filterName, el.dataset.value, willCheck);
       filter();
+      if (window.updateFilterDropdownLabels) window.updateFilterDropdownLabels();
     });
   });
 }
@@ -141,6 +142,41 @@ function initNavAccordion() {
     link.addEventListener('click', () => {
       accordion.classList.remove('is-open');
     });
+  });
+}
+
+// ── Filter dropdowns (type / tech) ──
+function initFilterDropdowns() {
+  const buttons = document.querySelectorAll('.filter-dropdown-btn[data-filter-group]');
+  if (!buttons.length) return;
+
+  const groups = [...buttons].map((btn) => ({
+    btn,
+    label: btn.querySelector('.filter-dropdown-label'),
+    panel: document.querySelector(`.filter-checks[data-filter-panel="${btn.dataset.filterGroup}"]`),
+  })).filter((g) => g.panel && g.label);
+
+  function updateLabel({ btn, label, panel }) {
+    const checked = [...panel.querySelectorAll('li.checked')];
+    if (checked.length === 0) {
+      label.textContent = btn.dataset.defaultLabel;
+    } else if (checked.length <= 2) {
+      label.textContent = checked.map((li) => li.textContent).join(', ');
+    } else {
+      label.textContent = btn.dataset.mixedLabel;
+    }
+  }
+
+  window.updateFilterDropdownLabels = () => groups.forEach(updateLabel);
+
+  groups.forEach((group) => {
+    const { btn, panel } = group;
+    btn.addEventListener('click', () => {
+      const willOpen = !panel.classList.contains('is-open');
+      panel.classList.toggle('is-open', willOpen);
+      btn.classList.toggle('is-active', willOpen);
+    });
+    updateLabel(group);
   });
 }
 
@@ -416,6 +452,7 @@ function initMobileHeaderHeight() {
 document.addEventListener('DOMContentLoaded', () => {
   initNavAccordion();
   initFilters();
+  initFilterDropdowns();
   initViewToggle();
   initIndexPreview();
   initReveal();
