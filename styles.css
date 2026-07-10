@@ -956,12 +956,6 @@ main:has(.contact-box) {
   cursor: default;
 }
 
-.lab-view .img-post {
-  width: 12.5%;
-  flex: 1 1 12.5%;
-  max-width: 12.5%;
-}
-
 .lab-view .img-post-thumbimg {
   margin-bottom: 6px;
 }
@@ -2010,6 +2004,10 @@ body:has(.site-header--project) .post-detail-des::before {
   .view-toggle > li,
   .filter-checks > li {
     padding: 5px 6px 5px 4px;
+    font-size: 0.84em;
+  }
+
+  .filter-dropdown-btn {
     font-size: 0.84em;
   }
 
