@@ -375,10 +375,6 @@ main:has(.contact-box) {
   overflow-y: auto;
 }
 
-.filter-checks > li.checked::before {
-  content: "• ";
-}
-
 .view-toggle > li,
 .filter-checks > li {
   flex: 1;
