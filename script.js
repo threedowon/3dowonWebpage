@@ -119,6 +119,7 @@ function initFilters() {
       const willCheck = !el.classList.contains('checked');
       syncChecks(filterName, el.dataset.value, willCheck);
       filter();
+      if (window.updateFilterDropdownLabels) window.updateFilterDropdownLabels();
     });
   });
 }
@@ -144,16 +145,36 @@ function initNavAccordion() {
   });
 }
 
-// ── Filter panel toggle ──
-function initFilterToggle() {
-  const btn = document.getElementById('filterToggleBtn');
-  const panel = document.getElementById('filterPanel');
-  if (!btn || !panel) return;
+// ── Filter dropdowns (type / tech) ──
+function initFilterDropdowns() {
+  const buttons = document.querySelectorAll('.filter-dropdown-btn[data-filter-group]');
+  if (!buttons.length) return;
 
-  btn.addEventListener('click', () => {
-    const willOpen = !panel.classList.contains('is-open');
-    panel.classList.toggle('is-open', willOpen);
-    btn.classList.toggle('is-active', willOpen);
+  const groups = [...buttons].map((btn) => ({
+    btn,
+    panel: document.querySelector(`.filter-checks[data-filter-panel="${btn.dataset.filterGroup}"]`),
+  })).filter((g) => g.panel);
+
+  function updateLabel({ btn, panel }) {
+    const checked = [...panel.querySelectorAll('li.checked')];
+    if (checked.length === 0) {
+      btn.textContent = btn.dataset.defaultLabel;
+    } else if (checked.length <= 2) {
+      btn.textContent = checked.map((li) => li.textContent).join(', ');
+    } else {
+      btn.textContent = btn.dataset.mixedLabel;
+    }
+  }
+
+  window.updateFilterDropdownLabels = () => groups.forEach(updateLabel);
+
+  groups.forEach(({ btn, panel }) => {
+    btn.addEventListener('click', () => {
+      const willOpen = !panel.classList.contains('is-open');
+      panel.classList.toggle('is-open', willOpen);
+      btn.classList.toggle('is-active', willOpen);
+    });
+    updateLabel({ btn, panel });
   });
 }
 
@@ -429,7 +450,7 @@ function initMobileHeaderHeight() {
 document.addEventListener('DOMContentLoaded', () => {
   initNavAccordion();
   initFilters();
-  initFilterToggle();
+  initFilterDropdowns();
   initViewToggle();
   initIndexPreview();
   initReveal();

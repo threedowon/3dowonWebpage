@@ -306,35 +306,33 @@ main:has(.contact-box) {
   border-top: none;
 }
 
-.view-toggle-row {
+.filter-dropdown-row {
   display: flex;
-  align-items: stretch;
+  gap: 6px;
   width: 100%;
 }
 
-.view-toggle-row .view-toggle {
+.filter-dropdown-btn {
   flex: 1;
-  width: auto;
-}
-
-.filter-toggle-btn {
-  flex-shrink: 0;
-  margin-left: 6px;
-  padding: 4px 10px;
+  min-width: 0;
+  padding: 4px 8px;
   font-size: 0.78rem;
   line-height: 1.3;
   background: none;
   border: 1px solid var(--line);
   color: var(--text);
   cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.filter-toggle-btn.is-active {
+.filter-dropdown-btn.is-active {
   background: var(--hover-bg);
 }
 
-.view-toggle,
-.filter-checks {
+.view-toggle {
   display: flex;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
@@ -342,20 +340,25 @@ main:has(.contact-box) {
 }
 
 .filter-checks {
+  display: flex;
   flex-wrap: wrap;
-}
-
-.filter-panel {
+  width: 100%;
   max-height: 0;
   opacity: 0;
   overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
   transition: max-height 0.25s ease, opacity 0.2s ease;
 }
 
-.filter-panel.is-open {
+.filter-checks.is-open {
   max-height: 300px;
   opacity: 1;
   margin-top: 6px;
+}
+
+.filter-checks > li.checked::before {
+  content: "• ";
 }
 
 .view-toggle > li,

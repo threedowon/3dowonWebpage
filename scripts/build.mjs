@@ -1,8 +1,8 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '231';
-const JS_VERSION = '85';
+const CSS_VERSION = '232';
+const JS_VERSION = '86';
 
 const STR = {
   en: {
@@ -18,6 +18,7 @@ const STR = {
     menu: 'Menu',
     close: 'Close',
     back: 'Back',
+    filterMixed: 'Mixed',
   },
   ko: {
     year: '연도',
@@ -32,7 +33,17 @@ const STR = {
     menu: '메뉴',
     close: '닫기',
     back: '뒤로',
+    filterMixed: '혼합',
   },
+};
+
+const TYPE_FILTER_LABELS = {
+  설치: { en: 'Installation', ko: '설치' },
+  영상: { en: 'Video', ko: '영상' },
+  퍼포먼스: { en: 'Performance', ko: '퍼포먼스' },
+  전시: { en: 'Exhibition', ko: '전시' },
+  인터랙티브: { en: 'Interactive', ko: '인터랙티브' },
+  프로젝션: { en: 'Projection', ko: '프로젝션' },
 };
 
 // homePrefix: relative path back to the top-level pages of the SAME language (index.html, about.html, ...)
@@ -104,31 +115,29 @@ function mobileShell(site, activeNav, homePrefix, assetPrefix, lang, relPath, st
   return `${mobileHeader(assetPrefix, `${homePrefix}index.html`, str)}${mobileNav(site, activeNav, homePrefix, assetPrefix, lang, relPath, str)}`;
 }
 
-function worksControls() {
+function worksControls(lang) {
+  const str = STR[lang];
+  const typeItems = Object.entries(TYPE_FILTER_LABELS)
+    .map(([value, labels]) => `              <li data-filter="type" data-value="${value}">${labels[lang]}</li>`)
+    .join('\n');
   return `          <div class="sidebar-controls">
-            <div class="view-toggle-row">
-              <ul class="view-toggle">
-                <li data-view="grid" class="active">Grid</li>
-                <li data-view="index">Index</li>
-              </ul>
-              <button type="button" class="filter-toggle-btn" id="filterToggleBtn">Filter</button>
+            <ul class="view-toggle">
+              <li data-view="grid" class="active">Grid</li>
+              <li data-view="index">Index</li>
+            </ul>
+            <div class="filter-dropdown-row">
+              <button type="button" class="filter-dropdown-btn" data-filter-group="type" data-default-label="${str.type}" data-mixed-label="${str.filterMixed}">${str.type}</button>
+              <button type="button" class="filter-dropdown-btn" data-filter-group="tech" data-default-label="${str.tech}" data-mixed-label="${str.filterMixed}">${str.tech}</button>
             </div>
-            <div class="filter-panel" id="filterPanel">
-              <ul class="filter-checks filter-checks--type">
-                <li data-filter="type" data-value="설치">Installation</li>
-                <li data-filter="type" data-value="영상">Video</li>
-                <li data-filter="type" data-value="퍼포먼스">Performance</li>
-                <li data-filter="type" data-value="전시">Exhibition</li>
-                <li data-filter="type" data-value="인터랙티브">Interactive</li>
-                <li data-filter="type" data-value="프로젝션">Projection</li>
-              </ul>
-              <ul class="filter-checks filter-checks--tech">
-                <li data-filter="tech" data-value="Unreal">Unreal</li>
-                <li data-filter="tech" data-value="Unity">Unity</li>
-                <li data-filter="tech" data-value="Arduino">Arduino</li>
-                <li data-filter="tech" data-value="3ds Max">3ds Max</li>
-              </ul>
-            </div>
+            <ul class="filter-checks filter-checks--type" data-filter-panel="type">
+${typeItems}
+            </ul>
+            <ul class="filter-checks filter-checks--tech" data-filter-panel="tech">
+              <li data-filter="tech" data-value="Unreal">Unreal</li>
+              <li data-filter="tech" data-value="Unity">Unity</li>
+              <li data-filter="tech" data-value="Arduino">Arduino</li>
+              <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+            </ul>
           </div>`;
 }
 
@@ -161,7 +170,7 @@ function headerBar({
   // align-items:stretch — reserves the same height on every desktop page.
   const worksBlock = `        <div class="nav-accordion${showWorksControls ? ' is-open' : ''}">
           <a href="${home}" class="${worksClass}">WORKS</a>
-${worksControls()}
+${worksControls(lang)}
         </div>`;
 
   const variantClass =
@@ -314,12 +323,9 @@ ${indexPosts}
 
 ${mobileHeader(assetPrefix, `${homePrefix}index.html`, str)}
   <div class="mo-filters mo-filters--type">
-    <span class="mo-filter" data-filter="type" data-value="설치">Installation</span>
-    <span class="mo-filter" data-filter="type" data-value="영상">Video</span>
-    <span class="mo-filter" data-filter="type" data-value="퍼포먼스">Performance</span>
-    <span class="mo-filter" data-filter="type" data-value="전시">Exhibition</span>
-    <span class="mo-filter" data-filter="type" data-value="인터랙티브">Interactive</span>
-    <span class="mo-filter" data-filter="type" data-value="프로젝션">Projection</span>
+${Object.entries(TYPE_FILTER_LABELS)
+  .map(([value, labels]) => `    <span class="mo-filter" data-filter="type" data-value="${value}">${labels[lang]}</span>`)
+  .join('\n')}
   </div>
   <div class="mo-filters mo-filters--tech">
     <span class="mo-filter" data-filter="tech" data-value="Unreal">Unreal</span>

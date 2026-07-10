@@ -6,7 +6,7 @@
   <title>The Forest — 3Dowon</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-  <link rel="stylesheet" href="../styles.css?v=231" />
+  <link rel="stylesheet" href="../styles.css?v=232" />
 
 </head>
 <body>
@@ -20,29 +20,28 @@
         <div class="nav-accordion">
           <a href="../index.html" class="nav-cell nav-works active">WORKS</a>
           <div class="sidebar-controls">
-            <div class="view-toggle-row">
-              <ul class="view-toggle">
-                <li data-view="grid" class="active">Grid</li>
-                <li data-view="index">Index</li>
-              </ul>
-              <button type="button" class="filter-toggle-btn" id="filterToggleBtn">Filter</button>
+            <ul class="view-toggle">
+              <li data-view="grid" class="active">Grid</li>
+              <li data-view="index">Index</li>
+            </ul>
+            <div class="filter-dropdown-row">
+              <button type="button" class="filter-dropdown-btn" data-filter-group="type" data-default-label="Type" data-mixed-label="Mixed">Type</button>
+              <button type="button" class="filter-dropdown-btn" data-filter-group="tech" data-default-label="Technology" data-mixed-label="Mixed">Technology</button>
             </div>
-            <div class="filter-panel" id="filterPanel">
-              <ul class="filter-checks filter-checks--type">
-                <li data-filter="type" data-value="설치">Installation</li>
-                <li data-filter="type" data-value="영상">Video</li>
-                <li data-filter="type" data-value="퍼포먼스">Performance</li>
-                <li data-filter="type" data-value="전시">Exhibition</li>
-                <li data-filter="type" data-value="인터랙티브">Interactive</li>
-                <li data-filter="type" data-value="프로젝션">Projection</li>
-              </ul>
-              <ul class="filter-checks filter-checks--tech">
-                <li data-filter="tech" data-value="Unreal">Unreal</li>
-                <li data-filter="tech" data-value="Unity">Unity</li>
-                <li data-filter="tech" data-value="Arduino">Arduino</li>
-                <li data-filter="tech" data-value="3ds Max">3ds Max</li>
-              </ul>
-            </div>
+            <ul class="filter-checks filter-checks--type" data-filter-panel="type">
+              <li data-filter="type" data-value="설치">Installation</li>
+              <li data-filter="type" data-value="영상">Video</li>
+              <li data-filter="type" data-value="퍼포먼스">Performance</li>
+              <li data-filter="type" data-value="전시">Exhibition</li>
+              <li data-filter="type" data-value="인터랙티브">Interactive</li>
+              <li data-filter="type" data-value="프로젝션">Projection</li>
+            </ul>
+            <ul class="filter-checks filter-checks--tech" data-filter-panel="tech">
+              <li data-filter="tech" data-value="Unreal">Unreal</li>
+              <li data-filter="tech" data-value="Unity">Unity</li>
+              <li data-filter="tech" data-value="Arduino">Arduino</li>
+              <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -112,6 +111,6 @@
       </div>
     </div>
   </main>
-  <script src="../script.js?v=85"></script>
+  <script src="../script.js?v=86"></script>
 </body>
 </html>
