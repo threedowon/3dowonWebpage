@@ -1,8 +1,8 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '238';
-const JS_VERSION = '89';
+const CSS_VERSION = '239';
+const JS_VERSION = '90';
 
 const STR = {
   en: {
@@ -24,6 +24,8 @@ const STR = {
     navAbout: 'ABOUT',
     navCv: 'CV',
     navContact: 'CONTACT',
+    viewGrid: 'Grid',
+    viewIndex: 'Index',
   },
   ko: {
     year: '연도',
@@ -40,10 +42,12 @@ const STR = {
     back: '뒤로',
     filterMixed: '혼합',
     navWorks: '작업',
-    navLab: '랩',
+    navLab: '실험',
     navAbout: '소개',
     navCv: '이력',
     navContact: '연락처',
+    viewGrid: '그리드',
+    viewIndex: '인덱스',
   },
 };
 
@@ -132,8 +136,8 @@ function worksControls(lang) {
     .join('\n');
   return `          <div class="sidebar-controls">
             <ul class="view-toggle">
-              <li data-view="grid" class="active">Grid</li>
-              <li data-view="index">Index</li>
+              <li data-view="grid" class="active">${str.viewGrid}</li>
+              <li data-view="index">${str.viewIndex}</li>
             </ul>
             <div class="filter-dropdown">
               <button type="button" class="filter-dropdown-btn" data-filter-group="type" data-default-label="${str.type}" data-mixed-label="${str.filterMixed}"><span class="filter-dropdown-label">${str.type}</span></button>
@@ -364,6 +368,7 @@ function buildWorkPage(work, site, lang) {
   const video = vimeoEmbedHtml(work.vimeo_url, work.title);
 
   const body = `    <div class="post-projects">
+      ${video}
       <div class="post-hero reveal">
         <img src="${work.hero_image || work.thumbnail}" alt="${escapeHtml(work.title)}" class="post-hero-image" />
       </div>
@@ -385,7 +390,6 @@ function buildWorkPage(work, site, lang) {
       </div>
       </div>
       <div class="post-img-box">
-${video}
         <ul class="project-detail-gallery">
 ${gallery}
         </ul>
@@ -494,7 +498,7 @@ function buildLab(lab, site, lang) {
   const relPath = 'lab.html';
   const items = lab.items
     .map(
-      (item) => `        <div class="img-post lab-post reveal">
+      (item) => `        <div class="img-post lab-post reveal" data-lab-image="${item.image}">
           <div class="img-post-thumbimg" style="background-image:url(${item.image})"></div>
           <div class="lab-post-caption">${escapeHtml(pick(item, 'caption', lang))}</div>
         </div>`
@@ -504,6 +508,9 @@ function buildLab(lab, site, lang) {
       <div class="img-post-box" id="labPostBox">
 ${items}
       </div>
+    </div>
+    <div class="lab-lightbox" id="labLightbox">
+      <img class="lab-lightbox-img" id="labLightboxImg" alt="" />
     </div>`;
   const { assetPrefix } = prefixes(lang, false);
   return pageShell({
