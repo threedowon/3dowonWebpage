@@ -244,13 +244,15 @@ function initIndexPreview() {
     const bg = post.dataset.previewBg;
     if (bg) preview.style.backgroundImage = `url(${bg})`;
 
-    const lineRect = line.getBoundingClientRect();
+    // Make it participate in layout (still off-screen via top/left: -9999px)
+    // so we can measure its true rendered size instead of approximating the
+    // CSS (width: min(31.5vw, 375px); aspect-ratio: 16/9) in JS.
+    preview.classList.add('is-visible');
+    const previewRect = preview.getBoundingClientRect();
+    const previewWidth = previewRect.width;
+    const previewHeight = previewRect.height;
 
-    // Matches the CSS (width: min(31.5vw, 375px); aspect-ratio: 16/9) so we
-    // can tell whether the preview would overflow the viewport bottom before
-    // it's actually laid out (it's display:none until shown).
-    const previewWidth = Math.min(window.innerWidth * 0.315, 375);
-    const previewHeight = (previewWidth * 9) / 16;
+    const lineRect = line.getBoundingClientRect();
     const spaceBelow = window.innerHeight - lineRect.bottom;
 
     if (spaceBelow < previewHeight) {
@@ -269,7 +271,6 @@ function initIndexPreview() {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           positionPreview(post);
-          preview.classList.add('is-visible');
         });
       });
     });
