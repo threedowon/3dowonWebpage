@@ -962,8 +962,8 @@ main:has(.contact-box) {
 
 .lab-post-caption {
   padding-left: 1px;
-  font-size: var(--type-body);
-  line-height: var(--type-body-line);
+  font-size: var(--type-meta);
+  line-height: var(--type-meta-line);
 }
 
 /* ── About Page ── */
@@ -1647,6 +1647,27 @@ body:has(.site-header--project) .post-detail-des::before {
 
   .about-right {
     grid-column: 2 / 4;
+  }
+
+  .index-category-cells,
+  .index-post-cells {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .index-category-year,
+  .index-post-cells > .index-post-year {
+    grid-column: 1;
+  }
+
+  .index-category-title,
+  .index-post-cells > .index-post-title {
+    grid-column: 2;
+    padding-left: 17px;
+  }
+
+  .index-category-type,
+  .index-post-cells > .index-post-type {
+    grid-column: 3;
   }
 
   .cv-section,

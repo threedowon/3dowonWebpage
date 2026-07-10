@@ -258,7 +258,8 @@ function initIndexPreview() {
     } else {
       preview.style.top = `${lineRect.bottom + INDEX_PREVIEW_OFFSET_Y}px`;
     }
-    preview.style.left = `${lineRect.right - previewWidth}px`;
+    const titleRect = titleCell.getBoundingClientRect();
+    preview.style.left = `${titleRect.right - previewWidth}px`;
   };
 
   posts.forEach((post) => {
