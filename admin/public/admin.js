@@ -1,7 +1,7 @@
-// 사이트 필터에서는 유형(설치~전시)과 태그(인터랙티브/프로젝션)가 한 목록으로 합쳐져 보이므로
-// admin에서도 이 6개를 하나의 다중선택으로 다룬다.
-const TYPE_OPTIONS = ['설치', '영상', '퍼포먼스', '전시', '인터랙티브', '프로젝션'];
-const TECH_OPTIONS = ['Unreal', 'Unity', 'Arduino', '3ds Max'];
+// 사이트 필터에서는 유형(설치~전시·VR/AR)과 태그(인터랙티브/프로젝션)가 한 목록으로 합쳐져 보이므로
+// admin에서도 이 7개를 하나의 다중선택으로 다룬다.
+const TYPE_OPTIONS = ['설치', '영상', '퍼포먼스', '전시', 'VR/AR', '인터랙티브', '프로젝션'];
+const TECH_OPTIONS = ['Unreal', 'Unity', 'Arduino', '3ds Max', 'Depth Camera'];
 const PRODUCTION_OPTIONS = ['개인', '공동', '회사'];
 
 function imgUrl(p) {
@@ -41,26 +41,122 @@ function selectOptions(options, value) {
 }
 
 // ── Tabs ──
+const openWorkSlugs = new Set();
+const dirtyWorks = new Set();
+let activeAdminTab = 'works';
+
 document.querySelectorAll('.admin-tab').forEach((tab) => {
   tab.addEventListener('click', () => {
+    const nextTab = tab.dataset.tab;
+    if (nextTab !== activeAdminTab && dirtyWorks.size > 0) {
+      if (!confirm('저장하지 않은 변경이 있어요. 탭을 바꿀까요?')) return;
+      dirtyWorks.clear();
+    }
     document.querySelectorAll('.admin-tab').forEach((t) => t.classList.remove('active'));
     document.querySelectorAll('.admin-panel').forEach((p) => p.classList.remove('active'));
     tab.classList.add('active');
-    document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
+    document.getElementById(`tab-${nextTab}`).classList.add('active');
+    activeAdminTab = nextTab;
   });
 });
 
+window.addEventListener('beforeunload', (e) => {
+  if (dirtyWorks.size > 0) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
+
+function captureWorkForm(form) {
+  const fd = new FormData(form);
+  return {
+    title: fd.get('title'),
+    year: fd.get('year'),
+    types: fd.getAll('types'),
+    production: fd.get('production'),
+    tech: fd.getAll('tech'),
+    meta_tech: fd.get('meta_tech'),
+    meta_tech_en: fd.get('meta_tech_en'),
+    description: fd.get('description'),
+    description_en: fd.get('description_en'),
+    vimeo_url: fd.get('vimeo_url'),
+  };
+}
+
+function applyWorkForm(form, draft) {
+  if (!draft) return;
+  form.title.value = draft.title ?? '';
+  form.year.value = draft.year ?? '';
+  form.production.value = draft.production ?? '';
+  form.meta_tech.value = draft.meta_tech ?? '';
+  form.meta_tech_en.value = draft.meta_tech_en ?? '';
+  form.description.value = draft.description ?? '';
+  form.description_en.value = draft.description_en ?? '';
+  form.vimeo_url.value = draft.vimeo_url ?? '';
+  form.querySelectorAll('input[name="types"]').forEach((input) => {
+    input.checked = draft.types.includes(input.value);
+  });
+  form.querySelectorAll('input[name="tech"]').forEach((input) => {
+    input.checked = draft.tech.includes(input.value);
+  });
+}
+
+function markWorkDirty(slug) {
+  dirtyWorks.add(slug);
+}
+
+function updateWorkCardHead(card, work) {
+  const h3 = card.querySelector('.work-card-head h3');
+  if (!h3) return;
+  h3.innerHTML = `${escapeHtml(work.title)} <span>${work.year} · ${escapeHtml(work.type)}</span>`;
+}
+
+function refreshGalleryGrid(galleryGrid, work, gallery) {
+  galleryGrid.innerHTML = '';
+  (gallery || []).forEach((src, i) => appendGalleryItem(galleryGrid, work, src, i));
+}
+
+function appendGalleryItem(galleryGrid, work, src, index) {
+  const item = document.createElement('div');
+  item.className = 'gallery-item';
+  item.dataset.index = String(index);
+  item.innerHTML = `<img src="${imgUrl(src)}" alt="" /><button type="button">×</button>`;
+  item.querySelector('button').addEventListener('click', async () => {
+    const idx = Number(item.dataset.index);
+    const updated = await api(`/api/works/${work.slug}/gallery/${idx}`, { method: 'DELETE' });
+    refreshGalleryGrid(galleryGrid, work, updated.gallery || []);
+    openWorkSlugs.add(work.slug);
+    galleryGrid.closest('.work-card')?.classList.add('open');
+  });
+  galleryGrid.appendChild(item);
+}
+
 // ── Works ──
 async function loadWorks() {
+  const drafts = new Map();
+  document.querySelectorAll('.work-card').forEach((card) => {
+    const slug = card.dataset.slug;
+    if (slug && dirtyWorks.has(slug)) {
+      const form = card.querySelector('.edit-form');
+      if (form) drafts.set(slug, captureWorkForm(form));
+    }
+  });
+
   const works = await api('/api/works');
   const list = document.getElementById('worksList');
   list.innerHTML = '';
-  works.forEach((work) => list.appendChild(renderWorkCard(work)));
+  works.forEach((work) => {
+    const card = renderWorkCard(work);
+    if (openWorkSlugs.has(work.slug)) card.classList.add('open');
+    if (drafts.has(work.slug)) applyWorkForm(card.querySelector('.edit-form'), drafts.get(work.slug));
+    list.appendChild(card);
+  });
 }
 
 function renderWorkCard(work) {
   const card = document.createElement('div');
   card.className = 'work-card';
+  card.dataset.slug = work.slug;
   card.innerHTML = `
     <div class="work-card-head">
       <h3>${escapeHtml(work.title)} <span>${work.year} · ${escapeHtml(work.type)}</span></h3>
@@ -98,23 +194,27 @@ function renderWorkCard(work) {
   `;
 
   const galleryGrid = card.querySelector('.gallery-grid');
-  (work.gallery || []).forEach((src, i) => {
-    const item = document.createElement('div');
-    item.className = 'gallery-item';
-    item.innerHTML = `<img src="${imgUrl(src)}" alt="" /><button type="button">×</button>`;
-    item.querySelector('button').addEventListener('click', async () => {
-      await api(`/api/works/${work.slug}/gallery/${i}`, { method: 'DELETE' });
-      loadWorks();
-    });
-    galleryGrid.appendChild(item);
+  (work.gallery || []).forEach((src, i) => appendGalleryItem(galleryGrid, work, src, i));
+
+  card.querySelector('.work-card-head').addEventListener('click', () => {
+    const willClose = card.classList.contains('open');
+    if (willClose && dirtyWorks.has(work.slug)) {
+      if (!confirm('저장하지 않은 변경이 있어요. 닫을까요?')) return;
+      dirtyWorks.delete(work.slug);
+    }
+    card.classList.toggle('open');
+    if (card.classList.contains('open')) openWorkSlugs.add(work.slug);
+    else openWorkSlugs.delete(work.slug);
   });
 
-  card.querySelector('.work-card-head').addEventListener('click', () => card.classList.toggle('open'));
+  const editForm = card.querySelector('.edit-form');
+  editForm.addEventListener('input', () => markWorkDirty(work.slug));
+  editForm.addEventListener('change', () => markWorkDirty(work.slug));
 
-  card.querySelector('.edit-form').addEventListener('submit', async (e) => {
+  editForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const fd = new FormData(e.target);
-    await api(`/api/works/${work.slug}`, {
+    const updated = await api(`/api/works/${work.slug}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -130,7 +230,11 @@ function renderWorkCard(work) {
         vimeo_url: fd.get('vimeo_url'),
       }),
     });
-    loadWorks();
+    dirtyWorks.delete(work.slug);
+    openWorkSlugs.add(work.slug);
+    card.classList.add('open');
+    updateWorkCardHead(card, updated);
+    alert('저장했어요.');
   });
 
   card.querySelector('.delete-work').addEventListener('click', async () => {
@@ -146,8 +250,11 @@ function renderWorkCard(work) {
       const fd = new FormData();
       fd.append('image', file);
       try {
-        await api(`/api/works/${work.slug}/${input.dataset.field}`, { method: 'POST', body: fd });
-        loadWorks();
+        const updated = await api(`/api/works/${work.slug}/${input.dataset.field}`, { method: 'POST', body: fd });
+        const thumbImg = card.querySelector('.thumb-row img');
+        if (thumbImg && updated.thumbnail) thumbImg.src = imgUrl(updated.thumbnail);
+        openWorkSlugs.add(work.slug);
+        card.classList.add('open');
       } catch (err) {
         alert(err.message);
         e.target.value = '';
@@ -161,8 +268,11 @@ function renderWorkCard(work) {
     const fd = new FormData();
     for (const f of files) fd.append('images', f);
     try {
-      await api(`/api/works/${work.slug}/gallery`, { method: 'POST', body: fd });
-      loadWorks();
+      const updated = await api(`/api/works/${work.slug}/gallery`, { method: 'POST', body: fd });
+      refreshGalleryGrid(galleryGrid, work, updated.gallery || []);
+      openWorkSlugs.add(work.slug);
+      card.classList.add('open');
+      e.target.value = '';
     } catch (err) {
       alert(err.message);
       e.target.value = '';
@@ -178,17 +288,19 @@ document.getElementById('newWorkForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const fd = new FormData(e.target);
   try {
+    const slug = fd.get('slug');
     await api('/api/works', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        slug: fd.get('slug'),
+        slug,
         title: fd.get('title'),
         year: fd.get('year'),
         types: fd.getAll('types'),
       }),
     });
     e.target.reset();
+    if (slug) openWorkSlugs.add(slug);
     loadWorks();
   } catch (err) {
     alert(err.message);

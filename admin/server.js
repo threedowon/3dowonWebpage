@@ -54,6 +54,7 @@ const TYPE_EN = {
   '영상': 'Video',
   '퍼포먼스': 'Performance',
   '전시': 'Exhibition',
+  'VR/AR': 'VR/AR',
   '인터랙티브': 'Interactive',
   '프로젝션': 'Projection',
 };
