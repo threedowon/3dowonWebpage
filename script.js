@@ -221,6 +221,7 @@ function initViewToggle() {
 
 // ── Index hover preview (single shared image) ──
 const INDEX_PREVIEW_OFFSET_Y = 0;
+const INDEX_PREVIEW_OFFSET_X = -10;
 
 function hideIndexPreview() {
   const preview = document.getElementById('indexPreview');
@@ -261,7 +262,7 @@ function initIndexPreview() {
       preview.style.top = `${lineRect.bottom + INDEX_PREVIEW_OFFSET_Y}px`;
     }
     const titleRect = titleCell.getBoundingClientRect();
-    preview.style.left = `${titleRect.right - previewWidth}px`;
+    preview.style.left = `${titleRect.right - previewWidth + INDEX_PREVIEW_OFFSET_X}px`;
   };
 
   posts.forEach((post) => {
