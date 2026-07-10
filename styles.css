@@ -306,24 +306,12 @@ main:has(.contact-box) {
   border-top: none;
 }
 
-.controls-row {
-  display: flex;
-  gap: 6px;
-  width: 100%;
-}
-
-.controls-row .view-toggle {
-  flex: 2;
-  width: auto;
-}
-
 .filter-dropdown-btn {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 6px;
-  flex: 1;
-  min-width: 0;
+  width: 100%;
   padding: 4px 8px;
   font-size: 0.78rem;
   line-height: 1.3;
