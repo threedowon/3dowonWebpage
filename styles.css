@@ -577,6 +577,7 @@ main:has(.contact-box) {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(8, minmax(0, 1fr));
+    row-gap: 16px;
   }
 
   .lab-view .img-post {
@@ -584,6 +585,7 @@ main:has(.contact-box) {
     max-width: none;
     flex: none;
     margin-left: 0;
+    margin-bottom: 0;
     padding: 0 12px;
     box-sizing: border-box;
     border-left: none;
@@ -1531,6 +1533,20 @@ body:has(.site-header--project) .post-detail-des::before {
    instead); the works grid and Lab grid gain one fewer column; About's
    bio text is confined to a single column. */
 @media (min-width: 769px) and (max-width: 1180px) {
+  body:has(.site-header--project) .post-detail-des::before {
+    display: none;
+  }
+
+  .lab-post-caption {
+    font-size: var(--type-card-title);
+    line-height: var(--type-card-line);
+  }
+
+  .works-view--grid .img-post-title {
+    font-size: var(--type-meta);
+    line-height: var(--type-meta-line);
+  }
+
   .header-bar {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1564,6 +1580,7 @@ body:has(.site-header--project) .post-detail-des::before {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
+    row-gap: 16px;
   }
 
   .lab-view .img-post {
@@ -1571,6 +1588,7 @@ body:has(.site-header--project) .post-detail-des::before {
     max-width: none;
     flex: none;
     margin-left: 0;
+    margin-bottom: 0;
     padding: 0 12px;
     border-left: none;
     border-right: 1px solid var(--line);

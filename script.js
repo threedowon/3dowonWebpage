@@ -248,7 +248,18 @@ function initIndexPreview() {
     const titleRect = titleCell.getBoundingClientRect();
     const textStartX = titleRect.left + (parseFloat(getComputedStyle(titleCell).paddingLeft) || 0);
 
-    preview.style.top = `${lineRect.bottom + INDEX_PREVIEW_OFFSET_Y}px`;
+    // Matches the CSS (width: min(31.5vw, 375px); aspect-ratio: 16/9) so we
+    // can tell whether the preview would overflow the viewport bottom before
+    // it's actually laid out (it's display:none until shown).
+    const previewWidth = Math.min(window.innerWidth * 0.315, 375);
+    const previewHeight = (previewWidth * 9) / 16;
+    const spaceBelow = window.innerHeight - lineRect.bottom;
+
+    if (spaceBelow < previewHeight) {
+      preview.style.top = `${lineRect.bottom - previewHeight}px`;
+    } else {
+      preview.style.top = `${lineRect.bottom + INDEX_PREVIEW_OFFSET_Y}px`;
+    }
     preview.style.left = `${textStartX}px`;
   };
 
