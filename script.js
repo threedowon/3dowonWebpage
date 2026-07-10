@@ -273,6 +273,36 @@ function initIndexPreview() {
   document.getElementById('indexView')?.addEventListener('mouseleave', hideIndexPreview);
 }
 
+// ── Lab image lightbox ──
+function initLabLightbox() {
+  const lightbox = document.getElementById('labLightbox');
+  const lightboxImg = document.getElementById('labLightboxImg');
+  const posts = document.querySelectorAll('.lab-post[data-lab-image]');
+  if (!lightbox || !lightboxImg || !posts.length) return;
+
+  const open = (src) => {
+    lightboxImg.src = src;
+    lightbox.classList.add('is-open');
+  };
+
+  const close = () => {
+    lightbox.classList.remove('is-open');
+    lightboxImg.src = '';
+  };
+
+  posts.forEach((post) => {
+    post.addEventListener('click', () => open(post.dataset.labImage));
+  });
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) close();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') close();
+  });
+}
+
 // ── Scroll reveal ──
 function initReveal() {
   const observer = new IntersectionObserver(
@@ -447,6 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFilterDropdowns();
   initViewToggle();
   initIndexPreview();
+  initLabLightbox();
   initReveal();
   initMobileMenu();
   initMobileHeaderHeight();
