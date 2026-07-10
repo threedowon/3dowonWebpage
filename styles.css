@@ -1572,8 +1572,8 @@ body:has(.site-header--project) .post-detail-des::before {
   }
 
   .lab-post-caption {
-    font-size: var(--type-card-title);
-    line-height: var(--type-card-line);
+    font-size: var(--type-small);
+    line-height: var(--type-meta-line);
   }
 
   .works-view--grid .img-post-title {
