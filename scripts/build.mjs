@@ -1,8 +1,8 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '230';
-const JS_VERSION = '84';
+const CSS_VERSION = '231';
+const JS_VERSION = '85';
 
 const STR = {
   en: {
@@ -106,24 +106,29 @@ function mobileShell(site, activeNav, homePrefix, assetPrefix, lang, relPath, st
 
 function worksControls() {
   return `          <div class="sidebar-controls">
-            <ul class="view-toggle">
-              <li data-view="grid" class="active">Grid</li>
-              <li data-view="index">Index</li>
-            </ul>
-            <ul class="filter-checks filter-checks--type">
-              <li data-filter="type" data-value="설치">Installation</li>
-              <li data-filter="type" data-value="영상">Video</li>
-              <li data-filter="type" data-value="퍼포먼스">Performance</li>
-              <li data-filter="type" data-value="전시">Exhibition</li>
-              <li data-filter="type" data-value="인터랙티브">Interactive</li>
-              <li data-filter="type" data-value="프로젝션">Projection</li>
-            </ul>
-            <ul class="filter-checks filter-checks--tech">
-              <li data-filter="tech" data-value="Unreal">Unreal</li>
-              <li data-filter="tech" data-value="Unity">Unity</li>
-              <li data-filter="tech" data-value="Arduino">Arduino</li>
-              <li data-filter="tech" data-value="3ds Max">3ds Max</li>
-            </ul>
+            <div class="view-toggle-row">
+              <ul class="view-toggle">
+                <li data-view="grid" class="active">Grid</li>
+                <li data-view="index">Index</li>
+              </ul>
+              <button type="button" class="filter-toggle-btn" id="filterToggleBtn">Filter</button>
+            </div>
+            <div class="filter-panel" id="filterPanel">
+              <ul class="filter-checks filter-checks--type">
+                <li data-filter="type" data-value="설치">Installation</li>
+                <li data-filter="type" data-value="영상">Video</li>
+                <li data-filter="type" data-value="퍼포먼스">Performance</li>
+                <li data-filter="type" data-value="전시">Exhibition</li>
+                <li data-filter="type" data-value="인터랙티브">Interactive</li>
+                <li data-filter="type" data-value="프로젝션">Projection</li>
+              </ul>
+              <ul class="filter-checks filter-checks--tech">
+                <li data-filter="tech" data-value="Unreal">Unreal</li>
+                <li data-filter="tech" data-value="Unity">Unity</li>
+                <li data-filter="tech" data-value="Arduino">Arduino</li>
+                <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+              </ul>
+            </div>
           </div>`;
 }
 

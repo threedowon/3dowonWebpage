@@ -144,6 +144,19 @@ function initNavAccordion() {
   });
 }
 
+// ── Filter panel toggle ──
+function initFilterToggle() {
+  const btn = document.getElementById('filterToggleBtn');
+  const panel = document.getElementById('filterPanel');
+  if (!btn || !panel) return;
+
+  btn.addEventListener('click', () => {
+    const willOpen = !panel.classList.contains('is-open');
+    panel.classList.toggle('is-open', willOpen);
+    btn.classList.toggle('is-active', willOpen);
+  });
+}
+
 // ── Grid / Index view toggle ──
 function initViewToggle() {
   if (document.querySelector('.post-projects')) return;
@@ -416,6 +429,7 @@ function initMobileHeaderHeight() {
 document.addEventListener('DOMContentLoaded', () => {
   initNavAccordion();
   initFilters();
+  initFilterToggle();
   initViewToggle();
   initIndexPreview();
   initReveal();

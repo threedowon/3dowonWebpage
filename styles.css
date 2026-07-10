@@ -306,6 +306,33 @@ main:has(.contact-box) {
   border-top: none;
 }
 
+.view-toggle-row {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+
+.view-toggle-row .view-toggle {
+  flex: 1;
+  width: auto;
+}
+
+.filter-toggle-btn {
+  flex-shrink: 0;
+  margin-left: 6px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  line-height: 1.3;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.filter-toggle-btn.is-active {
+  background: var(--hover-bg);
+}
+
 .view-toggle,
 .filter-checks {
   display: flex;
@@ -316,6 +343,19 @@ main:has(.contact-box) {
 
 .filter-checks {
   flex-wrap: wrap;
+}
+
+.filter-panel {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease, opacity 0.2s ease;
+}
+
+.filter-panel.is-open {
+  max-height: 300px;
+  opacity: 1;
+  margin-top: 6px;
 }
 
 .view-toggle > li,
