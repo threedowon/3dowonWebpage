@@ -357,6 +357,10 @@ main:has(.contact-box) {
   width: 100%;
 }
 
+.filter-dropdown {
+  position: relative;
+}
+
 .filter-checks {
   display: flex;
   flex-direction: column;
@@ -366,6 +370,12 @@ main:has(.contact-box) {
   overflow: hidden;
   border-top: 1px solid var(--line);
   transition: max-height 0.25s ease, opacity 0.2s ease;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  background: var(--bg);
 }
 
 .filter-checks.is-open {
@@ -373,6 +383,7 @@ main:has(.contact-box) {
   opacity: 1;
   margin-top: 6px;
   overflow-y: auto;
+  border-bottom: 1px solid var(--line);
 }
 
 .view-toggle > li,
@@ -512,26 +523,6 @@ main:has(.contact-box) {
     margin-top: 8px;
     margin-bottom: 0;
     overflow: visible;
-  }
-
-  /* Let the filter dropdown float over whatever's below instead of pushing
-     it down — keeps the header the same height on every page regardless of
-     which filters are open. */
-  .filter-dropdown {
-    position: relative;
-  }
-
-  .filter-checks {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 5;
-    background: var(--bg);
-  }
-
-  .filter-checks.is-open {
-    border-bottom: 1px solid var(--line);
   }
 
   .site-header--works,
@@ -739,7 +730,7 @@ main:has(.contact-box) {
   top: -9999px;
   left: -9999px;
   width: min(31.5vw, 375px);
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 16 / 9;
   height: auto;
   background-repeat: no-repeat;
   background-size: cover;
@@ -1874,6 +1865,7 @@ body:has(.site-header--project) .post-detail-des::before {
   .nav-accordion.is-open .sidebar-controls {
     max-height: max-content;
     margin-top: var(--works-filter-gap, 6px);
+    overflow: visible;
   }
 
   .sidebar-controls {
@@ -2038,7 +2030,7 @@ body:has(.site-header--project) .post-detail-des::before {
     width: 100%;
     max-width: none;
     justify-self: stretch;
-    padding-left: 4px;
+    padding-left: 0;
     box-sizing: border-box;
   }
 

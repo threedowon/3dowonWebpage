@@ -340,22 +340,15 @@ function initCvCommaWrap() {
   const descs = [...document.querySelectorAll('.cv-desc')];
   if (!descs.length) return;
 
-  const mq = window.matchMedia('(max-width: 768px)');
-
   descs.forEach((el) => {
     if (!el.dataset.cvOriginal) el.dataset.cvOriginal = el.innerHTML;
   });
 
   const isTooWide = (el, html) => {
-    const probe = document.createElement('span');
-    const style = getComputedStyle(el);
-    probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;pointer-events:none';
-    probe.style.font = style.font;
-    probe.style.letterSpacing = style.letterSpacing;
-    probe.innerHTML = html;
-    document.body.appendChild(probe);
-    const tooWide = probe.offsetWidth > el.clientWidth;
-    probe.remove();
+    const prevHtml = el.innerHTML;
+    el.innerHTML = html;
+    const tooWide = el.scrollWidth > el.clientWidth;
+    el.innerHTML = prevHtml;
     return tooWide;
   };
 
@@ -408,7 +401,7 @@ function initCvCommaWrap() {
       const original = el.dataset.cvOriginal;
       el.innerHTML = original;
 
-      if (!mq.matches || !original.includes(',')) return;
+      if (!original.includes(',')) return;
       if (!isTooWide(el, original)) return;
 
       wrapOverflowingDesc(el, original);
@@ -416,7 +409,6 @@ function initCvCommaWrap() {
   };
 
   apply();
-  mq.addEventListener('change', apply);
   window.addEventListener('resize', apply);
 }
 

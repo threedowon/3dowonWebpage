@@ -1,8 +1,8 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '237';
-const JS_VERSION = '87';
+const CSS_VERSION = '238';
+const JS_VERSION = '89';
 
 const STR = {
   en: {
@@ -19,6 +19,11 @@ const STR = {
     close: 'Close',
     back: 'Back',
     filterMixed: 'Mixed',
+    navWorks: 'WORKS',
+    navLab: 'LAB',
+    navAbout: 'ABOUT',
+    navCv: 'CV',
+    navContact: 'CONTACT',
   },
   ko: {
     year: '연도',
@@ -34,6 +39,11 @@ const STR = {
     close: '닫기',
     back: '뒤로',
     filterMixed: '혼합',
+    navWorks: '작업',
+    navLab: '랩',
+    navAbout: '소개',
+    navCv: '이력',
+    navContact: '연락처',
   },
 };
 
@@ -97,10 +107,10 @@ function mobileNav(site, activeNav, homePrefix, assetPrefix, lang, relPath, str)
   <nav class="mo-nav" id="moNav" aria-hidden="true">
     <button type="button" class="mo-nav-close" id="moNavClose" aria-label="${str.close}">×</button>
     <div class="mo-nav-links">
-      <a href="${homePrefix}index.html"${navClass('works')}>WORKS</a>
-      <a href="${homePrefix}lab.html"${navClass('lab')}>LAB</a>
-      <a href="${homePrefix}about.html"${navClass('about')}>ABOUT</a>
-      <a href="${homePrefix}cv.html"${navClass('cv')}>CV</a>
+      <a href="${homePrefix}index.html"${navClass('works')}>${str.navWorks}</a>
+      <a href="${homePrefix}lab.html"${navClass('lab')}>${str.navLab}</a>
+      <a href="${homePrefix}about.html"${navClass('about')}>${str.navAbout}</a>
+      <a href="${homePrefix}cv.html"${navClass('cv')}>${str.navCv}</a>
     </div>
 ${mobileLangSwitch(assetPrefix, lang, relPath)}
     <div class="mo-nav-footer">
@@ -143,13 +153,14 @@ ${typeItems}
           </div>`;
 }
 
-function secondaryNav(homePrefix = '', activeNav = '') {
+function secondaryNav(homePrefix = '', activeNav = '', lang = 'en') {
+  const str = STR[lang];
   const navClass = (name) => `nav-cell nav-${name}${activeNav === name ? ' active' : ''}`;
   return `      <nav class="nav-main nav-main--secondary">
-        <a href="${homePrefix}lab.html" class="${navClass('lab')}">LAB</a>
-        <a href="${homePrefix}about.html" class="${navClass('about')}">ABOUT</a>
-        <a href="${homePrefix}cv.html" class="${navClass('cv')}">CV</a>
-        <a href="${homePrefix}contact.html" class="${navClass('contact')}">CONTACT</a>
+        <a href="${homePrefix}lab.html" class="${navClass('lab')}">${str.navLab}</a>
+        <a href="${homePrefix}about.html" class="${navClass('about')}">${str.navAbout}</a>
+        <a href="${homePrefix}cv.html" class="${navClass('cv')}">${str.navCv}</a>
+        <a href="${homePrefix}contact.html" class="${navClass('contact')}">${str.navContact}</a>
       </nav>`;
 }
 
@@ -171,7 +182,7 @@ function headerBar({
   // header-bar-col--works column — and therefore the whole header row, via
   // align-items:stretch — reserves the same height on every desktop page.
   const worksBlock = `        <div class="nav-accordion${showWorksControls ? ' is-open' : ''}">
-          <a href="${home}" class="${worksClass}">WORKS</a>
+          <a href="${home}" class="${worksClass}">${STR[lang].navWorks}</a>
 ${worksControls(lang)}
         </div>`;
 
@@ -194,7 +205,7 @@ ${worksControls(lang)}
 ${worksBlock}
       </div>
       <div class="header-bar-col header-bar-col--nav">
-${secondaryNav(homePrefix, activeNav)}
+${secondaryNav(homePrefix, activeNav, lang)}
 ${headerLangSwitch(assetPrefix, lang, relPath)}
       </div>
     </div>
