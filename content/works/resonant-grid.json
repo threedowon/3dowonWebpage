@@ -1,36 +1,37 @@
 {
   "slug": "resonant-grid",
   "title": "Resonant Grid",
-  "year": 2020,
-  "type": "설치",
+  "year": 2024,
+  "type": "인터랙티브",
   "tags": [
     "인터랙티브"
   ],
   "tech": [
-    "Arduino"
+    "Unreal"
   ],
-  "production": "회사",
+  "production": "개인",
   "thumbnail": "/3dowonWebpage/assets/uploads/resonant-grid-1783536731047-388544.jpg",
-  "grid_type_label": "설치, 인터랙티브",
-  "index_type_label": "설치, 인터랙티브, 프로젝션",
+  "grid_type_label": "인터랙티브",
+  "index_type_label": "인터랙티브",
   "preview_bg": "/3dowonWebpage/assets/uploads/resonant-grid-1783536731047-388544.jpg",
   "hero_image": "/3dowonWebpage/assets/uploads/resonant-grid-1783536731047-388544.jpg",
-  "description": "<p>브랜드 런칭 이벤트용 인터랙티브 미디어 설치이다. 그리드 형태의 조명과 센서 입력이 결합되어 관객의 참여에 따라 공간이 반응한다.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">담당</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Arduino 기반 센서·조명 제어 시스템 개발</li>\r\n              <li>DMX 조명 시퀀스 프로그래밍</li>\r\n              <li>현장 설치 및 인터랙션 테스트</li>\r\n            </ul>",
-  "meta_year": "2020",
-  "meta_type": "인터랙티브 설치",
-  "meta_medium": "그리드 조명, 센서",
+  "description": "<p>브랜드 런칭 이벤트용 인터랙티브 미디어 설치이다. 그리드 형태의 조명과 센서 입력이 결합되어 관객의 참여에 따라 공간이 반응한다.</p>\n            <p>담당</p>\n            <p>Arduino 기반 센서·조명 제어 시스템 개발</p>\n            <p>DMX 조명 시퀀스 프로그래밍</p>\n            <p>현장 설치 및 인터랙션 테스트</p>",
+  "meta_year": "2024",
+  "meta_type": "인터랙티브",
+  "meta_medium": "인터랙티브",
   "meta_tech": "Arduino, DMX",
-  "meta_production": "Nerdy Artist Union",
+  "meta_production": "개인",
   "gallery": [
     "https://picsum.photos/seed/resonant1/1920/1440",
     "https://picsum.photos/seed/resonant2/1920/1440",
     "https://picsum.photos/seed/resonant3/1920/1440"
   ],
-  "grid_type_label_en": "Installation, Interactive",
-  "index_type_label_en": "Installation, Interactive, Projection",
-  "meta_type_en": "Interactive Installation",
-  "meta_medium_en": "Grid lighting, sensors",
+  "grid_type_label_en": "Interactive",
+  "index_type_label_en": "Interactive",
+  "meta_type_en": "Interactive",
+  "meta_medium_en": "Interactive",
   "meta_tech_en": "Arduino, DMX",
-  "meta_production_en": "Nerdy Artist Union",
-  "description_en": "<p>An interactive media installation for a brand launch event. Grid-shaped lighting and sensor input combine so the space responds to audience participation.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">Role</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Developed an Arduino-based sensor and lighting control system</li>\r\n              <li>Programmed the DMX lighting sequence</li>\r\n              <li>Handled on-site installation and interaction testing</li>\r\n            </ul>"
+  "meta_production_en": "Solo",
+  "description_en": "<p>An interactive media installation for a brand launch event. Grid-shaped lighting and sensor input combine so the space responds to audience participation.</p>\n            <p>Role</p>\n            <p>Developed an Arduino-based sensor and lighting control system</p>\n            <p>Programmed the DMX lighting sequence</p>\n            <p>Handled on-site installation and interaction testing</p>",
+  "vimeo_url": ""
 }

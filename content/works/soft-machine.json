@@ -1,7 +1,7 @@
 {
   "slug": "soft-machine",
   "title": "Soft Machine",
-  "year": 2025,
+  "year": 2024,
   "type": "영상",
   "tags": [
     "영상"
@@ -16,7 +16,7 @@
   "preview_bg": "/3dowonWebpage/assets/uploads/soft-machine-1783535930416-588092.jpg",
   "hero_image": "/3dowonWebpage/assets/uploads/soft-machine-1783535930416-588092.jpg",
   "description": "<p>기계와 유기체의 경계를 탐구하는 인터랙티브 전시입니다.</p>",
-  "meta_year": "2025",
+  "meta_year": "2024",
   "meta_type": "영상",
   "meta_medium": "영상",
   "meta_tech": "Arduino, Unity",

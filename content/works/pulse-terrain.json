@@ -1,34 +1,38 @@
 {
   "slug": "pulse-terrain",
   "title": "Pulse Terrain",
-  "year": 2021,
-  "type": "영상",
-  "tags": [],
+  "year": 2024,
+  "type": "인터랙티브",
+  "tags": [
+    "인터랙티브"
+  ],
   "tech": [
-    "Unreal"
+    "Unreal",
+    "Arduino"
   ],
   "production": "공동",
   "thumbnail": "/3dowonWebpage/assets/uploads/pulse-terrain-1783536609027-360135.jpg",
-  "grid_type_label": "영상, 프로젝션",
-  "index_type_label": "영상, 프로젝션",
+  "grid_type_label": "인터랙티브",
+  "index_type_label": "인터랙티브",
   "preview_bg": "/3dowonWebpage/assets/uploads/pulse-terrain-1783536609027-360135.jpg",
   "hero_image": "/3dowonWebpage/assets/uploads/pulse-terrain-1783536609027-360135.jpg",
   "description": "<p>지형 데이터를 기반으로 한 추상 영상이 바닥 전체를 덮는 몰입형 프로젝션입니다.</p>",
-  "meta_year": "2021",
-  "meta_type": "영상",
-  "meta_medium": "생성 영상, 프로젝션",
+  "meta_year": "2024",
+  "meta_type": "인터랙티브",
+  "meta_medium": "인터랙티브",
   "meta_tech": "Unreal Engine, TouchDesigner",
-  "meta_production": "공동 제작",
+  "meta_production": "공동",
   "gallery": [
     "https://picsum.photos/seed/pulseter1/1920/1440",
     "https://picsum.photos/seed/pulseter2/1920/1440",
     "https://picsum.photos/seed/pulseter3/1920/1440"
   ],
-  "grid_type_label_en": "Video, Projection",
-  "index_type_label_en": "Video, Projection",
-  "meta_type_en": "Video",
-  "meta_medium_en": "Generative video, projection",
+  "grid_type_label_en": "Interactive",
+  "index_type_label_en": "Interactive",
+  "meta_type_en": "Interactive",
+  "meta_medium_en": "Interactive",
   "meta_tech_en": "Unreal Engine, TouchDesigner",
-  "meta_production_en": "Collaborative Production",
-  "description_en": "<p>An immersive projection in which abstract video based on terrain data covers the entire floor.</p>"
+  "meta_production_en": "Collaborative",
+  "description_en": "<p>An immersive projection in which abstract video based on terrain data covers the entire floor.</p>",
+  "vimeo_url": ""
 }

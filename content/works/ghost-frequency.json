@@ -1,7 +1,7 @@
 {
   "slug": "ghost-frequency",
   "title": "Ghost Frequency",
-  "year": 2023,
+  "year": 2020,
   "type": "인터랙티브",
   "tags": [
     "인터랙티브"
@@ -10,18 +10,18 @@
     "Unity",
     "3ds Max"
   ],
-  "production": "개인",
+  "production": "공동",
   "thumbnail": "/3dowonWebpage/assets/uploads/ghost-frequency-1783536430417-714178.jpg",
   "grid_type_label": "인터랙티브",
   "index_type_label": "인터랙티브",
   "preview_bg": "/3dowonWebpage/assets/uploads/ghost-frequency-1783536430417-714178.jpg",
   "hero_image": "/3dowonWebpage/assets/uploads/ghost-frequency-1783536430417-714178.jpg",
   "description": "<p>보이지 않는 주파수 대역을 빛으로 번역한 인터랙티브 설치입니다.</p>",
-  "meta_year": "2023",
+  "meta_year": "2020",
   "meta_type": "인터랙티브",
   "meta_medium": "인터랙티브",
   "meta_tech": "ESP32, TouchOSC",
-  "meta_production": "개인",
+  "meta_production": "공동",
   "gallery": [
     "https://picsum.photos/seed/ghostfre1/1920/1440",
     "https://picsum.photos/seed/ghostfre2/1920/1440",
@@ -32,7 +32,7 @@
   "meta_type_en": "Interactive",
   "meta_medium_en": "Interactive",
   "meta_tech_en": "ESP32, TouchOSC",
-  "meta_production_en": "Solo",
+  "meta_production_en": "Collaborative",
   "description_en": "<p>An interactive installation translating an invisible frequency band into light.</p>",
   "vimeo_url": ""
 }

@@ -1,36 +1,38 @@
 {
   "slug": "void-echo",
   "title": "Void Echo",
-  "year": 2022,
-  "type": "설치",
+  "year": 2018,
+  "type": "인터랙티브",
   "tags": [
     "인터랙티브"
   ],
   "tech": [
-    "Unreal"
+    "Unity",
+    "3ds Max"
   ],
   "production": "개인",
   "thumbnail": "/3dowonWebpage/assets/uploads/void-echo-1783536544789-212566.jpg",
-  "grid_type_label": "설치, 인터랙티브",
-  "index_type_label": "설치, 인터랙티브, 프로젝션",
+  "grid_type_label": "인터랙티브",
+  "index_type_label": "인터랙티브",
   "preview_bg": "/3dowonWebpage/assets/uploads/void-echo-1783536544789-212566.jpg",
   "hero_image": "/3dowonWebpage/assets/uploads/void-echo-1783536544789-212566.jpg",
   "description": "<p>빈 공간 속에서 울리는 관객의 발소리가 시각 패턴으로 되돌아오는 반향 설치입니다.</p>",
-  "meta_year": "2022",
-  "meta_type": "인터랙티브 설치",
-  "meta_medium": "프로젝션, 공간음향",
+  "meta_year": "2018",
+  "meta_type": "인터랙티브",
+  "meta_medium": "인터랙티브",
   "meta_tech": "Unreal Engine, Leap Motion",
-  "meta_production": "개인 제작",
+  "meta_production": "개인",
   "gallery": [
     "https://picsum.photos/seed/voidecho1/1920/1440",
     "https://picsum.photos/seed/voidecho2/1920/1440",
     "https://picsum.photos/seed/voidecho3/1920/1440"
   ],
-  "grid_type_label_en": "Installation, Interactive",
-  "index_type_label_en": "Installation, Interactive, Projection",
-  "meta_type_en": "Interactive Installation",
-  "meta_medium_en": "Projection, spatial audio",
+  "grid_type_label_en": "Interactive",
+  "index_type_label_en": "Interactive",
+  "meta_type_en": "Interactive",
+  "meta_medium_en": "Interactive",
   "meta_tech_en": "Unreal Engine, Leap Motion",
-  "meta_production_en": "Solo Production",
-  "description_en": "<p>An echoing installation in which the audience's footsteps resounding through an empty space return as visual patterns.</p>"
+  "meta_production_en": "Solo",
+  "description_en": "<p>An echoing installation in which the audience's footsteps resounding through an empty space return as visual patterns.</p>",
+  "vimeo_url": ""
 }

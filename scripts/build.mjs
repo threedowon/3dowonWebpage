@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '220';
+const CSS_VERSION = '222';
 const JS_VERSION = '84';
 const LOGO_VERSION = '2';
 
@@ -116,6 +116,7 @@ function worksControls() {
               <li data-filter="type" data-value="영상">Video</li>
               <li data-filter="type" data-value="퍼포먼스">Performance</li>
               <li data-filter="type" data-value="전시">Exhibition</li>
+              <li data-filter="type" data-value="VR/AR">VR/AR</li>
               <li data-filter="type" data-value="인터랙티브">Interactive</li>
               <li data-filter="type" data-value="프로젝션">Projection</li>
             </ul>
@@ -124,6 +125,7 @@ function worksControls() {
               <li data-filter="tech" data-value="Unity">Unity</li>
               <li data-filter="tech" data-value="Arduino">Arduino</li>
               <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+              <li data-filter="tech" data-value="Depth Camera">Depth Camera</li>
             </ul>
           </div>`;
 }
@@ -314,6 +316,7 @@ ${mobileHeader(assetPrefix, `${homePrefix}index.html`, str)}
     <span class="mo-filter" data-filter="type" data-value="영상">Video</span>
     <span class="mo-filter" data-filter="type" data-value="퍼포먼스">Performance</span>
     <span class="mo-filter" data-filter="type" data-value="전시">Exhibition</span>
+    <span class="mo-filter" data-filter="type" data-value="VR/AR">VR/AR</span>
     <span class="mo-filter" data-filter="type" data-value="인터랙티브">Interactive</span>
     <span class="mo-filter" data-filter="type" data-value="프로젝션">Projection</span>
   </div>
@@ -322,6 +325,7 @@ ${mobileHeader(assetPrefix, `${homePrefix}index.html`, str)}
     <span class="mo-filter" data-filter="tech" data-value="Unity">Unity</span>
     <span class="mo-filter" data-filter="tech" data-value="Arduino">Arduino</span>
     <span class="mo-filter" data-filter="tech" data-value="3ds Max">3ds Max</span>
+    <span class="mo-filter" data-filter="tech" data-value="Depth Camera">Depth Camera</span>
   </div>
 ${mobileNav(site, 'works', homePrefix, assetPrefix, lang, relPath, str)}`;
 

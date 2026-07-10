@@ -1,34 +1,37 @@
 {
   "slug": "prism-field",
   "title": "Prism Field",
-  "year": 2022,
-  "type": "설치",
+  "year": 2021,
+  "type": "영상",
   "tags": [
-    "프로젝션"
+    "영상",
+    "퍼포먼스",
+    "인터랙티브"
   ],
   "tech": [],
   "production": "회사",
   "thumbnail": "/3dowonWebpage/assets/uploads/prism-field-1783536531816-473773.jpg",
-  "grid_type_label": "설치, 프로젝션",
-  "index_type_label": "설치, 프로젝션",
+  "grid_type_label": "영상, 퍼포먼스, 인터랙티브",
+  "index_type_label": "영상, 퍼포먼스, 인터랙티브",
   "preview_bg": "/3dowonWebpage/assets/uploads/prism-field-1783536531816-473773.jpg",
   "hero_image": "/3dowonWebpage/assets/uploads/prism-field-1783536531816-473773.jpg",
-  "description": "<p>브랜드 전시 공간에 설치된 대형 프로젝션 미디어월 프로젝트이다. 스펙트럼 빛이 공간을 가로지르며, 관람 동선에 따라 시각적 리듬이 변화한다.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">담당</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>TouchDesigner 영상 파이프라인 구성</li>\r\n              <li>DMX 조명 연동 및 시퀀스 설계</li>\r\n              <li>현장 프로젝션 매핑·셋업</li>\r\n            </ul>",
-  "meta_year": "2022",
-  "meta_type": "프로젝션 설치",
-  "meta_medium": "빛, 거울, 프로젝션",
+  "description": "<p>브랜드 전시 공간에 설치된 대형 프로젝션 미디어월 프로젝트이다. 스펙트럼 빛이 공간을 가로지르며, 관람 동선에 따라 시각적 리듬이 변화한다.</p>\n            <p>담당</p>\n            <p>TouchDesigner 영상 파이프라인 구성</p>\n            <p>DMX 조명 연동 및 시퀀스 설계</p>\n            <p>현장 프로젝션 매핑·셋업</p>",
+  "meta_year": "2021",
+  "meta_type": "영상, 퍼포먼스, 인터랙티브",
+  "meta_medium": "영상, 퍼포먼스, 인터랙티브",
   "meta_tech": "TouchDesigner, DMX",
-  "meta_production": "d'strict",
+  "meta_production": "회사",
   "gallery": [
     "https://picsum.photos/seed/prismfie1/1920/1440",
     "https://picsum.photos/seed/prismfie2/1920/1440",
     "https://picsum.photos/seed/prismfie3/1920/1440"
   ],
-  "grid_type_label_en": "Installation, Projection",
-  "index_type_label_en": "Installation, Projection",
-  "meta_type_en": "Projection Installation",
-  "meta_medium_en": "Light, mirror, projection",
+  "grid_type_label_en": "Video, Performance, Interactive",
+  "index_type_label_en": "Video, Performance, Interactive",
+  "meta_type_en": "Video, Performance, Interactive",
+  "meta_medium_en": "Video, Performance, Interactive",
   "meta_tech_en": "TouchDesigner, DMX",
-  "meta_production_en": "d'strict",
-  "description_en": "<p>A large-scale projection media-wall project installed in a brand exhibition space. Spectral light crosses the space, and the visual rhythm shifts along the viewing path.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">Role</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Built the video pipeline in TouchDesigner</li>\r\n              <li>Integrated DMX lighting and designed the sequence</li>\r\n              <li>Handled on-site projection mapping and setup</li>\r\n            </ul>"
+  "meta_production_en": "Company",
+  "description_en": "<p>A large-scale projection media-wall project installed in a brand exhibition space. Spectral light crosses the space, and the visual rhythm shifts along the viewing path.</p>\n            <p>Role</p>\n            <p>Built the video pipeline in TouchDesigner</p>\n            <p>Integrated DMX lighting and designed the sequence</p>\n            <p>Handled on-site projection mapping and setup</p>",
+  "vimeo_url": ""
 }
