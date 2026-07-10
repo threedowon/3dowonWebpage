@@ -369,7 +369,7 @@ main:has(.contact-box) {
   max-height: 0;
   opacity: 0;
   overflow: hidden;
-  border-top: 1px solid var(--line);
+  border-top: none;
   transition: max-height 0.25s ease, opacity 0.2s ease;
   position: absolute;
   top: 100%;
@@ -384,6 +384,7 @@ main:has(.contact-box) {
   opacity: 1;
   margin-top: 6px;
   overflow-y: auto;
+  border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
 
@@ -2142,7 +2143,7 @@ body:has(.site-header--project) .post-detail-des::before {
   }
 
   .lab-post-caption {
-    font-size: 0.62em;
+    font-size: 0.72em;
     line-height: 1.3em;
   }
 
