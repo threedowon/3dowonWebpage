@@ -152,29 +152,31 @@ function initFilterDropdowns() {
 
   const groups = [...buttons].map((btn) => ({
     btn,
+    label: btn.querySelector('.filter-dropdown-label'),
     panel: document.querySelector(`.filter-checks[data-filter-panel="${btn.dataset.filterGroup}"]`),
-  })).filter((g) => g.panel);
+  })).filter((g) => g.panel && g.label);
 
-  function updateLabel({ btn, panel }) {
+  function updateLabel({ btn, label, panel }) {
     const checked = [...panel.querySelectorAll('li.checked')];
     if (checked.length === 0) {
-      btn.textContent = btn.dataset.defaultLabel;
+      label.textContent = btn.dataset.defaultLabel;
     } else if (checked.length <= 2) {
-      btn.textContent = checked.map((li) => li.textContent).join(', ');
+      label.textContent = checked.map((li) => li.textContent).join(', ');
     } else {
-      btn.textContent = btn.dataset.mixedLabel;
+      label.textContent = btn.dataset.mixedLabel;
     }
   }
 
   window.updateFilterDropdownLabels = () => groups.forEach(updateLabel);
 
-  groups.forEach(({ btn, panel }) => {
+  groups.forEach((group) => {
+    const { btn, panel } = group;
     btn.addEventListener('click', () => {
       const willOpen = !panel.classList.contains('is-open');
       panel.classList.toggle('is-open', willOpen);
       btn.classList.toggle('is-active', willOpen);
     });
-    updateLabel({ btn, panel });
+    updateLabel(group);
   });
 }
 
