@@ -1568,7 +1568,7 @@ body:has(.site-header--project) .post-detail-des::before {
    page where that column holds the back arrow, loses the WORKS column
    instead); the works grid and Lab grid gain one fewer column; About's
    bio text is confined to a single column. */
-@media (min-width: 769px) and (max-width: 1180px) {
+@media (min-width: 769px) and (max-width: 1440px) {
   .post-q {
     width: 42%;
   }
