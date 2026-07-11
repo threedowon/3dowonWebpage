@@ -47,7 +47,7 @@
   --logo-bar-h: 140px;
   --desktop-header-h: 140px;
   --mobile-bar-h: 98px;
-  --footer-bar-h: 40px;
+  --footer-bar-h: 100px;
   --site-grid-cols: repeat(4, minmax(0, 1fr));
   --site-col-lines:
     linear-gradient(var(--line), var(--line)),
@@ -114,20 +114,21 @@ ul { list-style: none; }
   bottom: 0;
   z-index: 999;
   height: var(--footer-bar-h);
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: var(--site-grid-cols);
   background: var(--bg);
   border-top: 1px solid var(--line);
   overflow: hidden;
 }
 
 .site-footer-bar-inner {
+  grid-column: 1;
   display: flex;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-  padding: 0 12px;
-  overflow-x: auto;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 12px 0 15px;
+  overflow-y: auto;
   white-space: nowrap;
   font-size: 0.78rem;
   scrollbar-width: none;
@@ -154,7 +155,7 @@ ul { list-style: none; }
   border-right: none;
   display: flex;
   flex-direction: column;
-  padding-bottom: 6px;
+  padding-bottom: 50px;
 }
 
 .header-bar-col--nav .header-lang-switch {
@@ -1611,7 +1612,7 @@ body:has(.site-header--project) .post-detail-des::before {
      the lang-switch's margin-top:auto no longer has room to push it down
      to the usual position. Restore that gap explicitly. */
   .site-header--project .header-bar-col--nav .header-lang-switch {
-    margin-top: 22px;
+    margin-top: 9px;
   }
 
   .works-view--grid .img-post-box {
@@ -1705,6 +1706,17 @@ body:has(.site-header--project) .post-detail-des::before {
     --mobile-header-line-inset: 12px;
     --mobile-page-title-size: 1.1em;
     --mobile-page-title-padding: 2px 0 2px 3px;
+    --footer-bar-h: 84px;
+  }
+
+  .site-footer-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .site-footer-bar-inner {
+    padding: 6px 12px;
+    font-size: 0.72rem;
+    gap: 3px;
   }
 
   .mo-header {
