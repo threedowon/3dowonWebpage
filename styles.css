@@ -226,11 +226,6 @@ main:has(.cv-box) {
 .header-bar-col--logo {
   display: flex;
   align-items: flex-start;
-  align-self: start;
-}
-
-.header-bar-col--back:empty {
-  align-self: start;
 }
 
 .header-bar-col--works .nav-accordion {
