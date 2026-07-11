@@ -2,7 +2,7 @@ import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, write
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
 const CSS_VERSION = '247';
-const JS_VERSION = '95';
+const JS_VERSION = '96';
 
 const STR = {
   en: {
