@@ -47,7 +47,7 @@
   --logo-bar-h: 140px;
   --desktop-header-h: 140px;
   --mobile-bar-h: 98px;
-  --footer-bar-h: 100px;
+  --footer-bar-h: 40px;
   --site-grid-cols: repeat(4, minmax(0, 1fr));
   --site-col-lines:
     linear-gradient(var(--line), var(--line)),
@@ -116,27 +116,21 @@ ul { list-style: none; }
   height: var(--footer-bar-h);
   display: grid;
   grid-template-columns: var(--site-grid-cols);
+  align-items: center;
   background: var(--bg);
   border-top: 1px solid var(--line);
   overflow: hidden;
 }
 
-.site-footer-bar-inner {
-  grid-column: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2px;
+.site-footer-bar-col {
   padding: 0 12px 0 15px;
-  overflow-y: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 0.78rem;
-  scrollbar-width: none;
 }
 
-.site-footer-bar-inner::-webkit-scrollbar { display: none; }
-
-.site-footer-bar-inner a:hover { opacity: 0.5; }
+.site-footer-bar-col:hover { opacity: 0.5; }
 
 .header-bar {
   display: grid;
@@ -219,6 +213,11 @@ main:has(.cv-box) {
 .header-bar-col--logo {
   display: flex;
   align-items: flex-start;
+  align-self: start;
+}
+
+.header-bar-col--back:empty {
+  align-self: start;
 }
 
 .header-bar-col--works .nav-accordion {
@@ -1711,12 +1710,12 @@ body:has(.site-header--project) .post-detail-des::before {
 
   .site-footer-bar {
     grid-template-columns: 1fr;
+    align-content: center;
   }
 
-  .site-footer-bar-inner {
-    padding: 6px 12px;
+  .site-footer-bar-col {
+    padding: 3px 12px;
     font-size: 0.72rem;
-    gap: 3px;
   }
 
   .mo-header {
