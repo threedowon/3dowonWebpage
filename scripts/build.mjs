@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '247';
+const CSS_VERSION = '248';
 const JS_VERSION = '96';
 
 const STR = {
@@ -23,7 +23,6 @@ const STR = {
     navLab: 'LAB',
     navAbout: 'ABOUT',
     navCv: 'CV',
-    navContact: 'CONTACT',
     viewGrid: 'Grid',
     viewIndex: 'Index',
   },
@@ -45,7 +44,6 @@ const STR = {
     navLab: '실험',
     navAbout: '소개',
     navCv: '이력',
-    navContact: '연락처',
     viewGrid: '그리드',
     viewIndex: '인덱스',
   },
@@ -73,11 +71,15 @@ function pick(obj, field, lang) {
   return obj[field];
 }
 
-function siteFooter(site) {
-  return `        E. <a href="mailto:${escapeHtml(site.email)}">${escapeHtml(site.email)}</a><br />
-        <a href="${escapeHtml(site.instagram)}" target="_blank" rel="noopener">I. instagram.com/3dowon</a><br />
-        <a href="${escapeHtml(site.vimeo)}" target="_blank" rel="noopener">V. vimeo.com/3dowon</a><br />
-        <a href="${escapeHtml(site.youtube)}" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>`;
+function siteFooterBar(site) {
+  return `  <footer class="site-footer-bar">
+    <div class="site-footer-bar-inner">
+      <a href="mailto:${escapeHtml(site.email)}">E. ${escapeHtml(site.email)}</a>
+      <a href="${escapeHtml(site.instagram)}" target="_blank" rel="noopener">I. instagram.com/3dowon</a>
+      <a href="${escapeHtml(site.vimeo)}" target="_blank" rel="noopener">V. vimeo.com/3dowon</a>
+      <a href="${escapeHtml(site.youtube)}" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>
+    </div>
+  </footer>`;
 }
 
 function siteLogo(assetPrefix, homeHref) {
@@ -105,7 +107,7 @@ function mobileHeader(assetPrefix, homeHref, str) {
   </div>`;
 }
 
-function mobileNav(site, activeNav, homePrefix, assetPrefix, lang, relPath, str) {
+function mobileNav(activeNav, homePrefix, assetPrefix, lang, relPath, str) {
   const navClass = (name) => (activeNav === name ? ' class="active"' : '');
   return `  <div class="mo-overlay" id="moOverlay"></div>
   <nav class="mo-nav" id="moNav" aria-hidden="true">
@@ -117,16 +119,11 @@ function mobileNav(site, activeNav, homePrefix, assetPrefix, lang, relPath, str)
       <a href="${homePrefix}cv.html"${navClass('cv')}>${str.navCv}</a>
     </div>
 ${mobileLangSwitch(assetPrefix, lang, relPath)}
-    <div class="mo-nav-footer">
-      <div class="mo-nav-footer-info">
-${siteFooter(site)}
-      </div>
-    </div>
   </nav>`;
 }
 
-function mobileShell(site, activeNav, homePrefix, assetPrefix, lang, relPath, str) {
-  return `${mobileHeader(assetPrefix, `${homePrefix}index.html`, str)}${mobileNav(site, activeNav, homePrefix, assetPrefix, lang, relPath, str)}`;
+function mobileShell(activeNav, homePrefix, assetPrefix, lang, relPath, str) {
+  return `${mobileHeader(assetPrefix, `${homePrefix}index.html`, str)}${mobileNav(activeNav, homePrefix, assetPrefix, lang, relPath, str)}`;
 }
 
 function worksControls(lang) {
@@ -164,7 +161,6 @@ function secondaryNav(homePrefix = '', activeNav = '', lang = 'en') {
         <a href="${homePrefix}lab.html" class="${navClass('lab')}">${str.navLab}</a>
         <a href="${homePrefix}about.html" class="${navClass('about')}">${str.navAbout}</a>
         <a href="${homePrefix}cv.html" class="${navClass('cv')}">${str.navCv}</a>
-        <a href="${homePrefix}contact.html" class="${navClass('contact')}">${str.navContact}</a>
       </nav>`;
 }
 
@@ -216,7 +212,7 @@ ${headerLangSwitch(assetPrefix, lang, relPath)}
   </header>`;
 }
 
-function simpleHeader(site, activeNav, lang, relPath, str) {
+function simpleHeader(activeNav, lang, relPath, str) {
   const { homePrefix, assetPrefix } = prefixes(lang, false);
   return `${headerBar({
     homePrefix,
@@ -226,10 +222,10 @@ function simpleHeader(site, activeNav, lang, relPath, str) {
     lang,
     relPath,
   })}
-${mobileShell(site, activeNav, homePrefix, assetPrefix, lang, relPath, str)}`;
+${mobileShell(activeNav, homePrefix, assetPrefix, lang, relPath, str)}`;
 }
 
-function pageShell({ title, body, header, extraHead = '', lang, assetPrefix }) {
+function pageShell({ title, body, header, extraHead = '', lang, assetPrefix, site }) {
   return `<!DOCTYPE html>
 <html lang="${lang}">
 <head>
@@ -246,6 +242,7 @@ ${header}
   <main>
 ${body}
   </main>
+${siteFooterBar(site)}
   <script src="${assetPrefix}script.js?v=${JS_VERSION}"></script>
 </body>
 </html>
@@ -350,9 +347,9 @@ ${Object.entries(TYPE_FILTER_LABELS)
     <span class="mo-filter" data-filter="tech" data-value="Arduino">Arduino</span>
     <span class="mo-filter" data-filter="tech" data-value="3ds Max">3ds Max</span>
   </div>
-${mobileNav(site, 'works', homePrefix, assetPrefix, lang, relPath, str)}`;
+${mobileNav('works', homePrefix, assetPrefix, lang, relPath, str)}`;
 
-  return pageShell({ title: '3Dowon — Media Artist', body, header, lang, assetPrefix });
+  return pageShell({ title: '3Dowon — Media Artist', body, header, lang, assetPrefix, site });
 }
 
 function buildWorkPage(work, site, lang) {
@@ -408,7 +405,7 @@ ${gallery}
     relPath,
   })}
 ${mobileHeader(assetPrefix, `${homePrefix}index.html`, str)}
-${mobileNav(site, '', homePrefix, assetPrefix, lang, relPath, str)}`;
+${mobileNav('', homePrefix, assetPrefix, lang, relPath, str)}`;
 
   return pageShell({
     title: `${escapeHtml(work.title)} — 3Dowon`,
@@ -416,6 +413,7 @@ ${mobileNav(site, '', homePrefix, assetPrefix, lang, relPath, str)}`;
     header,
     lang,
     assetPrefix,
+    site,
   });
 }
 
@@ -452,9 +450,10 @@ ${paragraphs}
   return pageShell({
     title: 'about — 3Dowon',
     body,
-    header: simpleHeader(site, 'about', lang, relPath, str),
+    header: simpleHeader('about', lang, relPath, str),
     lang,
     assetPrefix,
+    site,
   });
 }
 
@@ -487,9 +486,10 @@ ${sections}
   return pageShell({
     title: 'CV — 3Dowon',
     body,
-    header: simpleHeader(site, 'cv', lang, relPath, str),
+    header: simpleHeader('cv', lang, relPath, str),
     lang,
     assetPrefix,
+    site,
   });
 }
 
@@ -516,30 +516,10 @@ ${items}
   return pageShell({
     title: 'LAB — 3Dowon',
     body,
-    header: simpleHeader(site, 'lab', lang, relPath, str),
+    header: simpleHeader('lab', lang, relPath, str),
     lang,
     assetPrefix,
-  });
-}
-
-function buildContact(site, lang) {
-  const relPath = 'contact.html';
-  const str = STR[lang];
-  const body = `    <div class="contact-box">
-      <div class="contact-info reveal">
-        E. <a href="mailto:${escapeHtml(site.email)}">${escapeHtml(site.email)}</a><br />
-        <a href="${escapeHtml(site.instagram)}" target="_blank">I. instagram.com/3dowon</a><br />
-        <a href="${escapeHtml(site.vimeo)}" target="_blank">V. vimeo.com/3dowon</a><br />
-        <a href="${escapeHtml(site.youtube)}" target="_blank">Y. youtube.com/@3dowon</a>
-      </div>
-    </div>`;
-  const { assetPrefix } = prefixes(lang, false);
-  return pageShell({
-    title: 'contact — 3Dowon',
-    body,
-    header: simpleHeader(site, 'contact', lang, relPath, str),
-    lang,
-    assetPrefix,
+    site,
   });
 }
 
@@ -558,7 +538,6 @@ for (const lang of ['en', 'ko']) {
   writeOutput(`${outPrefix}about.html`, buildAbout(about, site, lang));
   writeOutput(`${outPrefix}cv.html`, buildCv(cv, site, lang));
   writeOutput(`${outPrefix}lab.html`, buildLab(lab, site, lang));
-  writeOutput(`${outPrefix}contact.html`, buildContact(site, lang));
 
   for (const work of works) {
     const relPath = `${outPrefix}work/${work.slug}.html`;

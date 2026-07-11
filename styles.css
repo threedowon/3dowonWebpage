@@ -47,6 +47,7 @@
   --logo-bar-h: 140px;
   --desktop-header-h: 140px;
   --mobile-bar-h: 98px;
+  --footer-bar-h: 40px;
   --site-grid-cols: repeat(4, minmax(0, 1fr));
   --site-col-lines:
     linear-gradient(var(--line), var(--line)),
@@ -106,6 +107,36 @@ ul { list-style: none; }
 
 .site-header::-webkit-scrollbar { display: none; }
 
+.site-footer-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  height: var(--footer-bar-h);
+  display: flex;
+  align-items: center;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.site-footer-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 0 12px;
+  overflow-x: auto;
+  white-space: nowrap;
+  font-size: 0.78rem;
+  scrollbar-width: none;
+}
+
+.site-footer-bar-inner::-webkit-scrollbar { display: none; }
+
+.site-footer-bar-inner a:hover { opacity: 0.5; }
+
 .header-bar {
   display: grid;
   grid-template-columns: var(--site-grid-cols);
@@ -146,7 +177,7 @@ main:has(.post-projects) {
   top: var(--desktop-header-h);
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: var(--footer-bar-h);
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -155,15 +186,14 @@ main:has(.post-projects) {
 main:has(.works-view),
 main:has(.lab-view),
 main:has(.about-box),
-main:has(.cv-box),
-main:has(.contact-box) {
+main:has(.cv-box) {
   padding-top: 0;
   margin-left: 0;
   position: fixed;
   top: var(--desktop-header-h);
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: var(--footer-bar-h);
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -432,7 +462,6 @@ main:has(.contact-box) {
   body:has(.site-header--bar) main:has(.lab-view),
   body:has(.site-header--bar) main:has(.about-box),
   body:has(.site-header--bar) main:has(.cv-box),
-  body:has(.site-header--bar) main:has(.contact-box),
   body:has(.site-header--bar) main:has(.post-projects) {
     position: static;
     top: auto;
@@ -441,6 +470,7 @@ main:has(.contact-box) {
     bottom: auto;
     overflow: visible;
     padding-top: var(--desktop-header-h);
+    padding-bottom: var(--footer-bar-h);
   }
 
   .header-bar {
@@ -982,7 +1012,7 @@ main:has(.contact-box) {
   top: 20px;
   width: 100%;
   max-width: 640px;
-  max-height: calc(100vh - var(--logo-bar-h) - 40px);
+  max-height: calc(100vh - var(--logo-bar-h) - var(--footer-bar-h) - 40px);
   overflow-y: auto;
   scrollbar-width: none;
   background: var(--bg);
@@ -1092,37 +1122,6 @@ main:has(.contact-box) {
     overflow-wrap: normal;
   }
 }
-
-/* ── Contact Page ── */
-.contact-box {
-  padding: 20px 48px 80px 27px;
-  width: 100%;
-  max-width: 640px;
-}
-
-.contact-box h2 {
-  font-size: var(--type-title);
-  font-weight: 400;
-  border-top: none;
-  padding: 0 0 20px 3px;
-  margin-bottom: 20px;
-}
-
-.contact-box p {
-  font-size: var(--type-body);
-  line-height: var(--type-body-loose);
-  margin-bottom: 1.5em;
-  word-break: keep-all;
-  padding-left: 3px;
-}
-
-.contact-info {
-  font-size: var(--type-body);
-  line-height: var(--type-body-loose);
-  padding-left: 3px;
-}
-
-.contact-info a:hover { opacity: 0.5; }
 
 /* ── CV Page ── */
 .cv-box {
@@ -1322,7 +1321,7 @@ body:has(.site-header--project) .post-left {
   top: calc(var(--desktop-header-h) + 20px);
   left: 27px;
   width: 22.5%;
-  height: calc(100vh - var(--desktop-header-h) - 40px);
+  height: calc(100vh - var(--desktop-header-h) - var(--footer-bar-h) - 40px);
   overflow-y: auto;
   scrollbar-width: none;
   z-index: 1;
@@ -1409,7 +1408,7 @@ body:has(.site-header--project) .post-detail-des::before {
 .post-text {
   position: sticky;
   top: 20px;
-  height: calc(100vh - var(--logo-bar-h) - 40px);
+  height: calc(100vh - var(--logo-bar-h) - var(--footer-bar-h) - 40px);
   overflow-y: auto;
   scrollbar-width: none;
   width: 100%;
@@ -1861,24 +1860,6 @@ body:has(.site-header--project) .post-detail-des::before {
     opacity: 0.3;
   }
 
-  .mo-nav-footer {
-    flex-shrink: 0;
-    margin: 0 14px;
-    padding: 14px 0 20px;
-    border-top: 1px solid var(--line);
-    font-size: 0.78em;
-    line-height: 1.5;
-  }
-
-  .mo-nav-footer-info a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .mo-nav-footer-info a:hover {
-    opacity: 0.5;
-  }
-
   .site-header {
     position: fixed;
     top: var(--mobile-bar-h);
@@ -2085,15 +2066,9 @@ body:has(.site-header--project) .post-detail-des::before {
   }
 
   .index-box,
-  .img-post-box,
-  .contact-box {
+  .img-post-box {
     margin-left: 16px;
     width: calc(100% - 32px);
-  }
-
-  .contact-info {
-    font-size: 0.8rem;
-    line-height: 1.6em;
   }
 
   .index-category { display: none; }
@@ -2222,8 +2197,7 @@ body:has(.site-header--project) .post-detail-des::before {
   main:has(.works-view),
   main:has(.lab-view),
   main:has(.about-box),
-  main:has(.cv-box),
-  main:has(.contact-box) {
+  main:has(.cv-box) {
     position: static;
     top: auto;
     left: auto;
@@ -2231,6 +2205,7 @@ body:has(.site-header--project) .post-detail-des::before {
     bottom: auto;
     overflow: visible;
     margin-left: 0;
+    padding-bottom: var(--footer-bar-h);
   }
 
   .post-projects {
