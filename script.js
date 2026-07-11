@@ -221,7 +221,7 @@ function initViewToggle() {
 
 // ── Index hover preview (single shared image) ──
 const INDEX_PREVIEW_OFFSET_Y = 0;
-const INDEX_PREVIEW_OFFSET_X = -10;
+const INDEX_PREVIEW_OFFSET_X = -8;
 
 function hideIndexPreview() {
   const preview = document.getElementById('indexPreview');
