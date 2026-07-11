@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '250';
+const CSS_VERSION = '251';
 const JS_VERSION = '96';
 
 const STR = {
@@ -73,10 +73,12 @@ function pick(obj, field, lang) {
 
 function siteFooterBar(site) {
   return `  <footer class="site-footer-bar">
-    <a href="mailto:${escapeHtml(site.email)}" class="site-footer-bar-col">E. ${escapeHtml(site.email)}</a>
-    <a href="${escapeHtml(site.instagram)}" target="_blank" rel="noopener" class="site-footer-bar-col">I. instagram.com/3dowon</a>
-    <a href="${escapeHtml(site.vimeo)}" target="_blank" rel="noopener" class="site-footer-bar-col">V. vimeo.com/3dowon</a>
-    <a href="${escapeHtml(site.youtube)}" target="_blank" rel="noopener" class="site-footer-bar-col">Y. youtube.com/@3dowon</a>
+    <div class="site-footer-bar-inner">
+      <a href="mailto:${escapeHtml(site.email)}">E. ${escapeHtml(site.email)}</a>
+      <a href="${escapeHtml(site.instagram)}" target="_blank" rel="noopener">I. instagram.com/3dowon</a>
+      <a href="${escapeHtml(site.vimeo)}" target="_blank" rel="noopener">V. vimeo.com/3dowon</a>
+      <a href="${escapeHtml(site.youtube)}" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>
+    </div>
   </footer>`;
 }
 

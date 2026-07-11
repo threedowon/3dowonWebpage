@@ -114,23 +114,28 @@ ul { list-style: none; }
   bottom: 0;
   z-index: 999;
   height: var(--footer-bar-h);
-  display: grid;
-  grid-template-columns: var(--site-grid-cols);
+  display: flex;
   align-items: center;
   background: var(--bg);
   border-top: 1px solid var(--line);
   overflow: hidden;
 }
 
-.site-footer-bar-col {
-  padding: 0 12px 0 15px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.site-footer-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 0 12px;
+  overflow-x: auto;
   white-space: nowrap;
   font-size: 0.78rem;
+  scrollbar-width: none;
 }
 
-.site-footer-bar-col:hover { opacity: 0.5; }
+.site-footer-bar-inner::-webkit-scrollbar { display: none; }
+
+.site-footer-bar-inner a:hover { opacity: 0.5; }
 
 .header-bar {
   display: grid;
@@ -552,7 +557,7 @@ main:has(.cv-box) {
   .site-header--works .sidebar-controls,
   .site-header--project .sidebar-controls,
   .site-header--simple .sidebar-controls {
-    gap: 6px;
+    gap: 3px;
   }
 
   /* Always reserve the open accordion's height on desktop so the header row
@@ -562,7 +567,7 @@ main:has(.cv-box) {
   .site-header--works .nav-accordion .sidebar-controls,
   .nav-accordion.is-open .sidebar-controls {
     max-height: max-content;
-    margin-top: 6px;
+    margin-top: 3px;
     margin-bottom: 0;
     overflow: visible;
   }
@@ -1606,14 +1611,6 @@ body:has(.site-header--project) .post-detail-des::before {
     display: none;
   }
 
-  /* Hiding the works column above removes its height contribution to the
-     header row, so the nav column shrinks to its own content height and
-     the lang-switch's margin-top:auto no longer has room to push it down
-     to the usual position. Restore that gap explicitly. */
-  .site-header--project .header-bar-col--nav .header-lang-switch {
-    margin-top: 9px;
-  }
-
   .works-view--grid .img-post-box {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1705,17 +1702,6 @@ body:has(.site-header--project) .post-detail-des::before {
     --mobile-header-line-inset: 12px;
     --mobile-page-title-size: 1.1em;
     --mobile-page-title-padding: 2px 0 2px 3px;
-    --footer-bar-h: 84px;
-  }
-
-  .site-footer-bar {
-    grid-template-columns: 1fr;
-    align-content: center;
-  }
-
-  .site-footer-bar-col {
-    padding: 3px 12px;
-    font-size: 0.72rem;
   }
 
   .mo-header {
