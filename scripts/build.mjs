@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '251';
+const CSS_VERSION = '252';
 const JS_VERSION = '96';
 
 const STR = {
@@ -73,9 +73,11 @@ function pick(obj, field, lang) {
 
 function siteFooterBar(site) {
   return `  <footer class="site-footer-bar">
-    <div class="site-footer-bar-inner">
+    <div class="site-footer-bar-group site-footer-bar-group--1">
       <a href="mailto:${escapeHtml(site.email)}">E. ${escapeHtml(site.email)}</a>
       <a href="${escapeHtml(site.instagram)}" target="_blank" rel="noopener">I. instagram.com/3dowon</a>
+    </div>
+    <div class="site-footer-bar-group site-footer-bar-group--2">
       <a href="${escapeHtml(site.vimeo)}" target="_blank" rel="noopener">V. vimeo.com/3dowon</a>
       <a href="${escapeHtml(site.youtube)}" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>
     </div>
@@ -136,20 +138,22 @@ function worksControls(lang) {
               <li data-view="grid" class="active">${str.viewGrid}</li>
               <li data-view="index">${str.viewIndex}</li>
             </ul>
-            <div class="filter-dropdown">
-              <button type="button" class="filter-dropdown-btn" data-filter-group="type" data-default-label="${str.type}" data-mixed-label="${str.filterMixed}"><span class="filter-dropdown-label">${str.type}</span></button>
-              <ul class="filter-checks filter-checks--type" data-filter-panel="type">
+            <div class="filter-dropdown-row">
+              <div class="filter-dropdown">
+                <button type="button" class="filter-dropdown-btn" data-filter-group="type" data-default-label="${str.type}" data-mixed-label="${str.filterMixed}"><span class="filter-dropdown-label">${str.type}</span></button>
+                <ul class="filter-checks filter-checks--type" data-filter-panel="type">
 ${typeItems}
-              </ul>
-            </div>
-            <div class="filter-dropdown">
-              <button type="button" class="filter-dropdown-btn" data-filter-group="tech" data-default-label="${str.tech}" data-mixed-label="${str.filterMixed}"><span class="filter-dropdown-label">${str.tech}</span></button>
-              <ul class="filter-checks filter-checks--tech" data-filter-panel="tech">
-                <li data-filter="tech" data-value="Unreal">Unreal</li>
-                <li data-filter="tech" data-value="Unity">Unity</li>
-                <li data-filter="tech" data-value="Arduino">Arduino</li>
-                <li data-filter="tech" data-value="3ds Max">3ds Max</li>
-              </ul>
+                </ul>
+              </div>
+              <div class="filter-dropdown">
+                <button type="button" class="filter-dropdown-btn" data-filter-group="tech" data-default-label="${str.tech}" data-mixed-label="${str.filterMixed}"><span class="filter-dropdown-label">${str.tech}</span></button>
+                <ul class="filter-checks filter-checks--tech" data-filter-panel="tech">
+                  <li data-filter="tech" data-value="Unreal">Unreal</li>
+                  <li data-filter="tech" data-value="Unity">Unity</li>
+                  <li data-filter="tech" data-value="Arduino">Arduino</li>
+                  <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+                </ul>
+              </div>
             </div>
           </div>`;
 }
