@@ -88,69 +88,59 @@ img { max-width: 100%; display: block; }
 button { font-family: inherit; cursor: pointer; }
 ul { list-style: none; }
 
-/* ── Home page: analog paper background ──
-   A faint, fixed layer sitting behind the entire page (header/footer/main
-   all paint above it): a paper-grain texture plus a few heavily blurred,
-   desaturated project photos, as if printed matter were showing through
-   from the back of the page. Kept very subtle so it never competes with
-   content. Home page only — the markup only exists in index.html. */
-.index-bg-texture {
+/* ── Site-wide analog paper background ──
+   A fixed layer sitting behind every page (header/footer/main all paint
+   above it): a warm paper tint + grain, with several project photo prints
+   "pasted" on top at scattered positions/rotations — like the reverse
+   side of a page in a printed photo catalog, faintly showing through. */
+.page-bg-texture {
   position: fixed;
   inset: 0;
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
+  background-color: #faf7ef;
 }
 
-.index-bg-texture::before {
+.page-bg-texture::before {
   content: '';
   position: absolute;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.11;
+  opacity: 0.12;
 }
 
-.index-bg-photo {
+.page-bg-photo {
   position: absolute;
-  width: 55vw;
-  height: 55vw;
+  width: 17vw;
+  aspect-ratio: 4 / 3;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  filter: grayscale(1) blur(55px);
-  opacity: 0.18;
+  border: 3px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  filter: grayscale(0.9) contrast(0.92) brightness(1.12) blur(1px);
+  opacity: 0.3;
   mix-blend-mode: multiply;
 }
 
-.index-bg-photo--1 {
-  top: -12vw;
-  left: -14vw;
-  transform: rotate(-6deg);
-}
-
-.index-bg-photo--2 {
-  bottom: -18vw;
-  right: -10vw;
-  transform: rotate(4deg);
-}
-
-.index-bg-photo--3 {
-  top: 30vh;
-  left: 35vw;
-  width: 40vw;
-  height: 40vw;
-  transform: rotate(-3deg);
-}
+.page-bg-photo--1 { top: 4vh;   left: 3vw;   width: 15vw; transform: rotate(-9deg); }
+.page-bg-photo--2 { top: 8vh;   left: 27vw;  width: 12vw; transform: rotate(6deg); }
+.page-bg-photo--3 { top: 3vh;   right: 6vw;  width: 16vw; transform: rotate(8deg); }
+.page-bg-photo--4 { top: 42vh;  left: 6vw;   width: 13vw; transform: rotate(5deg); }
+.page-bg-photo--5 { top: 46vh;  right: 4vw;  width: 15vw; transform: rotate(-7deg); }
+.page-bg-photo--6 { bottom: 6vh; left: 10vw; width: 14vw; transform: rotate(8deg); }
+.page-bg-photo--7 { bottom: 3vh; left: 40vw; width: 12vw; transform: rotate(-6deg); }
+.page-bg-photo--8 { bottom: 5vh; right: 8vw; width: 16vw; transform: rotate(-4deg); }
 
 @media (max-width: 768px) {
-  .index-bg-photo {
-    width: 60vw;
-    height: 60vw;
-    opacity: 0.13;
-    filter: grayscale(1) blur(40px);
+  .page-bg-photo {
+    width: 30vw !important;
+    opacity: 0.24;
   }
 
-  .index-bg-photo--3 {
+  .page-bg-photo--2,
+  .page-bg-photo--7 {
     display: none;
   }
 }

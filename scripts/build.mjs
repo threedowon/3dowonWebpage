@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '256';
+const CSS_VERSION = '257';
 const JS_VERSION = '96';
 
 const STR = {
@@ -229,7 +229,7 @@ function simpleHeader(activeNav, lang, relPath, str) {
 ${mobileShell(activeNav, homePrefix, assetPrefix, lang, relPath, str)}`;
 }
 
-function pageShell({ title, body, header, extraHead = '', lang, assetPrefix, site, bgDecor = '' }) {
+function pageShell({ title, body, header, extraHead = '', lang, assetPrefix, site }) {
   return `<!DOCTYPE html>
 <html lang="${lang}">
 <head>
@@ -242,7 +242,7 @@ function pageShell({ title, body, header, extraHead = '', lang, assetPrefix, sit
 ${extraHead}
 </head>
 <body>
-${bgDecor}${header}
+${siteBgDecor()}${header}
   <main>
 ${body}
   </main>
@@ -253,14 +253,23 @@ ${siteFooterBar(site)}
 `;
 }
 
-function indexBgDecor(works) {
+// A fixed, page-wide collage of faint project photos "pasted" behind the
+// paper-grain texture — same on every page (site chrome, not per-page
+// content), so it reads as the site's paper stock rather than a per-page
+// decoration. References `works`, populated below before any page is built.
+function siteBgDecor() {
   if (!works.length) return '';
-  const pick3 = [works[0], works[Math.floor(works.length / 2)], works[works.length - 1]];
-  const imgs = pick3.map((w) => w.preview_bg || w.thumbnail);
-  return `  <div class="index-bg-texture" aria-hidden="true">
-    <div class="index-bg-photo index-bg-photo--1" style="background-image:url(${escapeHtml(imgs[0])})"></div>
-    <div class="index-bg-photo index-bg-photo--2" style="background-image:url(${escapeHtml(imgs[1])})"></div>
-    <div class="index-bg-photo index-bg-photo--3" style="background-image:url(${escapeHtml(imgs[2])})"></div>
+  const count = Math.min(8, works.length);
+  const step = works.length / count;
+  const picks = Array.from({ length: count }, (_, i) => works[Math.floor(i * step) % works.length]);
+  const photos = picks
+    .map(
+      (w, i) =>
+        `    <div class="page-bg-photo page-bg-photo--${i + 1}" style="background-image:url(${escapeHtml(w.preview_bg || w.thumbnail)})"></div>`
+    )
+    .join('\n');
+  return `  <div class="page-bg-texture" aria-hidden="true">
+${photos}
   </div>
 `;
 }
@@ -365,15 +374,7 @@ ${Object.entries(TYPE_FILTER_LABELS)
   </div>
 ${mobileNav('works', homePrefix, assetPrefix, lang, relPath, str)}`;
 
-  return pageShell({
-    title: '3Dowon — Media Artist',
-    body,
-    header,
-    lang,
-    assetPrefix,
-    site,
-    bgDecor: indexBgDecor(works),
-  });
+  return pageShell({ title: '3Dowon — Media Artist', body, header, lang, assetPrefix, site });
 }
 
 function buildWorkPage(work, site, lang) {
