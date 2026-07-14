@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" />
-  <link rel="stylesheet" href="../styles.css?v=262" />
+  <link rel="stylesheet" href="../styles.css?v=263" />
 
 </head>
 <body>
@@ -27,27 +27,25 @@
               <li data-view="grid" class="active">Grid</li>
               <li data-view="index">Index</li>
             </ul>
-            <div class="filter-dropdown-row">
-              <div class="filter-dropdown">
-                <button type="button" class="filter-dropdown-btn" data-filter-group="type" data-default-label="Type" data-mixed-label="Mixed"><span class="filter-dropdown-label">Type</span></button>
-                <ul class="filter-checks filter-checks--type" data-filter-panel="type">
-              <li data-filter="type" data-value="설치">Installation</li>
-              <li data-filter="type" data-value="영상">Video</li>
-              <li data-filter="type" data-value="퍼포먼스">Performance</li>
-              <li data-filter="type" data-value="전시">Exhibition</li>
-              <li data-filter="type" data-value="인터랙티브">Interactive</li>
-              <li data-filter="type" data-value="프로젝션">Projection</li>
-                </ul>
-              </div>
-              <div class="filter-dropdown">
-                <button type="button" class="filter-dropdown-btn" data-filter-group="tech" data-default-label="Technology" data-mixed-label="Mixed"><span class="filter-dropdown-label">Technology</span></button>
-                <ul class="filter-checks filter-checks--tech" data-filter-panel="tech">
-                  <li data-filter="tech" data-value="Unreal">Unreal</li>
-                  <li data-filter="tech" data-value="Unity">Unity</li>
-                  <li data-filter="tech" data-value="Arduino">Arduino</li>
-                  <li data-filter="tech" data-value="3ds Max">3ds Max</li>
-                </ul>
-              </div>
+            <div class="filter-chip-row">
+              <span class="filter-chip-row-label">Type</span>
+              <ul class="filter-checks filter-checks--type">
+                <li data-filter="type" data-value="설치">Installation</li>
+                <li data-filter="type" data-value="영상">Video</li>
+                <li data-filter="type" data-value="퍼포먼스">Performance</li>
+                <li data-filter="type" data-value="전시">Exhibition</li>
+                <li data-filter="type" data-value="인터랙티브">Interactive</li>
+                <li data-filter="type" data-value="프로젝션">Projection</li>
+              </ul>
+            </div>
+            <div class="filter-chip-row">
+              <span class="filter-chip-row-label">Technology</span>
+              <ul class="filter-checks filter-checks--tech">
+                <li data-filter="tech" data-value="Unreal">Unreal</li>
+                <li data-filter="tech" data-value="Unity">Unity</li>
+                <li data-filter="tech" data-value="Arduino">Arduino</li>
+                <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -130,6 +128,6 @@
       <a href="https://youtube.com/@3dowon" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>
     </div>
   </footer>
-  <script src="../script.js?v=96"></script>
+  <script src="../script.js?v=97"></script>
 </body>
 </html>

@@ -1,8 +1,8 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '262';
-const JS_VERSION = '96';
+const CSS_VERSION = '263';
+const JS_VERSION = '97';
 
 const STR = {
   en: {
@@ -18,7 +18,6 @@ const STR = {
     menu: 'Menu',
     close: 'Close',
     back: 'Back',
-    filterMixed: 'Mixed',
     navWorks: 'WORKS',
     navLab: 'LAB',
     navAbout: 'ABOUT',
@@ -39,7 +38,6 @@ const STR = {
     menu: '메뉴',
     close: '닫기',
     back: '뒤로',
-    filterMixed: '혼합',
     navWorks: '작업',
     navLab: '실험',
     navAbout: '소개',
@@ -131,29 +129,27 @@ function mobileShell(activeNav, homePrefix, assetPrefix, lang, relPath, str) {
 function worksControls(lang) {
   const str = STR[lang];
   const typeItems = Object.entries(TYPE_FILTER_LABELS)
-    .map(([value, labels]) => `              <li data-filter="type" data-value="${value}">${labels[lang]}</li>`)
+    .map(([value, labels]) => `                <li data-filter="type" data-value="${value}">${labels[lang]}</li>`)
     .join('\n');
   return `          <div class="sidebar-controls">
             <ul class="view-toggle">
               <li data-view="grid" class="active">${str.viewGrid}</li>
               <li data-view="index">${str.viewIndex}</li>
             </ul>
-            <div class="filter-dropdown-row">
-              <div class="filter-dropdown">
-                <button type="button" class="filter-dropdown-btn" data-filter-group="type" data-default-label="${str.type}" data-mixed-label="${str.filterMixed}"><span class="filter-dropdown-label">${str.type}</span></button>
-                <ul class="filter-checks filter-checks--type" data-filter-panel="type">
+            <div class="filter-chip-row">
+              <span class="filter-chip-row-label">${str.type}</span>
+              <ul class="filter-checks filter-checks--type">
 ${typeItems}
-                </ul>
-              </div>
-              <div class="filter-dropdown">
-                <button type="button" class="filter-dropdown-btn" data-filter-group="tech" data-default-label="${str.tech}" data-mixed-label="${str.filterMixed}"><span class="filter-dropdown-label">${str.tech}</span></button>
-                <ul class="filter-checks filter-checks--tech" data-filter-panel="tech">
-                  <li data-filter="tech" data-value="Unreal">Unreal</li>
-                  <li data-filter="tech" data-value="Unity">Unity</li>
-                  <li data-filter="tech" data-value="Arduino">Arduino</li>
-                  <li data-filter="tech" data-value="3ds Max">3ds Max</li>
-                </ul>
-              </div>
+              </ul>
+            </div>
+            <div class="filter-chip-row">
+              <span class="filter-chip-row-label">${str.tech}</span>
+              <ul class="filter-checks filter-checks--tech">
+                <li data-filter="tech" data-value="Unreal">Unreal</li>
+                <li data-filter="tech" data-value="Unity">Unity</li>
+                <li data-filter="tech" data-value="Arduino">Arduino</li>
+                <li data-filter="tech" data-value="3ds Max">3ds Max</li>
+              </ul>
             </div>
           </div>`;
 }
@@ -281,9 +277,10 @@ function normalizeWork(work) {
 function renderGridPost(work, lang) {
   return `        <a href="work/${work.slug}.html" class="img-post reveal" ${dataAttrs(work)}>
           <div class="img-post-thumbimg" style="background-image:url(${work.thumbnail})"></div>
-          <div class="img-post-title">${escapeHtml(work.title)}</div>
-          <div class="img-post-type">${escapeHtml(pick(work, 'grid_type_label', lang))}</div>
-          <div class="img-post-year">${work.year}</div>
+          <div class="img-post-caption">
+            <div class="img-post-title">${escapeHtml(work.title)}</div>
+            <div class="img-post-meta">${escapeHtml(pick(work, 'grid_type_label', lang))} · ${work.year}</div>
+          </div>
         </a>`;
 }
 
