@@ -71,14 +71,14 @@
   --type-small: 0.95rem;
 }
 
-html { font-size: 16px; scroll-behavior: smooth; scrollbar-gutter: stable; }
+html { font-size: 15px; scroll-behavior: smooth; scrollbar-gutter: stable; }
 
 body {
-  font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Inter', 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--text);
   background: var(--bg);
   font-weight: 350;
-  font-size: 1.1em;
+  font-size: 1em;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
 }
@@ -660,6 +660,27 @@ main:has(.cv-box) {
   .works-view--grid .img-post-type,
   .works-view--grid .img-post-year {
     font-weight: 350;
+  }
+
+  .works-view--grid .img-post-thumbimg {
+    margin-bottom: 6px;
+  }
+
+  .works-view--grid .img-post-title {
+    font-size: 0.98rem;
+    line-height: 1.15rem;
+    margin-bottom: 0;
+  }
+
+  .works-view--grid .img-post-type {
+    font-size: 0.82rem;
+    line-height: 1rem;
+    margin-bottom: 0;
+  }
+
+  .works-view--grid .img-post-year {
+    font-size: 0.82rem;
+    line-height: 1rem;
   }
 
   .index-category-year,
