@@ -88,6 +88,73 @@ img { max-width: 100%; display: block; }
 button { font-family: inherit; cursor: pointer; }
 ul { list-style: none; }
 
+/* ── Home page: analog paper background ──
+   A faint, fixed layer sitting behind the entire page (header/footer/main
+   all paint above it): a paper-grain texture plus a few heavily blurred,
+   desaturated project photos, as if printed matter were showing through
+   from the back of the page. Kept very subtle so it never competes with
+   content. Home page only — the markup only exists in index.html. */
+.index-bg-texture {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.index-bg-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+}
+
+.index-bg-photo {
+  position: absolute;
+  width: 55vw;
+  height: 55vw;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) blur(70px);
+  opacity: 0.07;
+  mix-blend-mode: multiply;
+}
+
+.index-bg-photo--1 {
+  top: -12vw;
+  left: -14vw;
+  transform: rotate(-6deg);
+}
+
+.index-bg-photo--2 {
+  bottom: -18vw;
+  right: -10vw;
+  transform: rotate(4deg);
+}
+
+.index-bg-photo--3 {
+  top: 30vh;
+  left: 35vw;
+  width: 40vw;
+  height: 40vw;
+  transform: rotate(-3deg);
+}
+
+@media (max-width: 768px) {
+  .index-bg-photo {
+    width: 60vw;
+    height: 60vw;
+    opacity: 0.05;
+    filter: grayscale(1) blur(50px);
+  }
+
+  .index-bg-photo--3 {
+    display: none;
+  }
+}
+
 /* ── Top Header Bar (4 columns) ── */
 .site-header {
   position: fixed;

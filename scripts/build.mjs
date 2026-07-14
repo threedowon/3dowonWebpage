@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '254';
+const CSS_VERSION = '255';
 const JS_VERSION = '96';
 
 const STR = {
@@ -229,7 +229,7 @@ function simpleHeader(activeNav, lang, relPath, str) {
 ${mobileShell(activeNav, homePrefix, assetPrefix, lang, relPath, str)}`;
 }
 
-function pageShell({ title, body, header, extraHead = '', lang, assetPrefix, site }) {
+function pageShell({ title, body, header, extraHead = '', lang, assetPrefix, site, bgDecor = '' }) {
   return `<!DOCTYPE html>
 <html lang="${lang}">
 <head>
@@ -242,7 +242,7 @@ function pageShell({ title, body, header, extraHead = '', lang, assetPrefix, sit
 ${extraHead}
 </head>
 <body>
-${header}
+${bgDecor}${header}
   <main>
 ${body}
   </main>
@@ -250,6 +250,18 @@ ${siteFooterBar(site)}
   <script src="${assetPrefix}script.js?v=${JS_VERSION}"></script>
 </body>
 </html>
+`;
+}
+
+function indexBgDecor(works) {
+  if (!works.length) return '';
+  const pick3 = [works[0], works[Math.floor(works.length / 2)], works[works.length - 1]];
+  const imgs = pick3.map((w) => w.preview_bg || w.thumbnail);
+  return `  <div class="index-bg-texture" aria-hidden="true">
+    <div class="index-bg-photo index-bg-photo--1" style="background-image:url(${escapeHtml(imgs[0])})"></div>
+    <div class="index-bg-photo index-bg-photo--2" style="background-image:url(${escapeHtml(imgs[1])})"></div>
+    <div class="index-bg-photo index-bg-photo--3" style="background-image:url(${escapeHtml(imgs[2])})"></div>
+  </div>
 `;
 }
 
@@ -353,7 +365,15 @@ ${Object.entries(TYPE_FILTER_LABELS)
   </div>
 ${mobileNav('works', homePrefix, assetPrefix, lang, relPath, str)}`;
 
-  return pageShell({ title: '3Dowon — Media Artist', body, header, lang, assetPrefix, site });
+  return pageShell({
+    title: '3Dowon — Media Artist',
+    body,
+    header,
+    lang,
+    assetPrefix,
+    site,
+    bgDecor: indexBgDecor(works),
+  });
 }
 
 function buildWorkPage(work, site, lang) {
