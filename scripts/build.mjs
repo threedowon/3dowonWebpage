@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '259';
+const CSS_VERSION = '260';
 const JS_VERSION = '96';
 
 const STR = {
@@ -240,12 +240,12 @@ function pageShell({ title, body, header, extraHead = '', lang, assetPrefix, sit
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" />
   <link rel="stylesheet" href="${assetPrefix}styles.css?v=${CSS_VERSION}" />
 ${extraHead}
 </head>
 <body>
-${siteBgDecor()}${header}
+${header}
   <main>
 ${body}
   </main>
@@ -253,27 +253,6 @@ ${siteFooterBar(site)}
   <script src="${assetPrefix}script.js?v=${JS_VERSION}"></script>
 </body>
 </html>
-`;
-}
-
-// A fixed, page-wide collage of faint project photos "pasted" behind the
-// paper-grain texture — same on every page (site chrome, not per-page
-// content), so it reads as the site's paper stock rather than a per-page
-// decoration. References `works`, populated below before any page is built.
-function siteBgDecor() {
-  if (!works.length) return '';
-  const count = Math.min(8, works.length);
-  const step = works.length / count;
-  const picks = Array.from({ length: count }, (_, i) => works[Math.floor(i * step) % works.length]);
-  const photos = picks
-    .map(
-      (w, i) =>
-        `    <div class="page-bg-photo page-bg-photo--${i + 1}" style="background-image:url(${escapeHtml(w.preview_bg || w.thumbnail)})"></div>`
-    )
-    .join('\n');
-  return `  <div class="page-bg-texture" aria-hidden="true">
-${photos}
-  </div>
 `;
 }
 
