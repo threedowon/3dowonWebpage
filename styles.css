@@ -53,6 +53,7 @@
     linear-gradient(var(--line), var(--line)),
     linear-gradient(var(--line), var(--line)),
     linear-gradient(var(--line), var(--line));
+  --font-mono: 'JetBrains Mono', 'Pretendard Variable', monospace;
 
   /* Typography — desktop scale */
   --type-logo: 1.7em;
@@ -74,7 +75,7 @@
 html { font-size: 16px; scroll-behavior: smooth; scrollbar-gutter: stable; }
 
 body {
-  font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Inter', 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--text);
   background: var(--bg);
   font-weight: 350;
@@ -90,9 +91,10 @@ ul { list-style: none; }
 
 /* ── Site-wide analog paper background ──
    A fixed layer sitting behind every page (header/footer/main all paint
-   above it): a warm paper tint + grain, with several project photo prints
-   "pasted" on top at scattered positions/rotations — like the reverse
-   side of a page in a printed photo catalog, faintly showing through. */
+   above it): a warm paper tint + grain + a scan-crease line, with several
+   small project photo prints scattered across it in full color — like a
+   printed photo-catalog sheet (contact-sheet grid, numbered prints on
+   textured paper), kept faint enough to stay behind real content. */
 .page-bg-texture {
   position: fixed;
   inset: 0;
@@ -110,34 +112,52 @@ ul { list-style: none; }
   opacity: 0.12;
 }
 
+.page-bg-texture::after {
+  content: '';
+  position: absolute;
+  top: -15%;
+  left: 41%;
+  width: 1px;
+  height: 130%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 0, 0, 0.07) 15%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.07) 85%,
+    transparent
+  );
+  box-shadow: 1px 0 2px rgba(0, 0, 0, 0.03);
+  transform: rotate(6deg);
+}
+
 .page-bg-photo {
   position: absolute;
-  width: 17vw;
+  width: 13vw;
   aspect-ratio: 4 / 3;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  filter: grayscale(1) contrast(0.85) brightness(1.2) blur(3px);
-  opacity: 0.34;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  filter: saturate(0.85) contrast(0.95) brightness(1.05);
+  opacity: 0.42;
   mix-blend-mode: multiply;
-  mask-image: radial-gradient(ellipse, black 70%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse, black 70%, transparent 100%);
 }
 
-.page-bg-photo--1 { top: 4vh;   left: 3vw;   width: 15vw; transform: scaleX(-1) rotate(-9deg); }
-.page-bg-photo--2 { top: 8vh;   left: 27vw;  width: 12vw; transform: scaleX(-1) rotate(6deg); }
-.page-bg-photo--3 { top: 3vh;   right: 6vw;  width: 16vw; transform: scaleX(-1) rotate(8deg); }
-.page-bg-photo--4 { top: 42vh;  left: 6vw;   width: 13vw; transform: scaleX(-1) rotate(5deg); }
-.page-bg-photo--5 { top: 46vh;  right: 4vw;  width: 15vw; transform: scaleX(-1) rotate(-7deg); }
-.page-bg-photo--6 { bottom: 6vh; left: 10vw; width: 14vw; transform: scaleX(-1) rotate(8deg); }
-.page-bg-photo--7 { bottom: 3vh; left: 40vw; width: 12vw; transform: scaleX(-1) rotate(-6deg); }
-.page-bg-photo--8 { bottom: 5vh; right: 8vw; width: 16vw; transform: scaleX(-1) rotate(-4deg); }
+.page-bg-photo--1 { top: 4vh;    left: 3vw;   width: 12vw; transform: rotate(-4deg); }
+.page-bg-photo--2 { top: 8vh;    left: 22vw;  width: 9vw;  transform: rotate(3deg); }
+.page-bg-photo--3 { top: 3vh;    right: 6vw;  width: 12vw; transform: rotate(4deg); }
+.page-bg-photo--4 { top: 42vh;   left: 6vw;   width: 10vw; transform: rotate(2deg); }
+.page-bg-photo--5 { top: 46vh;   right: 4vw;  width: 12vw; transform: rotate(-3deg); }
+.page-bg-photo--6 { bottom: 6vh; left: 10vw;  width: 11vw; transform: rotate(4deg); }
+.page-bg-photo--7 { bottom: 3vh; left: 38vw;  width: 9vw;  transform: rotate(-3deg); }
+.page-bg-photo--8 { bottom: 5vh; right: 8vw;  width: 12vw; transform: rotate(-2deg); }
 
 @media (max-width: 768px) {
   .page-bg-photo {
-    width: 30vw !important;
-    opacity: 0.28;
-    filter: grayscale(1) contrast(0.85) brightness(1.2) blur(3px);
+    width: 24vw !important;
+    opacity: 0.34;
   }
 
   .page-bg-photo--2,
@@ -849,6 +869,8 @@ main:has(.cv-box) {
   margin: 0 0.25%;
   flex-shrink: 0;
   font-size: var(--type-meta);
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
 }
 
 .index-post-title {
@@ -1027,6 +1049,8 @@ main:has(.cv-box) {
   padding-left: 1px;
   font-size: var(--type-meta);
   line-height: var(--type-meta-line);
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
 }
 
 .img-post.hidden { display: none; }
@@ -1240,6 +1264,8 @@ main:has(.cv-box) {
 }
 
 .cv-year {
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
