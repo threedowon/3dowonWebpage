@@ -662,6 +662,27 @@ main:has(.cv-box) {
     font-weight: 350;
   }
 
+  .works-view--grid .img-post-thumbimg {
+    margin-bottom: 6px;
+  }
+
+  .works-view--grid .img-post-title {
+    font-size: 0.98rem;
+    line-height: 1.25rem;
+    margin-bottom: 1px;
+  }
+
+  .works-view--grid .img-post-type {
+    font-size: 0.82rem;
+    line-height: 1.1rem;
+    margin-bottom: 0;
+  }
+
+  .works-view--grid .img-post-year {
+    font-size: 0.82rem;
+    line-height: 1.1rem;
+  }
+
   .index-category-year,
   .index-category-title,
   .index-category-type,

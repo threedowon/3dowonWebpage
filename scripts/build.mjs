@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '260';
+const CSS_VERSION = '261';
 const JS_VERSION = '96';
 
 const STR = {
