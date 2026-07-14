@@ -117,26 +117,27 @@ ul { list-style: none; }
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  border: 3px solid rgba(255, 255, 255, 0.65);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
-  filter: grayscale(0.9) contrast(0.92) brightness(1.12) blur(1px);
-  opacity: 0.3;
+  filter: grayscale(1) contrast(0.85) brightness(1.2) blur(3px);
+  opacity: 0.34;
   mix-blend-mode: multiply;
+  mask-image: radial-gradient(ellipse, black 70%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse, black 70%, transparent 100%);
 }
 
-.page-bg-photo--1 { top: 4vh;   left: 3vw;   width: 15vw; transform: rotate(-9deg); }
-.page-bg-photo--2 { top: 8vh;   left: 27vw;  width: 12vw; transform: rotate(6deg); }
-.page-bg-photo--3 { top: 3vh;   right: 6vw;  width: 16vw; transform: rotate(8deg); }
-.page-bg-photo--4 { top: 42vh;  left: 6vw;   width: 13vw; transform: rotate(5deg); }
-.page-bg-photo--5 { top: 46vh;  right: 4vw;  width: 15vw; transform: rotate(-7deg); }
-.page-bg-photo--6 { bottom: 6vh; left: 10vw; width: 14vw; transform: rotate(8deg); }
-.page-bg-photo--7 { bottom: 3vh; left: 40vw; width: 12vw; transform: rotate(-6deg); }
-.page-bg-photo--8 { bottom: 5vh; right: 8vw; width: 16vw; transform: rotate(-4deg); }
+.page-bg-photo--1 { top: 4vh;   left: 3vw;   width: 15vw; transform: scaleX(-1) rotate(-9deg); }
+.page-bg-photo--2 { top: 8vh;   left: 27vw;  width: 12vw; transform: scaleX(-1) rotate(6deg); }
+.page-bg-photo--3 { top: 3vh;   right: 6vw;  width: 16vw; transform: scaleX(-1) rotate(8deg); }
+.page-bg-photo--4 { top: 42vh;  left: 6vw;   width: 13vw; transform: scaleX(-1) rotate(5deg); }
+.page-bg-photo--5 { top: 46vh;  right: 4vw;  width: 15vw; transform: scaleX(-1) rotate(-7deg); }
+.page-bg-photo--6 { bottom: 6vh; left: 10vw; width: 14vw; transform: scaleX(-1) rotate(8deg); }
+.page-bg-photo--7 { bottom: 3vh; left: 40vw; width: 12vw; transform: scaleX(-1) rotate(-6deg); }
+.page-bg-photo--8 { bottom: 5vh; right: 8vw; width: 16vw; transform: scaleX(-1) rotate(-4deg); }
 
 @media (max-width: 768px) {
   .page-bg-photo {
     width: 30vw !important;
-    opacity: 0.24;
+    opacity: 0.28;
+    filter: grayscale(1) contrast(0.85) brightness(1.2) blur(3px);
   }
 
   .page-bg-photo--2,
