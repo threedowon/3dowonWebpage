@@ -1,7 +1,7 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '263';
+const CSS_VERSION = '264';
 const JS_VERSION = '97';
 
 const STR = {
@@ -24,6 +24,17 @@ const STR = {
     navCv: 'CV',
     viewGrid: 'Grid',
     viewIndex: 'Index',
+    heroTagline: 'Adding small changes to familiar objects,<br />exploring how people experience space.',
+    heroRole: 'Interactive Media Artist',
+    heroLocation: 'Seoul, South Korea',
+    heroScroll: 'Works',
+    statementLines: [
+      'When people slow down.',
+      "When they forget they're in a gallery.",
+      'And the space quietly becomes<br />part of their memory.',
+    ],
+    selectedWorksLabel: 'Selected Works',
+    allWorksLabel: 'All Works',
   },
   ko: {
     year: '연도',
@@ -44,6 +55,17 @@ const STR = {
     navCv: '이력',
     viewGrid: '그리드',
     viewIndex: '인덱스',
+    heroTagline: '익숙한 사물에 작은 변화를 더해<br />사람들이 공간을 경험하는 방식을 탐구합니다.',
+    heroRole: 'Interactive Media Artist',
+    heroLocation: 'Seoul, South Korea',
+    heroScroll: 'Works',
+    statementLines: [
+      '사람들이 걸음을 늦출 때.',
+      '이곳이 갤러리라는 걸 잊을 때.',
+      '그리고 공간은 조용히<br />그들의 기억 일부가 됩니다.',
+    ],
+    selectedWorksLabel: 'Selected Works',
+    allWorksLabel: 'All Works',
   },
 };
 
@@ -236,7 +258,7 @@ function pageShell({ title, body, header, extraHead = '', lang, assetPrefix, sit
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:wght@400;500;600&display=swap" />
   <link rel="stylesheet" href="${assetPrefix}styles.css?v=${CSS_VERSION}" />
 ${extraHead}
 </head>
@@ -298,13 +320,75 @@ function renderIndexPost(work, lang) {
           </a>`;
 }
 
+// ── Mobile-only "walking the exhibition" intro (home page) ──
+// Hidden entirely on desktop via CSS (base rule display:none, only
+// re-enabled inside the max-width:768px media query) — desktop markup and
+// layout are untouched by any of this.
+const SELECTED_WORK_SLUGS = ['light-archive', 'body-signal', 'breath-map', 'data-bloom'];
+
+function mobileHeroSection(lang) {
+  const str = STR[lang];
+  return `    <section class="mobile-hero">
+      <div class="mobile-hero-inner">
+        <h1 class="mobile-hero-title">3Dowon</h1>
+        <p class="mobile-hero-tagline">${str.heroTagline}</p>
+        <div class="mobile-hero-meta">
+          <span>${str.heroRole}</span>
+          <span>${str.heroLocation}</span>
+        </div>
+      </div>
+      <a href="#allWorks" class="mobile-hero-scroll">
+        <span class="mobile-hero-arrow" aria-hidden="true">↓</span>
+        <span class="mobile-hero-scroll-label">${str.heroScroll}</span>
+      </a>
+    </section>
+    <section class="mobile-statement">
+${str.statementLines.map((line) => `      <p class="mobile-statement-line reveal">${line}</p>`).join('\n')}
+    </section>`;
+}
+
+// Descriptions can hold several paragraphs (intro + a "Role" breakdown, for
+// the project detail page) — the Selected Works teaser only wants the
+// opening sentence, so take just the first <p>.
+function firstParagraphText(html) {
+  const match = /^\s*<p>([\s\S]*?)<\/p>/.exec(html || '');
+  return match ? match[1] : (html || '');
+}
+
+function mobileSelectedWorks(works, lang) {
+  const str = STR[lang];
+  const bySlug = new Map(works.map((w) => [w.slug, w]));
+  const items = SELECTED_WORK_SLUGS.map((slug) => bySlug.get(slug)).filter(Boolean);
+  if (!items.length) return '';
+
+  const cards = items
+    .map(
+      (work, i) => `        <a href="work/${work.slug}.html" class="mobile-selected-item mobile-selected-item--${i + 1} reveal">
+          <div class="mobile-selected-image" style="background-image:url(${work.hero_image || work.thumbnail})"></div>
+          <div class="mobile-selected-title">${escapeHtml(work.title)}</div>
+          <div class="mobile-selected-year">${work.year}</div>
+          <div class="mobile-selected-desc">${firstParagraphText(pick(work, 'description', lang))}</div>
+        </a>`
+    )
+    .join('\n');
+
+  return `    <section class="mobile-selected-works">
+      <h2 class="mobile-selected-works-label">${str.selectedWorksLabel}</h2>
+${cards}
+    </section>`;
+}
+
 function buildIndex(works, site, lang) {
   const str = STR[lang];
   const { homePrefix, assetPrefix } = prefixes(lang, false);
   const relPath = 'index.html';
   const gridPosts = works.map((w) => renderGridPost(w, lang)).join('\n');
   const indexPosts = works.map((w) => renderIndexPost(w, lang)).join('\n');
-  const body = `    <div class="works-view works-view--grid" id="gridView">
+  const body = `${mobileHeroSection(lang)}
+${mobileSelectedWorks(works, lang)}
+    <h2 id="allWorks" class="mobile-all-works-label">${str.allWorksLabel}</h2>
+
+    <div class="works-view works-view--grid" id="gridView">
       <div class="img-post-box" id="imgPostBox">
 ${gridPosts}
       </div>

@@ -88,6 +88,189 @@ img { max-width: 100%; display: block; }
 button { font-family: inherit; cursor: pointer; }
 ul { list-style: none; }
 
+/* ── Mobile-only home intro: "walking the exhibition" ──
+   Hero + Statement + Selected Works, inserted above the existing works
+   grid on the home page. Hidden unconditionally here; only re-enabled
+   inside the max-width:768px query below, so desktop is never affected
+   regardless of load order or specificity. Warm off-white/near-black
+   palette, distinct from the rest of the site, per the mobile redesign
+   brief — the existing grid/filters further down keep the site's normal
+   colors and are otherwise untouched. */
+.mobile-hero,
+.mobile-statement,
+.mobile-selected-works,
+.mobile-all-works-label {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 85vh;
+    padding: 64px 28px 32px;
+    box-sizing: border-box;
+    background: #f7f6f2;
+    text-align: center;
+  }
+
+  .mobile-hero-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 26px;
+    margin: auto 0;
+  }
+
+  .mobile-hero-title {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: 2.6rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: #181818;
+  }
+
+  .mobile-hero-tagline {
+    max-width: 300px;
+    font-size: 0.92rem;
+    line-height: 1.9;
+    color: #181818;
+    opacity: 0.72;
+  }
+
+  .mobile-hero-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #181818;
+    opacity: 0.48;
+  }
+
+  .mobile-hero-scroll {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: #181818;
+  }
+
+  .mobile-hero-arrow {
+    font-size: 1.05rem;
+    opacity: 0.55;
+  }
+
+  .mobile-hero-scroll-label {
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.48;
+  }
+
+  .mobile-statement {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16vh;
+    padding: 18vh 30px;
+    background: #f7f6f2;
+    text-align: center;
+  }
+
+  .mobile-statement-line {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: 1.4rem;
+    line-height: 1.6;
+    font-weight: 400;
+    color: #181818;
+    max-width: 280px;
+  }
+
+  .mobile-selected-works {
+    display: block;
+    background: #f7f6f2;
+    padding: 8vh 26px 16vh;
+  }
+
+  .mobile-selected-works-label {
+    margin: 0 0 12vh;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    color: #181818;
+    opacity: 0.45;
+    font-weight: 400;
+  }
+
+  .mobile-selected-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15vh;
+    color: #181818;
+  }
+
+  .mobile-selected-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .mobile-selected-image {
+    width: 100%;
+    margin-bottom: 20px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* Slightly different proportions per item so the sequence doesn't read
+     as a uniform set of cards. */
+  .mobile-selected-item--1 .mobile-selected-image { aspect-ratio: 4 / 5; }
+  .mobile-selected-item--2 .mobile-selected-image { aspect-ratio: 1 / 1; }
+  .mobile-selected-item--3 .mobile-selected-image { aspect-ratio: 3 / 4; }
+  .mobile-selected-item--4 .mobile-selected-image { aspect-ratio: 16 / 10; }
+
+  .mobile-selected-title {
+    margin-bottom: 4px;
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: 1.45rem;
+    font-weight: 500;
+  }
+
+  .mobile-selected-year {
+    margin-bottom: 14px;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    opacity: 0.45;
+  }
+
+  .mobile-selected-desc {
+    max-width: 320px;
+    font-size: 0.85rem;
+    line-height: 1.75;
+    opacity: 0.68;
+  }
+
+  .mobile-selected-desc p {
+    margin: 0;
+  }
+
+  .mobile-all-works-label {
+    display: block;
+    margin: 0;
+    padding: 9vh 0 5vh;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--text);
+    opacity: 0.45;
+    font-weight: 400;
+  }
+}
+
 /* ── Top Header Bar (4 columns) ── */
 .site-header {
   position: fixed;
