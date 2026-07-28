@@ -34,7 +34,7 @@ function initFilters() {
   if (document.querySelector('.post-projects')) return;
 
   const checkItems = document.querySelectorAll('.filter-checks > li, .mo-filter');
-  const containers = document.querySelectorAll('.img-post-box, .index-post-box');
+  const containers = document.querySelectorAll('.img-post-box, .index-post-box, .works-catalog-list');
 
   if (!checkItems.length || !containers.length) return;
 
@@ -99,7 +99,7 @@ function initFilters() {
     const indexView = document.getElementById('indexView');
     const activeContainer = indexView && !indexView.classList.contains('hidden')
       ? document.querySelector('.index-post-box')
-      : document.querySelector('.img-post-box');
+      : document.querySelector('#imgPostBox') || document.querySelector('.img-post-box');
 
     if (!noResultsEl || !activeContainer) return;
 
@@ -285,33 +285,72 @@ function initIndexPreview() {
   document.getElementById('indexView')?.addEventListener('mouseleave', hideIndexPreview);
 }
 
-// ── Lab image lightbox ──
+// ── Lab: video play or lightbox image ──
 function initLabLightbox() {
   const lightbox = document.getElementById('labLightbox');
   const lightboxImg = document.getElementById('labLightboxImg');
-  const posts = document.querySelectorAll('.lab-post[data-lab-image]');
-  if (!lightbox || !lightboxImg || !posts.length) return;
+  const box = document.getElementById('labPostBox');
+  if (!box) return;
 
-  const open = (src) => {
-    lightboxImg.src = src;
-    lightbox.classList.add('is-open');
-  };
-
-  const close = () => {
+  const closeLightbox = () => {
+    if (!lightbox || !lightboxImg) return;
     lightbox.classList.remove('is-open');
     lightboxImg.src = '';
   };
 
-  posts.forEach((post) => {
-    post.addEventListener('click', () => open(post.dataset.labImage));
+  const openLightbox = (src) => {
+    if (!lightbox || !lightboxImg || !src) return;
+    lightboxImg.src = src;
+    lightbox.classList.add('is-open');
+  };
+
+  const resetVideoPost = (post) => {
+    post.classList.remove('lab-post--active');
+    const video = post.querySelector('.lab-post-video');
+    const thumb = post.querySelector('.lab-post-thumb');
+    if (thumb) thumb.hidden = false;
+    if (video) {
+      video.hidden = true;
+      video.pause();
+      video.currentTime = 0;
+    }
+  };
+
+  box.addEventListener('click', (e) => {
+    const trigger = e.target.closest('.lab-post-trigger, .lab-post');
+    if (!trigger) return;
+    const post = trigger.closest('.lab-post') || trigger;
+    const video = post.querySelector('.lab-post-video');
+    const thumb = post.querySelector('.lab-post-thumb');
+
+    if (video) {
+      e.preventDefault();
+      const isActive = post.classList.contains('lab-post--active');
+      box.querySelectorAll('.lab-post--active').forEach((other) => {
+        if (other !== post) resetVideoPost(other);
+      });
+      if (isActive) {
+        resetVideoPost(post);
+        return;
+      }
+      post.classList.add('lab-post--active');
+      if (thumb) thumb.hidden = true;
+      video.hidden = false;
+      video.play().catch(() => {});
+      return;
+    }
+
+    openLightbox(post.dataset.labImage);
   });
 
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) close();
-  });
+  if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+  }
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') close();
+    if (e.key === 'Escape') closeLightbox();
   });
 }
 

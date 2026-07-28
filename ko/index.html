@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3Dowon — Media Artist</title>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-  <link rel="stylesheet" href="../styles.css?v=254" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css?v=300" />
 
 </head>
 <body>
@@ -91,145 +92,359 @@
   </nav>
   <main>
     <div class="works-view works-view--grid" id="gridView">
-      <div class="img-post-box" id="imgPostBox">
-        <a href="work/light-archive.html" class="img-post reveal" data-production="개인" data-tech="Unreal,Arduino" data-year="2025" data-type="설치" data-tags="설치,전시,인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/light-archive-1783466565780-590609.jpg)"></div>
+      <div class="works-catalog">
+        <div class="works-catalog-head">
+          <h1 class="works-catalog-title">작업 목록</h1>
+          <ol class="works-catalog-list" id="worksCatalogList">
+          <li class="works-catalog-item" data-production="개인" data-tech="Unreal,Arduino" data-year="2025" data-type="설치" data-tags="설치,전시,인터랙티브">
+            <a href="work/light-archive.html" class="works-catalog-link">
+              <span class="works-catalog-num">01</span>
+              <span class="works-catalog-name">Light Archive</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="공동" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
+            <a href="work/body-signal.html" class="works-catalog-link">
+              <span class="works-catalog-num">02</span>
+              <span class="works-catalog-name">Body Signal</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
+            <a href="work/breath-map.html" class="works-catalog-link">
+              <span class="works-catalog-num">03</span>
+              <span class="works-catalog-name">Breath Map</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="개인" data-tech="Unreal,Arduino" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
+            <a href="work/data-bloom.html" class="works-catalog-link">
+              <span class="works-catalog-num">04</span>
+              <span class="works-catalog-name">Data Bloom</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
+            <a href="work/digital-tides.html" class="works-catalog-link">
+              <span class="works-catalog-num">05</span>
+              <span class="works-catalog-name">Digital Tides</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상">
+            <a href="work/ambient-loop.html" class="works-catalog-link">
+              <span class="works-catalog-num">06</span>
+              <span class="works-catalog-name">Motion Blur</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
+            <a href="work/neural-garden.html" class="works-catalog-link">
+              <span class="works-catalog-num">07</span>
+              <span class="works-catalog-name">Neural Garden</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="공동" data-tech="Unreal,Arduino" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
+            <a href="work/pulse-terrain.html" class="works-catalog-link">
+              <span class="works-catalog-num">08</span>
+              <span class="works-catalog-name">Pulse Terrain</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="개인" data-tech="Unreal" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
+            <a href="work/resonant-grid.html" class="works-catalog-link">
+              <span class="works-catalog-num">09</span>
+              <span class="works-catalog-name">Resonant Grid</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="개인" data-tech="Unreal,Arduino" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
+            <a href="work/silent-circuit.html" class="works-catalog-link">
+              <span class="works-catalog-num">10</span>
+              <span class="works-catalog-name">Silent Circuit</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="개인" data-tech="Unreal" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
+            <a href="work/slow-circuit.html" class="works-catalog-link">
+              <span class="works-catalog-num">11</span>
+              <span class="works-catalog-name">Slow Circuit</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
+            <a href="work/soft-machine.html" class="works-catalog-link">
+              <span class="works-catalog-num">12</span>
+              <span class="works-catalog-name">Soft Machine</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="개인" data-tech="Unreal" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
+            <a href="work/sonic-veil.html" class="works-catalog-link">
+              <span class="works-catalog-num">13</span>
+              <span class="works-catalog-name">Sonic Veil</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="개인" data-tech="Unreal" data-year="2024" data-type="설치" data-tags="설치,인터랙티브">
+            <a href="work/echo-chamber.html" class="works-catalog-link">
+              <span class="works-catalog-num">14</span>
+              <span class="works-catalog-name">The Piano Room</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="공동" data-tech="Unity,3ds Max" data-year="2023" data-type="인터랙티브" data-tags="인터랙티브">
+            <a href="work/layered-city.html" class="works-catalog-link">
+              <span class="works-catalog-num">15</span>
+              <span class="works-catalog-name">Layered City</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="회사" data-tech="Unity" data-year="2022" data-type="영상" data-tags="영상">
+            <a href="work/fractal-memory.html" class="works-catalog-link">
+              <span class="works-catalog-num">16</span>
+              <span class="works-catalog-name">Fractal Memory</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="회사" data-tech="Unity" data-year="2022" data-type="설치" data-tags="설치,인터랙티브">
+            <a href="work/gravity-well.html" class="works-catalog-link">
+              <span class="works-catalog-num">17</span>
+              <span class="works-catalog-name">Gravity Well</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="회사" data-tech="" data-year="2021" data-type="영상" data-tags="영상,퍼포먼스,인터랙티브">
+            <a href="work/prism-field.html" class="works-catalog-link">
+              <span class="works-catalog-num">18</span>
+              <span class="works-catalog-name">Prism Field</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="개인" data-tech="Unity" data-year="2021" data-type="설치" data-tags="설치,인터랙티브,프로젝션">
+            <a href="work/dd.html" class="works-catalog-link">
+              <span class="works-catalog-num">19</span>
+              <span class="works-catalog-name">The Forest</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="공동" data-tech="Unity,3ds Max" data-year="2020" data-type="인터랙티브" data-tags="인터랙티브">
+            <a href="work/ghost-frequency.html" class="works-catalog-link">
+              <span class="works-catalog-num">20</span>
+              <span class="works-catalog-name">Ghost Frequency</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="개인" data-tech="Unity,3ds Max" data-year="2018" data-type="인터랙티브" data-tags="인터랙티브">
+            <a href="work/code-landscape.html" class="works-catalog-link">
+              <span class="works-catalog-num">21</span>
+              <span class="works-catalog-name">Code Landscape</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="공동" data-tech="" data-year="2018" data-type="인터랙티브" data-tags="인터랙티브">
+            <a href="work/mirror-phase.html" class="works-catalog-link">
+              <span class="works-catalog-num">22</span>
+              <span class="works-catalog-name">Mirror Phase</span>
+            </a>
+          </li>
+          <li class="works-catalog-item" data-production="개인" data-tech="Unity,3ds Max" data-year="2018" data-type="인터랙티브" data-tags="인터랙티브">
+            <a href="work/void-echo.html" class="works-catalog-link">
+              <span class="works-catalog-num">23</span>
+              <span class="works-catalog-name">Void Echo</span>
+            </a>
+          </li>
+          </ol>
+        </div>
+        <div class="img-post-box" id="imgPostBox">
+        <a href="work/light-archive.html" class="img-post span-sq reveal" data-production="개인" data-tech="Unreal,Arduino" data-year="2025" data-type="설치" data-tags="설치,전시,인터랙티브">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/light-archive-1783466565780-590609.jpg)"></div>
+            <span class="img-post-num">01</span>
+          </div>
           <div class="img-post-title">Light Archive</div>
           <div class="img-post-type">설치, 전시, 인터랙티브</div>
           <div class="img-post-year">2025</div>
         </a>
-        <a href="work/body-signal.html" class="img-post reveal" data-production="공동" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/body-signal-1783535949713-10705.jpg)"></div>
+        <a href="work/body-signal.html" class="img-post span-wide reveal" data-production="공동" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/body-signal-1783535949713-10705.jpg)"></div>
+            <span class="img-post-num">02</span>
+          </div>
           <div class="img-post-title">Body Signal</div>
           <div class="img-post-type">영상</div>
           <div class="img-post-year">2024</div>
         </a>
-        <a href="work/breath-map.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/breath-map-1783535966377-272979.jpg)"></div>
+        <a href="work/breath-map.html" class="img-post span-sq reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/breath-map-1783535966377-272979.jpg)"></div>
+            <span class="img-post-num">03</span>
+          </div>
           <div class="img-post-title">Breath Map</div>
           <div class="img-post-type">영상</div>
           <div class="img-post-year">2024</div>
         </a>
-        <a href="work/data-bloom.html" class="img-post reveal" data-production="개인" data-tech="Unreal,Arduino" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/data-bloom-1783536667275-733647.jpg)"></div>
+        <a href="work/data-bloom.html" class="img-post span-tall reveal" data-production="개인" data-tech="Unreal,Arduino" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/data-bloom-1783536667275-733647.jpg)"></div>
+            <span class="img-post-num">04</span>
+          </div>
           <div class="img-post-title">Data Bloom</div>
           <div class="img-post-type">인터랙티브</div>
           <div class="img-post-year">2024</div>
         </a>
-        <a href="work/digital-tides.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/digital-tides-1783535990640-50128.jpg)"></div>
+        <a href="work/digital-tides.html" class="img-post span-sq reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/digital-tides-1783535990640-50128.jpg)"></div>
+            <span class="img-post-num">05</span>
+          </div>
           <div class="img-post-title">Digital Tides</div>
           <div class="img-post-type">영상</div>
           <div class="img-post-year">2024</div>
         </a>
-        <a href="work/ambient-loop.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/ambient-loop-1783536021604-224324.jpg)"></div>
+        <a href="work/ambient-loop.html" class="img-post span-sq reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/ambient-loop-1783536021604-224324.jpg)"></div>
+            <span class="img-post-num">06</span>
+          </div>
           <div class="img-post-title">Motion Blur</div>
           <div class="img-post-type">전시, 프로젝션</div>
           <div class="img-post-year">2024</div>
         </a>
-        <a href="work/neural-garden.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/neural-garden-1783536046701-575663.jpg)"></div>
+        <a href="work/neural-garden.html" class="img-post span-wide reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/neural-garden-1783536046701-575663.jpg)"></div>
+            <span class="img-post-num">07</span>
+          </div>
           <div class="img-post-title">Neural Garden</div>
           <div class="img-post-type">영상</div>
           <div class="img-post-year">2024</div>
         </a>
-        <a href="work/pulse-terrain.html" class="img-post reveal" data-production="공동" data-tech="Unreal,Arduino" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/pulse-terrain-1783536609027-360135.jpg)"></div>
+        <a href="work/pulse-terrain.html" class="img-post span-sq reveal" data-production="공동" data-tech="Unreal,Arduino" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/pulse-terrain-1783536609027-360135.jpg)"></div>
+            <span class="img-post-num">08</span>
+          </div>
           <div class="img-post-title">Pulse Terrain</div>
           <div class="img-post-type">인터랙티브</div>
           <div class="img-post-year">2024</div>
         </a>
-        <a href="work/resonant-grid.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/resonant-grid-1783536731047-388544.jpg)"></div>
+        <a href="work/resonant-grid.html" class="img-post span-tall reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/resonant-grid-1783536731047-388544.jpg)"></div>
+            <span class="img-post-num">09</span>
+          </div>
           <div class="img-post-title">Resonant Grid</div>
           <div class="img-post-type">인터랙티브</div>
           <div class="img-post-year">2024</div>
         </a>
-        <a href="work/silent-circuit.html" class="img-post reveal" data-production="개인" data-tech="Unreal,Arduino" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/silent-circuit-1783536645863-267776.jpg)"></div>
+        <a href="work/silent-circuit.html" class="img-post span-sq reveal" data-production="개인" data-tech="Unreal,Arduino" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/silent-circuit-1783536645863-267776.jpg)"></div>
+            <span class="img-post-num">10</span>
+          </div>
           <div class="img-post-title">Silent Circuit</div>
           <div class="img-post-type">인터랙티브</div>
           <div class="img-post-year">2024</div>
         </a>
-        <a href="work/slow-circuit.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/slow-circuit-1783535231223-875608.jpg)"></div>
+        <a href="work/slow-circuit.html" class="img-post span-wide reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/slow-circuit-1783535231223-875608.jpg)"></div>
+            <span class="img-post-num">11</span>
+          </div>
           <div class="img-post-title">Slow Circuit</div>
           <div class="img-post-type">인터랙티브</div>
           <div class="img-post-year">2024</div>
         </a>
-        <a href="work/soft-machine.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/soft-machine-1783535930416-588092.jpg)"></div>
+        <a href="work/soft-machine.html" class="img-post span-sq reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/soft-machine-1783535930416-588092.jpg)"></div>
+            <span class="img-post-num">12</span>
+          </div>
           <div class="img-post-title">Soft Machine</div>
           <div class="img-post-type">영상</div>
           <div class="img-post-year">2024</div>
         </a>
-        <a href="work/sonic-veil.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/sonic-veil-1783536089311-914832.jpg)"></div>
+        <a href="work/sonic-veil.html" class="img-post span-tall reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/sonic-veil-1783536089311-914832.jpg)"></div>
+            <span class="img-post-num">13</span>
+          </div>
           <div class="img-post-title">Sonic Veil</div>
           <div class="img-post-type">인터랙티브</div>
           <div class="img-post-year">2024</div>
         </a>
-        <a href="work/echo-chamber.html" class="img-post reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="설치" data-tags="설치,인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/01.jpg)"></div>
+        <a href="work/echo-chamber.html" class="img-post span-sq reveal" data-production="개인" data-tech="Unreal" data-year="2024" data-type="설치" data-tags="설치,인터랙티브">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/01.jpg)"></div>
+            <span class="img-post-num">14</span>
+          </div>
           <div class="img-post-title">The Piano Room</div>
           <div class="img-post-type">설치, 인터랙티브</div>
           <div class="img-post-year">2024</div>
         </a>
-        <a href="work/layered-city.html" class="img-post reveal" data-production="공동" data-tech="Unity,3ds Max" data-year="2023" data-type="인터랙티브" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/layered-city-1783536481692-955235.jpg)"></div>
+        <a href="work/layered-city.html" class="img-post span-sq reveal" data-production="공동" data-tech="Unity,3ds Max" data-year="2023" data-type="인터랙티브" data-tags="인터랙티브">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/layered-city-1783536481692-955235.jpg)"></div>
+            <span class="img-post-num">15</span>
+          </div>
           <div class="img-post-title">Layered City</div>
           <div class="img-post-type">인터랙티브</div>
           <div class="img-post-year">2023</div>
         </a>
-        <a href="work/fractal-memory.html" class="img-post reveal" data-production="회사" data-tech="Unity" data-year="2022" data-type="영상" data-tags="영상">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/fractal-memory-1783536361480-700792.jpg)"></div>
+        <a href="work/fractal-memory.html" class="img-post span-wide reveal" data-production="회사" data-tech="Unity" data-year="2022" data-type="영상" data-tags="영상">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/fractal-memory-1783536361480-700792.jpg)"></div>
+            <span class="img-post-num">16</span>
+          </div>
           <div class="img-post-title">Fractal Memory</div>
           <div class="img-post-type">영상</div>
           <div class="img-post-year">2022</div>
         </a>
-        <a href="work/gravity-well.html" class="img-post reveal" data-production="회사" data-tech="Unity" data-year="2022" data-type="설치" data-tags="설치,인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/gravity-well-1783536704000-468627.jpg)"></div>
+        <a href="work/gravity-well.html" class="img-post span-sq reveal" data-production="회사" data-tech="Unity" data-year="2022" data-type="설치" data-tags="설치,인터랙티브">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/gravity-well-1783536704000-468627.jpg)"></div>
+            <span class="img-post-num">17</span>
+          </div>
           <div class="img-post-title">Gravity Well</div>
           <div class="img-post-type">설치, 인터랙티브</div>
           <div class="img-post-year">2022</div>
         </a>
-        <a href="work/prism-field.html" class="img-post reveal" data-production="회사" data-tech="" data-year="2021" data-type="영상" data-tags="영상,퍼포먼스,인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/prism-field-1783536531816-473773.jpg)"></div>
+        <a href="work/prism-field.html" class="img-post span-tall reveal" data-production="회사" data-tech="" data-year="2021" data-type="영상" data-tags="영상,퍼포먼스,인터랙티브">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/prism-field-1783536531816-473773.jpg)"></div>
+            <span class="img-post-num">18</span>
+          </div>
           <div class="img-post-title">Prism Field</div>
           <div class="img-post-type">영상, 퍼포먼스, 인터랙티브</div>
           <div class="img-post-year">2021</div>
         </a>
-        <a href="work/dd.html" class="img-post reveal" data-production="개인" data-tech="Unity" data-year="2021" data-type="설치" data-tags="설치,인터랙티브,프로젝션">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/dd-1783536105613-917651.jpg)"></div>
+        <a href="work/dd.html" class="img-post span-sq reveal" data-production="개인" data-tech="Unity" data-year="2021" data-type="설치" data-tags="설치,인터랙티브,프로젝션">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/dd-1783536105613-917651.jpg)"></div>
+            <span class="img-post-num">19</span>
+          </div>
           <div class="img-post-title">The Forest</div>
           <div class="img-post-type">설치, 인터랙티브, 프로젝션</div>
           <div class="img-post-year">2021</div>
         </a>
-        <a href="work/ghost-frequency.html" class="img-post reveal" data-production="공동" data-tech="Unity,3ds Max" data-year="2020" data-type="인터랙티브" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/ghost-frequency-1783536430417-714178.jpg)"></div>
+        <a href="work/ghost-frequency.html" class="img-post span-wide reveal" data-production="공동" data-tech="Unity,3ds Max" data-year="2020" data-type="인터랙티브" data-tags="인터랙티브">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/ghost-frequency-1783536430417-714178.jpg)"></div>
+            <span class="img-post-num">20</span>
+          </div>
           <div class="img-post-title">Ghost Frequency</div>
           <div class="img-post-type">인터랙티브</div>
           <div class="img-post-year">2020</div>
         </a>
-        <a href="work/code-landscape.html" class="img-post reveal" data-production="개인" data-tech="Unity,3ds Max" data-year="2018" data-type="인터랙티브" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/code-landscape-1783536554583-83414.jpg)"></div>
+        <a href="work/code-landscape.html" class="img-post span-sq reveal" data-production="개인" data-tech="Unity,3ds Max" data-year="2018" data-type="인터랙티브" data-tags="인터랙티브">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/code-landscape-1783536554583-83414.jpg)"></div>
+            <span class="img-post-num">21</span>
+          </div>
           <div class="img-post-title">Code Landscape</div>
           <div class="img-post-type">인터랙티브</div>
           <div class="img-post-year">2018</div>
         </a>
-        <a href="work/mirror-phase.html" class="img-post reveal" data-production="공동" data-tech="" data-year="2018" data-type="인터랙티브" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/mirror-phase-1783536573739-652675.jpg)"></div>
+        <a href="work/mirror-phase.html" class="img-post span-tall reveal" data-production="공동" data-tech="" data-year="2018" data-type="인터랙티브" data-tags="인터랙티브">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/mirror-phase-1783536573739-652675.jpg)"></div>
+            <span class="img-post-num">22</span>
+          </div>
           <div class="img-post-title">Mirror Phase</div>
           <div class="img-post-type">인터랙티브</div>
           <div class="img-post-year">2018</div>
         </a>
-        <a href="work/void-echo.html" class="img-post reveal" data-production="개인" data-tech="Unity,3ds Max" data-year="2018" data-type="인터랙티브" data-tags="인터랙티브">
-          <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/void-echo-1783536544789-212566.jpg)"></div>
+        <a href="work/void-echo.html" class="img-post span-sq reveal" data-production="개인" data-tech="Unity,3ds Max" data-year="2018" data-type="인터랙티브" data-tags="인터랙티브">
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(/3dowonWebpage/assets/uploads/void-echo-1783536544789-212566.jpg)"></div>
+            <span class="img-post-num">23</span>
+          </div>
           <div class="img-post-title">Void Echo</div>
           <div class="img-post-type">인터랙티브</div>
           <div class="img-post-year">2018</div>
         </a>
+        </div>
       </div>
     </div>
 
@@ -237,7 +452,7 @@
       <div class="index-box">
         <div class="index-category">
           <div class="index-category-cells">
-            <div class="index-category-year">년도</div>
+            <div class="index-category-year">No.</div>
             <div class="index-category-title">작업</div>
             <div class="index-category-type">유형</div>
           </div>
@@ -247,9 +462,9 @@
           <a href="work/light-archive.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/light-archive-1783466565780-590609.jpg" data-production="개인" data-tech="Unreal,Arduino" data-year="2025" data-type="설치" data-tags="설치,전시,인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2025</div>
+                <div class="index-post-year">01</div>
                 <div class="index-post-title">Light Archive</div>
-                <div class="index-post-type">설치, 전시, 인터랙티브</div>
+                <div class="index-post-type">설치, 전시, 인터랙티브 · 2025</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -257,9 +472,9 @@
           <a href="work/body-signal.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/body-signal-1783535949713-10705.jpg" data-production="공동" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
+                <div class="index-post-year">02</div>
                 <div class="index-post-title">Body Signal</div>
-                <div class="index-post-type">영상</div>
+                <div class="index-post-type">영상 · 2024</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -267,9 +482,9 @@
           <a href="work/breath-map.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/breath-map-1783535966377-272979.jpg" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
+                <div class="index-post-year">03</div>
                 <div class="index-post-title">Breath Map</div>
-                <div class="index-post-type">영상</div>
+                <div class="index-post-type">영상 · 2024</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -277,9 +492,9 @@
           <a href="work/data-bloom.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/data-bloom-1783536667275-733647.jpg" data-production="개인" data-tech="Unreal,Arduino" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
+                <div class="index-post-year">04</div>
                 <div class="index-post-title">Data Bloom</div>
-                <div class="index-post-type">인터랙티브</div>
+                <div class="index-post-type">인터랙티브 · 2024</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -287,9 +502,9 @@
           <a href="work/digital-tides.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/digital-tides-1783535990640-50128.jpg" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
+                <div class="index-post-year">05</div>
                 <div class="index-post-title">Digital Tides</div>
-                <div class="index-post-type">영상</div>
+                <div class="index-post-type">영상 · 2024</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -297,9 +512,9 @@
           <a href="work/ambient-loop.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/ambient-loop-1783536021604-224324.jpg" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
+                <div class="index-post-year">06</div>
                 <div class="index-post-title">Motion Blur</div>
-                <div class="index-post-type">전시, 프로젝션</div>
+                <div class="index-post-type">전시, 프로젝션 · 2024</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -307,9 +522,9 @@
           <a href="work/neural-garden.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/neural-garden-1783536046701-575663.jpg" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
+                <div class="index-post-year">07</div>
                 <div class="index-post-title">Neural Garden</div>
-                <div class="index-post-type">영상</div>
+                <div class="index-post-type">영상 · 2024</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -317,9 +532,9 @@
           <a href="work/pulse-terrain.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/pulse-terrain-1783536609027-360135.jpg" data-production="공동" data-tech="Unreal,Arduino" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
+                <div class="index-post-year">08</div>
                 <div class="index-post-title">Pulse Terrain</div>
-                <div class="index-post-type">인터랙티브</div>
+                <div class="index-post-type">인터랙티브 · 2024</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -327,9 +542,9 @@
           <a href="work/resonant-grid.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/resonant-grid-1783536731047-388544.jpg" data-production="개인" data-tech="Unreal" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
+                <div class="index-post-year">09</div>
                 <div class="index-post-title">Resonant Grid</div>
-                <div class="index-post-type">인터랙티브</div>
+                <div class="index-post-type">인터랙티브 · 2024</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -337,9 +552,9 @@
           <a href="work/silent-circuit.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/silent-circuit-1783536645863-267776.jpg" data-production="개인" data-tech="Unreal,Arduino" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
+                <div class="index-post-year">10</div>
                 <div class="index-post-title">Silent Circuit</div>
-                <div class="index-post-type">인터랙티브</div>
+                <div class="index-post-type">인터랙티브 · 2024</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -347,9 +562,9 @@
           <a href="work/slow-circuit.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/slow-circuit-1783535231223-875608.jpg" data-production="개인" data-tech="Unreal" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
+                <div class="index-post-year">11</div>
                 <div class="index-post-title">Slow Circuit</div>
-                <div class="index-post-type">인터랙티브</div>
+                <div class="index-post-type">인터랙티브 · 2024</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -357,9 +572,9 @@
           <a href="work/soft-machine.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/soft-machine-1783535930416-588092.jpg" data-production="개인" data-tech="Unreal" data-year="2024" data-type="영상" data-tags="영상">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
+                <div class="index-post-year">12</div>
                 <div class="index-post-title">Soft Machine</div>
-                <div class="index-post-type">영상</div>
+                <div class="index-post-type">영상 · 2024</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -367,9 +582,9 @@
           <a href="work/sonic-veil.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/sonic-veil-1783536089311-914832.jpg" data-production="개인" data-tech="Unreal" data-year="2024" data-type="인터랙티브" data-tags="인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
+                <div class="index-post-year">13</div>
                 <div class="index-post-title">Sonic Veil</div>
-                <div class="index-post-type">인터랙티브</div>
+                <div class="index-post-type">인터랙티브 · 2024</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -377,9 +592,9 @@
           <a href="work/echo-chamber.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/01.jpg" data-production="개인" data-tech="Unreal" data-year="2024" data-type="설치" data-tags="설치,인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2024</div>
+                <div class="index-post-year">14</div>
                 <div class="index-post-title">The Piano Room</div>
-                <div class="index-post-type">설치, 인터랙티브, 프로젝션</div>
+                <div class="index-post-type">설치, 인터랙티브, 프로젝션 · 2024</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -387,9 +602,9 @@
           <a href="work/layered-city.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/layered-city-1783536481692-955235.jpg" data-production="공동" data-tech="Unity,3ds Max" data-year="2023" data-type="인터랙티브" data-tags="인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2023</div>
+                <div class="index-post-year">15</div>
                 <div class="index-post-title">Layered City</div>
-                <div class="index-post-type">인터랙티브</div>
+                <div class="index-post-type">인터랙티브 · 2023</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -397,9 +612,9 @@
           <a href="work/fractal-memory.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/fractal-memory-1783536361480-700792.jpg" data-production="회사" data-tech="Unity" data-year="2022" data-type="영상" data-tags="영상">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2022</div>
+                <div class="index-post-year">16</div>
                 <div class="index-post-title">Fractal Memory</div>
-                <div class="index-post-type">영상</div>
+                <div class="index-post-type">영상 · 2022</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -407,9 +622,9 @@
           <a href="work/gravity-well.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/gravity-well-1783536704000-468627.jpg" data-production="회사" data-tech="Unity" data-year="2022" data-type="설치" data-tags="설치,인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2022</div>
+                <div class="index-post-year">17</div>
                 <div class="index-post-title">Gravity Well</div>
-                <div class="index-post-type">설치, 인터랙티브</div>
+                <div class="index-post-type">설치, 인터랙티브 · 2022</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -417,9 +632,9 @@
           <a href="work/prism-field.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/prism-field-1783536531816-473773.jpg" data-production="회사" data-tech="" data-year="2021" data-type="영상" data-tags="영상,퍼포먼스,인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2021</div>
+                <div class="index-post-year">18</div>
                 <div class="index-post-title">Prism Field</div>
-                <div class="index-post-type">영상, 퍼포먼스, 인터랙티브</div>
+                <div class="index-post-type">영상, 퍼포먼스, 인터랙티브 · 2021</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -427,9 +642,9 @@
           <a href="work/dd.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/dd-1783536105613-917651.jpg" data-production="개인" data-tech="Unity" data-year="2021" data-type="설치" data-tags="설치,인터랙티브,프로젝션">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2021</div>
+                <div class="index-post-year">19</div>
                 <div class="index-post-title">The Forest</div>
-                <div class="index-post-type">설치, 인터랙티브, 프로젝션</div>
+                <div class="index-post-type">설치, 인터랙티브, 프로젝션 · 2021</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -437,9 +652,9 @@
           <a href="work/ghost-frequency.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/ghost-frequency-1783536430417-714178.jpg" data-production="공동" data-tech="Unity,3ds Max" data-year="2020" data-type="인터랙티브" data-tags="인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2020</div>
+                <div class="index-post-year">20</div>
                 <div class="index-post-title">Ghost Frequency</div>
-                <div class="index-post-type">인터랙티브</div>
+                <div class="index-post-type">인터랙티브 · 2020</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -447,9 +662,9 @@
           <a href="work/code-landscape.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/code-landscape-1783536554583-83414.jpg" data-production="개인" data-tech="Unity,3ds Max" data-year="2018" data-type="인터랙티브" data-tags="인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2018</div>
+                <div class="index-post-year">21</div>
                 <div class="index-post-title">Code Landscape</div>
-                <div class="index-post-type">인터랙티브</div>
+                <div class="index-post-type">인터랙티브 · 2018</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -457,9 +672,9 @@
           <a href="work/mirror-phase.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/mirror-phase-1783536573739-652675.jpg" data-production="공동" data-tech="" data-year="2018" data-type="인터랙티브" data-tags="인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2018</div>
+                <div class="index-post-year">22</div>
                 <div class="index-post-title">Mirror Phase</div>
-                <div class="index-post-type">인터랙티브</div>
+                <div class="index-post-type">인터랙티브 · 2018</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -467,9 +682,9 @@
           <a href="work/void-echo.html" class="index-post reveal" data-preview-bg="/3dowonWebpage/assets/uploads/void-echo-1783536544789-212566.jpg" data-production="개인" data-tech="Unity,3ds Max" data-year="2018" data-type="인터랙티브" data-tags="인터랙티브">
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">2018</div>
+                <div class="index-post-year">23</div>
                 <div class="index-post-title">Void Echo</div>
-                <div class="index-post-type">인터랙티브</div>
+                <div class="index-post-type">인터랙티브 · 2018</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -479,7 +694,7 @@
       </div>
     </div>
 
-    <p class="no-results" style="margin-left:30px">검색 결과가 없습니다.</p>
+    <p class="no-results">검색 결과가 없습니다.</p>
   </main>
   <footer class="site-footer-bar">
     <div class="site-footer-bar-group site-footer-bar-group--1">
@@ -491,6 +706,6 @@
       <a href="https://youtube.com/@3dowon" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>
     </div>
   </footer>
-  <script src="../script.js?v=96"></script>
+  <script src="../script.js?v=100"></script>
 </body>
 </html>

@@ -1,8 +1,8 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '254';
-const JS_VERSION = '96';
+const CSS_VERSION = '300';
+const JS_VERSION = '100';
 
 const STR = {
   en: {
@@ -69,6 +69,20 @@ function prefixes(lang, isWork) {
 function pick(obj, field, lang) {
   if (lang === 'en' && obj[`${field}_en`] != null) return obj[`${field}_en`];
   return obj[field];
+}
+
+function workTitle(work, lang) {
+  return pick(work, 'title', lang) || work.title || work.title_en || '';
+}
+
+function padIndex(n) {
+  return String(n).padStart(2, '0');
+}
+
+/** Irregular masonry span pattern for catalog grid cells. */
+function gridSpanClass(index) {
+  const pattern = ['span-sq', 'span-wide', 'span-sq', 'span-tall', 'span-sq', 'span-sq', 'span-wide', 'span-sq', 'span-tall'];
+  return pattern[index % pattern.length];
 }
 
 function siteFooterBar(site) {
@@ -236,8 +250,9 @@ function pageShell({ title, body, header, extraHead = '', lang, assetPrefix, sit
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${escapeHtml(title)}</title>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="${assetPrefix}styles.css?v=${CSS_VERSION}" />
 ${extraHead}
 </head>
@@ -275,23 +290,38 @@ function normalizeWork(work) {
   };
 }
 
-function renderGridPost(work, lang) {
-  return `        <a href="work/${work.slug}.html" class="img-post reveal" ${dataAttrs(work)}>
-          <div class="img-post-thumbimg" style="background-image:url(${work.thumbnail})"></div>
-          <div class="img-post-title">${escapeHtml(work.title)}</div>
+function renderCatalogListItem(work, lang, index) {
+  const title = workTitle(work, lang);
+  return `          <li class="works-catalog-item" ${dataAttrs(work)}>
+            <a href="work/${work.slug}.html" class="works-catalog-link">
+              <span class="works-catalog-num">${padIndex(index + 1)}</span>
+              <span class="works-catalog-name">${escapeHtml(title)}</span>
+            </a>
+          </li>`;
+}
+
+function renderGridPost(work, lang, index) {
+  const title = workTitle(work, lang);
+  return `        <a href="work/${work.slug}.html" class="img-post ${gridSpanClass(index)} reveal" ${dataAttrs(work)}>
+          <div class="img-post-media">
+            <div class="img-post-thumbimg" style="background-image:url(${work.thumbnail})"></div>
+            <span class="img-post-num">${padIndex(index + 1)}</span>
+          </div>
+          <div class="img-post-title">${escapeHtml(title)}</div>
           <div class="img-post-type">${escapeHtml(pick(work, 'grid_type_label', lang))}</div>
           <div class="img-post-year">${work.year}</div>
         </a>`;
 }
 
-function renderIndexPost(work, lang) {
+function renderIndexPost(work, lang, index) {
+  const title = workTitle(work, lang);
   const preview = work.preview_bg || work.thumbnail;
   return `          <a href="work/${work.slug}.html" class="index-post reveal" data-preview-bg="${preview}" ${dataAttrs(work)}>
             <div class="index-post-row">
               <div class="index-post-cells">
-                <div class="index-post-year">${work.year}</div>
-                <div class="index-post-title">${escapeHtml(work.title)}</div>
-                <div class="index-post-type">${escapeHtml(pick(work, 'index_type_label', lang))}</div>
+                <div class="index-post-year">${padIndex(index + 1)}</div>
+                <div class="index-post-title">${escapeHtml(title)}</div>
+                <div class="index-post-type">${escapeHtml(pick(work, 'index_type_label', lang))} · ${work.year}</div>
               </div>
               <div class="index-post-line"></div>
             </div>
@@ -302,11 +332,21 @@ function buildIndex(works, site, lang) {
   const str = STR[lang];
   const { homePrefix, assetPrefix } = prefixes(lang, false);
   const relPath = 'index.html';
-  const gridPosts = works.map((w) => renderGridPost(w, lang)).join('\n');
-  const indexPosts = works.map((w) => renderIndexPost(w, lang)).join('\n');
+  const catalogList = works.map((w, i) => renderCatalogListItem(w, lang, i)).join('\n');
+  const gridPosts = works.map((w, i) => renderGridPost(w, lang, i)).join('\n');
+  const indexPosts = works.map((w, i) => renderIndexPost(w, lang, i)).join('\n');
+  const catalogTitle = lang === 'ko' ? '작업 목록' : 'Works Index';
   const body = `    <div class="works-view works-view--grid" id="gridView">
-      <div class="img-post-box" id="imgPostBox">
+      <div class="works-catalog">
+        <div class="works-catalog-head">
+          <h1 class="works-catalog-title">${catalogTitle}</h1>
+          <ol class="works-catalog-list" id="worksCatalogList">
+${catalogList}
+          </ol>
+        </div>
+        <div class="img-post-box" id="imgPostBox">
 ${gridPosts}
+        </div>
       </div>
     </div>
 
@@ -314,7 +354,7 @@ ${gridPosts}
       <div class="index-box">
         <div class="index-category">
           <div class="index-category-cells">
-            <div class="index-category-year">${str.idxYear}</div>
+            <div class="index-category-year">No.</div>
             <div class="index-category-title">${str.idxWork}</div>
             <div class="index-category-type">${str.idxType}</div>
           </div>
@@ -327,7 +367,7 @@ ${indexPosts}
       </div>
     </div>
 
-    <p class="no-results" style="margin-left:30px">${str.noResults}</p>`;
+    <p class="no-results">${str.noResults}</p>`;
 
   const header = `${headerBar({
     homePrefix,
@@ -360,21 +400,22 @@ function buildWorkPage(work, site, lang) {
   const str = STR[lang];
   const { homePrefix, assetPrefix } = prefixes(lang, true);
   const relPath = `work/${work.slug}.html`;
+  const title = workTitle(work, lang);
   const gallery = (work.gallery || [])
     .map(
       (src, index) =>
-        `          <li class="reveal"><img src="${src}" alt="${escapeHtml(work.title)} ${index + 1}" class="project-detail-image" /></li>`
+        `          <li class="reveal"><img src="${src}" alt="${escapeHtml(title)} ${index + 1}" class="project-detail-image" /></li>`
     )
     .join('\n');
-  const video = vimeoEmbedHtml(work.vimeo_url, work.title);
+  const video = vimeoEmbedHtml(work.vimeo_url, title);
 
   const body = `    <div class="post-projects">
       ${video}
       <div class="post-hero reveal">
-        <img src="${work.hero_image || work.thumbnail}" alt="${escapeHtml(work.title)}" class="post-hero-image" />
+        <img src="${work.hero_image || work.thumbnail}" alt="${escapeHtml(title)}" class="post-hero-image" />
       </div>
       <div class="post-left">
-      <div class="post-title reveal">${escapeHtml(work.title)}</div>
+      <div class="post-title reveal">${escapeHtml(title)}</div>
       <div class="post-text">
         <div class="post-des">
           <div class="post-des-box1 reveal">
@@ -412,7 +453,7 @@ ${mobileHeader(assetPrefix, `${homePrefix}index.html`, str)}
 ${mobileNav('', homePrefix, assetPrefix, lang, relPath, str)}`;
 
   return pageShell({
-    title: `${escapeHtml(work.title)} — 3Dowon`,
+    title: `${escapeHtml(title)} — 3Dowon`,
     body,
     header,
     lang,
@@ -424,30 +465,46 @@ ${mobileNav('', homePrefix, assetPrefix, lang, relPath, str)}`;
 function buildAbout(about, site, lang) {
   const str = STR[lang];
   const relPath = 'about.html';
-  const paragraphs = pick(about, 'body', lang)
+  const paragraphs = String(pick(about, 'body', lang) || '')
+    .replace(/\r\n/g, '\n')
     .split(/\n{2,}/)
-    .map((p) => `          <p>${p.trim().split(/\r?\n/).join('<br />\n            ')}</p>`)
+    .map((block) => block.trim())
+    .filter(Boolean)
+    .map((block) => {
+      const lines = block.split('\n').map((line) => escapeHtml(line));
+      return `          <p>${lines.join('<br />\n            ')}</p>`;
+    })
     .join('\n');
-  const meta = pick(about, 'meta', lang)
+  const metaLines = String(pick(about, 'meta', lang) || '')
     .split(/\r?\n/)
     .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line) => escapeHtml(line))
-    .join('<br />\n            ');
-  const body = `    <div class="about-box">
-      <div class="about-left">
-        <div class="about-selector">
-          <div class="about-name">${escapeHtml(pick(about, 'name', lang))}</div>
-          <div class="about-meta">
-            ${meta}
+    .filter(Boolean);
+  const metaRows = metaLines
+    .map((line, i) => {
+      const label = i === 0 ? (lang === 'ko' ? '역할' : 'Role') : (lang === 'ko' ? '출생' : 'Origin');
+      return `            <div class="about-kv-row"><span class="about-kv-q">${label}</span><span class="about-kv-a">${escapeHtml(line)}</span></div>`;
+    })
+    .join('\n');
+  const body = `    <div class="about-box about-sheet">
+      <div class="about-sheet-frame">
+        <div class="about-sheet-head">
+          <span class="about-sheet-label">${lang === 'ko' ? '소개' : 'About'}</span>
+          <span class="about-sheet-id">no. 01</span>
+        </div>
+        <div class="about-sheet-body">
+          <div class="about-left">
+            <div class="about-name">${escapeHtml(pick(about, 'name', lang))}</div>
+            <div class="about-kv">
+${metaRows}
+            </div>
+            <div class="about-section2">
+${paragraphs}
+            </div>
+          </div>
+          <div class="about-right">
+            <div class="about-img" style="background-image:url(${about.image})"></div>
           </div>
         </div>
-        <div class="about-section2">
-${paragraphs}
-        </div>
-      </div>
-      <div class="about-right">
-        <div class="about-img" style="background-image:url(${about.image})"></div>
       </div>
     </div>`;
   const { assetPrefix } = prefixes(lang, false);
@@ -469,7 +526,7 @@ function buildCv(cv, site, lang) {
       const entries = section.entries
         .map(
           (entry) => `          <div class="cv-entry">
-            <div class="cv-year">${entry.year}</div>
+            <div class="cv-year">${escapeHtml(entry.year)}</div>
             <div class="cv-desc">${pick(entry, 'description', lang)}</div>
           </div>`
         )
@@ -482,7 +539,10 @@ ${entries}
       </section>`;
     })
     .join('\n\n');
-  const body = `    <div class="cv-box">
+  const body = `    <div class="cv-box cv-sheet">
+      <div class="cv-sheet-head">
+        <h1 class="works-catalog-title">CV</h1>
+      </div>
 
 ${sections}
     </div>`;
@@ -501,14 +561,28 @@ function buildLab(lab, site, lang) {
   const str = STR[lang];
   const relPath = 'lab.html';
   const items = lab.items
-    .map(
-      (item) => `        <div class="img-post lab-post reveal" data-lab-image="${item.image}">
-          <div class="img-post-thumbimg" style="background-image:url(${item.image})"></div>
-          <div class="lab-post-caption">${escapeHtml(pick(item, 'caption', lang))}</div>
-        </div>`
-    )
+    .map((item, index) => {
+      const caption = escapeHtml(pick(item, 'caption', lang));
+      const hasVideo = Boolean(item.video);
+      const media = hasVideo
+        ? `<video class="lab-post-video" src="${item.video}" playsinline controls preload="metadata" hidden></video>`
+        : '';
+      return `        <article class="img-post lab-post ${gridSpanClass(index)} reveal" data-lab-image="${item.image}" data-has-video="${hasVideo ? 'true' : 'false'}">
+          <button type="button" class="lab-post-trigger" aria-label="${caption}">
+            <div class="lab-post-media">
+              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(${item.image})"></div>
+              ${media}
+              <span class="img-post-num">${padIndex(index + 1)}</span>
+            </div>
+            <div class="lab-post-caption">${caption}</div>
+          </button>
+        </article>`;
+    })
     .join('\n');
   const body = `    <div class="lab-view">
+      <div class="lab-catalog-head">
+        <h1 class="works-catalog-title">${lang === 'ko' ? '실험' : 'Lab Notes'}</h1>
+      </div>
       <div class="img-post-box" id="labPostBox">
 ${items}
       </div>
