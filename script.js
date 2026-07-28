@@ -1,3 +1,34 @@
+// ── Language: browser-based first-visit redirect + persistence ──
+(function initLangRedirect() {
+  var STORAGE_KEY = 'lang-pref';
+  try {
+    var switchLinks = document.querySelectorAll('.lang-switch-link[data-lang]');
+    switchLinks.forEach(function (link) {
+      link.addEventListener('click', function () {
+        try {
+          localStorage.setItem(STORAGE_KEY, link.dataset.lang);
+        } catch (e) {}
+      });
+    });
+
+    var stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) return;
+
+    var browserLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+    var preferKo = browserLang.indexOf('ko') === 0;
+    var currentLang = document.documentElement.lang === 'ko' ? 'ko' : 'en';
+    localStorage.setItem(STORAGE_KEY, preferKo ? 'ko' : 'en');
+
+    if ((preferKo && currentLang === 'en') || (!preferKo && currentLang === 'ko')) {
+      var target = preferKo ? 'ko' : 'en';
+      var targetLink = document.querySelector('.lang-switch-link[data-lang="' + target + '"]');
+      if (targetLink) {
+        window.location.replace(targetLink.getAttribute('href'));
+      }
+    }
+  } catch (e) {}
+})();
+
 // ── Filter functionality (유형 + 기술) ──
 function initFilters() {
   if (document.querySelector('.post-projects')) return;
@@ -88,6 +119,7 @@ function initFilters() {
       const willCheck = !el.classList.contains('checked');
       syncChecks(filterName, el.dataset.value, willCheck);
       filter();
+      if (window.updateFilterDropdownLabels) window.updateFilterDropdownLabels();
     });
   });
 }
@@ -110,6 +142,41 @@ function initNavAccordion() {
     link.addEventListener('click', () => {
       accordion.classList.remove('is-open');
     });
+  });
+}
+
+// ── Filter dropdowns (type / tech) ──
+function initFilterDropdowns() {
+  const buttons = document.querySelectorAll('.filter-dropdown-btn[data-filter-group]');
+  if (!buttons.length) return;
+
+  const groups = [...buttons].map((btn) => ({
+    btn,
+    label: btn.querySelector('.filter-dropdown-label'),
+    panel: document.querySelector(`.filter-checks[data-filter-panel="${btn.dataset.filterGroup}"]`),
+  })).filter((g) => g.panel && g.label);
+
+  function updateLabel({ btn, label, panel }) {
+    const checked = [...panel.querySelectorAll('li.checked')];
+    if (checked.length === 0) {
+      label.textContent = btn.dataset.defaultLabel;
+    } else if (checked.length <= 2) {
+      label.textContent = checked.map((li) => li.textContent).join(', ');
+    } else {
+      label.textContent = btn.dataset.mixedLabel;
+    }
+  }
+
+  window.updateFilterDropdownLabels = () => groups.forEach(updateLabel);
+
+  groups.forEach((group) => {
+    const { btn, panel } = group;
+    btn.addEventListener('click', () => {
+      const willOpen = !panel.classList.contains('is-open');
+      panel.classList.toggle('is-open', willOpen);
+      btn.classList.toggle('is-active', willOpen);
+    });
+    updateLabel(group);
   });
 }
 
@@ -154,6 +221,7 @@ function initViewToggle() {
 
 // ── Index hover preview (single shared image) ──
 const INDEX_PREVIEW_OFFSET_Y = 0;
+const INDEX_PREVIEW_OFFSET_X = -8;
 
 function hideIndexPreview() {
   const preview = document.getElementById('indexPreview');
@@ -177,12 +245,24 @@ function initIndexPreview() {
     const bg = post.dataset.previewBg;
     if (bg) preview.style.backgroundImage = `url(${bg})`;
 
-    const lineRect = line.getBoundingClientRect();
-    const titleRect = titleCell.getBoundingClientRect();
-    const textStartX = titleRect.left + (parseFloat(getComputedStyle(titleCell).paddingLeft) || 0);
+    // Make it participate in layout (still off-screen via top/left: -9999px)
+    // so we can measure its true rendered size instead of approximating the
+    // CSS (width: min(31.5vw, 375px); aspect-ratio: 16/9) in JS.
+    preview.classList.add('is-visible');
+    const previewRect = preview.getBoundingClientRect();
+    const previewWidth = previewRect.width;
+    const previewHeight = previewRect.height;
 
-    preview.style.top = `${lineRect.bottom + INDEX_PREVIEW_OFFSET_Y}px`;
-    preview.style.left = `${textStartX}px`;
+    const lineRect = line.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - lineRect.bottom;
+
+    if (spaceBelow < previewHeight) {
+      preview.style.top = `${lineRect.bottom - previewHeight}px`;
+    } else {
+      preview.style.top = `${lineRect.bottom + INDEX_PREVIEW_OFFSET_Y}px`;
+    }
+    const titleRect = titleCell.getBoundingClientRect();
+    preview.style.left = `${titleRect.right - previewWidth + INDEX_PREVIEW_OFFSET_X}px`;
   };
 
   posts.forEach((post) => {
@@ -192,7 +272,6 @@ function initIndexPreview() {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           positionPreview(post);
-          preview.classList.add('is-visible');
         });
       });
     });
@@ -204,6 +283,36 @@ function initIndexPreview() {
   });
 
   document.getElementById('indexView')?.addEventListener('mouseleave', hideIndexPreview);
+}
+
+// ── Lab image lightbox ──
+function initLabLightbox() {
+  const lightbox = document.getElementById('labLightbox');
+  const lightboxImg = document.getElementById('labLightboxImg');
+  const posts = document.querySelectorAll('.lab-post[data-lab-image]');
+  if (!lightbox || !lightboxImg || !posts.length) return;
+
+  const open = (src) => {
+    lightboxImg.src = src;
+    lightbox.classList.add('is-open');
+  };
+
+  const close = () => {
+    lightbox.classList.remove('is-open');
+    lightboxImg.src = '';
+  };
+
+  posts.forEach((post) => {
+    post.addEventListener('click', () => open(post.dataset.labImage));
+  });
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) close();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') close();
+  });
 }
 
 // ── Scroll reveal ──
@@ -273,22 +382,15 @@ function initCvCommaWrap() {
   const descs = [...document.querySelectorAll('.cv-desc')];
   if (!descs.length) return;
 
-  const mq = window.matchMedia('(max-width: 768px)');
-
   descs.forEach((el) => {
     if (!el.dataset.cvOriginal) el.dataset.cvOriginal = el.innerHTML;
   });
 
   const isTooWide = (el, html) => {
-    const probe = document.createElement('span');
-    const style = getComputedStyle(el);
-    probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;pointer-events:none';
-    probe.style.font = style.font;
-    probe.style.letterSpacing = style.letterSpacing;
-    probe.innerHTML = html;
-    document.body.appendChild(probe);
-    const tooWide = probe.offsetWidth > el.clientWidth;
-    probe.remove();
+    const prevHtml = el.innerHTML;
+    el.innerHTML = html;
+    const tooWide = el.scrollWidth > el.clientWidth;
+    el.innerHTML = prevHtml;
     return tooWide;
   };
 
@@ -341,7 +443,7 @@ function initCvCommaWrap() {
       const original = el.dataset.cvOriginal;
       el.innerHTML = original;
 
-      if (!mq.matches || !original.includes(',')) return;
+      if (!original.includes(',')) return;
       if (!isTooWide(el, original)) return;
 
       wrapOverflowingDesc(el, original);
@@ -349,7 +451,6 @@ function initCvCommaWrap() {
   };
 
   apply();
-  mq.addEventListener('change', apply);
   window.addEventListener('resize', apply);
 }
 
@@ -385,8 +486,10 @@ function initMobileHeaderHeight() {
 document.addEventListener('DOMContentLoaded', () => {
   initNavAccordion();
   initFilters();
+  initFilterDropdowns();
   initViewToggle();
   initIndexPreview();
+  initLabLightbox();
   initReveal();
   initMobileMenu();
   initMobileHeaderHeight();

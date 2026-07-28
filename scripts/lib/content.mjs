@@ -23,8 +23,8 @@ export function writeOutput(relPath, html) {
   fs.writeFileSync(full, html, 'utf8');
 }
 
-export function cleanOrphanWorkPages(slugs) {
-  const workDir = path.join(ROOT, 'work');
+export function cleanOrphanWorkPages(slugs, workDirRel = 'work') {
+  const workDir = path.join(ROOT, workDirRel);
   if (!fs.existsSync(workDir)) return;
 
   const keep = new Set(slugs.map((slug) => `${slug}.html`));
@@ -34,9 +34,8 @@ export function cleanOrphanWorkPages(slugs) {
   }
 }
 
-export function assertWorkPageHeaders(slugs) {
-  for (const slug of slugs) {
-    const relPath = `work/${slug}.html`;
+export function assertWorkPageHeaders(relPaths) {
+  for (const relPath of relPaths) {
     const html = fs.readFileSync(path.join(ROOT, relPath), 'utf8');
     const required = [
       'site-header--bar',
