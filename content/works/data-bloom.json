@@ -22,11 +22,7 @@
   "meta_medium": "인터랙티브",
   "meta_tech": "Processing, Python",
   "meta_production": "개인",
-  "gallery": [
-    "https://picsum.photos/seed/databloo1/1920/1440",
-    "https://picsum.photos/seed/databloo2/1920/1440",
-    "https://picsum.photos/seed/databloo3/1920/1440"
-  ],
+  "gallery": [],
   "grid_type_label_en": "Interactive",
   "index_type_label_en": "Interactive",
   "meta_type_en": "Interactive",
@@ -34,5 +30,6 @@
   "meta_tech_en": "Processing, Python",
   "meta_production_en": "Solo",
   "description_en": "<p>A generative projection installation in which real-time data blooms into the form of a flower.</p>",
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "title_en": "Data Bloom"
 }

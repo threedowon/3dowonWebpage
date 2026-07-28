@@ -30,5 +30,6 @@
   "meta_tech_en": "Unity, video scheduling",
   "meta_production_en": "Collaborative Production",
   "meta_type_en": "Exhibition",
-  "description_en": "<p>A media art curation project that presents environmental data in a circular structure. Multiple channels of video loop together to form a single spatial narrative.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">Role</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Built a multi-channel video scheduling system</li>\r\n              <li>Developed a Unity-based playback and sync environment</li>\r\n              <li>Collaborated on sound and video placement in the exhibition space</li>\r\n            </ul>"
+  "description_en": "<p>A media art curation project that presents environmental data in a circular structure. Multiple channels of video loop together to form a single spatial narrative.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">Role</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Built a multi-channel video scheduling system</li>\r\n              <li>Developed a Unity-based playback and sync environment</li>\r\n              <li>Collaborated on sound and video placement in the exhibition space</li>\r\n            </ul>",
+  "title_en": "Motion Blur"
 }

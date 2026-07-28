@@ -412,6 +412,60 @@ function initCvCommaWrap() {
   window.addEventListener('resize', apply);
 }
 
+// ── Lab posts (thumbnail click → video or image) ──
+function resetLabPost(post) {
+  post.classList.remove('lab-post--active');
+  const trigger = post.querySelector('.lab-post-trigger');
+  const video = post.querySelector('.lab-post-video');
+  const thumb = post.querySelector('.lab-post-thumb');
+  const fullImg = post.querySelector('.lab-post-fullimg');
+  if (trigger) trigger.setAttribute('aria-expanded', 'false');
+  if (thumb) thumb.hidden = false;
+  if (video) {
+    video.hidden = true;
+    video.pause();
+    video.currentTime = 0;
+  }
+  if (fullImg) fullImg.hidden = true;
+}
+
+function initLabPosts() {
+  const box = document.getElementById('labPostBox');
+  if (!box) return;
+
+  box.addEventListener('click', (e) => {
+    const trigger = e.target.closest('.lab-post-trigger');
+    if (!trigger) return;
+
+    const post = trigger.closest('.lab-post');
+    const video = post.querySelector('.lab-post-video');
+    const thumb = post.querySelector('.lab-post-thumb');
+    const fullImg = post.querySelector('.lab-post-fullimg');
+    const isActive = post.classList.contains('lab-post--active');
+
+    box.querySelectorAll('.lab-post--active').forEach((other) => {
+      if (other !== post) resetLabPost(other);
+    });
+
+    if (isActive) {
+      resetLabPost(post);
+      return;
+    }
+
+    post.classList.add('lab-post--active');
+    trigger.setAttribute('aria-expanded', 'true');
+    if (thumb) thumb.hidden = true;
+
+    if (video) {
+      video.hidden = false;
+      video.play().catch(() => {});
+      return;
+    }
+
+    if (fullImg) fullImg.hidden = false;
+  });
+}
+
 // ── Header height sync (mobile subheader + desktop top bar) ──
 function initMobileHeaderHeight() {
   const mq = window.matchMedia('(max-width: 768px)');
@@ -451,4 +505,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initMobileHeaderHeight();
   initCvCommaWrap();
+  initLabPosts();
 });

@@ -34,5 +34,6 @@
   "meta_tech_en": "Unreal Engine, ZigSim",
   "meta_production_en": "Company",
   "description_en": "<p>An interactive installation project responding to the audience's movement. Gravity data is converted into visual and auditory elements to deepen the sense of immersion throughout the space.</p>\n            <p>Role</p>\n            <p>Built the interaction environment in Unreal Engine</p>\n            <p>Integrated ZigSim sensor data</p>\n            <p>Collaborated on physics simulation and sound design</p>",
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "title_en": "Gravity Well"
 }

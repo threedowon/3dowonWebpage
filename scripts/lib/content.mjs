@@ -14,7 +14,25 @@ export function loadWorks() {
     .readdirSync(dir)
     .filter((name) => name.endsWith('.json'))
     .map((name) => loadJson(`content/works/${name}`));
-  return works.sort((a, b) => b.year - a.year || a.title.localeCompare(b.title, 'ko'));
+
+  const orderPath = path.join(ROOT, 'content/works-order.json');
+  let order = [];
+  if (fs.existsSync(orderPath)) {
+    order = loadJson('content/works-order.json').order || [];
+  }
+
+  const slugSet = new Set(works.map((w) => w.slug));
+  const syncedOrder = order.filter((slug) => slugSet.has(slug));
+  for (const work of works) {
+    if (!syncedOrder.includes(work.slug)) syncedOrder.push(work.slug);
+  }
+
+  const orderIndex = new Map(syncedOrder.map((slug, index) => [slug, index]));
+  return works.sort(
+    (a, b) =>
+      (orderIndex.get(a.slug) ?? Number.MAX_SAFE_INTEGER) -
+      (orderIndex.get(b.slug) ?? Number.MAX_SAFE_INTEGER)
+  );
 }
 
 export function writeOutput(relPath, html) {

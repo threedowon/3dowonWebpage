@@ -1,8 +1,8 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '238';
-const JS_VERSION = '89';
+const CSS_VERSION = '239';
+const JS_VERSION = '90';
 
 const STR = {
   en: {
@@ -67,6 +67,10 @@ function prefixes(lang, isWork) {
 function pick(obj, field, lang) {
   if (lang === 'en' && obj[`${field}_en`] != null) return obj[`${field}_en`];
   return obj[field];
+}
+
+function workTitle(work, lang) {
+  return pick(work, 'title', lang) || work.title || work.title_en || '';
 }
 
 function siteFooter(site) {
@@ -273,7 +277,7 @@ function normalizeWork(work) {
 function renderGridPost(work, lang) {
   return `        <a href="work/${work.slug}.html" class="img-post reveal" ${dataAttrs(work)}>
           <div class="img-post-thumbimg" style="background-image:url(${work.thumbnail})"></div>
-          <div class="img-post-title">${escapeHtml(work.title)}</div>
+          <div class="img-post-title">${escapeHtml(workTitle(work, lang))}</div>
           <div class="img-post-type">${escapeHtml(pick(work, 'grid_type_label', lang))}</div>
           <div class="img-post-year">${work.year}</div>
         </a>`;
@@ -285,7 +289,7 @@ function renderIndexPost(work, lang) {
             <div class="index-post-row">
               <div class="index-post-cells">
                 <div class="index-post-year">${work.year}</div>
-                <div class="index-post-title">${escapeHtml(work.title)}</div>
+                <div class="index-post-title">${escapeHtml(workTitle(work, lang))}</div>
                 <div class="index-post-type">${escapeHtml(pick(work, 'index_type_label', lang))}</div>
               </div>
               <div class="index-post-line"></div>
@@ -355,20 +359,21 @@ function buildWorkPage(work, site, lang) {
   const str = STR[lang];
   const { homePrefix, assetPrefix } = prefixes(lang, true);
   const relPath = `work/${work.slug}.html`;
+  const title = workTitle(work, lang);
   const gallery = (work.gallery || [])
     .map(
       (src, index) =>
-        `          <li class="reveal"><img src="${src}" alt="${escapeHtml(work.title)} ${index + 1}" class="project-detail-image" /></li>`
+        `          <li class="reveal"><img src="${src}" alt="${escapeHtml(title)} ${index + 1}" class="project-detail-image" /></li>`
     )
     .join('\n');
-  const video = vimeoEmbedHtml(work.vimeo_url, work.title);
+  const video = vimeoEmbedHtml(work.vimeo_url, title);
 
   const body = `    <div class="post-projects">
       <div class="post-hero reveal">
-        <img src="${work.hero_image || work.thumbnail}" alt="${escapeHtml(work.title)}" class="post-hero-image" />
+        <img src="${work.hero_image || work.thumbnail}" alt="${escapeHtml(title)}" class="post-hero-image" />
       </div>
       <div class="post-left">
-      <div class="post-title reveal">${escapeHtml(work.title)}</div>
+      <div class="post-title reveal">${escapeHtml(title)}</div>
       <div class="post-text">
         <div class="post-des">
           <div class="post-des-box1 reveal">
@@ -407,7 +412,7 @@ ${mobileHeader(assetPrefix, `${homePrefix}index.html`, str)}
 ${mobileNav(site, '', homePrefix, assetPrefix, lang, relPath, str)}`;
 
   return pageShell({
-    title: `${escapeHtml(work.title)} — 3Dowon`,
+    title: `${escapeHtml(title)} — 3Dowon`,
     body,
     header,
     lang,
@@ -415,13 +420,23 @@ ${mobileNav(site, '', homePrefix, assetPrefix, lang, relPath, str)}`;
   });
 }
 
+function formatAboutBody(text) {
+  return String(text || '')
+    .replace(/\r\n/g, '\n')
+    .split(/\n{2,}/)
+    .map((block) => block.trim())
+    .filter(Boolean)
+    .map((block) => {
+      const lines = block.split('\n').map((line) => escapeHtml(line));
+      return `          <p>${lines.join('<br />\n            ')}</p>`;
+    })
+    .join('\n');
+}
+
 function buildAbout(about, site, lang) {
   const str = STR[lang];
   const relPath = 'about.html';
-  const paragraphs = pick(about, 'body', lang)
-    .split(/\n{2,}/)
-    .map((p) => `          <p>${p.trim().split(/\r?\n/).join('<br />\n            ')}</p>`)
-    .join('\n');
+  const paragraphs = formatAboutBody(pick(about, 'body', lang));
   const meta = pick(about, 'meta', lang)
     .split(/\r?\n/)
     .map((line) => line.trim())
@@ -493,12 +508,22 @@ function buildLab(lab, site, lang) {
   const str = STR[lang];
   const relPath = 'lab.html';
   const items = lab.items
-    .map(
-      (item) => `        <div class="img-post lab-post reveal">
-          <div class="img-post-thumbimg" style="background-image:url(${item.image})"></div>
-          <div class="lab-post-caption">${escapeHtml(pick(item, 'caption', lang))}</div>
-        </div>`
-    )
+    .map((item) => {
+      const caption = escapeHtml(pick(item, 'caption', lang));
+      const hasVideo = Boolean(item.video);
+      const mediaInner = hasVideo
+        ? `<video class="lab-post-video" src="${item.video}" playsinline controls preload="metadata" hidden></video>`
+        : `<img class="lab-post-fullimg" src="${item.image}" alt="${caption}" hidden />`;
+      return `        <article class="img-post lab-post reveal" data-has-video="${hasVideo ? 'true' : 'false'}">
+          <button type="button" class="lab-post-trigger" aria-expanded="false" aria-label="${caption}">
+            <div class="lab-post-media">
+              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(${item.image})"></div>
+              ${mediaInner}
+            </div>
+            <div class="lab-post-caption">${caption}</div>
+          </button>
+        </article>`;
+    })
     .join('\n');
   const body = `    <div class="lab-view">
       <div class="img-post-box" id="labPostBox">

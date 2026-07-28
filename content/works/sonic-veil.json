@@ -33,5 +33,6 @@
   "meta_tech_en": "Max/MSP, TouchDesigner",
   "meta_production_en": "Solo",
   "description_en": "<p>An installation combining spatial audio and projection. The experience was designed so that the density of sound and texture of light shift depending on the audience's position.</p>\n            <p>Role</p>\n            <p>Developed spatial audio patches in Max/MSP</p>\n            <p>Integrated visuals in TouchDesigner</p>\n            <p>Set up the installation and demonstration environment</p>",
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "title_en": "Sonic Veil"
 }

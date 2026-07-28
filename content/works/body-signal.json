@@ -1,6 +1,6 @@
 {
   "slug": "body-signal",
-  "title": "Body Signal",
+  "title": "The Forest",
   "year": 2024,
   "type": "영상",
   "tags": [
@@ -33,5 +33,6 @@
   "meta_tech_en": "ESP32, Max/MSP",
   "meta_production_en": "Collaborative",
   "description_en": "<p>A performance work that converts a performer's biometric signals into visual and auditory elements in real time. Changes in heartbeat and breath expand into light and sound.</p>\n            <p>Role</p>\n            <p>Developed an ESP32 bio-sensor interface</p>\n            <p>Built real-time audio visualization in Max/MSP</p>\n            <p>Collaborated on performance direction and rehearsals</p>",
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "title_en": "Body Signal"
 }

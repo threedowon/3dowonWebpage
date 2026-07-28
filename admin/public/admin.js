@@ -71,6 +71,7 @@ function captureWorkForm(form) {
   const fd = new FormData(form);
   return {
     title: fd.get('title'),
+    title_en: fd.get('title_en'),
     year: fd.get('year'),
     types: fd.getAll('types'),
     production: fd.get('production'),
@@ -86,6 +87,7 @@ function captureWorkForm(form) {
 function applyWorkForm(form, draft) {
   if (!draft) return;
   form.title.value = draft.title ?? '';
+  form.title_en.value = draft.title_en ?? '';
   form.year.value = draft.year ?? '';
   form.production.value = draft.production ?? '';
   form.meta_tech.value = draft.meta_tech ?? '';
@@ -108,7 +110,8 @@ function markWorkDirty(slug) {
 function updateWorkCardHead(card, work) {
   const h3 = card.querySelector('.work-card-head h3');
   if (!h3) return;
-  h3.innerHTML = `${escapeHtml(work.title)} <span>${work.year} · ${escapeHtml(work.type)}</span>`;
+  const label = work.title || work.title_en || '(제목 없음)';
+  h3.innerHTML = `${escapeHtml(label)} <span>${work.year} · ${escapeHtml(work.type)}</span>`;
 }
 
 function refreshGalleryGrid(galleryGrid, work, gallery) {
@@ -132,6 +135,22 @@ function appendGalleryItem(galleryGrid, work, src, index) {
 }
 
 // ── Works ──
+let worksOrder = [];
+
+async function moveWork(slug, direction) {
+  const idx = worksOrder.indexOf(slug);
+  if (idx < 0) return;
+  const target = idx + direction;
+  if (target < 0 || target >= worksOrder.length) return;
+  [worksOrder[idx], worksOrder[target]] = [worksOrder[target], worksOrder[idx]];
+  await api('/api/works/order', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ order: worksOrder }),
+  });
+  await loadWorks();
+}
+
 async function loadWorks() {
   const drafts = new Map();
   document.querySelectorAll('.work-card').forEach((card) => {
@@ -143,23 +162,28 @@ async function loadWorks() {
   });
 
   const works = await api('/api/works');
+  worksOrder = works.map((work) => work.slug);
   const list = document.getElementById('worksList');
   list.innerHTML = '';
-  works.forEach((work) => {
-    const card = renderWorkCard(work);
+  works.forEach((work, index) => {
+    const card = renderWorkCard(work, index, works.length);
     if (openWorkSlugs.has(work.slug)) card.classList.add('open');
     if (drafts.has(work.slug)) applyWorkForm(card.querySelector('.edit-form'), drafts.get(work.slug));
     list.appendChild(card);
   });
 }
 
-function renderWorkCard(work) {
+function renderWorkCard(work, index, total) {
   const card = document.createElement('div');
   card.className = 'work-card';
   card.dataset.slug = work.slug;
   card.innerHTML = `
     <div class="work-card-head">
-      <h3>${escapeHtml(work.title)} <span>${work.year} · ${escapeHtml(work.type)}</span></h3>
+      <div class="work-card-order">
+        <button type="button" class="secondary order-up" title="위로" ${index === 0 ? 'disabled' : ''}>↑</button>
+        <button type="button" class="secondary order-down" title="아래로" ${index === total - 1 ? 'disabled' : ''}>↓</button>
+      </div>
+      <h3>${escapeHtml(work.title || work.title_en || '(제목 없음)')} <span>${work.year} · ${escapeHtml(work.type)}</span></h3>
       <span>${escapeHtml(work.slug)}</span>
     </div>
     <div class="work-card-body">
@@ -171,7 +195,10 @@ function renderWorkCard(work) {
       </div>
       <form class="admin-form edit-form">
         <div class="field-row">
-          <label>작업명<input name="title" value="${escapeAttr(work.title)}" /></label>
+          <label>작업명 (한글)<input name="title" value="${escapeAttr(work.title)}" placeholder="한글 제목" /></label>
+          <label>작업명 (영문)<input name="title_en" value="${escapeAttr(work.title_en)}" placeholder="English title" /></label>
+        </div>
+        <div class="field-row">
           <label>연도<input name="year" type="number" value="${escapeAttr(work.year)}" /></label>
         </div>
         <label>유형<div class="chk-group">${checkboxGroup('types', TYPE_OPTIONS, [work.type, ...(work.tags || [])])}</div></label>
@@ -196,7 +223,17 @@ function renderWorkCard(work) {
   const galleryGrid = card.querySelector('.gallery-grid');
   (work.gallery || []).forEach((src, i) => appendGalleryItem(galleryGrid, work, src, i));
 
-  card.querySelector('.work-card-head').addEventListener('click', () => {
+  card.querySelector('.order-up')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    moveWork(work.slug, -1);
+  });
+  card.querySelector('.order-down')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    moveWork(work.slug, 1);
+  });
+
+  card.querySelector('.work-card-head').addEventListener('click', (e) => {
+    if (e.target.closest('.work-card-order')) return;
     const willClose = card.classList.contains('open');
     if (willClose && dirtyWorks.has(work.slug)) {
       if (!confirm('저장하지 않은 변경이 있어요. 닫을까요?')) return;
@@ -219,6 +256,7 @@ function renderWorkCard(work) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         title: fd.get('title'),
+        title_en: fd.get('title_en'),
         year: fd.get('year'),
         types: fd.getAll('types'),
         production: fd.get('production'),
@@ -238,7 +276,8 @@ function renderWorkCard(work) {
   });
 
   card.querySelector('.delete-work').addEventListener('click', async () => {
-    if (!confirm(`"${work.title}"을(를) 삭제할까요?`)) return;
+    const label = work.title || work.title_en || work.slug;
+    if (!confirm(`"${label}"을(를) 삭제할까요?`)) return;
     await api(`/api/works/${work.slug}`, { method: 'DELETE' });
     loadWorks();
   });
@@ -289,12 +328,16 @@ document.getElementById('newWorkForm').addEventListener('submit', async (e) => {
   const fd = new FormData(e.target);
   try {
     const slug = fd.get('slug');
+    const title = fd.get('title');
+    const title_en = fd.get('title_en');
+    if (!title && !title_en) return alert('작업명(한글 또는 영문)을 입력하세요.');
     await api('/api/works', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         slug,
-        title: fd.get('title'),
+        title,
+        title_en,
         year: fd.get('year'),
         types: fd.getAll('types'),
       }),
@@ -437,11 +480,20 @@ async function loadLab() {
     card.className = 'lab-card thumb-row';
     card.innerHTML = `
       <img src="${imgUrl(item.image)}" alt="" />
-      <input value="${escapeAttr(item.caption)}" class="lab-caption" placeholder="캡션" />
-      <input value="${escapeAttr(item.caption_en || '')}" class="lab-caption" placeholder="캡션 (EN)" />
-      <button type="button" class="danger">삭제</button>
+      <div class="lab-card-fields">
+        <input value="${escapeAttr(item.caption)}" class="lab-caption" placeholder="캡션" />
+        <input value="${escapeAttr(item.caption_en || '')}" class="lab-caption" placeholder="캡션 (EN)" />
+        <div class="lab-video-row">
+          ${item.video ? '<span class="lab-video-badge">영상 있음</span>' : '<span class="lab-video-badge lab-video-badge--empty">이미지만</span>'}
+          <label class="lab-video-upload secondary">영상 ${item.video ? '교체' : '추가'}<input type="file" accept="video/*" hidden /></label>
+          ${item.video ? '<button type="button" class="danger remove-video">영상 삭제</button>' : ''}
+        </div>
+      </div>
+      <button type="button" class="danger remove-lab">삭제</button>
     `;
-    const [img, captionInput, captionEnInput, removeBtn] = card.children;
+    const captionInput = card.querySelectorAll('.lab-caption')[0];
+    const captionEnInput = card.querySelectorAll('.lab-caption')[1];
+    const videoInput = card.querySelector('.lab-video-upload input');
     const saveCaptions = async () => {
       const items = lab.items.map((it, idx) =>
         idx === i ? { ...it, caption: captionInput.value, caption_en: captionEnInput.value } : it
@@ -454,7 +506,26 @@ async function loadLab() {
     };
     captionInput.addEventListener('change', saveCaptions);
     captionEnInput.addEventListener('change', saveCaptions);
-    removeBtn.addEventListener('click', async () => {
+    videoInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const fd = new FormData();
+      fd.append('video', file);
+      try {
+        await api(`/api/lab/items/${i}/video`, { method: 'POST', body: fd });
+        loadLab();
+      } catch (err) {
+        alert(err.message);
+        e.target.value = '';
+      }
+    });
+    card.querySelector('.remove-video')?.addEventListener('click', async () => {
+      if (!confirm('이 항목의 영상을 삭제할까요?')) return;
+      await api(`/api/lab/items/${i}/video`, { method: 'DELETE' });
+      loadLab();
+    });
+    card.querySelector('.remove-lab').addEventListener('click', async () => {
+      if (!confirm('이 Lab 항목을 삭제할까요?')) return;
       await api(`/api/lab/items/${i}`, { method: 'DELETE' });
       loadLab();
     });
@@ -464,10 +535,12 @@ async function loadLab() {
 
 document.getElementById('newLabForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const file = document.getElementById('labImageInput').files[0];
-  if (!file) return alert('이미지를 선택하세요.');
+  const image = e.target.image.files[0];
+  if (!image) return alert('썸네일 이미지를 선택하세요.');
   const fd = new FormData();
-  fd.append('image', file);
+  fd.append('image', image);
+  const video = e.target.video.files[0];
+  if (video) fd.append('video', video);
   fd.append('caption', e.target.caption.value);
   fd.append('caption_en', e.target.caption_en.value);
   try {

@@ -1,6 +1,6 @@
 {
   "slug": "light-archive",
-  "title": "Light Archive",
+  "title": "3Dowon's Workdesk",
   "year": 2025,
   "type": "설치",
   "tags": [
@@ -35,5 +35,6 @@
   "meta_medium_en": "Installation, Exhibition, Interactive",
   "meta_tech_en": "Premiere, TouchDesigner",
   "meta_production_en": "Solo",
-  "description_en": "<p>A large-scale video installation reconstructing a record of light in an archival format.</p>"
+  "description_en": "<p>A large-scale video installation reconstructing a record of light in an archival format.</p>",
+  "title_en": "Light Archive"
 }

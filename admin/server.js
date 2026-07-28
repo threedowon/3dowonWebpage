@@ -199,16 +199,86 @@ function asyncHandler(fn) {
   };
 }
 
-// The same uploaded file can legitimately be reused across multiple fields/works
-// (e.g. thumbnail and hero_image pointing at the same photo), so before deleting
-// an old file on replace/remove we confirm nothing else on disk still points to it.
-function isImagePathReferenced(publicPath) {
+const WORKS_ORDER_PATH = 'content/works-order.json';
+const VIDEO_MIME_EXT = {
+  'video/mp4': '.mp4',
+  'video/webm': '.webm',
+  'video/quicktime': '.mov',
+  'video/x-msvideo': '.avi',
+};
+
+// ── Works order ──
+
+function loadWorksOrder() {
+  const slugs = listWorkSlugs();
+  if (!fs.existsSync(path.join(ROOT, WORKS_ORDER_PATH))) {
+    const order = [...slugs].sort((a, b) => {
+      const wa = loadWork(a);
+      const wb = loadWork(b);
+      return wb.year - wa.year || String(wa.title).localeCompare(String(wb.title), 'ko');
+    });
+    saveJson(WORKS_ORDER_PATH, { order });
+    return order;
+  }
+
+  const stored = loadJson(WORKS_ORDER_PATH).order || [];
+  const slugSet = new Set(slugs);
+  const order = stored.filter((slug) => slugSet.has(slug));
+  for (const slug of slugs) {
+    if (!order.includes(slug)) order.push(slug);
+  }
+  if (order.length !== stored.length || order.some((slug, i) => slug !== stored[i])) {
+    saveJson(WORKS_ORDER_PATH, { order });
+  }
+  return order;
+}
+
+function sortWorksByOrder(works) {
+  const orderIndex = new Map(loadWorksOrder().map((slug, index) => [slug, index]));
+  return [...works].sort(
+    (a, b) =>
+      (orderIndex.get(a.slug) ?? Number.MAX_SAFE_INTEGER) -
+      (orderIndex.get(b.slug) ?? Number.MAX_SAFE_INTEGER)
+  );
+}
+
+function appendWorkToOrder(slug) {
+  const order = loadWorksOrder();
+  if (!order.includes(slug)) {
+    order.push(slug);
+    saveJson(WORKS_ORDER_PATH, { order });
+  }
+}
+
+function removeWorkFromOrder(slug) {
+  const order = loadWorksOrder().filter((item) => item !== slug);
+  saveJson(WORKS_ORDER_PATH, { order });
+}
+
+async function saveVideo(buffer, mimetype, prefix = 'lab') {
+  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+  const ext = VIDEO_MIME_EXT[mimetype] || '.mp4';
+  let filename;
+  do {
+    filename = `${prefix}-${Date.now()}-${Math.round(Math.random() * 1e6)}${ext}`;
+  } while (fs.existsSync(path.join(UPLOADS_DIR, filename)));
+  fs.writeFileSync(path.join(UPLOADS_DIR, filename), buffer);
+  return filename;
+}
+
+function labItemPaths(item) {
+  return [item?.image, item?.video].filter(Boolean);
+}
+
+function isUploadPathReferenced(publicPath) {
+  if (!publicPath) return false;
   for (const slug of listWorkSlugs()) {
     const w = loadWork(slug);
     if ([w.thumbnail, w.preview_bg, w.hero_image, ...(w.gallery || [])].includes(publicPath)) return true;
   }
   if (loadJson('content/about.json').image === publicPath) return true;
-  if (loadJson('content/lab.json').items.some((item) => item.image === publicPath)) return true;
+  const lab = loadJson('content/lab.json');
+  if (lab.items.some((item) => labItemPaths(item).includes(publicPath))) return true;
   return false;
 }
 
@@ -216,16 +286,33 @@ function isImagePathReferenced(publicPath) {
 // saveJson), otherwise the reference check will always find it and refuse to delete.
 function removeUploadedFile(publicPath) {
   if (!publicPath || !publicPath.startsWith(PUBLIC_UPLOADS_PREFIX)) return;
-  if (isImagePathReferenced(publicPath)) return;
+  if (isUploadPathReferenced(publicPath)) return;
   const filename = publicPath.slice(PUBLIC_UPLOADS_PREFIX.length + 1);
   fs.rmSync(path.join(UPLOADS_DIR, filename), { force: true });
 }
 
+const uploadLab = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 200 * 1024 * 1024 },
+  fileFilter(req, file, cb) {
+    if (file.fieldname === 'image') cb(null, /^image\//.test(file.mimetype));
+    else if (file.fieldname === 'video') cb(null, /^video\//.test(file.mimetype));
+    else cb(null, false);
+  },
+});
+
+const uploadVideo = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 200 * 1024 * 1024 },
+  fileFilter(req, file, cb) {
+    cb(null, /^video\//.test(file.mimetype));
+  },
+});
+
 // ── Works ──
 
 app.get('/api/works', (req, res) => {
-  const works = listWorkSlugs().map(loadWork);
-  works.sort((a, b) => b.year - a.year || String(a.title).localeCompare(String(b.title), 'ko'));
+  const works = sortWorksByOrder(listWorkSlugs().map(loadWork));
   res.json(
     works.map((w) => ({
       ...w,
@@ -235,15 +322,33 @@ app.get('/api/works', (req, res) => {
   );
 });
 
+app.get('/api/works/order', (req, res) => {
+  res.json({ order: loadWorksOrder() });
+});
+
+app.put('/api/works/order', (req, res) => {
+  const slugs = listWorkSlugs();
+  const slugSet = new Set(slugs);
+  const incoming = Array.isArray(req.body.order) ? req.body.order.filter((slug) => slugSet.has(slug)) : [];
+  for (const slug of slugs) {
+    if (!incoming.includes(slug)) incoming.push(slug);
+  }
+  saveJson(WORKS_ORDER_PATH, { order: incoming });
+  build();
+  res.json({ order: incoming });
+});
+
 app.post('/api/works', (req, res) => {
-  const { slug, title, year, types } = req.body;
+  const { slug, title, title_en, year, types } = req.body;
   if (!isValidSlug(slug)) return res.status(400).json({ error: '슬러그는 영문 소문자/숫자/하이픈만 가능해요.' });
   if (listWorkSlugs().includes(slug)) return res.status(400).json({ error: '이미 존재하는 슬러그예요.' });
+  if (!title && !title_en) return res.status(400).json({ error: '작업명(한글 또는 영문)을 입력해주세요.' });
 
   const resolvedYear = Number(year) || new Date().getFullYear();
   const work = {
     slug,
     title: title || '',
+    title_en: title_en || '',
     year: resolvedYear,
     type: '',
     tags: [],
@@ -268,6 +373,7 @@ app.post('/api/works', (req, res) => {
   };
   applySelectedTypes(work, types && types.length ? types : ['설치']);
   saveJson(`content/works/${slug}.json`, work);
+  appendWorkToOrder(slug);
   build();
   res.json(work);
 });
@@ -275,7 +381,7 @@ app.post('/api/works', (req, res) => {
 app.put('/api/works/:slug', (req, res) => {
   if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({ error: 'not found' });
   const work = loadWork(req.params.slug);
-  const editable = ['title', 'year', 'tech', 'production', 'meta_tech', 'meta_tech_en', 'vimeo_url'];
+  const editable = ['title', 'title_en', 'year', 'tech', 'production', 'meta_tech', 'meta_tech_en', 'vimeo_url'];
   for (const key of editable) {
     if (req.body[key] !== undefined) work[key] = req.body[key];
   }
@@ -298,6 +404,7 @@ app.delete('/api/works/:slug', (req, res) => {
   const work = loadWork(req.params.slug);
   fs.unlinkSync(file); // remove the JSON first so the reference check below doesn't see its own entries
   [work.thumbnail, work.preview_bg, work.hero_image, ...(work.gallery || [])].forEach(removeUploadedFile);
+  removeWorkFromOrder(req.params.slug);
   build();
   res.json({ ok: true });
 });
@@ -349,9 +456,15 @@ app.get('/api/site', (req, res) => {
   });
 });
 
+function normalizePlainText(text) {
+  return String(text ?? '').replace(/\r\n/g, '\n');
+}
+
 app.put('/api/about', (req, res) => {
   const about = loadJson('content/about.json');
-  Object.assign(about, req.body);
+  for (const key of ['name', 'name_en', 'meta', 'meta_en', 'body', 'body_en']) {
+    if (req.body[key] !== undefined) about[key] = normalizePlainText(req.body[key]);
+  }
   saveJson('content/about.json', about);
   build();
   res.json(about);
@@ -383,21 +496,59 @@ app.put('/api/lab', (req, res) => {
   res.json(lab);
 });
 
-app.post('/api/lab/items', upload.single('image'), asyncHandler(async (req, res) => {
-  if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });
+app.post('/api/lab/items', uploadLab.fields([{ name: 'image', maxCount: 1 }, { name: 'video', maxCount: 1 }]), asyncHandler(async (req, res) => {
+  const imageFile = req.files?.image?.[0];
+  if (!imageFile) return res.status(400).json({ error: '썸네일 이미지가 필요해요.' });
   const lab = loadJson('content/lab.json');
-  const filename = await saveImage(req.file.buffer);
-  lab.items.push({ image: publicUploadPath(filename), caption: req.body.caption || '', caption_en: req.body.caption_en || '' });
+  const imagePath = publicUploadPath(await saveImage(imageFile.buffer, 'lab'));
+  let videoPath = '';
+  const videoFile = req.files?.video?.[0];
+  if (videoFile) {
+    videoPath = publicUploadPath(await saveVideo(videoFile.buffer, videoFile.mimetype));
+  }
+  lab.items.push({
+    image: imagePath,
+    video: videoPath,
+    caption: req.body.caption || '',
+    caption_en: req.body.caption_en || '',
+  });
   saveJson('content/lab.json', lab);
   build();
   res.json(lab);
 }));
 
+app.post('/api/lab/items/:index/video', uploadVideo.single('video'), asyncHandler(async (req, res) => {
+  const lab = loadJson('content/lab.json');
+  const index = Number(req.params.index);
+  const item = lab.items[index];
+  if (!item) return res.status(404).json({ error: 'not found' });
+  if (!req.file) return res.status(400).json({ error: '영상 파일이 필요해요.' });
+  const oldVideo = item.video;
+  item.video = publicUploadPath(await saveVideo(req.file.buffer, req.file.mimetype));
+  saveJson('content/lab.json', lab);
+  removeUploadedFile(oldVideo);
+  build();
+  res.json(lab);
+}));
+
+app.delete('/api/lab/items/:index/video', (req, res) => {
+  const lab = loadJson('content/lab.json');
+  const index = Number(req.params.index);
+  const item = lab.items[index];
+  if (!item) return res.status(404).json({ error: 'not found' });
+  const oldVideo = item.video;
+  item.video = '';
+  saveJson('content/lab.json', lab);
+  removeUploadedFile(oldVideo);
+  build();
+  res.json(lab);
+});
+
 app.delete('/api/lab/items/:index', (req, res) => {
   const lab = loadJson('content/lab.json');
   const [removed] = lab.items.splice(Number(req.params.index), 1);
   saveJson('content/lab.json', lab);
-  if (removed) removeUploadedFile(removed.image);
+  if (removed) labItemPaths(removed).forEach(removeUploadedFile);
   build();
   res.json(lab);
 });

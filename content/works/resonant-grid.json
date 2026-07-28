@@ -33,5 +33,6 @@
   "meta_tech_en": "Arduino, DMX",
   "meta_production_en": "Solo",
   "description_en": "<p>An interactive media installation for a brand launch event. Grid-shaped lighting and sensor input combine so the space responds to audience participation.</p>\n            <p>Role</p>\n            <p>Developed an Arduino-based sensor and lighting control system</p>\n            <p>Programmed the DMX lighting sequence</p>\n            <p>Handled on-site installation and interaction testing</p>",
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "title_en": "Resonant Grid"
 }
