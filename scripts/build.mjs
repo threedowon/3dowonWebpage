@@ -125,6 +125,16 @@ function pick(obj, field, lang) {
   return obj[field];
 }
 
+function resolveMediaPath(src, assetPrefix) {
+  const value = String(src || '').trim();
+  if (!value) return '';
+  if (/^https?:\/\//i.test(value)) return value;
+  if (value.startsWith('/3dowonWebpage/')) return `${assetPrefix}${value.slice('/3dowonWebpage/'.length)}`;
+  if (value.startsWith('/')) return `${assetPrefix}${value.slice(1)}`;
+  if (value.startsWith('assets/')) return `${assetPrefix}${value}`;
+  return value;
+}
+
 function workTitle(work, lang) {
   return pick(work, 'title', lang) || work.title || work.title_en || '';
 }
@@ -334,7 +344,7 @@ function groupWorks(works) {
   return BRANCH_ORDER.filter((k) => (map.get(k) || []).length).map((k) => [k, map.get(k)]);
 }
 
-function renderMgRow(work, lang) {
+function renderMgRow(work, lang, assetPrefix = '') {
   const title = workTitle(work, lang);
   const client = isClientWork(work);
   const meta = escapeHtml(pick(work, 'grid_type_label', lang) || pick(work, 'meta_type', lang) || '');
@@ -342,7 +352,7 @@ function renderMgRow(work, lang) {
   const metaText = client ? prod : meta;
   const year = work.year || '';
   return `            <a href="#${work.slug}" class="mg-row" data-slug="${work.slug}" ${dataAttrs(work)}>
-              <img class="mg-row-thumb img-blur" src="${work.thumbnail}" alt="" width="28" height="28" loading="lazy" />
+              <img class="mg-row-thumb img-blur" src="${resolveMediaPath(work.thumbnail, assetPrefix)}" alt="" width="28" height="28" loading="lazy" />
               <span class="mg-row-main">
                 <span class="mg-row-title">${escapeHtml(title)}</span>
                 ${metaText ? `<span class="mg-row-meta${client ? ' is-client' : ''}">${metaText}</span>` : ''}
@@ -356,7 +366,7 @@ function renderMgRow(work, lang) {
             </a>`;
 }
 
-function renderMgDetail(work, lang) {
+function renderMgDetail(work, lang, assetPrefix = '') {
   const str = STR[lang];
   const title = workTitle(work, lang);
   const desc = pick(work, 'description', lang) || '';
@@ -368,7 +378,7 @@ function renderMgDetail(work, lang) {
   const galleryImgs = (work.gallery || [])
     .map(
       (src, index) =>
-        `            <img class="img-blur mg-detail-gallery-img" src="${src}" alt="${escapeHtml(title)} ${index + 1}" loading="lazy" />`
+        `            <img class="img-blur mg-detail-gallery-img" src="${resolveMediaPath(src, assetPrefix)}" alt="${escapeHtml(title)} ${index + 1}" loading="lazy" />`
     )
     .join('\n');
   const gallery = galleryImgs
@@ -382,7 +392,7 @@ ${galleryImgs}
           <p class="mg-detail-year">${work.year || ''}</p>
           ${video}
           <div class="mg-detail-media">
-            <img class="img-blur" src="${work.hero_image || work.thumbnail}" alt="${escapeHtml(title)}" />
+            <img class="img-blur" src="${resolveMediaPath(work.hero_image || work.thumbnail, assetPrefix)}" alt="${escapeHtml(title)}" />
           </div>
 ${gallery}
           <div class="mg-detail-section">
@@ -417,7 +427,7 @@ function buildHome(works, site, lang, about) {
     .map(
       (w) =>
         `      <a class="map-strip-item" href="${homePrefix}works.html#${w.slug}" title="${escapeHtml(workTitle(w, lang))}">
-        <img class="img-blur" src="${w.thumbnail}" alt="" width="36" height="36" loading="lazy" />
+        <img class="img-blur" src="${resolveMediaPath(w.thumbnail, assetPrefix)}" alt="" width="36" height="36" loading="lazy" />
       </a>`
     )
     .join('\n');
@@ -496,7 +506,7 @@ function buildWorks(works, site, lang) {
   const branches = groups
     .map(([key, items]) => {
       const meta = BRANCH_META[key][lang];
-      const rows = items.map((w) => renderMgRow(w, lang)).join('\n');
+      const rows = items.map((w) => renderMgRow(w, lang, assetPrefix)).join('\n');
       return `          <section class="mg-branch" id="${key}" data-branch="${key}">
             <div class="mg-branch-head">
               <span class="mg-branch-name">${meta.name}</span>
@@ -506,7 +516,7 @@ ${rows}
           </section>`;
     })
     .join('\n');
-  const details = works.map((w) => renderMgDetail(w, lang)).join('\n');
+  const details = works.map((w) => renderMgDetail(w, lang, assetPrefix)).join('\n');
   const firstSlug = works[0]?.slug || '';
 
   const body = `    <div class="mg-stage" id="mgStage" data-active="${firstSlug}">
@@ -542,7 +552,7 @@ function buildWorkPage(work, site, lang) {
   const gallery = (work.gallery || [])
     .map(
       (src, index) =>
-        `          <li class="reveal"><img src="${src}" alt="${escapeHtml(title)} ${index + 1}" class="project-detail-image img-blur" /></li>`
+        `          <li class="reveal"><img src="${resolveMediaPath(src, assetPrefix)}" alt="${escapeHtml(title)} ${index + 1}" class="project-detail-image img-blur" /></li>`
     )
     .join('\n');
   const video = vimeoEmbedHtml(work.vimeo_url, title);
@@ -550,7 +560,7 @@ function buildWorkPage(work, site, lang) {
   const body = `    <div class="mg-page post-projects">
       ${video}
       <div class="post-hero">
-        <img src="${work.hero_image || work.thumbnail}" alt="${escapeHtml(title)}" class="post-hero-image img-blur" />
+        <img src="${resolveMediaPath(work.hero_image || work.thumbnail, assetPrefix)}" alt="${escapeHtml(title)}" class="post-hero-image img-blur" />
       </div>
       <h1 class="post-title">${escapeHtml(title)}</h1>
       <div class="post-meta">
@@ -593,6 +603,7 @@ ${mobileNav('', homePrefix, assetPrefix, lang, relPath, str)}`;
 function buildAbout(about, site, lang) {
   const str = STR[lang];
   const relPath = 'about.html';
+  const { assetPrefix } = prefixes(lang, false);
   const paragraphs = String(pick(about, 'body', lang) || '')
     .replace(/\r\n/g, '\n')
     .split(/\n{2,}/)
@@ -622,10 +633,9 @@ ${metaRows}
 ${paragraphs}
       </div>
       <div class="about-specimen">
-        <img class="about-img img-blur" src="${about.image}" alt="${escapeHtml(pick(about, 'name', lang))}" loading="lazy" />
+        <img class="about-img img-blur" src="${resolveMediaPath(about.image, assetPrefix)}" alt="${escapeHtml(pick(about, 'name', lang))}" loading="lazy" />
       </div>
     </div>`;
-  const { assetPrefix } = prefixes(lang, false);
   return pageShell({
     title: 'about — 3Dowon',
     body,
@@ -680,13 +690,15 @@ function buildLab(lab, site, lang) {
     .map((item, index) => {
       const caption = escapeHtml(pick(item, 'caption', lang));
       const hasVideo = Boolean(item.video);
+      const imageSrc = resolveMediaPath(item.image, assetPrefix);
+      const videoSrc = hasVideo ? resolveMediaPath(item.video, assetPrefix) : '';
       const media = hasVideo
-        ? `<video class="lab-post-video" src="${item.video}" playsinline controls preload="metadata" hidden></video>`
+        ? `<video class="lab-post-video" src="${videoSrc}" playsinline controls preload="metadata" hidden></video>`
         : '';
-      return `        <article class="lab-post" data-lab-image="${item.image}" data-has-video="${hasVideo ? 'true' : 'false'}">
+      return `        <article class="lab-post" data-lab-image="${imageSrc}" data-has-video="${hasVideo ? 'true' : 'false'}">
           <button type="button" class="lab-post-trigger" aria-label="${caption}">
             <div class="lab-post-media">
-              <img class="lab-post-thumb img-blur" src="${item.image}" alt="${caption}" loading="lazy" />
+              <img class="lab-post-thumb img-blur" src="${imageSrc}" alt="${caption}" loading="lazy" />
               ${media}
             </div>
             <div class="lab-post-caption">${caption}</div>
