@@ -37,18 +37,10 @@ export function cleanOrphanWorkPages(slugs, workDirRel = 'work') {
 export function assertWorkPageHeaders(relPaths) {
   for (const relPath of relPaths) {
     const html = fs.readFileSync(path.join(ROOT, relPath), 'utf8');
-    const required = [
-      'site-header--bar',
-      'header-bar-col--back',
-      'header-bar-col--works',
-      'header-bar-col--nav',
-    ];
+    const required = ['mg-top', 'mg-back', 'btn-back'];
     const missing = required.filter((token) => !html.includes(token));
     if (missing.length) {
       throw new Error(`Invalid header in ${relPath}: missing ${missing.join(', ')}`);
-    }
-    if (html.includes('header-bar-col--spacer')) {
-      throw new Error(`Invalid header in ${relPath}: legacy spacer column found`);
     }
   }
 }

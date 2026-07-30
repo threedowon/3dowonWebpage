@@ -1,7 +1,13 @@
+<<<<<<< HEAD
+const TAG_OPTIONS = ['인터랙티브', '프로젝션'];
+const TECH_OPTIONS = ['Unreal', 'Unity', 'Arduino', '3ds Max'];
+const TYPE_OPTIONS = ['설치', '영상', '퍼포먼스', '전시'];
+=======
 // 사이트 필터에서는 유형(설치~전시·VR/AR)과 태그(인터랙티브/프로젝션)가 한 목록으로 합쳐져 보이므로
 // admin에서도 이 7개를 하나의 다중선택으로 다룬다.
 const TYPE_OPTIONS = ['설치', '영상', '퍼포먼스', '전시', 'VR/AR', '인터랙티브', '프로젝션'];
 const TECH_OPTIONS = ['Unreal', 'Unity', 'Arduino', '3ds Max', 'Depth Camera'];
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 const PRODUCTION_OPTIONS = ['개인', '공동', '회사'];
 
 function imgUrl(p) {
@@ -41,6 +47,23 @@ function selectOptions(options, value) {
 }
 
 // ── Tabs ──
+<<<<<<< HEAD
+document.querySelectorAll('.admin-tab').forEach((tab) => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.admin-tab').forEach((t) => t.classList.remove('active'));
+    document.querySelectorAll('.admin-panel').forEach((p) => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
+  });
+});
+
+// ── Works ──
+async function loadWorks() {
+  const works = await api('/api/works');
+  const list = document.getElementById('worksList');
+  list.innerHTML = '';
+  works.forEach((work) => list.appendChild(renderWorkCard(work)));
+=======
 const openWorkSlugs = new Set();
 const dirtyWorks = new Set();
 let activeAdminTab = 'works';
@@ -151,12 +174,16 @@ async function loadWorks() {
     if (drafts.has(work.slug)) applyWorkForm(card.querySelector('.edit-form'), drafts.get(work.slug));
     list.appendChild(card);
   });
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 }
 
 function renderWorkCard(work) {
   const card = document.createElement('div');
   card.className = 'work-card';
+<<<<<<< HEAD
+=======
   card.dataset.slug = work.slug;
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
   card.innerHTML = `
     <div class="work-card-head">
       <h3>${escapeHtml(work.title)} <span>${work.year} · ${escapeHtml(work.type)}</span></h3>
@@ -166,7 +193,19 @@ function renderWorkCard(work) {
       <div class="thumb-row">
         <div>
           <img src="${imgUrl(work.thumbnail)}" alt="" />
+<<<<<<< HEAD
+          <div class="thumb-label">썸네일<input type="file" accept="image/*" class="img-input" data-field="thumbnail" /></div>
+        </div>
+        <div>
+          <img src="${imgUrl(work.preview_bg)}" alt="" />
+          <div class="thumb-label">인덱스 미리보기<input type="file" accept="image/*" class="img-input" data-field="preview_bg" /></div>
+        </div>
+        <div>
+          <img src="${imgUrl(work.hero_image)}" alt="" />
+          <div class="thumb-label">히어로 이미지<input type="file" accept="image/*" class="img-input" data-field="hero_image" /></div>
+=======
           <div class="thumb-label">썸네일 (그리드/미리보기/히어로 공통)<input type="file" accept="image/*" class="img-input" data-field="thumbnail" /></div>
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
         </div>
       </div>
       <form class="admin-form edit-form">
@@ -174,6 +213,28 @@ function renderWorkCard(work) {
           <label>작업명<input name="title" value="${escapeAttr(work.title)}" /></label>
           <label>연도<input name="year" type="number" value="${escapeAttr(work.year)}" /></label>
         </div>
+<<<<<<< HEAD
+        <div class="field-row">
+          <label>유형<select name="type">${selectOptions(TYPE_OPTIONS, work.type)}</select></label>
+          <label>제작<select name="production">${selectOptions(PRODUCTION_OPTIONS, work.production)}</select></label>
+        </div>
+        <label>태그<div class="chk-group">${checkboxGroup('tags', TAG_OPTIONS, work.tags || [])}</div></label>
+        <label>기술<div class="chk-group">${checkboxGroup('tech', TECH_OPTIONS, work.tech || [])}</div></label>
+        <div class="field-row">
+          <label>그리드 유형 표시<input name="grid_type_label" value="${escapeAttr(work.grid_type_label)}" /></label>
+          <label>인덱스 유형 표시<input name="index_type_label" value="${escapeAttr(work.index_type_label)}" /></label>
+        </div>
+        <div class="field-row">
+          <label>상세-연도<input name="meta_year" value="${escapeAttr(work.meta_year)}" /></label>
+          <label>상세-유형<input name="meta_type" value="${escapeAttr(work.meta_type)}" /></label>
+        </div>
+        <div class="field-row">
+          <label>상세-매체<input name="meta_medium" value="${escapeAttr(work.meta_medium)}" /></label>
+          <label>상세-기술<input name="meta_tech" value="${escapeAttr(work.meta_tech)}" /></label>
+          <label>상세-제작<input name="meta_production" value="${escapeAttr(work.meta_production)}" /></label>
+        </div>
+        <label>설명 (HTML)<textarea name="description" rows="3">${escapeHtml(work.description)}</textarea></label>
+=======
         <label>유형<div class="chk-group">${checkboxGroup('types', TYPE_OPTIONS, [work.type, ...(work.tags || [])])}</div></label>
         <label>제작<select name="production">${selectOptions(PRODUCTION_OPTIONS, work.production)}</select></label>
         <label>기술<div class="chk-group">${checkboxGroup('tech', TECH_OPTIONS, work.tech || [])}</div></label>
@@ -181,6 +242,7 @@ function renderWorkCard(work) {
         <label>상세-기술 (EN)<input name="meta_tech_en" value="${escapeAttr(work.meta_tech_en)}" /></label>
         <label>설명 (엔터로 줄바꿈)<textarea name="description" rows="4">${escapeHtml(work.description)}</textarea></label>
         <label>설명 (EN)<textarea name="description_en" rows="4">${escapeHtml(work.description_en)}</textarea></label>
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
         <label>Vimeo URL<input name="vimeo_url" value="${escapeAttr(work.vimeo_url)}" /></label>
         <div class="field-row">
           <button type="submit">저장</button>
@@ -194,6 +256,25 @@ function renderWorkCard(work) {
   `;
 
   const galleryGrid = card.querySelector('.gallery-grid');
+<<<<<<< HEAD
+  (work.gallery || []).forEach((src, i) => {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    item.innerHTML = `<img src="${imgUrl(src)}" alt="" /><button type="button">×</button>`;
+    item.querySelector('button').addEventListener('click', async () => {
+      await api(`/api/works/${work.slug}/gallery/${i}`, { method: 'DELETE' });
+      loadWorks();
+    });
+    galleryGrid.appendChild(item);
+  });
+
+  card.querySelector('.work-card-head').addEventListener('click', () => card.classList.toggle('open'));
+
+  card.querySelector('.edit-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    await api(`/api/works/${work.slug}`, {
+=======
   (work.gallery || []).forEach((src, i) => appendGalleryItem(galleryGrid, work, src, i));
 
   card.querySelector('.work-card-head').addEventListener('click', () => {
@@ -215,11 +296,30 @@ function renderWorkCard(work) {
     e.preventDefault();
     const fd = new FormData(e.target);
     const updated = await api(`/api/works/${work.slug}`, {
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         title: fd.get('title'),
         year: fd.get('year'),
+<<<<<<< HEAD
+        type: fd.get('type'),
+        production: fd.get('production'),
+        tags: fd.getAll('tags'),
+        tech: fd.getAll('tech'),
+        grid_type_label: fd.get('grid_type_label'),
+        index_type_label: fd.get('index_type_label'),
+        meta_year: fd.get('meta_year'),
+        meta_type: fd.get('meta_type'),
+        meta_medium: fd.get('meta_medium'),
+        meta_tech: fd.get('meta_tech'),
+        meta_production: fd.get('meta_production'),
+        description: fd.get('description'),
+        vimeo_url: fd.get('vimeo_url'),
+      }),
+    });
+    loadWorks();
+=======
         types: fd.getAll('types'),
         production: fd.get('production'),
         tech: fd.getAll('tech'),
@@ -235,6 +335,7 @@ function renderWorkCard(work) {
     card.classList.add('open');
     updateWorkCardHead(card, updated);
     alert('저장했어요.');
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
   });
 
   card.querySelector('.delete-work').addEventListener('click', async () => {
@@ -249,6 +350,10 @@ function renderWorkCard(work) {
       if (!file) return;
       const fd = new FormData();
       fd.append('image', file);
+<<<<<<< HEAD
+      await api(`/api/works/${work.slug}/${input.dataset.field}`, { method: 'POST', body: fd });
+      loadWorks();
+=======
       try {
         const updated = await api(`/api/works/${work.slug}/${input.dataset.field}`, { method: 'POST', body: fd });
         const thumbImg = card.querySelector('.thumb-row img');
@@ -259,6 +364,7 @@ function renderWorkCard(work) {
         alert(err.message);
         e.target.value = '';
       }
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
     });
   });
 
@@ -267,6 +373,10 @@ function renderWorkCard(work) {
     if (!files.length) return;
     const fd = new FormData();
     for (const f of files) fd.append('images', f);
+<<<<<<< HEAD
+    await api(`/api/works/${work.slug}/gallery`, { method: 'POST', body: fd });
+    loadWorks();
+=======
     try {
       const updated = await api(`/api/works/${work.slug}/gallery`, { method: 'POST', body: fd });
       refreshGalleryGrid(galleryGrid, work, updated.gallery || []);
@@ -277,22 +387,38 @@ function renderWorkCard(work) {
       alert(err.message);
       e.target.value = '';
     }
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
   });
 
   return card;
 }
 
+<<<<<<< HEAD
+=======
 document.getElementById('newWorkTypes').innerHTML = checkboxGroup('types', TYPE_OPTIONS, []);
 
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 document.getElementById('newWorkForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const fd = new FormData(e.target);
   try {
+<<<<<<< HEAD
+=======
     const slug = fd.get('slug');
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
     await api('/api/works', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+<<<<<<< HEAD
+        slug: fd.get('slug'),
+        title: fd.get('title'),
+        year: fd.get('year'),
+        type: fd.get('type'),
+      }),
+    });
+    e.target.reset();
+=======
         slug,
         title: fd.get('title'),
         year: fd.get('year'),
@@ -301,6 +427,7 @@ document.getElementById('newWorkForm').addEventListener('submit', async (e) => {
     });
     e.target.reset();
     if (slug) openWorkSlugs.add(slug);
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
     loadWorks();
   } catch (err) {
     alert(err.message);
@@ -312,11 +439,16 @@ async function loadAbout() {
   const { about } = await api('/api/site');
   const form = document.getElementById('aboutForm');
   form.name.value = about.name;
+<<<<<<< HEAD
+  form.meta.value = about.meta;
+  form.body.value = about.body;
+=======
   form.name_en.value = about.name_en || '';
   form.meta.value = about.meta;
   form.meta_en.value = about.meta_en || '';
   form.body.value = about.body;
   form.body_en.value = about.body_en || '';
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
   document.getElementById('aboutImagePreview').src = imgUrl(about.image);
 }
 
@@ -326,6 +458,9 @@ document.getElementById('aboutForm').addEventListener('submit', async (e) => {
   await api('/api/about', {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
+<<<<<<< HEAD
+    body: JSON.stringify({ name: fd.get('name'), meta: fd.get('meta'), body: fd.get('body') }),
+=======
     body: JSON.stringify({
       name: fd.get('name'),
       name_en: fd.get('name_en'),
@@ -334,6 +469,7 @@ document.getElementById('aboutForm').addEventListener('submit', async (e) => {
       body: fd.get('body'),
       body_en: fd.get('body_en'),
     }),
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
   });
   alert('저장했어요.');
 });
@@ -343,6 +479,10 @@ document.getElementById('aboutImageInput').addEventListener('change', async (e) 
   if (!file) return;
   const fd = new FormData();
   fd.append('image', file);
+<<<<<<< HEAD
+  await api('/api/about/image', { method: 'POST', body: fd });
+  loadAbout();
+=======
   try {
     await api('/api/about/image', { method: 'POST', body: fd });
     loadAbout();
@@ -350,6 +490,7 @@ document.getElementById('aboutImageInput').addEventListener('change', async (e) 
     alert(err.message);
     e.target.value = '';
   }
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 });
 
 // ── CV ──
@@ -390,6 +531,13 @@ function renderCv() {
       row.innerHTML = `
         <input value="${escapeAttr(entry.year)}" placeholder="연도" />
         <input value="${escapeAttr(entry.description)}" placeholder="내용 (HTML 가능, 예: <em>제목</em>, 장소)" />
+<<<<<<< HEAD
+        <button type="button" class="danger">×</button>
+      `;
+      const [yearInput, descInput, removeBtn] = row.children;
+      yearInput.addEventListener('input', (e) => { entry.year = e.target.value; });
+      descInput.addEventListener('input', (e) => { entry.description = e.target.value; });
+=======
         <input value="${escapeAttr(entry.description_en || '')}" placeholder="내용 (EN)" />
         <button type="button" class="danger">×</button>
       `;
@@ -397,6 +545,7 @@ function renderCv() {
       yearInput.addEventListener('input', (e) => { entry.year = e.target.value; });
       descInput.addEventListener('input', (e) => { entry.description = e.target.value; });
       descEnInput.addEventListener('input', (e) => { entry.description_en = e.target.value; });
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
       removeBtn.addEventListener('click', () => {
         section.entries.splice(ei, 1);
         renderCv();
@@ -405,7 +554,11 @@ function renderCv() {
     });
 
     card.querySelector('.add-entry').addEventListener('click', () => {
+<<<<<<< HEAD
+      section.entries.push({ year: '', description: '' });
+=======
       section.entries.push({ year: '', description: '', description_en: '' });
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
       renderCv();
     });
 
@@ -437,6 +590,14 @@ async function loadLab() {
     card.className = 'lab-card thumb-row';
     card.innerHTML = `
       <img src="${imgUrl(item.image)}" alt="" />
+<<<<<<< HEAD
+      <input value="${escapeAttr(item.caption)}" class="lab-caption" />
+      <button type="button" class="danger">삭제</button>
+    `;
+    const [img, captionInput, removeBtn] = card.children;
+    captionInput.addEventListener('change', async () => {
+      const items = lab.items.map((it, idx) => (idx === i ? { ...it, caption: captionInput.value } : it));
+=======
       <input value="${escapeAttr(item.caption)}" class="lab-caption" placeholder="캡션" />
       <input value="${escapeAttr(item.caption_en || '')}" class="lab-caption" placeholder="캡션 (EN)" />
       <button type="button" class="danger">삭제</button>
@@ -446,14 +607,19 @@ async function loadLab() {
       const items = lab.items.map((it, idx) =>
         idx === i ? { ...it, caption: captionInput.value, caption_en: captionEnInput.value } : it
       );
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
       await api('/api/lab', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items }),
       });
+<<<<<<< HEAD
+    });
+=======
     };
     captionInput.addEventListener('change', saveCaptions);
     captionEnInput.addEventListener('change', saveCaptions);
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
     removeBtn.addEventListener('click', async () => {
       await api(`/api/lab/items/${i}`, { method: 'DELETE' });
       loadLab();
@@ -469,6 +635,11 @@ document.getElementById('newLabForm').addEventListener('submit', async (e) => {
   const fd = new FormData();
   fd.append('image', file);
   fd.append('caption', e.target.caption.value);
+<<<<<<< HEAD
+  await api('/api/lab/items', { method: 'POST', body: fd });
+  e.target.reset();
+  loadLab();
+=======
   fd.append('caption_en', e.target.caption_en.value);
   try {
     await api('/api/lab/items', { method: 'POST', body: fd });
@@ -477,6 +648,7 @@ document.getElementById('newLabForm').addEventListener('submit', async (e) => {
   } catch (err) {
     alert(err.message);
   }
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 });
 
 // ── Site (contact/SNS) ──
@@ -505,6 +677,8 @@ document.getElementById('siteForm').addEventListener('submit', async (e) => {
   alert('저장했어요.');
 });
 
+<<<<<<< HEAD
+=======
 // ── Deploy ──
 document.getElementById('deployBtn').addEventListener('click', async () => {
   const btn = document.getElementById('deployBtn');
@@ -531,6 +705,7 @@ document.getElementById('deployBtn').addEventListener('click', async () => {
   }
 });
 
+>>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 loadWorks();
 loadAbout();
 loadCv();
