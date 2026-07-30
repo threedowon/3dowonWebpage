@@ -4,61 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>about — 3Dowon</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css?v=300" />
+  <link rel="stylesheet" href="../styles.css?v=518" />
 
 </head>
-<body>
-  <header class="site-header site-header--bar site-header--simple">
-    <div class="header-bar">
-      <div class="header-bar-col header-bar-col--logo">
-        <a href="index.html" class="sidebar-logo">3Dowon</a>
-      </div>
-      <div class="header-bar-col header-bar-col--back"></div>
-      <div class="header-bar-col header-bar-col--works">
-        <div class="nav-accordion">
-          <a href="index.html" class="nav-cell nav-works">작업</a>
-          <div class="sidebar-controls">
-            <ul class="view-toggle">
-              <li data-view="grid" class="active">그리드</li>
-              <li data-view="index">인덱스</li>
-            </ul>
-            <div class="filter-dropdown-row">
-              <div class="filter-dropdown">
-                <button type="button" class="filter-dropdown-btn" data-filter-group="type" data-default-label="유형" data-mixed-label="혼합"><span class="filter-dropdown-label">유형</span></button>
-                <ul class="filter-checks filter-checks--type" data-filter-panel="type">
-              <li data-filter="type" data-value="설치">설치</li>
-              <li data-filter="type" data-value="영상">영상</li>
-              <li data-filter="type" data-value="퍼포먼스">퍼포먼스</li>
-              <li data-filter="type" data-value="전시">전시</li>
-              <li data-filter="type" data-value="인터랙티브">인터랙티브</li>
-              <li data-filter="type" data-value="프로젝션">프로젝션</li>
-                </ul>
-              </div>
-              <div class="filter-dropdown">
-                <button type="button" class="filter-dropdown-btn" data-filter-group="tech" data-default-label="기술" data-mixed-label="혼합"><span class="filter-dropdown-label">기술</span></button>
-                <ul class="filter-checks filter-checks--tech" data-filter-panel="tech">
-                  <li data-filter="tech" data-value="Unreal">Unreal</li>
-                  <li data-filter="tech" data-value="Unity">Unity</li>
-                  <li data-filter="tech" data-value="Arduino">Arduino</li>
-                  <li data-filter="tech" data-value="3ds Max">3ds Max</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="header-bar-col header-bar-col--nav">
-      <nav class="nav-main nav-main--secondary">
-        <a href="lab.html" class="nav-cell nav-lab">실험</a>
-        <a href="about.html" class="nav-cell nav-about active">소개</a>
-        <a href="cv.html" class="nav-cell nav-cv">이력</a>
-      </nav>
-<div class="header-lang-switch"><a href="../about.html" class="lang-switch-link" data-lang="en">EN</a><span class="lang-switch-sep">/</span><a href="../ko/about.html" class="lang-switch-link active" data-lang="ko" aria-current="true">KO</a></div>
-      </div>
+<body class="is-magda">
+  <header class="mg-top">
+    <div class="mg-top-left">
+      
+      <a href="index.html" class="mg-brand">3Dowon</a>
     </div>
+    <nav class="mg-top-nav" aria-label="Primary">
+      <a href="index.html" class="">홈</a>
+      <a href="works.html" class="">작업</a>
+      <a href="lab.html" class="">실험</a>
+      <a href="about.html" class="is-active">소개</a>
+      <a href="cv.html" class="">이력</a>
+    </nav>
+    <div class="mg-lang"><a href="../about.html" class="lang-switch-link" data-lang="en">EN</a><span class="lang-switch-sep">/</span><a href="../ko/about.html" class="lang-switch-link active" data-lang="ko" aria-current="true">KO</a></div>
   </header>
   <div class="mo-header">
     <a href="index.html" class="mo-logo">3Dowon</a>
@@ -67,28 +29,22 @@
   <nav class="mo-nav" id="moNav" aria-hidden="true">
     <button type="button" class="mo-nav-close" id="moNavClose" aria-label="닫기">×</button>
     <div class="mo-nav-links">
-      <a href="index.html">작업</a>
+      <a href="index.html">홈</a>
+      <a href="works.html">작업</a>
       <a href="lab.html">실험</a>
       <a href="about.html" class="active">소개</a>
       <a href="cv.html">이력</a>
     </div>
     <div class="mo-lang-switch"><a href="../about.html" class="lang-switch-link" data-lang="en">EN</a><span class="lang-switch-sep">/</span><a href="../ko/about.html" class="lang-switch-link active" data-lang="ko" aria-current="true">KO</a></div>
   </nav>
-  <main>
-    <div class="about-box about-sheet">
-      <div class="about-sheet-frame">
-        <div class="about-sheet-head">
-          <span class="about-sheet-label">소개</span>
-          <span class="about-sheet-id">no. 01</span>
-        </div>
-        <div class="about-sheet-body">
-          <div class="about-left">
-            <div class="about-name">삼도원</div>
-            <div class="about-kv">
+  <main class="mg-main">
+    <div class="mg-page about-box">
+      <h1 class="mg-page-title">삼도원</h1>
+      <div class="about-kv">
             <div class="about-kv-row"><span class="about-kv-q">역할</span><span class="about-kv-a">인터랙티브 미디어 아티스트</span></div>
             <div class="about-kv-row"><span class="about-kv-q">출생</span><span class="about-kv-a">1996년생, 대한민국</span></div>
-            </div>
-            <div class="about-section2">
+      </div>
+      <div class="about-section2">
           <p>삼도원은 익숙한 사물에 작은 변화를 더해<br />
             사람들이 공간을 경험하는 방식을 새롭게 제안하는 인터랙티브 미디어 아티스트이다.<br />
             창문, 책, 햇빛, 물, 식물처럼 일상에서 쉽게 마주하는 것들을 출발점으로 삼아,<br />
@@ -102,25 +58,18 @@
             일상의 행동이 작품 속 현실이 되도록 이끈다.</p>
           <p>최근에는 익숙한 사물과 공간에 작은 변화를 더해,<br />
             사람들의 기억과 감각에 오래 머무는 따뜻한 경험을 만드는 작업을 이어가고 있다.</p>
-            </div>
-          </div>
-          <div class="about-right">
-            <div class="about-img" style="background-image:url(https://picsum.photos/seed/3dowon-about/1200/800)"></div>
-          </div>
-        </div>
+      </div>
+      <div class="about-specimen">
+        <img class="about-img img-blur" src="https://picsum.photos/seed/3dowon-about/1200/800" alt="삼도원" loading="lazy" />
       </div>
     </div>
   </main>
-  <footer class="site-footer-bar">
-    <div class="site-footer-bar-group site-footer-bar-group--1">
-      <a href="mailto:3dowon@gmail.com">E. 3dowon@gmail.com</a>
-      <a href="https://instagram.com/3dowon" target="_blank" rel="noopener">I. instagram.com/3dowon</a>
-    </div>
-    <div class="site-footer-bar-group site-footer-bar-group--2">
-      <a href="https://vimeo.com/3dowon" target="_blank" rel="noopener">V. vimeo.com/3dowon</a>
-      <a href="https://youtube.com/@3dowon" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>
-    </div>
+  <footer class="mg-footer">
+    <a href="mailto:3dowon@gmail.com">email</a>
+    <a href="https://instagram.com/3dowon" target="_blank" rel="noopener">instagram</a>
+    <a href="https://vimeo.com/3dowon" target="_blank" rel="noopener">vimeo</a>
+    <a href="https://youtube.com/@3dowon" target="_blank" rel="noopener">youtube</a>
   </footer>
-  <script src="../script.js?v=100"></script>
+  <script src="../script.js?v=315"></script>
 </body>
 </html>

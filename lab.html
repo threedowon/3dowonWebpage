@@ -4,61 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LAB — 3Dowon</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=300" />
+  <link rel="stylesheet" href="styles.css?v=518" />
 
 </head>
-<body>
-  <header class="site-header site-header--bar site-header--simple">
-    <div class="header-bar">
-      <div class="header-bar-col header-bar-col--logo">
-        <a href="index.html" class="sidebar-logo">3Dowon</a>
-      </div>
-      <div class="header-bar-col header-bar-col--back"></div>
-      <div class="header-bar-col header-bar-col--works">
-        <div class="nav-accordion">
-          <a href="index.html" class="nav-cell nav-works">WORKS</a>
-          <div class="sidebar-controls">
-            <ul class="view-toggle">
-              <li data-view="grid" class="active">Grid</li>
-              <li data-view="index">Index</li>
-            </ul>
-            <div class="filter-dropdown-row">
-              <div class="filter-dropdown">
-                <button type="button" class="filter-dropdown-btn" data-filter-group="type" data-default-label="Type" data-mixed-label="Mixed"><span class="filter-dropdown-label">Type</span></button>
-                <ul class="filter-checks filter-checks--type" data-filter-panel="type">
-              <li data-filter="type" data-value="설치">Installation</li>
-              <li data-filter="type" data-value="영상">Video</li>
-              <li data-filter="type" data-value="퍼포먼스">Performance</li>
-              <li data-filter="type" data-value="전시">Exhibition</li>
-              <li data-filter="type" data-value="인터랙티브">Interactive</li>
-              <li data-filter="type" data-value="프로젝션">Projection</li>
-                </ul>
-              </div>
-              <div class="filter-dropdown">
-                <button type="button" class="filter-dropdown-btn" data-filter-group="tech" data-default-label="Technology" data-mixed-label="Mixed"><span class="filter-dropdown-label">Technology</span></button>
-                <ul class="filter-checks filter-checks--tech" data-filter-panel="tech">
-                  <li data-filter="tech" data-value="Unreal">Unreal</li>
-                  <li data-filter="tech" data-value="Unity">Unity</li>
-                  <li data-filter="tech" data-value="Arduino">Arduino</li>
-                  <li data-filter="tech" data-value="3ds Max">3ds Max</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="header-bar-col header-bar-col--nav">
-      <nav class="nav-main nav-main--secondary">
-        <a href="lab.html" class="nav-cell nav-lab active">LAB</a>
-        <a href="about.html" class="nav-cell nav-about">ABOUT</a>
-        <a href="cv.html" class="nav-cell nav-cv">CV</a>
-      </nav>
-<div class="header-lang-switch"><a href="lab.html" class="lang-switch-link active" data-lang="en" aria-current="true">EN</a><span class="lang-switch-sep">/</span><a href="ko/lab.html" class="lang-switch-link" data-lang="ko">KO</a></div>
-      </div>
+<body class="is-magda">
+  <header class="mg-top">
+    <div class="mg-top-left">
+      
+      <a href="index.html" class="mg-brand">3Dowon</a>
     </div>
+    <nav class="mg-top-nav" aria-label="Primary">
+      <a href="index.html" class="">Home</a>
+      <a href="works.html" class="">Works</a>
+      <a href="lab.html" class="is-active">Lab</a>
+      <a href="about.html" class="">About</a>
+      <a href="cv.html" class="">CV</a>
+    </nav>
+    <div class="mg-lang"><a href="lab.html" class="lang-switch-link active" data-lang="en" aria-current="true">EN</a><span class="lang-switch-sep">/</span><a href="ko/lab.html" class="lang-switch-link" data-lang="ko">KO</a></div>
   </header>
   <div class="mo-header">
     <a href="index.html" class="mo-logo">3Dowon</a>
@@ -67,185 +29,165 @@
   <nav class="mo-nav" id="moNav" aria-hidden="true">
     <button type="button" class="mo-nav-close" id="moNavClose" aria-label="Close">×</button>
     <div class="mo-nav-links">
-      <a href="index.html">WORKS</a>
-      <a href="lab.html" class="active">LAB</a>
-      <a href="about.html">ABOUT</a>
+      <a href="index.html">Home</a>
+      <a href="works.html">Works</a>
+      <a href="lab.html" class="active">Lab</a>
+      <a href="about.html">About</a>
       <a href="cv.html">CV</a>
     </div>
     <div class="mo-lang-switch"><a href="lab.html" class="lang-switch-link active" data-lang="en" aria-current="true">EN</a><span class="lang-switch-sep">/</span><a href="ko/lab.html" class="lang-switch-link" data-lang="ko">KO</a></div>
   </nav>
-  <main>
-    <div class="lab-view">
-      <div class="lab-catalog-head">
-        <h1 class="works-catalog-title">Lab Notes</h1>
-      </div>
-      <div class="img-post-box" id="labPostBox">
-        <article class="img-post lab-post span-sq reveal" data-lab-image="https://picsum.photos/seed/lab-sensor/600/750" data-has-video="false">
+  <main class="mg-main">
+    <div class="mg-page lab-view">
+      <h1 class="mg-page-title">Lab</h1>
+      <div class="lab-grid" id="labPostBox">
+        <article class="lab-post" data-lab-image="https://picsum.photos/seed/lab-sensor/600/750" data-has-video="false">
           <button type="button" class="lab-post-trigger" aria-label="Sensor response mapping test">
             <div class="lab-post-media">
-              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(https://picsum.photos/seed/lab-sensor/600/750)"></div>
+              <img class="lab-post-thumb img-blur" src="https://picsum.photos/seed/lab-sensor/600/750" alt="Sensor response mapping test" loading="lazy" />
               
-              <span class="img-post-num">01</span>
             </div>
             <div class="lab-post-caption">Sensor response mapping test</div>
           </button>
         </article>
-        <article class="img-post lab-post span-wide reveal" data-lab-image="https://picsum.photos/seed/lab-unreal/600/750" data-has-video="false">
+        <article class="lab-post" data-lab-image="https://picsum.photos/seed/lab-unreal/600/750" data-has-video="false">
           <button type="button" class="lab-post-trigger" aria-label="Unreal lighting &amp; shadow test">
             <div class="lab-post-media">
-              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(https://picsum.photos/seed/lab-unreal/600/750)"></div>
+              <img class="lab-post-thumb img-blur" src="https://picsum.photos/seed/lab-unreal/600/750" alt="Unreal lighting &amp; shadow test" loading="lazy" />
               
-              <span class="img-post-num">02</span>
             </div>
             <div class="lab-post-caption">Unreal lighting &amp; shadow test</div>
           </button>
         </article>
-        <article class="img-post lab-post span-sq reveal" data-lab-image="https://picsum.photos/seed/lab-window/600/750" data-has-video="false">
+        <article class="lab-post" data-lab-image="https://picsum.photos/seed/lab-window/600/750" data-has-video="false">
           <button type="button" class="lab-post-trigger" aria-label="Window interaction prototype">
             <div class="lab-post-media">
-              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(https://picsum.photos/seed/lab-window/600/750)"></div>
+              <img class="lab-post-thumb img-blur" src="https://picsum.photos/seed/lab-window/600/750" alt="Window interaction prototype" loading="lazy" />
               
-              <span class="img-post-num">03</span>
             </div>
             <div class="lab-post-caption">Window interaction prototype</div>
           </button>
         </article>
-        <article class="img-post lab-post span-tall reveal" data-lab-image="https://picsum.photos/seed/lab-pcomp/600/750" data-has-video="false">
+        <article class="lab-post" data-lab-image="https://picsum.photos/seed/lab-pcomp/600/750" data-has-video="false">
           <button type="button" class="lab-post-trigger" aria-label="Physical computing circuit experiment">
             <div class="lab-post-media">
-              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(https://picsum.photos/seed/lab-pcomp/600/750)"></div>
+              <img class="lab-post-thumb img-blur" src="https://picsum.photos/seed/lab-pcomp/600/750" alt="Physical computing circuit experiment" loading="lazy" />
               
-              <span class="img-post-num">04</span>
             </div>
             <div class="lab-post-caption">Physical computing circuit experiment</div>
           </button>
         </article>
-        <article class="img-post lab-post span-sq reveal" data-lab-image="https://picsum.photos/seed/lab-projection/600/750" data-has-video="false">
+        <article class="lab-post" data-lab-image="https://picsum.photos/seed/lab-projection/600/750" data-has-video="false">
           <button type="button" class="lab-post-trigger" aria-label="Projection calibration">
             <div class="lab-post-media">
-              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(https://picsum.photos/seed/lab-projection/600/750)"></div>
+              <img class="lab-post-thumb img-blur" src="https://picsum.photos/seed/lab-projection/600/750" alt="Projection calibration" loading="lazy" />
               
-              <span class="img-post-num">05</span>
             </div>
             <div class="lab-post-caption">Projection calibration</div>
           </button>
         </article>
-        <article class="img-post lab-post span-sq reveal" data-lab-image="https://picsum.photos/seed/lab-archive/600/750" data-has-video="false">
+        <article class="lab-post" data-lab-image="https://picsum.photos/seed/lab-archive/600/750" data-has-video="false">
           <button type="button" class="lab-post-trigger" aria-label="Archiving previous work">
             <div class="lab-post-media">
-              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(https://picsum.photos/seed/lab-archive/600/750)"></div>
+              <img class="lab-post-thumb img-blur" src="https://picsum.photos/seed/lab-archive/600/750" alt="Archiving previous work" loading="lazy" />
               
-              <span class="img-post-num">06</span>
             </div>
             <div class="lab-post-caption">Archiving previous work</div>
           </button>
         </article>
-        <article class="img-post lab-post span-wide reveal" data-lab-image="https://picsum.photos/seed/lab-touch/600/750" data-has-video="false">
+        <article class="lab-post" data-lab-image="https://picsum.photos/seed/lab-touch/600/750" data-has-video="false">
           <button type="button" class="lab-post-trigger" aria-label="Touch response speed test">
             <div class="lab-post-media">
-              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(https://picsum.photos/seed/lab-touch/600/750)"></div>
+              <img class="lab-post-thumb img-blur" src="https://picsum.photos/seed/lab-touch/600/750" alt="Touch response speed test" loading="lazy" />
               
-              <span class="img-post-num">07</span>
             </div>
             <div class="lab-post-caption">Touch response speed test</div>
           </button>
         </article>
-        <article class="img-post lab-post span-sq reveal" data-lab-image="https://picsum.photos/seed/lab-plant/600/750" data-has-video="false">
+        <article class="lab-post" data-lab-image="https://picsum.photos/seed/lab-plant/600/750" data-has-video="false">
           <button type="button" class="lab-post-trigger" aria-label="Plant signal sensor experiment">
             <div class="lab-post-media">
-              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(https://picsum.photos/seed/lab-plant/600/750)"></div>
+              <img class="lab-post-thumb img-blur" src="https://picsum.photos/seed/lab-plant/600/750" alt="Plant signal sensor experiment" loading="lazy" />
               
-              <span class="img-post-num">08</span>
             </div>
             <div class="lab-post-caption">Plant signal sensor experiment</div>
           </button>
         </article>
-        <article class="img-post lab-post span-tall reveal" data-lab-image="https://picsum.photos/seed/lab-water/600/750" data-has-video="false">
+        <article class="lab-post" data-lab-image="https://picsum.photos/seed/lab-water/600/750" data-has-video="false">
           <button type="button" class="lab-post-trigger" aria-label="Water surface projection test">
             <div class="lab-post-media">
-              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(https://picsum.photos/seed/lab-water/600/750)"></div>
+              <img class="lab-post-thumb img-blur" src="https://picsum.photos/seed/lab-water/600/750" alt="Water surface projection test" loading="lazy" />
               
-              <span class="img-post-num">09</span>
             </div>
             <div class="lab-post-caption">Water surface projection test</div>
           </button>
         </article>
-        <article class="img-post lab-post span-sq reveal" data-lab-image="https://picsum.photos/seed/lab-light/600/750" data-has-video="false">
+        <article class="lab-post" data-lab-image="https://picsum.photos/seed/lab-light/600/750" data-has-video="false">
           <button type="button" class="lab-post-trigger" aria-label="DMX lighting sequence test">
             <div class="lab-post-media">
-              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(https://picsum.photos/seed/lab-light/600/750)"></div>
+              <img class="lab-post-thumb img-blur" src="https://picsum.photos/seed/lab-light/600/750" alt="DMX lighting sequence test" loading="lazy" />
               
-              <span class="img-post-num">10</span>
             </div>
             <div class="lab-post-caption">DMX lighting sequence test</div>
           </button>
         </article>
-        <article class="img-post lab-post span-wide reveal" data-lab-image="https://picsum.photos/seed/lab-audio/600/750" data-has-video="false">
+        <article class="lab-post" data-lab-image="https://picsum.photos/seed/lab-audio/600/750" data-has-video="false">
           <button type="button" class="lab-post-trigger" aria-label="Audio-reactive mapping experiment">
             <div class="lab-post-media">
-              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(https://picsum.photos/seed/lab-audio/600/750)"></div>
+              <img class="lab-post-thumb img-blur" src="https://picsum.photos/seed/lab-audio/600/750" alt="Audio-reactive mapping experiment" loading="lazy" />
               
-              <span class="img-post-num">11</span>
             </div>
             <div class="lab-post-caption">Audio-reactive mapping experiment</div>
           </button>
         </article>
-        <article class="img-post lab-post span-sq reveal" data-lab-image="https://picsum.photos/seed/lab-map/600/750" data-has-video="false">
+        <article class="lab-post" data-lab-image="https://picsum.photos/seed/lab-map/600/750" data-has-video="false">
           <button type="button" class="lab-post-trigger" aria-label="Projection mapping sketch">
             <div class="lab-post-media">
-              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(https://picsum.photos/seed/lab-map/600/750)"></div>
+              <img class="lab-post-thumb img-blur" src="https://picsum.photos/seed/lab-map/600/750" alt="Projection mapping sketch" loading="lazy" />
               
-              <span class="img-post-num">12</span>
             </div>
             <div class="lab-post-caption">Projection mapping sketch</div>
           </button>
         </article>
-        <article class="img-post lab-post span-tall reveal" data-lab-image="https://picsum.photos/seed/lab-servo/600/750" data-has-video="false">
+        <article class="lab-post" data-lab-image="https://picsum.photos/seed/lab-servo/600/750" data-has-video="false">
           <button type="button" class="lab-post-trigger" aria-label="Servo motor prototype">
             <div class="lab-post-media">
-              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(https://picsum.photos/seed/lab-servo/600/750)"></div>
+              <img class="lab-post-thumb img-blur" src="https://picsum.photos/seed/lab-servo/600/750" alt="Servo motor prototype" loading="lazy" />
               
-              <span class="img-post-num">13</span>
             </div>
             <div class="lab-post-caption">Servo motor prototype</div>
           </button>
         </article>
-        <article class="img-post lab-post span-sq reveal" data-lab-image="https://picsum.photos/seed/lab-shader/600/750" data-has-video="false">
+        <article class="lab-post" data-lab-image="https://picsum.photos/seed/lab-shader/600/750" data-has-video="false">
           <button type="button" class="lab-post-trigger" aria-label="Real-time shader experiment">
             <div class="lab-post-media">
-              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(https://picsum.photos/seed/lab-shader/600/750)"></div>
+              <img class="lab-post-thumb img-blur" src="https://picsum.photos/seed/lab-shader/600/750" alt="Real-time shader experiment" loading="lazy" />
               
-              <span class="img-post-num">14</span>
             </div>
             <div class="lab-post-caption">Real-time shader experiment</div>
           </button>
         </article>
-        <article class="img-post lab-post span-sq reveal" data-lab-image="https://picsum.photos/seed/lab-field/600/750" data-has-video="false">
+        <article class="lab-post" data-lab-image="https://picsum.photos/seed/lab-field/600/750" data-has-video="false">
           <button type="button" class="lab-post-trigger" aria-label="On-site installation simulation">
             <div class="lab-post-media">
-              <div class="img-post-thumbimg lab-post-thumb" style="background-image:url(https://picsum.photos/seed/lab-field/600/750)"></div>
+              <img class="lab-post-thumb img-blur" src="https://picsum.photos/seed/lab-field/600/750" alt="On-site installation simulation" loading="lazy" />
               
-              <span class="img-post-num">15</span>
             </div>
             <div class="lab-post-caption">On-site installation simulation</div>
           </button>
         </article>
       </div>
     </div>
-    <div class="lab-lightbox" id="labLightbox">
+    <div class="lab-lightbox" id="labLightbox" hidden>
       <img class="lab-lightbox-img" id="labLightboxImg" alt="" />
     </div>
   </main>
-  <footer class="site-footer-bar">
-    <div class="site-footer-bar-group site-footer-bar-group--1">
-      <a href="mailto:3dowon@gmail.com">E. 3dowon@gmail.com</a>
-      <a href="https://instagram.com/3dowon" target="_blank" rel="noopener">I. instagram.com/3dowon</a>
-    </div>
-    <div class="site-footer-bar-group site-footer-bar-group--2">
-      <a href="https://vimeo.com/3dowon" target="_blank" rel="noopener">V. vimeo.com/3dowon</a>
-      <a href="https://youtube.com/@3dowon" target="_blank" rel="noopener">Y. youtube.com/@3dowon</a>
-    </div>
+  <footer class="mg-footer">
+    <a href="mailto:3dowon@gmail.com">email</a>
+    <a href="https://instagram.com/3dowon" target="_blank" rel="noopener">instagram</a>
+    <a href="https://vimeo.com/3dowon" target="_blank" rel="noopener">vimeo</a>
+    <a href="https://youtube.com/@3dowon" target="_blank" rel="noopener">youtube</a>
   </footer>
-  <script src="script.js?v=100"></script>
+  <script src="script.js?v=315"></script>
 </body>
 </html>
