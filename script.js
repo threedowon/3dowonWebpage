@@ -1,22 +1,39 @@
-// Magda-style: home map, works index, hover thumbs, blur-up images
+// Fixed site tree, hover thumbnails, editorial about interactions, and blur-up images
 
 function initMobileMenu() {
   const btn = document.getElementById('moMenuBtn');
-  const nav = document.getElementById('moNav');
+  const tree = document.getElementById('siteTree');
   const overlay = document.getElementById('moOverlay');
-  const close = document.getElementById('moNavClose');
-  if (!btn || !nav) return;
+  if (!btn || !tree) return;
 
   const setOpen = (open) => {
-    nav.classList.toggle('is-open', open);
+    tree.classList.toggle('is-open', open);
     overlay?.classList.toggle('is-open', open);
-    nav.setAttribute('aria-hidden', open ? 'false' : 'true');
     document.body.style.overflow = open ? 'hidden' : '';
   };
 
-  btn.addEventListener('click', () => setOpen(true));
-  close?.addEventListener('click', () => setOpen(false));
+  btn.addEventListener('click', () => setOpen(!tree.classList.contains('is-open')));
   overlay?.addEventListener('click', () => setOpen(false));
+  tree.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (window.matchMedia('(max-width: 991px)').matches) setOpen(false);
+    });
+  });
+}
+
+function initSiteTree() {
+  document.querySelectorAll('[data-tree-branch]').forEach((branch) => {
+    const toggle = branch.querySelector('.site-tree-toggle');
+    const children = branch.querySelector('.site-tree-children');
+    if (!toggle || !children) return;
+
+    toggle.addEventListener('click', () => {
+      const open = !branch.classList.contains('is-open');
+      branch.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      children.hidden = !open;
+    });
+  });
 }
 
 function markImageLoaded(img) {
@@ -86,9 +103,42 @@ function initThumbFloat() {
   const floatImg = document.getElementById('mgThumbFloatImg');
   if (!float || !floatImg) return;
 
+  const fine = window.matchMedia('(pointer: fine) and (hover: hover)');
+  if (!fine.matches) return;
+
+  let visible = false;
+  let targetX = 0;
+  let targetY = 0;
+  let currentX = 0;
+  let currentY = 0;
+  let raf = 0;
+
   const hide = () => {
+    visible = false;
     float.hidden = true;
     float.classList.remove('is-visible');
+  };
+
+  const tick = () => {
+    currentX += (targetX - currentX) * 0.18;
+    currentY += (targetY - currentY) * 0.18;
+    float.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(1)`;
+    if (visible) raf = requestAnimationFrame(tick);
+    else raf = 0;
+  };
+
+  const move = (event) => {
+    if (!visible) return;
+    const pad = 18;
+    const w = float.offsetWidth || 220;
+    const h = float.offsetHeight || 160;
+    let x = event.clientX + 20;
+    let y = event.clientY + 20;
+    if (x + w + pad > window.innerWidth) x = event.clientX - w - 20;
+    if (y + h + pad > window.innerHeight) y = event.clientY - h - 20;
+    targetX = Math.max(8, x);
+    targetY = Math.max(8, y);
+    if (!raf) raf = requestAnimationFrame(tick);
   };
 
   const showFrom = (img, event) => {
@@ -98,23 +148,22 @@ function initThumbFloat() {
     floatImg.src = img.currentSrc || img.src;
     float.hidden = false;
     float.classList.add('is-visible');
-    move(event);
-  };
-
-  const move = (event) => {
-    if (float.hidden) return;
+    visible = true;
     const pad = 18;
     const w = float.offsetWidth || 220;
     const h = float.offsetHeight || 160;
-    let x = event.clientX + 18;
-    let y = event.clientY + 18;
-    if (x + w + pad > window.innerWidth) x = event.clientX - w - 18;
-    if (y + h + pad > window.innerHeight) y = event.clientY - h - 18;
-    float.style.transform = `translate(${Math.max(8, x)}px, ${Math.max(8, y)}px)`;
+    let x = event.clientX + 20;
+    let y = event.clientY + 20;
+    if (x + w + pad > window.innerWidth) x = event.clientX - w - 20;
+    if (y + h + pad > window.innerHeight) y = event.clientY - h - 20;
+    targetX = currentX = Math.max(8, x);
+    targetY = currentY = Math.max(8, y);
+    float.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(1)`;
+    if (!raf) raf = requestAnimationFrame(tick);
   };
 
-  document.querySelectorAll('.mg-row').forEach((row) => {
-    const thumb = row.querySelector('.mg-row-thumb');
+  document.querySelectorAll('.mg-row, .tree-row--l4, .map-node--leaf, .map-node--l4').forEach((row) => {
+    const thumb = row.querySelector('.mg-row-thumb, .map-leaf-thumb');
     if (!thumb) return;
     row.addEventListener('mouseenter', (e) => showFrom(thumb, e));
     row.addEventListener('mousemove', move);
@@ -130,69 +179,191 @@ function initThumbFloat() {
   });
 }
 
-function initMagdaIndex() {
-  const stage = document.getElementById('mgStage');
-  if (!stage) return;
+function initOrganicProjectField() {
+  const tree = document.getElementById('siteTree');
+  const cards = [...document.querySelectorAll('.t-l4')];
+  const fine = window.matchMedia('(pointer: fine) and (hover: hover)');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!tree || !cards.length || !fine.matches || reduce.matches) return;
 
-  const rows = [...stage.querySelectorAll('.mg-row[data-slug]')];
-  const panels = [...stage.querySelectorAll('.mg-detail-panel[data-slug]')];
-  const empty = stage.querySelector('.mg-detail-empty');
-  if (!rows.length || !panels.length) return;
+  let pointerX = 0;
+  let pointerY = 0;
+  let raf = 0;
 
-  const setActive = (slug, { pushHash = true } = {}) => {
-    if (!slug) return;
-    const panel = panels.find((p) => p.dataset.slug === slug);
-    if (!panel) return;
+  const render = () => {
+    raf = 0;
+    const radius = 280;
 
-    rows.forEach((row) => row.classList.toggle('is-active', row.dataset.slug === slug));
-    panels.forEach((p) => p.classList.toggle('is-active', p.dataset.slug === slug));
-    empty?.classList.add('hidden');
-    stage.dataset.active = slug;
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
 
-    if (pushHash) {
-      const next = `#${slug}`;
-      if (location.hash !== next) history.replaceState(null, '', next);
-    }
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const deltaX = centerX - pointerX;
+      const deltaY = centerY - pointerY;
+      const distance = Math.hypot(deltaX, deltaY);
+      const influence = Math.max(0, 1 - distance / radius);
 
-    if (window.matchMedia('(max-width: 900px)').matches) {
-      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+      if (!influence) {
+        card.style.setProperty('--drift-x', '0px');
+        card.style.setProperty('--drift-y', '0px');
+        card.style.setProperty('--drift-r', '0deg');
+        return;
+      }
+
+      const safeDistance = Math.max(distance, 1);
+      const x = (deltaX / safeDistance) * influence * 11;
+      const y = (deltaY / safeDistance) * influence * 8;
+      const rotation = (deltaX / safeDistance) * influence * 1.4;
+
+      card.style.setProperty('--drift-x', `${x.toFixed(2)}px`);
+      card.style.setProperty('--drift-y', `${y.toFixed(2)}px`);
+      card.style.setProperty('--drift-r', `${rotation.toFixed(2)}deg`);
+    });
   };
 
-  rows.forEach((row) => {
-    row.addEventListener('click', (e) => {
-      e.preventDefault();
-      setActive(row.dataset.slug);
+  tree.addEventListener(
+    'pointermove',
+    (event) => {
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      if (!raf) raf = requestAnimationFrame(render);
+    },
+    { passive: true }
+  );
+
+  tree.addEventListener('pointerleave', () => {
+    cards.forEach((card) => {
+      card.style.setProperty('--drift-x', '0px');
+      card.style.setProperty('--drift-y', '0px');
+      card.style.setProperty('--drift-r', '0deg');
     });
   });
+}
 
-  const fromHash = () => {
-    const raw = decodeURIComponent((location.hash || '').replace(/^#/, ''));
-    if (!raw) {
-      const first = stage.dataset.active || rows[0]?.dataset.slug;
-      if (first) setActive(first, { pushHash: false });
-      return;
-    }
+function initRelationCatalog() {
+  const page = document.getElementById('catalogPage');
+  const preview = document.getElementById('catalogPreview');
+  const previewImage = document.getElementById('catalogPreviewImage');
+  const previewTitle = document.getElementById('catalogPreviewTitle');
+  const previewMeta = document.getElementById('catalogPreviewMeta');
+  const previewLink = document.getElementById('catalogPreviewLink');
+  if (!page || !preview || !previewImage || !previewTitle || !previewMeta || !previewLink) return;
 
-    if (panels.some((p) => p.dataset.slug === raw)) {
-      setActive(raw, { pushHash: false });
-      return;
-    }
+  const points = [...page.querySelectorAll('.catalog-point')];
+  const filters = [...page.querySelectorAll('[data-catalog-filter]')];
+  let selected = null;
+  let changeTimer = 0;
 
-    const branch = document.getElementById(raw);
-    if (branch) {
-      branch.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      const firstInBranch = branch.querySelector('.mg-row[data-slug]');
-      if (firstInBranch) setActive(firstInBranch.dataset.slug, { pushHash: false });
-      return;
-    }
+  const updatePreview = (point) => {
+    if (!point) return;
+    points.forEach((item) => item.classList.toggle('is-selected', item === point));
+    selected = point;
 
-    const first = stage.dataset.active || rows[0]?.dataset.slug;
-    if (first) setActive(first, { pushHash: false });
+    preview.classList.add('is-changing');
+    window.clearTimeout(changeTimer);
+    changeTimer = window.setTimeout(() => {
+      previewImage.src = point.dataset.image || '';
+      previewTitle.textContent = point.dataset.title || '';
+      previewMeta.textContent = point.dataset.meta || '';
+
+      const href = point.dataset.href || '';
+      previewLink.hidden = !href;
+      if (href) previewLink.href = href;
+
+      preview.classList.remove('is-changing');
+      preview.classList.add('is-visible');
+    }, 130);
   };
 
-  window.addEventListener('hashchange', fromHash);
-  fromHash();
+  const applyFilter = (filter) => {
+    filters.forEach((button) => {
+      const active = button.dataset.catalogFilter === filter;
+      button.classList.toggle('is-active', active);
+      button.textContent = button.textContent.replace(/^\[[● ]\]/, active ? '[●]' : '[ ]');
+    });
+
+    points.forEach((point) => {
+      point.hidden = filter !== 'all' && point.dataset.kind !== filter;
+    });
+
+    const next = points.find((point) => !point.hidden);
+    if (selected?.hidden || !selected) updatePreview(next);
+    history.replaceState(null, '', filter === 'lab' ? '#lab' : filter === 'work' ? '#works' : location.pathname);
+  };
+
+  points.forEach((point) => {
+    point.addEventListener('click', () => updatePreview(point));
+    point.addEventListener('focus', () => updatePreview(point));
+  });
+  filters.forEach((button) => {
+    button.addEventListener('click', () => applyFilter(button.dataset.catalogFilter || 'all'));
+  });
+
+  const initialFilter = location.hash === '#lab' ? 'lab' : location.hash === '#works' ? 'work' : 'all';
+  applyFilter(initialFilter);
+}
+
+function initAboutInteraction() {
+  const media = document.querySelector('[data-about-media]');
+  const shell = media?.querySelector('.about-image-shell');
+  if (!shell || !window.matchMedia('(pointer: fine) and (hover: hover)').matches) return;
+
+  const update = (event) => {
+    const rect = shell.getBoundingClientRect();
+    const x = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
+    const y = Math.min(1, Math.max(0, (event.clientY - rect.top) / rect.height));
+
+    shell.style.setProperty('--image-x', `${42 + x * 16}%`);
+    shell.style.setProperty('--image-y', `${42 + y * 16}%`);
+    shell.style.setProperty('--reticle-x', `${x * 100}%`);
+    shell.style.setProperty('--reticle-y', `${y * 100}%`);
+  };
+
+  shell.addEventListener('pointerenter', (event) => {
+    shell.classList.add('is-pointing');
+    update(event);
+  });
+  shell.addEventListener('pointermove', update, { passive: true });
+  shell.addEventListener('pointerleave', () => {
+    shell.classList.remove('is-pointing');
+    shell.style.setProperty('--image-x', '50%');
+    shell.style.setProperty('--image-y', '50%');
+  });
+}
+
+function initReveal() {
+  const nodes = [...document.querySelectorAll('.reveal')];
+  if (!nodes.length) return;
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (reduce.matches) {
+    nodes.forEach((el) => el.classList.add('is-in'));
+    return;
+  }
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-in');
+        io.unobserve(entry.target);
+      });
+    },
+    { root: document.querySelector('.mg-main.page-right') || null, threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+  );
+
+  nodes.forEach((el, i) => {
+    el.style.transitionDelay = `${Math.min(i * 60, 240)}ms`;
+    io.observe(el);
+  });
+}
+
+function initMagdaIndex() {
+  // Right pane owns scrolling (like Magda detail). Reset to top on load.
+  const main = document.querySelector('.mg-main.page-right');
+  if (main) main.scrollTop = 0;
 }
 
 function initLabLightbox() {
@@ -228,15 +399,6 @@ function initLabLightbox() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  initMobileMenu();
-  initBlurUp();
-  initMagdaIndex();
-  initThumbFloat();
-  initLabLightbox();
-  initNodeCursor();
-});
-
 function initNodeCursor() {
   const fine = window.matchMedia('(pointer: fine) and (hover: hover)');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -248,25 +410,34 @@ function initNodeCursor() {
   document.body.appendChild(el);
   document.body.classList.add('has-mg-cursor');
 
-  let x = 0;
-  let y = 0;
+  let targetX = 0;
+  let targetY = 0;
+  let currentX = 0;
+  let currentY = 0;
   let visible = false;
+  let raf = 0;
 
-  const place = () => {
-    el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+  const tick = () => {
+    currentX += (targetX - currentX) * 0.22;
+    currentY += (targetY - currentY) * 0.22;
+    el.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+    raf = requestAnimationFrame(tick);
   };
 
   const onMove = (e) => {
-    x = e.clientX;
-    y = e.clientY;
+    targetX = e.clientX;
+    targetY = e.clientY;
     if (!visible) {
       visible = true;
+      currentX = targetX;
+      currentY = targetY;
       el.classList.add('is-on');
+      if (!raf) raf = requestAnimationFrame(tick);
     }
-    place();
   };
 
-  const interactive = 'a, button, .mg-row, .map-node, .map-strip-item, .lab-post-trigger, .lang-switch-link, .mg-back, summary, [role="button"]';
+  const interactive =
+    'a, button, .mg-row, .t-item, .tree-row, .map-node, .map-node--leaf, .map-node--l4, .map-strip-item, .lab-post-trigger, .lang-switch-link, .mg-back, .site-tree-toggle, summary, [role="button"]';
 
   document.addEventListener('mousemove', onMove, { passive: true });
   document.addEventListener('mouseenter', onMove, { passive: true });
@@ -287,3 +458,17 @@ function initNodeCursor() {
     el.classList.remove('is-on', 'is-hover', 'is-click');
   });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  initMobileMenu();
+  initSiteTree();
+  initBlurUp();
+  initMagdaIndex();
+  initThumbFloat();
+  initOrganicProjectField();
+  initRelationCatalog();
+  initAboutInteraction();
+  initReveal();
+  initLabLightbox();
+  initNodeCursor();
+});

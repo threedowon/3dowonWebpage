@@ -4,56 +4,269 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Neural Garden — 3Dowon</title>
-  <link rel="stylesheet" href="../../styles.css?v=518" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..800&display=swap" />
+  <link rel="stylesheet" href="../../styles.css?v=700" />
 
 </head>
-<body class="is-magda">
-  <header class="mg-top">
-    <div class="mg-top-left">
-      <button type="button" class="btn-back mg-back" onclick="history.back()" aria-label="뒤로"><span class="btn-back-arrow" aria-hidden="true"></span></button>
-      <a href="../index.html" class="mg-brand">3Dowon</a>
-    </div>
-    <nav class="mg-top-nav" aria-label="Primary">
-      <a href="../index.html" class="">홈</a>
-      <a href="../works.html" class="is-active">작업</a>
-      <a href="../lab.html" class="">실험</a>
-      <a href="../about.html" class="">소개</a>
-      <a href="../cv.html" class="">이력</a>
-    </nav>
-    <div class="mg-lang"><a href="../../work/neural-garden.html" class="lang-switch-link" data-lang="en">EN</a><span class="lang-switch-sep">/</span><a href="../../ko/work/neural-garden.html" class="lang-switch-link active" data-lang="ko" aria-current="true">KO</a></div>
-  </header>
+<body class="is-magda has-site-tree">
   <div class="mo-header">
     <a href="../index.html" class="mo-logo">3Dowon</a>
     <button class="mo-menu-btn" id="moMenuBtn" aria-label="메뉴"><span class="mo-menu-icon" aria-hidden="true"></span></button>
   </div>
   <div class="mo-overlay" id="moOverlay"></div>
-  <nav class="mo-nav" id="moNav" aria-hidden="true">
-    <button type="button" class="mo-nav-close" id="moNavClose" aria-label="닫기">×</button>
-    <div class="mo-nav-links">
-      <a href="../index.html">홈</a>
-      <a href="../works.html">작업</a>
-      <a href="../lab.html">실험</a>
-      <a href="../about.html">소개</a>
-      <a href="../cv.html">이력</a>
-    </div>
-    <div class="mo-lang-switch"><a href="../../work/neural-garden.html" class="lang-switch-link" data-lang="en">EN</a><span class="lang-switch-sep">/</span><a href="../../ko/work/neural-garden.html" class="lang-switch-link active" data-lang="ko" aria-current="true">KO</a></div>
-  </nav>
-  <main class="mg-main">
-    <div class="mg-page post-projects">
+  <div class="site-shell">
+  <aside class="site-tree menu-container" id="siteTree" aria-label="Site">
+    <div class="site-tree-lang"><a href="../../work/neural-garden.html" class="lang-switch-link" data-lang="en">EN</a><span class="lang-switch-sep">/</span><a href="../../ko/work/neural-garden.html" class="lang-switch-link active" data-lang="ko" aria-current="true">KO</a></div>
+    <nav class="t-nav">
+      <a href="../index.html" class="t-item t-l1">
+        <i class="t-o" aria-hidden="true"></i>
+        <span class="t-brand">
+          <span class="t-label">3Dowon</span>
+          <span class="t-role">공간과 감각을 다루는 인터랙티브 미디어 작업</span>
+          <span class="t-signal" aria-hidden="true">
+            <span>빛 · 공간 · 입력 · 움직임 · 기억 · 감각 · 빛 · 공간 · 입력 · 움직임 · 기억 · 감각 · </span>
+          </span>
+        </span>
+      </a>
+      <div class="t-branch is-open" data-tree-branch="works">
+        <button type="button" class="t-item t-l2 site-tree-toggle is-active" aria-expanded="true" aria-controls="tree-works-children">
+          <i class="t-o" aria-hidden="true"></i>
+          <span class="t-label">작업</span>
+        </button>
+        <div class="t-children site-tree-children" id="tree-works-children">
+        <div class="t-cat" id="nav-interactive">
+          <a class="t-item t-l3" href="../work/light-archive.html">
+            <i class="t-o" aria-hidden="true"></i>
+            <span class="t-label">인터랙티브</span>
+          </a>
+          <a class="t-item t-l4" href="../work/light-archive.html" data-slug="light-archive">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/light-archive-1783466565780-590609.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Light Archive</span>
+              <span class="t-meta">2025</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/data-bloom.html" data-slug="data-bloom">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/data-bloom-1783536667275-733647.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Data Bloom</span>
+              <span class="t-meta">2024</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/pulse-terrain.html" data-slug="pulse-terrain">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/pulse-terrain-1783536609027-360135.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Pulse Terrain</span>
+              <span class="t-meta">2024 · client</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/resonant-grid.html" data-slug="resonant-grid">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/resonant-grid-1783536731047-388544.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Resonant Grid</span>
+              <span class="t-meta">2024</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/silent-circuit.html" data-slug="silent-circuit">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/silent-circuit-1783536645863-267776.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Silent Circuit</span>
+              <span class="t-meta">2024</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/slow-circuit.html" data-slug="slow-circuit">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/slow-circuit-1783535231223-875608.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Slow Circuit</span>
+              <span class="t-meta">2024</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/sonic-veil.html" data-slug="sonic-veil">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/sonic-veil-1783536089311-914832.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Sonic Veil</span>
+              <span class="t-meta">2024</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/echo-chamber.html" data-slug="echo-chamber">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/01.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">The Piano Room</span>
+              <span class="t-meta">2024</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/layered-city.html" data-slug="layered-city">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/layered-city-1783536481692-955235.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Layered City</span>
+              <span class="t-meta">2023 · client</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/gravity-well.html" data-slug="gravity-well">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/gravity-well-1783536704000-468627.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Gravity Well</span>
+              <span class="t-meta">2022 · client</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/prism-field.html" data-slug="prism-field">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/prism-field-1783536531816-473773.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Prism Field</span>
+              <span class="t-meta">2021 · client</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/dd.html" data-slug="dd">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/dd-1783536105613-917651.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">The Forest</span>
+              <span class="t-meta">2021</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/ghost-frequency.html" data-slug="ghost-frequency">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/ghost-frequency-1783536430417-714178.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Ghost Frequency</span>
+              <span class="t-meta">2020 · client</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/code-landscape.html" data-slug="code-landscape">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/code-landscape-1783536554583-83414.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Code Landscape</span>
+              <span class="t-meta">2018</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/mirror-phase.html" data-slug="mirror-phase">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/mirror-phase-1783536573739-652675.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Mirror Phase</span>
+              <span class="t-meta">2018 · client</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/void-echo.html" data-slug="void-echo">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/void-echo-1783536544789-212566.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Void Echo</span>
+              <span class="t-meta">2018</span>
+            </span>
+          </a>
+        </div>
+        <div class="t-cat" id="nav-video">
+          <a class="t-item t-l3" href="../work/body-signal.html">
+            <i class="t-o" aria-hidden="true"></i>
+            <span class="t-label">영상</span>
+          </a>
+          <a class="t-item t-l4" href="../work/body-signal.html" data-slug="body-signal">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/body-signal-1783535949713-10705.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Body Signal</span>
+              <span class="t-meta">2024 · client</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/breath-map.html" data-slug="breath-map">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/breath-map-1783535966377-272979.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Breath Map</span>
+              <span class="t-meta">2024</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/digital-tides.html" data-slug="digital-tides">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/digital-tides-1783535990640-50128.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Digital Tides</span>
+              <span class="t-meta">2024</span>
+            </span>
+          </a>
+          <a class="t-item t-l4 is-active" href="../work/neural-garden.html" data-slug="neural-garden">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/neural-garden-1783536046701-575663.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Neural Garden</span>
+              <span class="t-meta">2024</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/soft-machine.html" data-slug="soft-machine">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/soft-machine-1783535930416-588092.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Soft Machine</span>
+              <span class="t-meta">2024</span>
+            </span>
+          </a>
+          <a class="t-item t-l4" href="../work/fractal-memory.html" data-slug="fractal-memory">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/fractal-memory-1783536361480-700792.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Fractal Memory</span>
+              <span class="t-meta">2022 · client</span>
+            </span>
+          </a>
+        </div>
+        <div class="t-cat" id="nav-other">
+          <a class="t-item t-l3" href="../work/ambient-loop.html">
+            <i class="t-o" aria-hidden="true"></i>
+            <span class="t-label">작업</span>
+          </a>
+          <a class="t-item t-l4" href="../work/ambient-loop.html" data-slug="ambient-loop">
+            <i class="t-o" aria-hidden="true"></i>
+            <img class="mg-row-thumb img-blur" src="../../assets/uploads/ambient-loop-1783536021604-224324.jpg" alt="" width="22" height="22" loading="lazy" />
+            <span class="t-text">
+              <span class="t-label">Motion Blur</span>
+              <span class="t-meta">2024</span>
+            </span>
+          </a>
+        </div>
+        </div>
+      </div>
+      <a href="../lab.html" class="t-item t-l2">
+        <i class="t-o" aria-hidden="true"></i>
+        <span class="t-label">LAB</span>
+      </a>
+      <a href="../cv.html" class="t-item t-l2">
+        <i class="t-o" aria-hidden="true"></i>
+        <span class="t-label">CV</span>
+      </a>
+    </nav>
+  </aside>
+    <button type="button" class="btn-back mg-back site-tree-back" onclick="history.back()" aria-label="뒤로"><span class="btn-back-arrow" aria-hidden="true"></span></button>
+    <main class="mg-main page-right">
+    <div class="mg-page post-projects" data-slug="neural-garden">
+      <h1 class="post-title">Neural Garden</h1>
+      <p class="post-year">2024</p>
       
       <div class="post-hero">
         <img src="../../assets/uploads/neural-garden-1783536046701-575663.jpg" alt="Neural Garden" class="post-hero-image img-blur" />
       </div>
-      <h1 class="post-title">Neural Garden</h1>
+      <div class="post-des">
+        <p>인공신경망이 생성한 식물 형태가 공간 안에서 자라나고 소멸하는 생성 설치 작품입니다.</p>
+      </div>
       <div class="post-meta">
-        <div class="post-meta-row"><span class="post-meta-q">연도</span><span>2024</span></div>
         <div class="post-meta-row"><span class="post-meta-q">유형</span><span>영상</span></div>
         <div class="post-meta-row"><span class="post-meta-q">매체</span><span>영상</span></div>
         <div class="post-meta-row"><span class="post-meta-q">기술</span><span>Arduino, 실시간 그래픽</span></div>
         <div class="post-meta-row"><span class="post-meta-q">제작</span><span>개인</span></div>
-      </div>
-      <div class="post-des">
-        <p>인공신경망이 생성한 식물 형태가 공간 안에서 자라나고 소멸하는 생성 설치 작품입니다.</p>
       </div>
       <ul class="project-detail-gallery">
           <li class="reveal"><img src="https://picsum.photos/seed/neuralga1/1920/1440" alt="Neural Garden 1" class="project-detail-image img-blur" /></li>
@@ -61,13 +274,17 @@
           <li class="reveal"><img src="https://picsum.photos/seed/neuralga3/1920/1440" alt="Neural Garden 3" class="project-detail-image img-blur" /></li>
       </ul>
     </div>
-  </main>
+    </main>
+    <div class="mg-thumb-float" id="mgThumbFloat" hidden>
+      <img class="img-blur" id="mgThumbFloatImg" alt="" />
+    </div>
   <footer class="mg-footer">
     <a href="mailto:3dowon@gmail.com">email</a>
     <a href="https://instagram.com/3dowon" target="_blank" rel="noopener">instagram</a>
     <a href="https://vimeo.com/3dowon" target="_blank" rel="noopener">vimeo</a>
     <a href="https://youtube.com/@3dowon" target="_blank" rel="noopener">youtube</a>
   </footer>
-  <script src="../../script.js?v=315"></script>
+  </div>
+  <script src="../../script.js?v=400"></script>
 </body>
 </html>
