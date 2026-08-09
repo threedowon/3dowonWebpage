@@ -1,8 +1,8 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '700';
-const JS_VERSION = '400';
+const CSS_VERSION = '704';
+const JS_VERSION = '404';
 
 const STR = {
   en: {
@@ -660,37 +660,62 @@ function clampCoordinate(value) {
   return Math.max(9, Math.min(91, value));
 }
 
-function workCoordinates(work) {
-  const terms = `${(work.tags || []).join(' ')} ${work.type || ''} ${work.meta_type || ''}`.toLowerCase();
-  const tech = `${(work.tech || []).join(' ')} ${work.meta_tech || ''}`.toLowerCase();
-  const seed = stableSeed(work.slug);
-  let x = 50;
-  let y = 52;
+const CATALOG_SKILLS = [
+  { key: 'installation', en: 'Installation', ko: '설치', x: 9, y: 12 },
+  { key: 'interactive', en: 'Interactive', ko: '인터랙티브', x: 31, y: 9 },
+  { key: 'unreal', en: 'Unreal', ko: 'Unreal', x: 55, y: 12 },
+  { key: 'sensors', en: 'Sensors / Arduino', ko: '센서 / Arduino', x: 82, y: 10 },
+  { key: 'projection', en: 'Projection', ko: '프로젝션', x: 13, y: 90 },
+  { key: 'realtime', en: 'Real-time graphics', ko: '실시간 그래픽', x: 50, y: 91 },
+  { key: 'moving-image', en: 'Moving image', ko: '영상', x: 84, y: 88 },
+];
 
-  if (/영상|video|moving/.test(terms)) {
-    x = 76;
-    y = 72;
-  }
-  if (/설치|installation|exhibition/.test(terms)) x = 27;
-  if (/프로젝션|projection/.test(terms)) x = 61;
-  if (/인터랙티브|interactive/.test(terms)) y = 27;
-  if (/퍼포먼스|performance/.test(terms)) y = 44;
-  if (/arduino|sensor|센서|physical/.test(tech)) x -= 8;
-  if (/unreal|touchdesigner|shader|premiere/.test(tech)) x += 8;
-
-  x += (seed % 17) - 8;
-  y += (Math.floor(seed / 17) % 17) - 8;
-  return [clampCoordinate(x), clampCoordinate(y)];
+function workSkillKeys(work) {
+  const terms = `${(work.tags || []).join(' ')} ${work.type || ''} ${work.meta_type || ''} ${
+    work.meta_type_en || ''
+  }`.toLowerCase();
+  const tech = `${(work.tech || []).join(' ')} ${work.meta_tech || ''} ${work.meta_tech_en || ''}`.toLowerCase();
+  const skills = [];
+  if (/설치|installation|exhibition/.test(terms)) skills.push('installation');
+  if (/인터랙티브|interactive/.test(terms)) skills.push('interactive');
+  if (/unreal/.test(tech)) skills.push('unreal');
+  if (/arduino|sensor|센서|physical/.test(tech)) skills.push('sensors');
+  if (/프로젝션|projection|mapping/.test(`${terms} ${tech}`)) skills.push('projection');
+  if (/touchdesigner|shader|real.?time|실시간/.test(tech)) skills.push('realtime');
+  if (/영상|video|moving|premiere/.test(`${terms} ${tech}`)) skills.push('moving-image');
+  return [...new Set(skills.length ? skills : ['realtime'])];
 }
 
-function labCoordinates(item, index) {
+function labSkillKeys(item) {
   const caption = `${item.caption || ''} ${item.caption_en || ''}`.toLowerCase();
-  const seed = stableSeed(caption || index);
-  let x = /sensor|touch|plant|servo|physical|센서|터치|식물|서보|피지컬/.test(caption) ? 24 : 68;
-  let y = /archive|sketch|아카이브|스케치/.test(caption) ? 72 : 38;
-  x += (seed % 23) - 11;
-  y += (Math.floor(seed / 23) % 27) - 13;
-  return [clampCoordinate(x), clampCoordinate(y)];
+  const skills = [];
+  if (/installation|on-site|설치|현장/.test(caption)) skills.push('installation');
+  if (/interaction|touch|인터랙션|터치/.test(caption)) skills.push('interactive');
+  if (/unreal/.test(caption)) skills.push('unreal');
+  if (/sensor|arduino|plant|servo|circuit|센서|식물|서보|회로/.test(caption)) skills.push('sensors');
+  if (/projection|mapping|light|water|프로젝션|맵핑|조명|물/.test(caption)) skills.push('projection');
+  if (/shader|audio|dmx|real-time|셰이더|오디오|실시간/.test(caption)) skills.push('realtime');
+  if (/archive|아카이브/.test(caption)) skills.push('moving-image');
+  return [...new Set(skills.length ? skills : ['realtime'])];
+}
+
+function timelineCoordinates(work) {
+  const seed = stableSeed(work.slug);
+  const year = Number(work.year) || 2024;
+  const x = 11 + ((Math.max(2018, Math.min(2025, year)) - 2018) / 7) * 78 + ((seed % 13) - 6);
+  const skills = workSkillKeys(work);
+  let y = skills.includes('installation') ? 31 : skills.includes('moving-image') ? 68 : 49;
+  if (skills.includes('interactive')) y = 43;
+  if (skills.includes('projection')) y += 9;
+  y += (Math.floor(seed / 13) % 15) - 7;
+  return [Math.max(9, Math.min(87, x)), Math.max(22, Math.min(78, y))];
+}
+
+function labTimelineCoordinates(item, index) {
+  const seed = stableSeed(item.caption_en || item.caption || index);
+  const x = 12 + (index % 8) * 10.8 + ((seed % 7) - 3);
+  const y = 79 + Math.floor(index / 8) * 5 + ((Math.floor(seed / 7) % 7) - 3);
+  return [clampCoordinate(x), Math.max(75, Math.min(87, y))];
 }
 
 function buildHome(works, site, lang, about, lab) {
@@ -710,31 +735,42 @@ function buildHome(works, site, lang, about, lab) {
 function buildWorks(works, lab, site, lang) {
   const { assetPrefix } = prefixes(lang, false);
   const first = works[0];
+  const firstTitle = escapeHtml(workTitle(first, lang));
+  const firstMeta = escapeHtml(
+    `${first.year || ''} · ${pick(first, 'meta_type', lang) || pick(first, 'grid_type_label', lang) || ''}`
+  );
+  const firstImage = resolveMediaPath(first.hero_image || first.thumbnail, assetPrefix);
   const workPoints = works
     .map((work) => {
-      const [x, y] = workCoordinates(work);
+      const [x, y] = timelineCoordinates(work);
+      const skills = workSkillKeys(work).join(' ');
       const title = escapeHtml(workTitle(work, lang));
       const meta = escapeHtml(pick(work, 'meta_type', lang) || pick(work, 'grid_type_label', lang) || '');
       const image = resolveMediaPath(work.hero_image || work.thumbnail, assetPrefix);
-      return `        <button class="catalog-point catalog-point--work" type="button"
+      return `        <a class="catalog-point catalog-point--work"
+          href="work/${work.slug}.html"
           style="--x:${x}%;--y:${y}%"
           data-kind="work"
+          data-year="${work.year || ''}"
+          data-skills="${skills}"
           data-title="${title}"
           data-meta="${escapeHtml(`${work.year || ''} · ${meta}`)}"
-          data-image="${image}"
-          data-href="work/${work.slug}.html">
+          data-image="${image}">
           <span>${title}</span>
-        </button>`;
+        </a>`;
     })
     .join('\n');
   const labPoints = lab.items
     .map((item, index) => {
-      const [x, y] = labCoordinates(item, index);
+      const [x, y] = labTimelineCoordinates(item, index);
+      const skills = labSkillKeys(item).join(' ');
       const caption = escapeHtml(pick(item, 'caption', lang) || '');
       const image = resolveMediaPath(item.image, assetPrefix);
       return `        <button class="catalog-point catalog-point--lab" type="button"
           style="--x:${x}%;--y:${y}%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="${skills}"
           data-title="${caption}"
           data-meta="${lang === 'ko' ? 'LAB · 진행 중인 실험' : 'LAB · ongoing experiment'}"
           data-image="${image}">
@@ -742,36 +778,35 @@ function buildWorks(works, lab, site, lang) {
         </button>`;
     })
     .join('\n');
-  const firstTitle = escapeHtml(workTitle(first, lang));
-  const firstMeta = escapeHtml(
-    `${first.year || ''} · ${pick(first, 'meta_type', lang) || pick(first, 'grid_type_label', lang) || ''}`
-  );
-  const firstImage = resolveMediaPath(first.hero_image || first.thumbnail, assetPrefix);
+  const skillHubs = CATALOG_SKILLS.map(
+    (skill) => `        <button class="catalog-skill" type="button"
+          style="--x:${skill.x}%;--y:${skill.y}%"
+          data-skill="${skill.key}">[${escapeHtml(skill[lang])}]</button>`
+  ).join('\n');
+  const yearLabels = Array.from(
+    { length: 8 },
+    (_, index) =>
+      `        <span style="--x:${11 + (index / 7) * 78}%">${2018 + index}</span>`
+  ).join('\n');
   const copy =
     lang === 'ko'
       ? {
-          title: '관계 인덱스',
-          physical: '물리적 / 공간',
-          digital: '디지털 / 화면',
-          participate: '참여 / 반응',
-          observe: '관찰 / 기록',
+          title: '작업 시스템',
           all: '전체',
           works: '작업',
           lab: '실험',
-          instruction: '프로젝트명을 선택하면 이미지가 나타납니다.',
-          open: '프로젝트 열기',
+          instruction: '프로젝트 호버: 이미지 · 클릭: 상세 페이지 · 역량 호버: 연결 강조',
+          timeline: '개발 흐름',
+          labLine: '실험 / 다음 단계',
         }
       : {
-          title: 'Relation index',
-          physical: 'physical / spatial',
-          digital: 'digital / screen',
-          participate: 'participation / response',
-          observe: 'observation / record',
+          title: 'Practice system',
           all: 'all',
           works: 'works',
           lab: 'lab',
-          instruction: 'Select a project title to reveal its image.',
-          open: 'Open project',
+          instruction: 'Hover project: image · click: detail · hover skill: trace relationships',
+          timeline: 'development flow',
+          labLine: 'experiments / next',
         };
   const body = `    <main class="catalog-page" id="catalogPage">
       <header class="catalog-header">
@@ -796,24 +831,28 @@ function buildWorks(works, lab, site, lang) {
       </div>
 
       <section class="catalog-map" aria-label="${copy.title}">
-        <span class="catalog-axis-label catalog-axis-label--left">${copy.physical}</span>
-        <span class="catalog-axis-label catalog-axis-label--right">${copy.digital}</span>
-        <span class="catalog-axis-label catalog-axis-label--top">${copy.participate}</span>
-        <span class="catalog-axis-label catalog-axis-label--bottom">${copy.observe}</span>
+        <div class="catalog-year-axis" aria-hidden="true">
+          <b>${copy.timeline}</b>
+${yearLabels}
+        </div>
+        <span class="catalog-lab-line">${copy.labLine}</span>
+        <svg class="catalog-connections" id="catalogConnections" aria-hidden="true"></svg>
+        <div class="catalog-skills">
+${skillHubs}
+        </div>
         <div class="catalog-points">
 ${workPoints}
 ${labPoints}
         </div>
       </section>
 
-      <aside class="catalog-preview is-visible" id="catalogPreview" aria-live="polite">
+      <aside class="catalog-preview" id="catalogPreview" aria-live="polite">
         <div class="catalog-preview-media">
           <img id="catalogPreviewImage" src="${firstImage}" alt="" />
         </div>
         <div class="catalog-preview-info">
           <strong id="catalogPreviewTitle">${firstTitle}</strong>
           <span id="catalogPreviewMeta">${firstMeta}</span>
-          <a id="catalogPreviewLink" href="work/${first.slug}.html">${copy.open} ↗</a>
         </div>
       </aside>
     </main>`;

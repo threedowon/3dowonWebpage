@@ -244,37 +244,108 @@ function initOrganicProjectField() {
 
 function initRelationCatalog() {
   const page = document.getElementById('catalogPage');
+  const map = page?.querySelector('.catalog-map');
+  const svg = document.getElementById('catalogConnections');
   const preview = document.getElementById('catalogPreview');
   const previewImage = document.getElementById('catalogPreviewImage');
   const previewTitle = document.getElementById('catalogPreviewTitle');
   const previewMeta = document.getElementById('catalogPreviewMeta');
-  const previewLink = document.getElementById('catalogPreviewLink');
-  if (!page || !preview || !previewImage || !previewTitle || !previewMeta || !previewLink) return;
+  if (!page || !map || !svg || !preview || !previewImage || !previewTitle || !previewMeta) return;
 
   const points = [...page.querySelectorAll('.catalog-point')];
+  const hubs = [...page.querySelectorAll('.catalog-skill')];
   const filters = [...page.querySelectorAll('[data-catalog-filter]')];
-  let selected = null;
-  let changeTimer = 0;
+  let drawFrame = 0;
+  let activePoint = null;
 
-  const updatePreview = (point) => {
-    if (!point) return;
-    points.forEach((item) => item.classList.toggle('is-selected', item === point));
-    selected = point;
+  const skillsOf = (element) => (element.dataset.skills || '').split(/\s+/).filter(Boolean);
+  const centerInMap = (element, mapRect) => {
+    const rect = element.getBoundingClientRect();
+    return {
+      x: rect.left - mapRect.left + rect.width / 2,
+      y: rect.top - mapRect.top + rect.height / 2,
+    };
+  };
 
-    preview.classList.add('is-changing');
-    window.clearTimeout(changeTimer);
-    changeTimer = window.setTimeout(() => {
-      previewImage.src = point.dataset.image || '';
-      previewTitle.textContent = point.dataset.title || '';
-      previewMeta.textContent = point.dataset.meta || '';
+  const drawConnections = () => {
+    drawFrame = 0;
+    const mapRect = map.getBoundingClientRect();
+    svg.setAttribute('viewBox', `0 0 ${mapRect.width} ${mapRect.height}`);
+    svg.replaceChildren();
 
-      const href = point.dataset.href || '';
-      previewLink.hidden = !href;
-      if (href) previewLink.href = href;
+    hubs.forEach((hub) => {
+      const skill = hub.dataset.skill;
+      const related = points
+        .filter((point) => !point.hidden && skillsOf(point).includes(skill))
+        .sort((a, b) => Number(a.dataset.year || 9999) - Number(b.dataset.year || 9999));
+      if (!related.length) return;
 
-      preview.classList.remove('is-changing');
-      preview.classList.add('is-visible');
-    }, 130);
+      const positions = [centerInMap(hub, mapRect), ...related.map((point) => centerInMap(point, mapRect))];
+      let d = `M ${positions[0].x} ${positions[0].y}`;
+      for (let index = 1; index < positions.length; index += 1) {
+        const previous = positions[index - 1];
+        const current = positions[index];
+        const midX = (previous.x + current.x) / 2;
+        d += ` C ${midX} ${previous.y}, ${midX} ${current.y}, ${current.x} ${current.y}`;
+      }
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('class', 'catalog-connection');
+      path.dataset.skill = skill;
+      svg.appendChild(path);
+    });
+  };
+
+  const scheduleConnections = () => {
+    if (!drawFrame) drawFrame = requestAnimationFrame(drawConnections);
+  };
+
+  const highlightSkills = (skills) => {
+    const active = new Set(skills);
+    map.classList.toggle('is-inspecting', active.size > 0);
+    map.querySelectorAll('.catalog-connection').forEach((path) => {
+      path.classList.toggle('is-highlighted', active.has(path.dataset.skill));
+    });
+    hubs.forEach((hub) => hub.classList.toggle('is-related', active.has(hub.dataset.skill)));
+    points.forEach((point) => {
+      point.classList.toggle('is-related', skillsOf(point).some((skill) => active.has(skill)));
+    });
+  };
+
+  const clearHighlight = () => {
+    map.classList.remove('is-inspecting');
+    map.querySelectorAll('.is-highlighted, .is-related').forEach((element) => {
+      element.classList.remove('is-highlighted', 'is-related');
+    });
+  };
+
+  const movePreview = (event) => {
+    const width = preview.offsetWidth || 300;
+    const height = preview.offsetHeight || 240;
+    let x = event.clientX + 18;
+    let y = event.clientY + 18;
+    if (x + width + 16 > window.innerWidth) x = event.clientX - width - 18;
+    if (y + height + 16 > window.innerHeight) y = event.clientY - height - 18;
+    preview.classList.add('is-following');
+    preview.style.transform = `translate3d(${Math.max(10, x)}px, ${Math.max(10, y)}px, 0)`;
+  };
+
+  const showPreview = (point, event) => {
+    activePoint = point;
+    previewImage.src = point.dataset.image || '';
+    previewTitle.textContent = point.dataset.title || '';
+    previewMeta.textContent = point.dataset.meta || '';
+    preview.classList.add('is-visible');
+    movePreview(event);
+    highlightSkills(skillsOf(point));
+  };
+
+  const hidePreview = () => {
+    activePoint = null;
+    preview.classList.remove('is-visible', 'is-following');
+    preview.style.transform = '';
+    clearHighlight();
   };
 
   const applyFilter = (filter) => {
@@ -288,14 +359,66 @@ function initRelationCatalog() {
       point.hidden = filter !== 'all' && point.dataset.kind !== filter;
     });
 
-    const next = points.find((point) => !point.hidden);
-    if (selected?.hidden || !selected) updatePreview(next);
+    hidePreview();
+    scheduleConnections();
     history.replaceState(null, '', filter === 'lab' ? '#lab' : filter === 'work' ? '#works' : location.pathname);
   };
 
   points.forEach((point) => {
-    point.addEventListener('click', () => updatePreview(point));
-    point.addEventListener('focus', () => updatePreview(point));
+    point.addEventListener('pointerenter', (event) => showPreview(point, event));
+    point.addEventListener('pointermove', movePreview, { passive: true });
+    point.addEventListener('pointerleave', hidePreview);
+    point.addEventListener('focus', () => {
+      const rect = point.getBoundingClientRect();
+      showPreview(point, { clientX: rect.right, clientY: rect.top });
+    });
+    point.addEventListener('blur', hidePreview);
+  });
+  map.addEventListener('mouseover', (event) => {
+    const point = event.target.closest('.catalog-point');
+    if (point && point !== activePoint) showPreview(point, event);
+  });
+  map.addEventListener(
+    'mousemove',
+    (event) => {
+      let point = event.target.closest('.catalog-point');
+
+      if (!point) {
+        let nearest = null;
+        let nearestDistance = 56;
+        points.forEach((candidate) => {
+          if (candidate.hidden) return;
+          const rect = candidate.getBoundingClientRect();
+          const dx = Math.max(rect.left - event.clientX, 0, event.clientX - rect.right);
+          const dy = Math.max(rect.top - event.clientY, 0, event.clientY - rect.bottom);
+          const distance = Math.hypot(dx, dy);
+          if (distance < nearestDistance) {
+            nearest = candidate;
+            nearestDistance = distance;
+          }
+        });
+        point = nearest;
+      }
+
+      if (point !== activePoint) {
+        if (point) showPreview(point, event);
+        else if (activePoint) hidePreview();
+      } else if (point) {
+        movePreview(event);
+      }
+    },
+    { passive: true }
+  );
+  map.addEventListener('mouseout', (event) => {
+    const point = event.target.closest('.catalog-point');
+    if (point && !point.contains(event.relatedTarget)) hidePreview();
+  });
+  map.addEventListener('mouseleave', hidePreview);
+  hubs.forEach((hub) => {
+    hub.addEventListener('pointerenter', () => highlightSkills([hub.dataset.skill]));
+    hub.addEventListener('pointerleave', clearHighlight);
+    hub.addEventListener('focus', () => highlightSkills([hub.dataset.skill]));
+    hub.addEventListener('blur', clearHighlight);
   });
   filters.forEach((button) => {
     button.addEventListener('click', () => applyFilter(button.dataset.catalogFilter || 'all'));
@@ -303,6 +426,8 @@ function initRelationCatalog() {
 
   const initialFilter = location.hash === '#lab' ? 'lab' : location.hash === '#works' ? 'work' : 'all';
   applyFilter(initialFilter);
+  new ResizeObserver(scheduleConnections).observe(map);
+  window.addEventListener('load', scheduleConnections, { once: true });
 }
 
 function initAboutInteraction() {

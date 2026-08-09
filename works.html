@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..800&display=swap" />
-  <link rel="stylesheet" href="styles.css?v=700" />
+  <link rel="stylesheet" href="styles.css?v=704" />
 
 </head>
 <body class="is-magda has-site-tree page-catalog">
@@ -18,7 +18,7 @@
         <a class="catalog-brand" href="index.html">3Dowon</a>
         <div>
           <span class="catalog-kicker">3D / 01</span>
-          <h1>Relation index</h1>
+          <h1>Practice system</h1>
         </div>
         <nav class="catalog-nav" aria-label="Sections">
           <a href="about.html">About</a>
@@ -32,337 +32,445 @@
           <button type="button" data-catalog-filter="work">[ ] works</button>
           <button type="button" data-catalog-filter="lab">[ ] lab</button>
         </div>
-        <p>Select a project title to reveal its image.</p>
+        <p>Hover project: image · click: detail · hover skill: trace relationships</p>
       </div>
 
-      <section class="catalog-map" aria-label="Relation index">
-        <span class="catalog-axis-label catalog-axis-label--left">physical / spatial</span>
-        <span class="catalog-axis-label catalog-axis-label--right">digital / screen</span>
-        <span class="catalog-axis-label catalog-axis-label--top">participation / response</span>
-        <span class="catalog-axis-label catalog-axis-label--bottom">observation / record</span>
+      <section class="catalog-map" aria-label="Practice system">
+        <div class="catalog-year-axis" aria-hidden="true">
+          <b>development flow</b>
+        <span style="--x:11%">2018</span>
+        <span style="--x:22.142857142857142%">2019</span>
+        <span style="--x:33.285714285714285%">2020</span>
+        <span style="--x:44.42857142857142%">2021</span>
+        <span style="--x:55.57142857142857%">2022</span>
+        <span style="--x:66.71428571428572%">2023</span>
+        <span style="--x:77.85714285714285%">2024</span>
+        <span style="--x:89%">2025</span>
+        </div>
+        <span class="catalog-lab-line">experiments / next</span>
+        <svg class="catalog-connections" id="catalogConnections" aria-hidden="true"></svg>
+        <div class="catalog-skills">
+        <button class="catalog-skill" type="button"
+          style="--x:9%;--y:12%"
+          data-skill="installation">[Installation]</button>
+        <button class="catalog-skill" type="button"
+          style="--x:31%;--y:9%"
+          data-skill="interactive">[Interactive]</button>
+        <button class="catalog-skill" type="button"
+          style="--x:55%;--y:12%"
+          data-skill="unreal">[Unreal]</button>
+        <button class="catalog-skill" type="button"
+          style="--x:82%;--y:10%"
+          data-skill="sensors">[Sensors / Arduino]</button>
+        <button class="catalog-skill" type="button"
+          style="--x:13%;--y:90%"
+          data-skill="projection">[Projection]</button>
+        <button class="catalog-skill" type="button"
+          style="--x:50%;--y:91%"
+          data-skill="realtime">[Real-time graphics]</button>
+        <button class="catalog-skill" type="button"
+          style="--x:84%;--y:88%"
+          data-skill="moving-image">[Moving image]</button>
+        </div>
         <div class="catalog-points">
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:22%;--y:24%"
+        <a class="catalog-point catalog-point--work"
+          href="work/light-archive.html"
+          style="--x:86%;--y:39%"
           data-kind="work"
+          data-year="2025"
+          data-skills="installation interactive unreal sensors realtime moving-image"
           data-title="Light Archive"
           data-meta="2025 · Installation, Exhibition, Interactive"
-          data-image="assets/uploads/light-archive-1783466565780-590609.jpg"
-          data-href="work/light-archive.html">
+          data-image="assets/uploads/light-archive-1783466565780-590609.jpg">
           <span>Light Archive</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:86%;--y:80%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/body-signal.html"
+          style="--x:79.85714285714285%;--y:74%"
           data-kind="work"
+          data-year="2024"
+          data-skills="unreal moving-image"
           data-title="Body Signal"
           data-meta="2024 · Video"
-          data-image="assets/uploads/body-signal-1783535949713-10705.jpg"
-          data-href="work/body-signal.html">
+          data-image="assets/uploads/body-signal-1783535949713-10705.jpg">
           <span>Body Signal</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:77%;--y:73%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/breath-map.html"
+          style="--x:74.85714285714285%;--y:74%"
           data-kind="work"
+          data-year="2024"
+          data-skills="unreal sensors moving-image"
           data-title="Breath Map"
           data-meta="2024 · Video"
-          data-image="assets/uploads/breath-map-1783535966377-272979.jpg"
-          data-href="work/breath-map.html">
+          data-image="assets/uploads/breath-map-1783535966377-272979.jpg">
           <span>Breath Map</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:54%;--y:21%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/data-bloom.html"
+          style="--x:78.85714285714285%;--y:47%"
           data-kind="work"
+          data-year="2024"
+          data-skills="interactive unreal sensors"
           data-title="Data Bloom"
           data-meta="2024 · Interactive"
-          data-image="assets/uploads/data-bloom-1783536667275-733647.jpg"
-          data-href="work/data-bloom.html">
+          data-image="assets/uploads/data-bloom-1783536667275-733647.jpg">
           <span>Data Bloom</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:77%;--y:64%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/digital-tides.html"
+          style="--x:78.85714285714285%;--y:72%"
           data-kind="work"
+          data-year="2024"
+          data-skills="unreal realtime moving-image"
           data-title="Digital Tides"
           data-meta="2024 · Video"
-          data-image="assets/uploads/digital-tides-1783535990640-50128.jpg"
-          data-href="work/digital-tides.html">
+          data-image="assets/uploads/digital-tides-1783535990640-50128.jpg">
           <span>Digital Tides</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:80%;--y:67%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/ambient-loop.html"
+          style="--x:78.85714285714285%;--y:33%"
           data-kind="work"
+          data-year="2024"
+          data-skills="installation unreal moving-image"
           data-title="Motion Blur"
           data-meta="2024 · Exhibition"
-          data-image="assets/uploads/ambient-loop-1783536021604-224324.jpg"
-          data-href="work/ambient-loop.html">
+          data-image="assets/uploads/ambient-loop-1783536021604-224324.jpg">
           <span>Motion Blur</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:84%;--y:76%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/neural-garden.html"
+          style="--x:73.85714285714285%;--y:67%"
           data-kind="work"
+          data-year="2024"
+          data-skills="unreal sensors realtime moving-image"
           data-title="Neural Garden"
           data-meta="2024 · Video"
-          data-image="assets/uploads/neural-garden-1783536046701-575663.jpg"
-          data-href="work/neural-garden.html">
+          data-image="assets/uploads/neural-garden-1783536046701-575663.jpg">
           <span>Neural Garden</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:45%;--y:20%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/pulse-terrain.html"
+          style="--x:74.85714285714285%;--y:41%"
           data-kind="work"
+          data-year="2024"
+          data-skills="interactive unreal sensors realtime"
           data-title="Pulse Terrain"
           data-meta="2024 · Interactive"
-          data-image="assets/uploads/pulse-terrain-1783536609027-360135.jpg"
-          data-href="work/pulse-terrain.html">
+          data-image="assets/uploads/pulse-terrain-1783536609027-360135.jpg">
           <span>Pulse Terrain</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:42%;--y:20%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/resonant-grid.html"
+          style="--x:81.85714285714285%;--y:48%"
           data-kind="work"
+          data-year="2024"
+          data-skills="interactive unreal sensors"
           data-title="Resonant Grid"
           data-meta="2024 · Interactive"
-          data-image="assets/uploads/resonant-grid-1783536731047-388544.jpg"
-          data-href="work/resonant-grid.html">
+          data-image="assets/uploads/resonant-grid-1783536731047-388544.jpg">
           <span>Resonant Grid</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:53%;--y:19%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/silent-circuit.html"
+          style="--x:83.85714285714285%;--y:38%"
           data-kind="work"
+          data-year="2024"
+          data-skills="interactive unreal sensors"
           data-title="Silent Circuit"
           data-meta="2024 · Interactive"
-          data-image="assets/uploads/silent-circuit-1783536645863-267776.jpg"
-          data-href="work/silent-circuit.html">
+          data-image="assets/uploads/silent-circuit-1783536645863-267776.jpg">
           <span>Silent Circuit</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:52%;--y:20%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/slow-circuit.html"
+          style="--x:79.85714285714285%;--y:50%"
           data-kind="work"
+          data-year="2024"
+          data-skills="interactive unreal sensors realtime"
           data-title="Slow Circuit"
           data-meta="2024 · Interactive"
-          data-image="assets/uploads/slow-circuit-1783535231223-875608.jpg"
-          data-href="work/slow-circuit.html">
+          data-image="assets/uploads/slow-circuit-1783535231223-875608.jpg">
           <span>Slow Circuit</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:76%;--y:74%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/soft-machine.html"
+          style="--x:81.85714285714285%;--y:72%"
           data-kind="work"
+          data-year="2024"
+          data-skills="unreal sensors moving-image"
           data-title="Soft Machine"
           data-meta="2024 · Video"
-          data-image="assets/uploads/soft-machine-1783535930416-588092.jpg"
-          data-href="work/soft-machine.html">
+          data-image="assets/uploads/soft-machine-1783535930416-588092.jpg">
           <span>Soft Machine</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:64%;--y:20%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/sonic-veil.html"
+          style="--x:76.85714285714285%;--y:46%"
           data-kind="work"
+          data-year="2024"
+          data-skills="interactive unreal realtime"
           data-title="Sonic Veil"
           data-meta="2024 · Interactive"
-          data-image="assets/uploads/sonic-veil-1783536089311-914832.jpg"
-          data-href="work/sonic-veil.html">
+          data-image="assets/uploads/sonic-veil-1783536089311-914832.jpg">
           <span>Sonic Veil</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:35%;--y:22%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/echo-chamber.html"
+          style="--x:74.85714285714285%;--y:39%"
           data-kind="work"
+          data-year="2024"
+          data-skills="installation interactive unreal sensors"
           data-title="The Piano Room"
           data-meta="2024 · Interactive Installation"
-          data-image="assets/uploads/01.jpg"
-          data-href="work/echo-chamber.html">
+          data-image="assets/uploads/01.jpg">
           <span>The Piano Room</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:51%;--y:20%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/layered-city.html"
+          style="--x:64.71428571428572%;--y:52%"
           data-kind="work"
+          data-year="2023"
+          data-skills="interactive projection"
           data-title="Layered City"
           data-meta="2023 · Interactive"
-          data-image="assets/uploads/layered-city-1783536481692-955235.jpg"
-          data-href="work/layered-city.html">
+          data-image="assets/uploads/layered-city-1783536481692-955235.jpg">
           <span>Layered City</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:83%;--y:64%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/fractal-memory.html"
+          style="--x:57.57142857142857%;--y:63%"
           data-kind="work"
+          data-year="2022"
+          data-skills="realtime moving-image"
           data-title="Fractal Memory"
           data-meta="2022 · Video"
-          data-image="assets/uploads/fractal-memory-1783536361480-700792.jpg"
-          data-href="work/fractal-memory.html">
+          data-image="assets/uploads/fractal-memory-1783536361480-700792.jpg">
           <span>Fractal Memory</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:33%;--y:30%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/gravity-well.html"
+          style="--x:51.57142857142857%;--y:41%"
           data-kind="work"
+          data-year="2022"
+          data-skills="installation interactive unreal"
           data-title="Gravity Well"
           data-meta="2022 · Installation, Interactive"
-          data-image="assets/uploads/gravity-well-1783536704000-468627.jpg"
-          data-href="work/gravity-well.html">
+          data-image="assets/uploads/gravity-well-1783536704000-468627.jpg">
           <span>Gravity Well</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:91%;--y:43%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/prism-field.html"
+          style="--x:42.42857142857142%;--y:38%"
           data-kind="work"
+          data-year="2021"
+          data-skills="interactive realtime moving-image"
           data-title="Prism Field"
           data-meta="2021 · Video, Performance, Interactive"
-          data-image="assets/uploads/prism-field-1783536531816-473773.jpg"
-          data-href="work/prism-field.html">
+          data-image="assets/uploads/prism-field-1783536531816-473773.jpg">
           <span>Prism Field</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:64%;--y:26%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/dd.html"
+          style="--x:49.42857142857142%;--y:53%"
           data-kind="work"
+          data-year="2021"
+          data-skills="installation interactive projection realtime"
           data-title="The Forest"
           data-meta="2021 · Installation, Interactive, Projection"
-          data-image="assets/uploads/dd-1783536105613-917651.jpg"
-          data-href="work/dd.html">
+          data-image="assets/uploads/dd-1783536105613-917651.jpg">
           <span>The Forest</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:57%;--y:35%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/ghost-frequency.html"
+          style="--x:34.285714285714285%;--y:43%"
           data-kind="work"
+          data-year="2020"
+          data-skills="interactive"
           data-title="Ghost Frequency"
           data-meta="2020 · Interactive"
-          data-image="assets/uploads/ghost-frequency-1783536430417-714178.jpg"
-          data-href="work/ghost-frequency.html">
+          data-image="assets/uploads/ghost-frequency-1783536430417-714178.jpg">
           <span>Ghost Frequency</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:49%;--y:26%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/code-landscape.html"
+          style="--x:9%;--y:48%"
           data-kind="work"
+          data-year="2018"
+          data-skills="interactive"
           data-title="Code Landscape"
           data-meta="2018 · Interactive"
-          data-image="assets/uploads/code-landscape-1783536554583-83414.jpg"
-          data-href="work/code-landscape.html">
+          data-image="assets/uploads/code-landscape-1783536554583-83414.jpg">
           <span>Code Landscape</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:61%;--y:20%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/mirror-phase.html"
+          style="--x:11%;--y:43%"
           data-kind="work"
+          data-year="2018"
+          data-skills="interactive realtime"
           data-title="Mirror Phase"
           data-meta="2018 · Interactive"
-          data-image="assets/uploads/mirror-phase-1783536573739-652675.jpg"
-          data-href="work/mirror-phase.html">
+          data-image="assets/uploads/mirror-phase-1783536573739-652675.jpg">
           <span>Mirror Phase</span>
-        </button>
-        <button class="catalog-point catalog-point--work" type="button"
-          style="--x:60%;--y:26%"
+        </a>
+        <a class="catalog-point catalog-point--work"
+          href="work/void-echo.html"
+          style="--x:15%;--y:47%"
           data-kind="work"
+          data-year="2018"
+          data-skills="interactive unreal"
           data-title="Void Echo"
           data-meta="2018 · Interactive"
-          data-image="assets/uploads/void-echo-1783536544789-212566.jpg"
-          data-href="work/void-echo.html">
+          data-image="assets/uploads/void-echo-1783536544789-212566.jpg">
           <span>Void Echo</span>
-        </button>
+        </a>
         <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:25%;--y:42%"
+          style="--x:13%;--y:76%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="sensors projection"
           data-title="Sensor response mapping test"
           data-meta="LAB · ongoing experiment"
           data-image="https://picsum.photos/seed/lab-sensor/600/750">
           <span>Sensor response mapping test</span>
         </button>
         <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:73%;--y:49%"
+          style="--x:23.8%;--y:77%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="unreal projection"
           data-title="Unreal lighting &amp; shadow test"
           data-meta="LAB · ongoing experiment"
           data-image="https://picsum.photos/seed/lab-unreal/600/750">
           <span>Unreal lighting &amp; shadow test</span>
         </button>
         <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:65%;--y:25%"
+          style="--x:33.6%;--y:78%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="interactive"
           data-title="Window interaction prototype"
           data-meta="LAB · ongoing experiment"
           data-image="https://picsum.photos/seed/lab-window/600/750">
           <span>Window interaction prototype</span>
         </button>
         <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:29%;--y:27%"
+          style="--x:46.400000000000006%;--y:81%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="sensors"
           data-title="Physical computing circuit experiment"
           data-meta="LAB · ongoing experiment"
           data-image="https://picsum.photos/seed/lab-pcomp/600/750">
           <span>Physical computing circuit experiment</span>
         </button>
         <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:71%;--y:41%"
+          style="--x:55.2%;--y:79%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="projection"
           data-title="Projection calibration"
           data-meta="LAB · ongoing experiment"
           data-image="https://picsum.photos/seed/lab-projection/600/750">
           <span>Projection calibration</span>
         </button>
         <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:59%;--y:85%"
+          style="--x:63%;--y:76%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="moving-image"
           data-title="Archiving previous work"
           data-meta="LAB · ongoing experiment"
           data-image="https://picsum.photos/seed/lab-archive/600/750">
           <span>Archiving previous work</span>
         </button>
         <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:34%;--y:32%"
+          style="--x:79.80000000000001%;--y:80%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="interactive"
           data-title="Touch response speed test"
           data-meta="LAB · ongoing experiment"
           data-image="https://picsum.photos/seed/lab-touch/600/750">
           <span>Touch response speed test</span>
         </button>
         <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:35%;--y:28%"
+          style="--x:84.60000000000001%;--y:79%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="sensors projection"
           data-title="Plant signal sensor experiment"
           data-meta="LAB · ongoing experiment"
           data-image="https://picsum.photos/seed/lab-plant/600/750">
           <span>Plant signal sensor experiment</span>
         </button>
         <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:77%;--y:50%"
+          style="--x:12%;--y:81%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="projection"
           data-title="Water surface projection test"
           data-meta="LAB · ongoing experiment"
           data-image="https://picsum.photos/seed/lab-water/600/750">
           <span>Water surface projection test</span>
         </button>
         <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:78%;--y:50%"
+          style="--x:20.8%;--y:81%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="projection realtime"
           data-title="DMX lighting sequence test"
           data-meta="LAB · ongoing experiment"
           data-image="https://picsum.photos/seed/lab-light/600/750">
           <span>DMX lighting sequence test</span>
         </button>
         <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:73%;--y:29%"
+          style="--x:34.6%;--y:83%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="projection realtime"
           data-title="Audio-reactive mapping experiment"
           data-meta="LAB · ongoing experiment"
           data-image="https://picsum.photos/seed/lab-audio/600/750">
           <span>Audio-reactive mapping experiment</span>
         </button>
         <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:77%;--y:72%"
+          style="--x:44.400000000000006%;--y:86%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="projection"
           data-title="Projection mapping sketch"
           data-meta="LAB · ongoing experiment"
           data-image="https://picsum.photos/seed/lab-map/600/750">
           <span>Projection mapping sketch</span>
         </button>
         <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:32%;--y:50%"
+          style="--x:55.2%;--y:83%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="sensors"
           data-title="Servo motor prototype"
           data-meta="LAB · ongoing experiment"
           data-image="https://picsum.photos/seed/lab-servo/600/750">
           <span>Servo motor prototype</span>
         </button>
         <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:63%;--y:30%"
+          style="--x:64%;--y:84%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="realtime"
           data-title="Real-time shader experiment"
           data-meta="LAB · ongoing experiment"
           data-image="https://picsum.photos/seed/lab-shader/600/750">
           <span>Real-time shader experiment</span>
         </button>
         <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:66%;--y:40%"
+          style="--x:75.80000000000001%;--y:87%"
           data-kind="lab"
+          data-year="2026"
+          data-skills="installation"
           data-title="On-site installation simulation"
           data-meta="LAB · ongoing experiment"
           data-image="https://picsum.photos/seed/lab-field/600/750">
@@ -371,14 +479,13 @@
         </div>
       </section>
 
-      <aside class="catalog-preview is-visible" id="catalogPreview" aria-live="polite">
+      <aside class="catalog-preview" id="catalogPreview" aria-live="polite">
         <div class="catalog-preview-media">
           <img id="catalogPreviewImage" src="assets/uploads/light-archive-1783466565780-590609.jpg" alt="" />
         </div>
         <div class="catalog-preview-info">
           <strong id="catalogPreviewTitle">Light Archive</strong>
           <span id="catalogPreviewMeta">2025 · Installation, Exhibition, Interactive</span>
-          <a id="catalogPreviewLink" href="work/light-archive.html">Open project ↗</a>
         </div>
       </aside>
     </main>
@@ -393,6 +500,6 @@
     <a href="https://youtube.com/@3dowon" target="_blank" rel="noopener">youtube</a>
   </footer>
   </div>
-  <script src="script.js?v=400"></script>
+  <script src="script.js?v=404"></script>
 </body>
 </html>
