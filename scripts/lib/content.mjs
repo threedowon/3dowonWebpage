@@ -37,7 +37,7 @@ export function cleanOrphanWorkPages(slugs, workDirRel = 'work') {
 export function assertWorkPageHeaders(relPaths) {
   for (const relPath of relPaths) {
     const html = fs.readFileSync(path.join(ROOT, relPath), 'utf8');
-    const required = ['site-tree', 'mg-back', 'btn-back'];
+    const required = ['archive-site-header', 'archive-back', 'page-archive-work'];
     const missing = required.filter((token) => !html.includes(token));
     if (missing.length) {
       throw new Error(`Invalid header in ${relPath}: missing ${missing.join(', ')}`);

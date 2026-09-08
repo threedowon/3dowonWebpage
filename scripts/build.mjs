@@ -1,8 +1,8 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { dataAttrs, escapeHtml, vimeoEmbedHtml } from './lib/html.mjs';
 
-const CSS_VERSION = '704';
-const JS_VERSION = '404';
+const CSS_VERSION = '776';
+const JS_VERSION = '461';
 
 const STR = {
   en: {
@@ -279,7 +279,29 @@ ${siteTreeNav({ works, homePrefix, assetPrefix, activeNav, activeSlug, lang, rel
 ${back}`;
 }
 
+function archiveHeader({ lang, relPath, section, index, isWork = false, active = '' }) {
+  const { homePrefix, assetPrefix } = prefixes(lang, isWork);
+  const activeClass = (key) => (active === key ? ' is-active' : '');
+  return `  <div class="site-shell archive-shell">
+    <header class="archive-site-header">
+      <a class="archive-brand" href="${homePrefix}index.html">3Dowon</a>
+      <div class="archive-heading">
+        <span>3D / ${index}</span>
+        <strong>${escapeHtml(section)}</strong>
+      </div>
+      <nav class="archive-nav" aria-label="Sections">
+        <a class="${activeClass('works')}" href="${homePrefix}works.html">${lang === 'ko' ? '작업 지도' : 'Practice map'}</a>
+        <a class="${activeClass('about')}" href="${homePrefix}about.html">${lang === 'ko' ? '소개' : 'About'}</a>
+        <a class="${activeClass('lab')}" href="${homePrefix}lab.html">Lab</a>
+        <a class="${activeClass('cv')}" href="${homePrefix}cv.html">CV</a>
+        <span class="archive-lang">${langSwitchLinks(assetPrefix, lang, relPath)}</span>
+      </nav>
+    </header>
+${isWork ? `    <a class="archive-back" href="${homePrefix}works.html">← ${lang === 'ko' ? '작업 지도' : 'Practice map'}</a>` : ''}`;
+}
+
 function pageShell({ title, body, header = '', extraHead = '', lang, assetPrefix, site, pageClass = '' }) {
+  const shellClose = header.includes('site-shell') ? '  </div>\n' : '';
   return `<!DOCTYPE html>
 <html lang="${lang}">
 <head>
@@ -301,112 +323,47 @@ ${body}
       <img class="img-blur" id="mgThumbFloatImg" alt="" />
     </div>
 ${siteFooterBar(site)}
-  </div>
-  <script src="${assetPrefix}script.js?v=${JS_VERSION}"></script>
+${shellClose}  <script src="${assetPrefix}script.js?v=${JS_VERSION}"></script>
 </body>
 </html>
 `;
 }
 
-function aboutPageBody(about, lang, assetPrefix) {
+function aboutBoardData(about, lang, assetPrefix) {
   const paragraphs = String(pick(about, 'body', lang) || '')
     .replace(/\r\n/g, '\n')
     .split(/\n{2,}/)
-    .map((block) => block.trim())
-    .filter(Boolean)
-    .map((block) => {
-      const lines = block.split('\n').map((line) => escapeHtml(line));
-      return `<p>${lines.join('<br />\n              ')}</p>`;
-    });
+    .map((block) => block.trim().replace(/\s+/g, ' '))
+    .filter(Boolean);
   const metaLines = String(pick(about, 'meta', lang) || '')
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter(Boolean);
-  const role = metaLines[0] || '';
-  const origin = metaLines[1] || '';
   const labels =
     lang === 'ko'
       ? {
-          profile: '프로필',
           practice: '작업',
           approach: '방식',
-          fields: '다루는 매체',
-          image: '관찰 · 상호작용 · 기억',
-          fieldItems: ['인터랙티브 설치', '피지컬 컴퓨팅', '실시간 그래픽', '센서 기술'],
+          fields: ['인터랙티브 설치', '피지컬 컴퓨팅', '실시간 그래픽', '센서 기술'],
         }
       : {
-          profile: 'Profile',
           practice: 'Practice',
           approach: 'Approach',
-          fields: 'Working with',
-          image: 'Observation · interaction · memory',
-          fieldItems: ['Interactive installation', 'Physical computing', 'Real-time graphics', 'Sensor technology'],
+          fields: ['Interactive installation', 'Physical computing', 'Real-time graphics', 'Sensor technology'],
         };
-  const practice = paragraphs.slice(0, 2).join('\n            ');
-  const approach = paragraphs.slice(2).join('\n            ');
-  const fields = labels.fieldItems
-    .map((item, index) => `<li><span>0${index + 1}</span>${escapeHtml(item)}</li>`)
-    .join('\n              ');
-
-  return `    <div class="about-page about-editorial">
-      <header class="about-intro reveal">
-        <div class="about-section-label">
-          <i aria-hidden="true"></i>
-          <span>00</span>
-          <span>${labels.profile}</span>
-        </div>
-        <h1 class="about-page-title">${escapeHtml(pick(about, 'name', lang))}</h1>
-        <div class="about-intro-meta">
-          ${role ? `<p>${escapeHtml(role)}</p>` : ''}
-          ${origin ? `<p>${escapeHtml(origin)}</p>` : ''}
-        </div>
-      </header>
-
-      <div class="about-composition">
-        <figure class="about-specimen reveal" data-about-media>
-          <div class="about-image-shell">
-            <img class="about-img img-blur" src="${resolveMediaPath(about.image, assetPrefix)}" alt="${escapeHtml(pick(about, 'name', lang))}" loading="lazy" />
-            <span class="about-image-reticle" aria-hidden="true"></span>
-          </div>
-          <figcaption>${labels.image}</figcaption>
-        </figure>
-
-        <div class="about-narrative">
-          <article class="about-section reveal">
-            <header class="about-section-head">
-              <i aria-hidden="true"></i>
-              <span>01</span>
-              <h2>${labels.practice}</h2>
-            </header>
-            <div class="about-page-body">
-              ${practice}
-            </div>
-          </article>
-
-          <article class="about-section reveal">
-            <header class="about-section-head">
-              <i aria-hidden="true"></i>
-              <span>02</span>
-              <h2>${labels.approach}</h2>
-            </header>
-            <div class="about-page-body">
-              ${approach}
-            </div>
-          </article>
-
-          <section class="about-section about-fields reveal">
-            <header class="about-section-head">
-              <i aria-hidden="true"></i>
-              <span>03</span>
-              <h2>${labels.fields}</h2>
-            </header>
-            <ul>
-              ${fields}
-            </ul>
-          </section>
-        </div>
-      </div>
-    </div>`;
+  return {
+    name: pick(about, 'name', lang) || '',
+    role: metaLines[0] || '',
+    origin: metaLines[1] || '',
+    practice: paragraphs.slice(0, 2).join(' '),
+    approach: paragraphs.slice(2).join(' '),
+    fields: labels.fields,
+    image: resolveMediaPath(about.image, assetPrefix) || '',
+    labels: {
+      practice: labels.practice,
+      approach: labels.approach,
+    },
+  };
 }
 
 function normalizeList(values) {
@@ -606,7 +563,7 @@ function homeRecordBody(works, lab, about, lang) {
           cv: 'CV',
         };
 
-  return `    <main class="record-page" aria-labelledby="record-title">
+  return `    <div class="record-page" aria-labelledby="record-title">
       <header class="record-header">
         <span class="record-kicker">3D / 00</span>
         <h1 id="record-title">${name}</h1>
@@ -648,8 +605,8 @@ function homeRecordBody(works, lab, about, lang) {
         </div>
       </dl>
 
-      <a class="record-about-link" href="about.html">${lang === 'ko' ? '작가 소개 읽기' : 'Read full profile'} ↗</a>
-    </main>`;
+      <a class="record-about-link" href="works.html#about">${lang === 'ko' ? '작가 소개 읽기' : 'Read full profile'} ↗</a>
+    </div>`;
 }
 
 function stableSeed(value) {
@@ -660,62 +617,156 @@ function clampCoordinate(value) {
   return Math.max(9, Math.min(91, value));
 }
 
-const CATALOG_SKILLS = [
-  { key: 'installation', en: 'Installation', ko: '설치', x: 9, y: 12 },
-  { key: 'interactive', en: 'Interactive', ko: '인터랙티브', x: 31, y: 9 },
-  { key: 'unreal', en: 'Unreal', ko: 'Unreal', x: 55, y: 12 },
-  { key: 'sensors', en: 'Sensors / Arduino', ko: '센서 / Arduino', x: 82, y: 10 },
-  { key: 'projection', en: 'Projection', ko: '프로젝션', x: 13, y: 90 },
-  { key: 'realtime', en: 'Real-time graphics', ko: '실시간 그래픽', x: 50, y: 91 },
-  { key: 'moving-image', en: 'Moving image', ko: '영상', x: 84, y: 88 },
-];
-
 function workSkillKeys(work) {
   const terms = `${(work.tags || []).join(' ')} ${work.type || ''} ${work.meta_type || ''} ${
     work.meta_type_en || ''
+  } ${work.meta_medium || ''} ${work.meta_medium_en || ''}`.toLowerCase();
+  const tech = `${(work.tech || []).join(' ')} ${work.meta_tech || ''} ${
+    work.meta_tech_en || ''
   }`.toLowerCase();
-  const tech = `${(work.tech || []).join(' ')} ${work.meta_tech || ''} ${work.meta_tech_en || ''}`.toLowerCase();
   const skills = [];
-  if (/설치|installation|exhibition/.test(terms)) skills.push('installation');
   if (/인터랙티브|interactive/.test(terms)) skills.push('interactive');
-  if (/unreal/.test(tech)) skills.push('unreal');
-  if (/arduino|sensor|센서|physical/.test(tech)) skills.push('sensors');
+  if (/arduino|esp32|sensor|센서|physical|kinect|servo|motor|circuit|회로/.test(tech)) {
+    skills.push('physical-computing');
+  }
+  if (/touchdesigner|unreal|unity|max\/msp|shader|real.?time|실시간/.test(tech)) skills.push('realtime');
   if (/프로젝션|projection|mapping/.test(`${terms} ${tech}`)) skills.push('projection');
-  if (/touchdesigner|shader|real.?time|실시간/.test(tech)) skills.push('realtime');
-  if (/영상|video|moving|premiere/.test(`${terms} ${tech}`)) skills.push('moving-image');
+  if (/arduino|esp32|sensor|센서|kinect/.test(tech)) skills.push('sensors');
+  if (/robot|robotic|servo|motor|로봇|서보|모터/.test(`${terms} ${tech}`)) skills.push('robotics');
+  if (/light|lighting|dmx|빛|조명/.test(`${terms} ${tech}`)) skills.push('light');
+  if (/shadow|그림자/.test(`${terms} ${tech}`)) skills.push('shadow');
+  if (/display|screen|window|디스플레이|화면|창문/.test(`${terms} ${tech}`)) skills.push('display');
   return [...new Set(skills.length ? skills : ['realtime'])];
 }
 
 function labSkillKeys(item) {
   const caption = `${item.caption || ''} ${item.caption_en || ''}`.toLowerCase();
   const skills = [];
-  if (/installation|on-site|설치|현장/.test(caption)) skills.push('installation');
   if (/interaction|touch|인터랙션|터치/.test(caption)) skills.push('interactive');
-  if (/unreal/.test(caption)) skills.push('unreal');
-  if (/sensor|arduino|plant|servo|circuit|센서|식물|서보|회로/.test(caption)) skills.push('sensors');
+  if (/physical|sensor|arduino|plant|servo|circuit|motor|피지컬|센서|식물|서보|회로|모터/.test(caption)) {
+    skills.push('physical-computing');
+  }
+  if (/unreal|shader|audio|real-time|언리얼|셰이더|오디오|실시간/.test(caption)) skills.push('realtime');
   if (/projection|mapping|light|water|프로젝션|맵핑|조명|물/.test(caption)) skills.push('projection');
-  if (/shader|audio|dmx|real-time|셰이더|오디오|실시간/.test(caption)) skills.push('realtime');
-  if (/archive|아카이브/.test(caption)) skills.push('moving-image');
+  if (/sensor|arduino|plant|센서|식물/.test(caption)) skills.push('sensors');
+  if (/robot|servo|motor|로봇|서보|모터/.test(caption)) skills.push('robotics');
+  if (/light|lighting|dmx|빛|조명/.test(caption)) skills.push('light');
+  if (/shadow|그림자/.test(caption)) skills.push('shadow');
+  if (/display|window|디스플레이|화면|창문/.test(caption)) skills.push('display');
   return [...new Set(skills.length ? skills : ['realtime'])];
 }
 
-function timelineCoordinates(work) {
-  const seed = stableSeed(work.slug);
-  const year = Number(work.year) || 2024;
-  const x = 11 + ((Math.max(2018, Math.min(2025, year)) - 2018) / 7) * 78 + ((seed % 13) - 6);
-  const skills = workSkillKeys(work);
-  let y = skills.includes('installation') ? 31 : skills.includes('moving-image') ? 68 : 49;
-  if (skills.includes('interactive')) y = 43;
-  if (skills.includes('projection')) y += 9;
-  y += (Math.floor(seed / 13) % 15) - 7;
-  return [Math.max(9, Math.min(87, x)), Math.max(22, Math.min(78, y))];
+function workFormY(work) {
+  const terms = `${(work.tags || []).join(' ')} ${work.type || ''} ${work.meta_type || ''} ${
+    work.meta_type_en || ''
+  } ${work.meta_medium || ''} ${work.meta_medium_en || ''}`.toLowerCase();
+  const tech = `${(work.tech || []).join(' ')} ${work.meta_tech || ''} ${
+    work.meta_tech_en || ''
+  }`.toLowerCase();
+  const isSpace = /설치|전시|installation|exhibition|projection|spatial|performance/.test(terms);
+  const isObject = /arduino|esp32|sensor|센서|physical|kinect|servo|motor|circuit|robot/.test(tech);
+  const isScreen =
+    /영상|video|moving image|screen|digital/.test(terms) ||
+    /unreal|touchdesigner|unity|max\/msp|shader/.test(tech);
+  if (isSpace && isObject) return 39;
+  if (isObject && isScreen && !isSpace) return 61;
+  if (isSpace) return 27;
+  if (isObject) return 50;
+  return isScreen ? 73 : 71;
 }
 
-function labTimelineCoordinates(item, index) {
+function labFormY(item) {
+  const caption = `${item.caption || ''} ${item.caption_en || ''}`.toLowerCase();
+  const isSpace = /installation|on-site|projection|mapping|water|light|현장|설치|프로젝션|맵핑|물|조명/.test(caption);
+  const isObject = /physical|sensor|plant|servo|motor|circuit|touch|피지컬|센서|식물|서보|모터|회로|터치/.test(caption);
+  const isScreen = /unreal|shader|audio|display|archive|언리얼|셰이더|오디오|디스플레이|아카이브/.test(caption);
+  if (isSpace && isObject) return 39;
+  if (isObject && isScreen) return 61;
+  if (isSpace) return 27;
+  if (isObject) return 50;
+  return isScreen ? 73 : 71;
+}
+
+function formKey(y) {
+  return y < 43 ? 'space' : y < 68 ? 'object' : 'screen';
+}
+
+function workDateLabel(work) {
+  const meta = String(work.meta_year || '').trim();
+  const stamped = meta.match(/^(\d{4})\D+(\d{1,2})$/);
+  if (stamped) {
+    return `${stamped[1]}.${String(Number(stamped[2])).padStart(2, '0')}`;
+  }
+  const year = Number(work.year) || Number(meta) || 2024;
+  const seed = String(work.slug || work.title || year)
+    .split('')
+    .reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
+  const month = (seed % 12) + 1;
+  return `${year}.${String(month).padStart(2, '0')}`;
+}
+
+function practiceFormFromY(y) {
+  if (y <= 27) return 'space';
+  if (y <= 39) return 'space-object';
+  if (y <= 50) return 'object';
+  if (y <= 61) return 'object-screen';
+  return 'screen';
+}
+
+function practiceWorkId(slug, index) {
+  const clean = String(slug || '')
+    .replace(/[^a-z0-9]+/gi, '')
+    .slice(0, 3)
+    .toUpperCase();
+  return `${clean || 'W'}${String(index + 1).padStart(2, '0')}`;
+}
+
+function timelineCoordinates(work, yearIndex = 0, formIndex = 0) {
+  const seed = stableSeed(work.slug);
+  const year = Number(work.year) || 2024;
+  const y = workFormY(work) + ((formIndex % 3) - 1) * 5 + ((seed % 3) - 1);
+
+  if (year === 2024) {
+    const x = 51 + (formIndex % 8) * 4.1 + ((seed % 3) - 1) * 0.35;
+    const rowOffset = Math.floor(formIndex / 8) * 8;
+    return [x, Math.max(15, Math.min(87, y + rowOffset))];
+  }
+
+  const yearPositions = { 2018: 7, 2019: 14, 2020: 21, 2021: 28, 2022: 36, 2023: 44, 2025: 84 };
+  const x = (yearPositions[Math.max(2018, Math.min(2025, year))] || 44) + ((seed % 5) - 2);
+  return [Math.max(6, Math.min(86, x)), Math.max(15, Math.min(85, y))];
+}
+
+function labTimelineCoordinates(item, index, formIndex = 0) {
   const seed = stableSeed(item.caption_en || item.caption || index);
-  const x = 12 + (index % 8) * 10.8 + ((seed % 7) - 3);
-  const y = 79 + Math.floor(index / 8) * 5 + ((Math.floor(seed / 7) % 7) - 3);
-  return [clampCoordinate(x), Math.max(75, Math.min(87, y))];
+  const x = 85 + (formIndex % 4) * 3.4 + ((seed % 3) - 1) * 0.5;
+  const y = labFormY(item) + ((Math.floor(formIndex / 4) % 3) - 1) * 5;
+  return [Math.max(84, Math.min(96, x)), Math.max(15, Math.min(85, y))];
+}
+
+function layeredPointCoordinates(value, index, count, layerY) {
+  const seed = stableSeed(value);
+  const columns = Math.min(7, Math.max(1, count));
+  const column = index % 7;
+  const rows = Math.ceil(count / 7);
+  const row = Math.floor(index / 7);
+  const xStep = columns > 1 ? 26 / (columns - 1) : 0;
+  const x = (columns > 1 ? 17 + column * xStep : 30) + ((seed % 3) - 1) * 0.28;
+  const rowOffset = (row - (rows - 1) / 2) * 3.4;
+  const rawYOffset = rowOffset + ((Math.floor(seed / 7) % 3) - 1) * 0.45;
+  const diamondAllowance = Math.max(0.9, 9 * (1 - Math.abs(x - 30) / 19));
+  const yOffset = Math.max(-diamondAllowance, Math.min(diamondAllowance, rawYOffset));
+  const y = layerY + yOffset;
+  return [Math.max(16, Math.min(44, x)), Math.max(6, Math.min(94, y))];
+}
+
+function catalogCardStyle(value, kind = 'work') {
+  const seed = stableSeed(value);
+  const ratios = ['4 / 3', '3 / 4', '1 / 1', '5 / 4'];
+  const width = kind === 'work' ? 88 + (seed % 70) : 64 + (seed % 44);
+  const rotation = (((seed % 15) - 7) * 0.42).toFixed(1);
+  const imageX = 35 + (seed % 31);
+  return `--card-w:${width}px;--card-r:${rotation}deg;--card-ratio:${ratios[seed % ratios.length]};--image-x:${imageX}%`;
 }
 
 function buildHome(works, site, lang, about, lab) {
@@ -732,138 +783,155 @@ function buildHome(works, site, lang, about, lab) {
   });
 }
 
-function buildWorks(works, lab, site, lang) {
+
+function buildWorks(works, lab, site, lang, about, cv) {
   const { assetPrefix } = prefixes(lang, false);
-  const first = works[0];
-  const firstTitle = escapeHtml(workTitle(first, lang));
-  const firstMeta = escapeHtml(
-    `${first.year || ''} · ${pick(first, 'meta_type', lang) || pick(first, 'grid_type_label', lang) || ''}`
-  );
-  const firstImage = resolveMediaPath(first.hero_image || first.thumbnail, assetPrefix);
-  const workPoints = works
-    .map((work) => {
-      const [x, y] = timelineCoordinates(work);
-      const skills = workSkillKeys(work).join(' ');
-      const title = escapeHtml(workTitle(work, lang));
-      const meta = escapeHtml(pick(work, 'meta_type', lang) || pick(work, 'grid_type_label', lang) || '');
-      const image = resolveMediaPath(work.hero_image || work.thumbnail, assetPrefix);
-      return `        <a class="catalog-point catalog-point--work"
-          href="work/${work.slug}.html"
-          style="--x:${x}%;--y:${y}%"
-          data-kind="work"
-          data-year="${work.year || ''}"
-          data-skills="${skills}"
-          data-title="${title}"
-          data-meta="${escapeHtml(`${work.year || ''} · ${meta}`)}"
-          data-image="${image}">
-          <span>${title}</span>
-        </a>`;
-    })
-    .join('\n');
-  const labPoints = lab.items
-    .map((item, index) => {
-      const [x, y] = labTimelineCoordinates(item, index);
-      const skills = labSkillKeys(item).join(' ');
-      const caption = escapeHtml(pick(item, 'caption', lang) || '');
-      const image = resolveMediaPath(item.image, assetPrefix);
-      return `        <button class="catalog-point catalog-point--lab" type="button"
-          style="--x:${x}%;--y:${y}%"
-          data-kind="lab"
-          data-year="2026"
-          data-skills="${skills}"
-          data-title="${caption}"
-          data-meta="${lang === 'ko' ? 'LAB · 진행 중인 실험' : 'LAB · ongoing experiment'}"
-          data-image="${image}">
-          <span>${caption}</span>
-        </button>`;
-    })
-    .join('\n');
-  const skillHubs = CATALOG_SKILLS.map(
-    (skill) => `        <button class="catalog-skill" type="button"
-          style="--x:${skill.x}%;--y:${skill.y}%"
-          data-skill="${skill.key}">[${escapeHtml(skill[lang])}]</button>`
-  ).join('\n');
-  const yearLabels = Array.from(
-    { length: 8 },
-    (_, index) =>
-      `        <span style="--x:${11 + (index / 7) * 78}%">${2018 + index}</span>`
-  ).join('\n');
   const copy =
     lang === 'ko'
       ? {
-          title: '작업 시스템',
-          all: '전체',
-          works: '작업',
-          lab: '실험',
-          instruction: '프로젝트 호버: 이미지 · 클릭: 상세 페이지 · 역량 호버: 연결 강조',
-          timeline: '개발 흐름',
-          labLine: '실험 / 다음 단계',
+          role: 'Interactive installation',
+          hint: '칸 위에 올려보세요',
+          back: '← Index',
+          about: 'About',
+          home: 'works.html',
         }
       : {
-          title: 'Practice system',
-          all: 'all',
-          works: 'works',
-          lab: 'lab',
-          instruction: 'Hover project: image · click: detail · hover skill: trace relationships',
-          timeline: 'development flow',
-          labLine: 'experiments / next',
+          role: 'Interactive installation',
+          hint: 'Hover a cell',
+          back: '← Index',
+          about: 'About',
+          home: 'works.html',
         };
-  const body = `    <main class="catalog-page" id="catalogPage">
-      <header class="catalog-header">
-        <a class="catalog-brand" href="index.html">3Dowon</a>
-        <div>
-          <span class="catalog-kicker">3D / 01</span>
-          <h1>${copy.title}</h1>
-        </div>
-        <nav class="catalog-nav" aria-label="Sections">
-          <a href="about.html">${lang === 'ko' ? '소개' : 'About'}</a>
-          <a href="cv.html">CV</a>
-        </nav>
-      </header>
 
-      <div class="catalog-tools">
-        <div class="catalog-filters" role="group" aria-label="Filter">
-          <button type="button" class="is-active" data-catalog-filter="all">[●] ${copy.all}</button>
-          <button type="button" data-catalog-filter="work">[ ] ${copy.works}</button>
-          <button type="button" data-catalog-filter="lab">[ ] ${copy.lab}</button>
-        </div>
-        <p>${copy.instruction}</p>
+  const practiceWorks = works.map((work, index) => {
+    const year = String(Number(work.year) || 2024);
+    const hero = resolveMediaPath(work.hero_image || work.thumbnail, assetPrefix);
+    const gallery = (work.gallery || [])
+      .map((src) => resolveMediaPath(src, assetPrefix))
+      .filter(Boolean)
+      .filter((src) => src !== hero);
+    const images = [hero, ...gallery].filter(Boolean).slice(0, 6);
+    const note = stripHtml(pick(work, 'description', lang) || '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    const vimeo = String(work.vimeo_url || '').trim();
+    return {
+      id: practiceWorkId(work.slug, index),
+      t: workTitle(work, lang),
+      s: year,
+      e: year,
+      date: workDateLabel(work),
+      form: practiceFormFromY(workFormY(work)),
+      kind: isClientWork(work) ? 'professional' : 'work',
+      tags: workSkillKeys(work),
+      img: hero || undefined,
+      images: images.length ? images : undefined,
+      note: note || undefined,
+      vimeo: vimeo || undefined,
+    };
+  });
+
+  const practiceLabs = (lab.items || []).map((item, index) => {
+    const caption = pick(item, 'caption', lang) || '';
+    const image = resolveMediaPath(item.image, assetPrefix);
+    return {
+      id: `L${String(index + 1).padStart(2, '0')}`,
+      t: caption,
+      y: '2026',
+      date: '2026.01',
+      of: null,
+      form: practiceFormFromY(labFormY(item)),
+      tags: labSkillKeys(item),
+      img: image || undefined,
+      images: image ? [image] : undefined,
+      note: lang === 'ko' ? '진행 중인 실험.' : 'Ongoing lab study.',
+    };
+  });
+
+  const aboutData = aboutBoardData(about, lang, assetPrefix);
+  const cvData = {
+    sections: (cv.sections || []).map((section) => ({
+      title: section.title,
+      entries: (section.entries || []).map((entry) => ({
+        year: entry.year,
+        description: pick(entry, 'description', lang) || '',
+      })),
+    })),
+  };
+
+  const pages = [
+    {
+      id: 'ABOUT',
+      t: lang === 'ko' ? '소개' : 'About',
+      s: '9999',
+      e: '9999',
+      date: '9999.12',
+      form: 'space',
+      kind: 'page',
+      page: 'about',
+      img: aboutData.image || undefined,
+      images: aboutData.image ? [aboutData.image] : undefined,
+      note: aboutData.role || '',
+    },
+    {
+      id: 'CV',
+      t: 'CV',
+      label: 'CV',
+      s: '9998',
+      e: '9998',
+      date: '9998.12',
+      form: 'object',
+      kind: 'page',
+      page: 'cv',
+      note: 'Curriculum vitae',
+    },
+  ];
+
+  const brand = '3Dowon'.split('').map((ch, index) => ({
+    id: `BRAND_${index}`,
+    t: ch,
+    kind: 'brand',
+  }));
+
+  const dataJson = JSON.stringify({
+    works: practiceWorks,
+    labs: practiceLabs,
+    pages,
+    brand,
+    about: aboutData,
+    cv: cvData,
+    copy,
+  }).replace(/</g, '\\u003c');
+
+  const body = `    <div class="sheet" id="sheet" data-practice-grid>
+      <div class="paper" aria-hidden="true"></div>
+      <canvas class="ink-grid" id="inkGrid" aria-hidden="true"></canvas>
+      <div class="stains" aria-hidden="true"></div>
+      <div class="fibre" aria-hidden="true"></div>
+
+      <div class="head" id="head">
+        <span class="head-lang">${langSwitchLinks(assetPrefix, lang, 'works.html')}</span>
       </div>
 
-      <section class="catalog-map" aria-label="${copy.title}">
-        <div class="catalog-year-axis" aria-hidden="true">
-          <b>${copy.timeline}</b>
-${yearLabels}
-        </div>
-        <span class="catalog-lab-line">${copy.labLine}</span>
-        <svg class="catalog-connections" id="catalogConnections" aria-hidden="true"></svg>
-        <div class="catalog-skills">
-${skillHubs}
-        </div>
-        <div class="catalog-points">
-${workPoints}
-${labPoints}
-        </div>
-      </section>
+      <div class="index" id="index"></div>
+      <div class="peek" id="peek" aria-hidden="true">
+        <div class="peek-frame" id="peekFrame"></div>
+      </div>
+      <div class="tagline" id="tagline"></div>
 
-      <aside class="catalog-preview" id="catalogPreview" aria-live="polite">
-        <div class="catalog-preview-media">
-          <img id="catalogPreviewImage" src="${firstImage}" alt="" />
-        </div>
-        <div class="catalog-preview-info">
-          <strong id="catalogPreviewTitle">${firstTitle}</strong>
-          <span id="catalogPreviewMeta">${firstMeta}</span>
-        </div>
-      </aside>
-    </main>`;
+      <div class="detail" id="detail"></div>
+      <script type="application/json" id="practiceGridData">${dataJson}</script>
+    </div>`;
+
   return pageShell({
     title: '3Dowon — Works + Lab',
     body,
     header: '',
+    extraHead: '',
     lang,
     assetPrefix,
     site,
-    pageClass: 'page-catalog',
+    pageClass: 'page-catalog page-practice',
   });
 }
 
@@ -902,15 +970,13 @@ ${gallery}
       </ul>
     </div>`;
 
-  const header = pageChrome({
-    works,
-    activeNav: 'works',
-    activeSlug: work.slug,
+  const header = archiveHeader({
     lang,
     relPath,
+    section: title,
+    index: '05',
     isWork: true,
-    project: true,
-    backLabel: str.back,
+    active: 'works',
   });
 
   return pageShell({
@@ -920,56 +986,77 @@ ${gallery}
     lang,
     assetPrefix,
     site,
+    pageClass: 'page-archive page-archive-work',
+  });
+}
+
+function practiceDocHead({ lang, assetPrefix, active, role = 'Interactive installation', relPath }) {
+  const aboutLabel = lang === 'ko' ? '소개' : 'About';
+  const worksLabel = lang === 'ko' ? '작업' : 'Works';
+  const mark = (key) => (active === key ? ' class="is-active"' : '');
+  return `      <div class="head" id="head">
+        <span class="nm">3Dowon <em>— ${escapeHtml(role)}</em></span>
+        <a href="works.html"${mark('works')}>${worksLabel}</a>
+        <a href="about.html"${mark('about')}>${aboutLabel}</a>
+        <a href="cv.html"${mark('cv')}>CV</a>
+        <span class="head-lang">${langSwitchLinks(assetPrefix, lang, relPath)}</span>
+      </div>`;
+}
+
+function practiceDocShell({ title, docHtml, lang, assetPrefix, site, active, relPath, pageExtra = '' }) {
+  const body = `    <div class="sheet" id="sheet" data-practice-sheet>
+      <div class="paper" aria-hidden="true"></div>
+      <canvas class="ink-grid" id="inkGrid" aria-hidden="true"></canvas>
+      <div class="stains" aria-hidden="true"></div>
+      <div class="fibre" aria-hidden="true"></div>
+${practiceDocHead({ lang, assetPrefix, active, relPath })}
+      <div class="doc-scroll">
+${docHtml}
+      </div>
+    </div>`;
+  return pageShell({
+    title,
+    body,
+    header: '',
+    extraHead: '',
+    lang,
+    assetPrefix,
+    site,
+    pageClass: `page-catalog page-practice page-practice-doc${pageExtra ? ` ${pageExtra}` : ''}`,
   });
 }
 
 function buildAbout(about, site, lang, works) {
   const { assetPrefix } = prefixes(lang, false);
-  const relPath = 'about.html';
-  // About lives on home (3Dowon); keep about.html as the same content for old links.
-  const body = aboutPageBody(about, lang, assetPrefix);
+  const target = 'works.html#about';
+  const body = `    <p class="visually-hidden">${lang === 'ko' ? '작업 지도의 소개로 이동합니다.' : 'Redirecting to About on the practice map.'}</p>
+    <script>location.replace(${JSON.stringify(target)});</script>
+    <p><a href="${target}">${lang === 'ko' ? '소개 열기' : 'Open About'}</a></p>`;
   return pageShell({
-    title: '3Dowon',
+    title: `${lang === 'ko' ? '소개' : 'About'} — 3Dowon`,
     body,
-    header: pageChrome({ works, activeNav: 'home', lang, relPath }),
+    header: '',
     lang,
     assetPrefix,
     site,
+    pageClass: 'page-catalog page-practice',
   });
 }
 
 function buildCv(cv, site, lang, works) {
-  const relPath = 'cv.html';
-  const sections = cv.sections
-    .map((section) => {
-      const entries = section.entries
-        .map(
-          (entry) => `          <div class="cv-entry">
-            <div class="cv-year">${escapeHtml(entry.year)}</div>
-            <div class="cv-desc">${pick(entry, 'description', lang)}</div>
-          </div>`
-        )
-        .join('\n');
-      return `      <section class="cv-section reveal">
-        <h3>${escapeHtml(section.title)}</h3>
-        <div class="cv-entries">
-${entries}
-        </div>
-      </section>`;
-    })
-    .join('\n\n');
-  const body = `    <div class="mg-page cv-box">
-      <h1 class="mg-page-title">CV</h1>
-${sections}
-    </div>`;
   const { assetPrefix } = prefixes(lang, false);
+  const target = 'works.html#cv';
+  const body = `    <p class="visually-hidden">${lang === 'ko' ? '작업 지도의 CV로 이동합니다.' : 'Redirecting to CV on the practice map.'}</p>
+    <script>location.replace(${JSON.stringify(target)});</script>
+    <p><a href="${target}">${lang === 'ko' ? 'CV 열기' : 'Open CV'}</a></p>`;
   return pageShell({
     title: 'CV — 3Dowon',
     body,
-    header: pageChrome({ works, activeNav: 'cv', lang, relPath }),
+    header: '',
     lang,
     assetPrefix,
     site,
+    pageClass: 'page-catalog page-practice',
   });
 }
 
@@ -1008,10 +1095,17 @@ ${items}
   return pageShell({
     title: 'LAB — 3Dowon',
     body,
-    header: pageChrome({ works, activeNav: 'lab', lang, relPath }),
+    header: archiveHeader({
+      lang,
+      relPath,
+      section: lang === 'ko' ? '실험실' : 'Laboratory',
+      index: '04',
+      active: 'lab',
+    }),
     lang,
     assetPrefix,
     site,
+    pageClass: 'page-archive page-archive-lab',
   });
 }
 
@@ -1026,8 +1120,8 @@ const allWorkPaths = [];
 for (const lang of ['en', 'ko']) {
   const outPrefix = lang === 'ko' ? 'ko/' : '';
 
-  writeOutput(`${outPrefix}index.html`, buildHome(works, site, lang, about, lab));
-  writeOutput(`${outPrefix}works.html`, buildWorks(works, lab, site, lang));
+  writeOutput(`${outPrefix}index.html`, buildWorks(works, lab, site, lang, about, cv));
+  writeOutput(`${outPrefix}works.html`, buildWorks(works, lab, site, lang, about, cv));
   writeOutput(`${outPrefix}about.html`, buildAbout(about, site, lang, works));
   writeOutput(`${outPrefix}cv.html`, buildCv(cv, site, lang, works));
   writeOutput(`${outPrefix}lab.html`, buildLab(lab, site, lang, works));
