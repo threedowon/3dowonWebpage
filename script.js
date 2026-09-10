@@ -28,17 +28,47 @@ function syncLanguageLinks() {
 
 function initProjectHover(catalog, projects, plates) {
   if (catalog.dataset.catalog !== 'works') return () => {};
+  let activeProject = '';
+  let waitingForPointer = false;
+  let scrollQuietAfter = 0;
+  let pointerPosition;
+  const supportsHover = (event) => event.pointerType === 'mouse' || event.pointerType === 'pen';
   const showProject = (slug = '') => {
+    if (activeProject === slug) return;
+    activeProject = slug;
     plates.forEach((plate) => plate.classList.toggle('is-hover-hidden', Boolean(slug) && plate.dataset.project !== slug));
   };
   const clear = () => showProject();
+  const suspend = () => {
+    waitingForPointer = true;
+    scrollQuietAfter = performance.now() + 180;
+    clear();
+  };
   projects.forEach((project) => {
     project.addEventListener('pointerenter', (event) => {
-      if (event.pointerType === 'mouse' || event.pointerType === 'pen') showProject(project.dataset.project);
+      if (!supportsHover(event)) return;
+      pointerPosition ||= { x: event.clientX, y: event.clientY };
+      if (!waitingForPointer && !event.buttons) showProject(project.dataset.project);
     });
     project.addEventListener('pointerleave', clear);
     project.addEventListener('pointercancel', clear);
   });
+  // Scrolling can move a title beneath a stationary pointer. Resume only on
+  // actual pointer movement after wheel input and scroll momentum have stopped.
+  window.addEventListener('pointermove', (event) => {
+    if (!supportsHover(event)) return;
+    const moved = !pointerPosition || event.clientX !== pointerPosition.x || event.clientY !== pointerPosition.y;
+    pointerPosition = { x: event.clientX, y: event.clientY };
+    if (!moved || event.buttons || performance.now() < scrollQuietAfter) return;
+    waitingForPointer = false;
+    const project = event.target.closest?.('[data-overview-project]');
+    showProject(project && catalog.contains(project) ? project.dataset.project : '');
+  }, { passive: true });
+  window.addEventListener('wheel', suspend, { passive: true });
+  window.addEventListener('scroll', suspend, { passive: true });
+  window.addEventListener('pointerdown', (event) => {
+    if (event.button === 1) suspend();
+  }, { passive: true });
   window.addEventListener('blur', clear);
   return clear;
 }
