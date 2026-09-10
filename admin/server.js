@@ -1,10 +1,7 @@
 // Local-only content admin for the site. Do not expose this beyond localhost —
 // it writes directly to the filesystem with no authentication.
 import fs from 'node:fs';
-<<<<<<< HEAD
-=======
 import os from 'node:os';
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
@@ -27,9 +24,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/site/assets', express.static(path.join(ROOT, 'assets')));
 
 function loadJson(relPath) {
-<<<<<<< HEAD
-  return JSON.parse(fs.readFileSync(path.join(ROOT, relPath), 'utf8'));
-=======
   const full = path.join(ROOT, relPath);
   const raw = fs.readFileSync(full, 'utf8');
   if (/^<<<<<<< /m.test(raw)) {
@@ -40,27 +34,20 @@ function loadJson(relPath) {
   } catch (err) {
     throw new Error(`${relPath} JSON을 읽을 수 없어요: ${err.message}`);
   }
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 }
 function saveJson(relPath, data) {
   fs.writeFileSync(path.join(ROOT, relPath), JSON.stringify(data, null, 2) + '\n');
 }
 function build() {
-<<<<<<< HEAD
-  execFileSync('node', ['scripts/build.mjs'], { cwd: ROOT, stdio: 'inherit' });
-=======
   try {
     execFileSync('node', ['scripts/build.mjs'], { cwd: ROOT, stdio: 'inherit' });
   } catch {
     throw new Error('사이트 빌드에 실패했어요. content/*.json에 문법 오류가 있는지 확인해주세요.');
   }
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 }
 function isValidSlug(slug) {
   return /^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug);
 }
-<<<<<<< HEAD
-=======
 
 const TYPE_EN = {
   '설치': 'Installation',
@@ -91,7 +78,6 @@ function applySelectedTypes(work, selected) {
   work.meta_type_en = typesEn.join(', ');
   work.meta_medium_en = typesEn.join(', ');
 }
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 function listWorkSlugs() {
   fs.mkdirSync(WORKS_DIR, { recursive: true });
   return fs.readdirSync(WORKS_DIR).filter((f) => f.endsWith('.json')).map((f) => f.replace(/\.json$/, ''));
@@ -100,8 +86,6 @@ function loadWork(slug) {
   return loadJson(`content/works/${slug}.json`);
 }
 
-<<<<<<< HEAD
-=======
 function escapeHtml(str) {
   return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
@@ -132,7 +116,6 @@ function descriptionHtmlToPlainText(html) {
     .join('\n');
 }
 
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 // Images are held in memory, then re-encoded to JPEG (resized, compressed) before
 // hitting disk — normalizes PNG/HEIC/WebP uploads and keeps file sizes reasonable.
 const upload = multer({
@@ -146,21 +129,12 @@ const upload = multer({
 const MAX_DIMENSION = 2400;
 const JPEG_QUALITY = 82;
 
-<<<<<<< HEAD
-async function saveImage(buffer, slugPrefix = '') {
-  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
-  const filename = `${slugPrefix ? `${slugPrefix}-` : ''}${Date.now()}-${Math.round(Math.random() * 1e6)}.jpg`;
-  const jpeg = await sharp(buffer)
-=======
 function resizeAndCompress(buffer) {
   return sharp(buffer)
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
     .rotate() // apply EXIF orientation before stripping metadata
     .resize({ width: MAX_DIMENSION, height: MAX_DIMENSION, fit: 'inside', withoutEnlargement: true })
     .jpeg({ quality: JPEG_QUALITY, mozjpeg: true })
     .toBuffer();
-<<<<<<< HEAD
-=======
 }
 
 // Some iPhone Portrait-mode HEIC files embed enough auxiliary images (depth
@@ -200,7 +174,6 @@ async function saveImage(buffer, slugPrefix = '') {
     }
   }
 
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
   fs.writeFileSync(path.join(UPLOADS_DIR, filename), jpeg);
   return filename;
 }
@@ -209,8 +182,6 @@ function publicUploadPath(filename) {
   return `${PUBLIC_UPLOADS_PREFIX}/${filename}`;
 }
 
-<<<<<<< HEAD
-=======
 // Wraps async route handlers so a rejected promise (e.g. sharp failing on a
 // malformed image) becomes a normal error response instead of an unhandled
 // rejection that crashes the whole server (Node terminates the process on
@@ -228,7 +199,6 @@ function asyncHandler(fn) {
   };
 }
 
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 // The same uploaded file can legitimately be reused across multiple fields/works
 // (e.g. thumbnail and hero_image pointing at the same photo), so before deleting
 // an old file on replace/remove we confirm nothing else on disk still points to it.
@@ -256,21 +226,6 @@ function removeUploadedFile(publicPath) {
 app.get('/api/works', (req, res) => {
   const works = listWorkSlugs().map(loadWork);
   works.sort((a, b) => b.year - a.year || String(a.title).localeCompare(String(b.title), 'ko'));
-<<<<<<< HEAD
-  res.json(works);
-});
-
-app.post('/api/works', (req, res) => {
-  const { slug, title, year, type } = req.body;
-  if (!isValidSlug(slug)) return res.status(400).json({ error: '슬러그는 영문 소문자/숫자/하이픈만 가능해요.' });
-  if (listWorkSlugs().includes(slug)) return res.status(400).json({ error: '이미 존재하는 슬러그예요.' });
-
-  const work = {
-    slug,
-    title: title || '',
-    year: Number(year) || new Date().getFullYear(),
-    type: type || '설치',
-=======
   res.json(
     works.map((w) => ({
       ...w,
@@ -291,26 +246,10 @@ app.post('/api/works', (req, res) => {
     title: title || '',
     year: resolvedYear,
     type: '',
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
     tags: [],
     tech: [],
     production: '개인',
     thumbnail: '',
-<<<<<<< HEAD
-    grid_type_label: type || '',
-    index_type_label: type || '',
-    preview_bg: '',
-    hero_image: '',
-    meta_year: String(year || ''),
-    meta_type: type || '',
-    meta_medium: '',
-    meta_tech: '',
-    meta_production: '',
-    description: '',
-    vimeo_url: '',
-    gallery: [],
-  };
-=======
     grid_type_label: '',
     index_type_label: '',
     preview_bg: '',
@@ -328,7 +267,6 @@ app.post('/api/works', (req, res) => {
     gallery: [],
   };
   applySelectedTypes(work, types && types.length ? types : ['설치']);
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
   saveJson(`content/works/${slug}.json`, work);
   build();
   res.json(work);
@@ -337,16 +275,6 @@ app.post('/api/works', (req, res) => {
 app.put('/api/works/:slug', (req, res) => {
   if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({ error: 'not found' });
   const work = loadWork(req.params.slug);
-<<<<<<< HEAD
-  const editable = [
-    'title', 'year', 'type', 'tags', 'tech', 'production', 'grid_type_label', 'index_type_label',
-    'meta_year', 'meta_type', 'meta_medium', 'meta_tech', 'meta_production', 'description', 'vimeo_url',
-  ];
-  for (const key of editable) {
-    if (req.body[key] !== undefined) work[key] = req.body[key];
-  }
-  if (work.year !== undefined) work.year = Number(work.year) || work.year;
-=======
   const editable = ['title', 'year', 'tech', 'production', 'meta_tech', 'meta_tech_en', 'vimeo_url'];
   for (const key of editable) {
     if (req.body[key] !== undefined) work[key] = req.body[key];
@@ -359,7 +287,6 @@ app.put('/api/works/:slug', (req, res) => {
   work.meta_year = String(work.year);
   work.meta_production = work.production;
   work.meta_production_en = PRODUCTION_EN[work.production] || work.production;
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
   saveJson(`content/works/${req.params.slug}.json`, work);
   build();
   res.json(work);
@@ -375,26 +302,6 @@ app.delete('/api/works/:slug', (req, res) => {
   res.json({ ok: true });
 });
 
-<<<<<<< HEAD
-function singleImageRoute(field) {
-  app.post(`/api/works/:slug/${field}`, upload.single('image'), async (req, res) => {
-    const work = loadWork(req.params.slug);
-    if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });
-    const oldPath = work[field];
-    const filename = await saveImage(req.file.buffer, req.params.slug);
-    work[field] = publicUploadPath(filename);
-    saveJson(`content/works/${req.params.slug}.json`, work);
-    removeUploadedFile(oldPath);
-    build();
-    res.json(work);
-  });
-}
-singleImageRoute('thumbnail');
-singleImageRoute('preview_bg');
-singleImageRoute('hero_image');
-
-app.post('/api/works/:slug/gallery', upload.array('images', 20), async (req, res) => {
-=======
 // 썸네일 / 인덱스 미리보기 / 상세 히어로 이미지는 항상 같은 사진을 쓴다.
 app.post('/api/works/:slug/thumbnail', upload.single('image'), asyncHandler(async (req, res) => {
   const work = loadWork(req.params.slug);
@@ -412,7 +319,6 @@ app.post('/api/works/:slug/thumbnail', upload.single('image'), asyncHandler(asyn
 }));
 
 app.post('/api/works/:slug/gallery', upload.array('images', 20), asyncHandler(async (req, res) => {
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
   const work = loadWork(req.params.slug);
   for (const file of req.files || []) {
     const filename = await saveImage(file.buffer, req.params.slug);
@@ -421,11 +327,7 @@ app.post('/api/works/:slug/gallery', upload.array('images', 20), asyncHandler(as
   saveJson(`content/works/${req.params.slug}.json`, work);
   build();
   res.json(work);
-<<<<<<< HEAD
-});
-=======
 }));
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 
 app.delete('/api/works/:slug/gallery/:index', (req, res) => {
   const work = loadWork(req.params.slug);
@@ -455,11 +357,7 @@ app.put('/api/about', (req, res) => {
   res.json(about);
 });
 
-<<<<<<< HEAD
-app.post('/api/about/image', upload.single('image'), async (req, res) => {
-=======
 app.post('/api/about/image', upload.single('image'), asyncHandler(async (req, res) => {
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
   if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });
   const about = loadJson('content/about.json');
   const oldImage = about.image;
@@ -469,11 +367,7 @@ app.post('/api/about/image', upload.single('image'), asyncHandler(async (req, re
   removeUploadedFile(oldImage);
   build();
   res.json(about);
-<<<<<<< HEAD
-});
-=======
 }));
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 
 app.put('/api/cv', (req, res) => {
   saveJson('content/cv.json', { sections: req.body.sections || [] });
@@ -489,17 +383,6 @@ app.put('/api/lab', (req, res) => {
   res.json(lab);
 });
 
-<<<<<<< HEAD
-app.post('/api/lab/items', upload.single('image'), async (req, res) => {
-  if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });
-  const lab = loadJson('content/lab.json');
-  const filename = await saveImage(req.file.buffer);
-  lab.items.push({ image: publicUploadPath(filename), caption: req.body.caption || '' });
-  saveJson('content/lab.json', lab);
-  build();
-  res.json(lab);
-});
-=======
 app.post('/api/lab/items', upload.single('image'), asyncHandler(async (req, res) => {
   if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });
   const lab = loadJson('content/lab.json');
@@ -509,7 +392,6 @@ app.post('/api/lab/items', upload.single('image'), asyncHandler(async (req, res)
   build();
   res.json(lab);
 }));
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 
 app.delete('/api/lab/items/:index', (req, res) => {
   const lab = loadJson('content/lab.json');
@@ -528,8 +410,6 @@ app.put('/api/site', (req, res) => {
   res.json(site);
 });
 
-<<<<<<< HEAD
-=======
 // ── Deploy (git add + commit + push) ──
 
 function git(args) {
@@ -582,7 +462,6 @@ process.on('unhandledRejection', (err) => {
   console.error('Unhandled rejection (server stayed up):', err);
 });
 
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 app.listen(PORT, HOST, () => {
   console.log(`Admin running at http://localhost:${PORT} (local only)`);
 });
