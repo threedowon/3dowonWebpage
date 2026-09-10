@@ -1,0 +1,34 @@
+{
+  "slug": "balloon-pop",
+  "title": "Balloon Pop",
+  "year": 2025,
+  "type": "인터랙티브",
+  "tags": [
+    "인터랙티브"
+  ],
+  "tech": [],
+  "production": "개인",
+  "thumbnail": "/3dowonWebpage/assets/uploads/balloon-pop-1789064039220-828530.jpg",
+  "grid_type_label": "인터랙티브",
+  "index_type_label": "인터랙티브",
+  "preview_bg": "/3dowonWebpage/assets/uploads/balloon-pop-1789064039220-828530.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/balloon-pop-1789064039220-828530.jpg",
+  "meta_year": "2025",
+  "meta_type": "인터랙티브",
+  "meta_medium": "인터랙티브",
+  "meta_tech": "",
+  "meta_tech_en": "",
+  "meta_production": "개인",
+  "meta_production_en": "Solo",
+  "description": "",
+  "description_en": "",
+  "vimeo_url": "",
+  "gallery": [
+    "/3dowonWebpage/assets/uploads/balloon-pop-1789064034497-306794.jpg",
+    "/3dowonWebpage/assets/uploads/balloon-pop-1789064036805-107892.jpg"
+  ],
+  "grid_type_label_en": "Interactive",
+  "index_type_label_en": "Interactive",
+  "meta_type_en": "Interactive",
+  "meta_medium_en": "Interactive"
+}

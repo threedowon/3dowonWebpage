@@ -1,6 +1,6 @@
 {
   "slug": "light-archive",
-  "title": "Light Archive",
+  "title": "3Dowon's Workdesk",
   "year": 2025,
   "type": "설치",
   "tags": [
@@ -24,7 +24,17 @@
   "meta_medium": "설치, 전시, 인터랙티브",
   "meta_tech": "Premiere, TouchDesigner",
   "meta_production": "개인",
-  "gallery": [],
+  "gallery": [
+    "/3dowonWebpage/assets/uploads/light-archive-1789063646317-474316.jpg",
+    "/3dowonWebpage/assets/uploads/light-archive-1789063651771-632660.jpg",
+    "/3dowonWebpage/assets/uploads/light-archive-1789063654337-589013.jpg",
+    "/3dowonWebpage/assets/uploads/light-archive-1789063662522-394206.jpg",
+    "/3dowonWebpage/assets/uploads/light-archive-1789063666064-297082.jpg",
+    "/3dowonWebpage/assets/uploads/light-archive-1789063672565-136469.jpg",
+    "/3dowonWebpage/assets/uploads/light-archive-1789063678960-782440.jpg",
+    "/3dowonWebpage/assets/uploads/light-archive-1789063697229-575885.jpg",
+    "/3dowonWebpage/assets/uploads/light-archive-1789063700851-711482.jpg"
+  ],
   "vimeo_url": "",
   "grid_type_label_en": "Installation, Exhibition, Interactive",
   "index_type_label_en": "Installation, Exhibition, Interactive",
