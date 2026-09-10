@@ -1,7 +1,7 @@
 {
   "slug": "silent-circuit",
-  "title": "Silent Circuit",
-  "year": 2024,
+  "title": "Current",
+  "year": 2021,
   "type": "인터랙티브",
   "tags": [
     "인터랙티브"
@@ -11,21 +11,21 @@
     "Arduino"
   ],
   "production": "개인",
-  "thumbnail": "/3dowonWebpage/assets/uploads/silent-circuit-1783536645863-267776.jpg",
+  "thumbnail": "/3dowonWebpage/assets/uploads/silent-circuit-1789062412299-323112.jpg",
   "grid_type_label": "인터랙티브",
   "index_type_label": "인터랙티브",
-  "preview_bg": "/3dowonWebpage/assets/uploads/silent-circuit-1783536645863-267776.jpg",
-  "hero_image": "/3dowonWebpage/assets/uploads/silent-circuit-1783536645863-267776.jpg",
+  "preview_bg": "/3dowonWebpage/assets/uploads/silent-circuit-1789062412299-323112.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/silent-circuit-1789062412299-323112.jpg",
   "description": "<p>전기 신호의 흐름을 빛의 회로로 시각화한 인터랙티브 설치입니다.</p>",
-  "meta_year": "2024",
+  "meta_year": "2021",
   "meta_type": "인터랙티브",
   "meta_medium": "인터랙티브",
   "meta_tech": "Arduino, 시리얼 통신",
   "meta_production": "개인",
   "gallery": [
-    "https://picsum.photos/seed/silentci1/1920/1440",
-    "https://picsum.photos/seed/silentci2/1920/1440",
-    "https://picsum.photos/seed/silentci3/1920/1440"
+    "/3dowonWebpage/assets/uploads/silent-circuit-1789062434063-771312.jpg",
+    "/3dowonWebpage/assets/uploads/silent-circuit-1789062436398-704869.jpg",
+    "/3dowonWebpage/assets/uploads/silent-circuit-1789062438371-813895.jpg"
   ],
   "grid_type_label_en": "Interactive",
   "index_type_label_en": "Interactive",

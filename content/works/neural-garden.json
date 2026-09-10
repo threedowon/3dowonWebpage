@@ -1,6 +1,6 @@
 {
   "slug": "neural-garden",
-  "title": "Neural Garden",
+  "title": "Aura of Heart",
   "year": 2024,
   "type": "영상",
   "tags": [
@@ -10,11 +10,11 @@
     "Unreal"
   ],
   "production": "개인",
-  "thumbnail": "/3dowonWebpage/assets/uploads/neural-garden-1783536046701-575663.jpg",
+  "thumbnail": "/3dowonWebpage/assets/uploads/neural-garden-1789062236803-607487.jpg",
   "grid_type_label": "영상",
   "index_type_label": "영상",
-  "preview_bg": "/3dowonWebpage/assets/uploads/neural-garden-1783536046701-575663.jpg",
-  "hero_image": "/3dowonWebpage/assets/uploads/neural-garden-1783536046701-575663.jpg",
+  "preview_bg": "/3dowonWebpage/assets/uploads/neural-garden-1789062236803-607487.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/neural-garden-1789062236803-607487.jpg",
   "description": "<p>인공신경망이 생성한 식물 형태가 공간 안에서 자라나고 소멸하는 생성 설치 작품입니다.</p>",
   "meta_year": "2024",
   "meta_type": "영상",
@@ -22,9 +22,9 @@
   "meta_tech": "Arduino, 실시간 그래픽",
   "meta_production": "개인",
   "gallery": [
-    "https://picsum.photos/seed/neuralga1/1920/1440",
-    "https://picsum.photos/seed/neuralga2/1920/1440",
-    "https://picsum.photos/seed/neuralga3/1920/1440"
+    "/3dowonWebpage/assets/uploads/neural-garden-1789062261004-49630.jpg",
+    "/3dowonWebpage/assets/uploads/neural-garden-1789062264080-397432.jpg",
+    "/3dowonWebpage/assets/uploads/neural-garden-1789062268335-802381.jpg"
   ],
   "grid_type_label_en": "Video",
   "index_type_label_en": "Video",

@@ -1,6 +1,6 @@
 {
   "slug": "resonant-grid",
-  "title": "Resonant Grid",
+  "title": "Scatty Dragger",
   "year": 2024,
   "type": "인터랙티브",
   "tags": [
@@ -10,11 +10,11 @@
     "Unreal"
   ],
   "production": "개인",
-  "thumbnail": "/3dowonWebpage/assets/uploads/resonant-grid-1783536731047-388544.jpg",
+  "thumbnail": "/3dowonWebpage/assets/uploads/resonant-grid-1789062376071-626557.jpg",
   "grid_type_label": "인터랙티브",
   "index_type_label": "인터랙티브",
-  "preview_bg": "/3dowonWebpage/assets/uploads/resonant-grid-1783536731047-388544.jpg",
-  "hero_image": "/3dowonWebpage/assets/uploads/resonant-grid-1783536731047-388544.jpg",
+  "preview_bg": "/3dowonWebpage/assets/uploads/resonant-grid-1789062376071-626557.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/resonant-grid-1789062376071-626557.jpg",
   "description": "<p>브랜드 런칭 이벤트용 인터랙티브 미디어 설치이다. 그리드 형태의 조명과 센서 입력이 결합되어 관객의 참여에 따라 공간이 반응한다.</p>\n            <p>담당</p>\n            <p>Arduino 기반 센서·조명 제어 시스템 개발</p>\n            <p>DMX 조명 시퀀스 프로그래밍</p>\n            <p>현장 설치 및 인터랙션 테스트</p>",
   "meta_year": "2024",
   "meta_type": "인터랙티브",
@@ -22,9 +22,9 @@
   "meta_tech": "Arduino, DMX",
   "meta_production": "개인",
   "gallery": [
-    "https://picsum.photos/seed/resonant1/1920/1440",
-    "https://picsum.photos/seed/resonant2/1920/1440",
-    "https://picsum.photos/seed/resonant3/1920/1440"
+    "/3dowonWebpage/assets/uploads/resonant-grid-1789062396582-590170.jpg",
+    "/3dowonWebpage/assets/uploads/resonant-grid-1789062398976-181485.jpg",
+    "/3dowonWebpage/assets/uploads/resonant-grid-1789062400986-959029.jpg"
   ],
   "grid_type_label_en": "Interactive",
   "index_type_label_en": "Interactive",

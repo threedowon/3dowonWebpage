@@ -1,34 +1,38 @@
 {
-  "grid_type_label": "전시, 프로젝션",
+  "grid_type_label": "영상",
   "slug": "ambient-loop",
-  "thumbnail": "/3dowonWebpage/assets/uploads/ambient-loop-1783536021604-224324.jpg",
-  "meta_medium": "멀티채널 영상, 프로젝션",
+  "thumbnail": "/3dowonWebpage/assets/uploads/ambient-loop-1789062207794-632080.jpg",
+  "meta_medium": "영상",
   "meta_tech": "Unity, 영상 스케줄링",
   "gallery": [
-    "/3dowonWebpage/assets/uploads/m03.jpg",
-    "/3dowonWebpage/assets/uploads/m02.jpg",
-    "/3dowonWebpage/assets/uploads/m04.jpg"
+    "/3dowonWebpage/assets/uploads/ambient-loop-1789062213412-564993.jpg",
+    "/3dowonWebpage/assets/uploads/ambient-loop-1789062217223-947887.jpg",
+    "/3dowonWebpage/assets/uploads/ambient-loop-1789062220614-780489.jpg",
+    "/3dowonWebpage/assets/uploads/ambient-loop-1789062223055-404662.jpg"
   ],
-  "meta_production": "공동 제작",
-  "meta_type": "전시",
-  "hero_image": "/3dowonWebpage/assets/uploads/ambient-loop-1783536021604-224324.jpg",
+  "meta_production": "개인",
+  "meta_type": "영상",
+  "hero_image": "/3dowonWebpage/assets/uploads/ambient-loop-1789062207794-632080.jpg",
   "tech": [
     "Unreal"
   ],
-  "meta_year": "2022",
-  "title": "Motion Blur",
-  "tags": [],
+  "meta_year": "2024",
+  "title": "Inside the Summer",
+  "tags": [
+    "영상"
+  ],
   "production": "개인",
   "type": "영상",
-  "preview_bg": "/3dowonWebpage/assets/uploads/ambient-loop-1783536021604-224324.jpg",
-  "index_type_label": "전시, 프로젝션",
-  "description": "<p>환경 데이터를 순환 구조로 전시하는 미디어 아트 큐레이션 프로젝트이다. 여러 채널의 영상이 루프되며 하나의 공간적 서사를 형성한다.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">담당</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>멀티채널 영상 스케줄링 시스템 구축</li>\r\n              <li>Unity 기반 재생·동기화 환경 제작</li>\r\n              <li>전시 공간 사운드·영상 배치 협업</li>\r\n            </ul>",
+  "preview_bg": "/3dowonWebpage/assets/uploads/ambient-loop-1789062207794-632080.jpg",
+  "index_type_label": "영상",
+  "description": "<p>환경 데이터를 순환 구조로 전시하는 미디어 아트 큐레이션 프로젝트이다. 여러 채널의 영상이 루프되며 하나의 공간적 서사를 형성한다.</p>\n            <p>담당</p>\n            <p>멀티채널 영상 스케줄링 시스템 구축</p>\n            <p>Unity 기반 재생·동기화 환경 제작</p>\n            <p>전시 공간 사운드·영상 배치 협업</p>",
   "year": 2024,
-  "grid_type_label_en": "Exhibition, Projection",
-  "index_type_label_en": "Exhibition, Projection",
-  "meta_medium_en": "Multi-channel video, projection",
+  "grid_type_label_en": "Video",
+  "index_type_label_en": "Video",
+  "meta_medium_en": "Video",
   "meta_tech_en": "Unity, video scheduling",
-  "meta_production_en": "Collaborative Production",
-  "meta_type_en": "Exhibition",
-  "description_en": "<p>A media art curation project that presents environmental data in a circular structure. Multiple channels of video loop together to form a single spatial narrative.</p>\r\n            <div class=\"post-detail-block\">\r\n              <h4 class=\"post-detail-label\">Role</h4>\r\n              <ul class=\"post-detail-list\">\r\n              <li>Built a multi-channel video scheduling system</li>\r\n              <li>Developed a Unity-based playback and sync environment</li>\r\n              <li>Collaborated on sound and video placement in the exhibition space</li>\r\n            </ul>"
+  "meta_production_en": "Solo",
+  "meta_type_en": "Video",
+  "description_en": "<p>A media art curation project that presents environmental data in a circular structure. Multiple channels of video loop together to form a single spatial narrative.</p>\n            <p>Role</p>\n            <p>Built a multi-channel video scheduling system</p>\n            <p>Developed a Unity-based playback and sync environment</p>\n            <p>Collaborated on sound and video placement in the exhibition space</p>",
+  "vimeo_url": ""
 }

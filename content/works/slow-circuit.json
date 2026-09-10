@@ -1,7 +1,7 @@
 {
   "slug": "slow-circuit",
-  "title": "Slow Circuit",
-  "year": 2024,
+  "title": "CAFE DIOR SEONGSU",
+  "year": 2022,
   "type": "인터랙티브",
   "tags": [
     "인터랙티브"
@@ -10,21 +10,21 @@
     "Unreal"
   ],
   "production": "개인",
-  "thumbnail": "/3dowonWebpage/assets/uploads/slow-circuit-1783535231223-875608.jpg",
+  "thumbnail": "/3dowonWebpage/assets/uploads/slow-circuit-1789062447735-861291.jpg",
   "grid_type_label": "인터랙티브",
   "index_type_label": "인터랙티브",
-  "preview_bg": "/3dowonWebpage/assets/uploads/slow-circuit-1783535231223-875608.jpg",
-  "hero_image": "/3dowonWebpage/assets/uploads/slow-circuit-1783535231223-875608.jpg",
+  "preview_bg": "/3dowonWebpage/assets/uploads/slow-circuit-1789062447735-861291.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/slow-circuit-1789062447735-861291.jpg",
   "description": "<p>느린 시간의 흐름을 회로의 속도로 시각화한 프로젝션 설치입니다.</p>",
-  "meta_year": "2024",
+  "meta_year": "2022",
   "meta_type": "인터랙티브",
   "meta_medium": "인터랙티브",
   "meta_tech": "Arduino, TouchDesigner",
   "meta_production": "개인",
   "gallery": [
-    "https://picsum.photos/seed/slowcirc1/1920/1440",
-    "https://picsum.photos/seed/slowcirc2/1920/1440",
-    "https://picsum.photos/seed/slowcirc3/1920/1440"
+    "/3dowonWebpage/assets/uploads/slow-circuit-1789062474949-136085.jpg",
+    "/3dowonWebpage/assets/uploads/slow-circuit-1789062476468-790612.jpg",
+    "/3dowonWebpage/assets/uploads/slow-circuit-1789062478349-674960.jpg"
   ],
   "grid_type_label_en": "Interactive",
   "index_type_label_en": "Interactive",

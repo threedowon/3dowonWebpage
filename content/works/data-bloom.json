@@ -1,36 +1,31 @@
 {
   "slug": "data-bloom",
-  "title": "Data Bloom",
+  "title": "The Forest",
   "year": 2024,
-  "type": "인터랙티브",
+  "type": "영상",
   "tags": [
-    "인터랙티브"
+    "영상"
   ],
   "tech": [
-    "Unreal",
-    "Arduino"
+    "Unreal"
   ],
   "production": "개인",
-  "thumbnail": "/3dowonWebpage/assets/uploads/data-bloom-1783536667275-733647.jpg",
-  "grid_type_label": "인터랙티브",
-  "index_type_label": "인터랙티브",
-  "preview_bg": "/3dowonWebpage/assets/uploads/data-bloom-1783536667275-733647.jpg",
-  "hero_image": "/3dowonWebpage/assets/uploads/data-bloom-1783536667275-733647.jpg",
+  "thumbnail": "/3dowonWebpage/assets/uploads/data-bloom-1789062133381-587587.jpg",
+  "grid_type_label": "영상",
+  "index_type_label": "영상",
+  "preview_bg": "/3dowonWebpage/assets/uploads/data-bloom-1789062133381-587587.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/data-bloom-1789062133381-587587.jpg",
   "description": "<p>실시간 데이터가 꽃의 형태로 피어나는 생성 프로젝션 설치입니다.</p>",
   "meta_year": "2024",
-  "meta_type": "인터랙티브",
-  "meta_medium": "인터랙티브",
+  "meta_type": "영상",
+  "meta_medium": "영상",
   "meta_tech": "Processing, Python",
   "meta_production": "개인",
-  "gallery": [
-    "https://picsum.photos/seed/databloo1/1920/1440",
-    "https://picsum.photos/seed/databloo2/1920/1440",
-    "https://picsum.photos/seed/databloo3/1920/1440"
-  ],
-  "grid_type_label_en": "Interactive",
-  "index_type_label_en": "Interactive",
-  "meta_type_en": "Interactive",
-  "meta_medium_en": "Interactive",
+  "gallery": [],
+  "grid_type_label_en": "Video",
+  "index_type_label_en": "Video",
+  "meta_type_en": "Video",
+  "meta_medium_en": "Video",
   "meta_tech_en": "Processing, Python",
   "meta_production_en": "Solo",
   "description_en": "<p>A generative projection installation in which real-time data blooms into the form of a flower.</p>",
