@@ -1,6 +1,6 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import { normalizeWork, normalizeLabItems } from './lib/catalog.mjs';
-import { catalogPage, labPage, aboutPage, cvPage, workPage } from './lib/portfolio.mjs';
+import { catalogPage, labPage, aboutPage, portfolioPage, cvPage, workPage } from './lib/portfolio.mjs';
 
 const site = loadJson('content/site.json');
 const about = loadJson('content/about.json');
@@ -18,7 +18,8 @@ for (const lang of ['en', 'ko']) {
   }
   writeOutput(`${prefix}lab.html`, labPage(studies, site, lang));
   writeOutput(`${prefix}about.html`, aboutPage(about, site, lang));
-  writeOutput(`${prefix}cv.html`, cvPage(cv, about, site, lang));
+  writeOutput(`${prefix}portfolio.html`, portfolioPage(site, lang));
+  writeOutput(`${prefix}cv.html`, cvPage(cv, site, lang));
   for (const work of works) {
     const page = `${prefix}work/${work.slug}.html`;
     writeOutput(page, workPage(work, works, site, lang));

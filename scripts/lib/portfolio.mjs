@@ -1,10 +1,10 @@
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
 import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 
-const VERSION = '930';
+const VERSION = '939';
 const COPY = {
-  ko: { works: '작업', lab: '실험', about: '소개', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
-  en: { works: 'Works', lab: 'Lab', about: 'About', cv: 'CV', photos: 'Images', index: 'Index', allYears: 'All years', allFields: 'All fields', space: 'Space', object: 'Object', screen: 'Screen', year: 'Year', field: 'Field', name: 'Project', back: 'All works', previous: 'Previous work', next: 'Next work', close: 'Close', enlarge: 'Enlarge image', practice: 'Practice', approach: 'Approach', fields: 'Fields', noResults: 'No work matches these filters.', reset: 'Reset filters', note: 'Interactive installations and media experiments\nwith light, space, and everyday objects.', artist: 'Interactive media artist', type: 'Type', medium: 'Medium', tech: 'Technology', production: 'Production', skip: 'Skip to content' },
+  ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
+  en: { works: 'Works', lab: 'Lab', about: 'About', portfolio: 'Portfolio', cv: 'CV', photos: 'Images', index: 'Index', allYears: 'All years', allFields: 'All fields', space: 'Space', object: 'Object', screen: 'Screen', year: 'Year', field: 'Field', name: 'Project', back: 'All works', previous: 'Previous work', next: 'Next work', close: 'Close', enlarge: 'Enlarge image', practice: 'Practice', approach: 'Approach', fields: 'Fields', noResults: 'No work matches these filters.', reset: 'Reset filters', note: 'Interactive installations and media experiments\nwith light, space, and everyday objects.', artist: 'Interactive media artist', type: 'Type', medium: 'Medium', tech: 'Technology', production: 'Production', skip: 'Skip to content' },
 };
 const number = (n) => String(n).padStart(2, '0');
 const paragraphs = (value) => String(value || '').split(/\r?\n\s*\r?\n/).map((p) => p.replace(/\s+/g, ' ').trim()).filter(Boolean);
@@ -48,11 +48,10 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
   <div class="site-frame">
     <header class="site-header archive-site-header">
       <a class="wordmark" href="${home}index.html" aria-label="3Dowon ${lang === 'ko' ? '홈' : 'Home'}">3Dowon</a>
-      <div class="header-contact"><p>${lang === 'ko' ? '문의' : 'Enquiries'}</p><a href="mailto:${esc(site.email)}">E. &nbsp;${esc(site.email)}</a></div>
-      <nav class="site-nav" aria-label="${lang === 'ko' ? '주 메뉴' : 'Main navigation'}">
-        ${['works', 'lab', 'about', 'cv'].map((key, index) => `<a href="${home}${key}.html"${active === key ? ' aria-current="page"' : ''}>${c[key]}${index < 3 ? ',' : ''}</a>`).join('')}
-      </nav>
       <p class="header-note">${esc(c.note).replace(/\n/g, ' ')}</p>
+      <nav class="site-nav" aria-label="${lang === 'ko' ? '주 메뉴' : 'Main navigation'}">
+        ${['works', 'lab', 'about', 'portfolio', 'cv'].map((key, index, items) => `<a href="${home}${key}.html"${active === key ? ' aria-current="page"' : ''}>${c[key]}${index < items.length - 1 ? ',' : ''}</a>`).join('')}
+      </nav>
       <nav class="language-nav" aria-label="${lang === 'ko' ? '언어' : 'Language'}"><a href="${assets}${relPath}" lang="en" data-language="en"${lang === 'en' ? ' aria-current="true"' : ''}>EN</a><span aria-hidden="true">/</span><a href="${assets}ko/${relPath}" lang="ko" data-language="ko"${lang === 'ko' ? ' aria-current="true"' : ''}>KO</a></nav>
     </header>
     <main id="main" tabindex="-1"${catalog ? ` data-catalog="${catalog}"` : ''}>
@@ -65,10 +64,6 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
 </body>
 </html>
 `;
-}
-
-function folio(label, page) {
-  return `<footer class="article-folio"><span>3Dowon / ${label}</span><span>${page}</span></footer>`;
 }
 
 function projectImages(work, ctx) {
@@ -124,21 +119,34 @@ export function aboutPage(about, site, lang) {
   const paras = paragraphs(pick(about, 'body', lang));
   const fields = lang === 'ko' ? ['인터랙티브 설치', '피지컬 컴퓨팅', '실시간 그래픽', '센서 기술'] : ['Interactive installation', 'Physical computing', 'Real-time graphics', 'Sensor technology'];
   const body = `<article class="editorial-article about-article">
-    <header class="article-heading"><p class="eyebrow">03 / Profile</p><h1 id="page-title">${esc(pick(about, 'name', lang))}</h1><p class="document-subtitle">${esc(pick(about, 'meta', lang)).replace(/\r?\n/g, '<br />')}</p></header>
-    <div class="profile-opening"><p class="profile-intro">${esc(paras[0] || '')}</p><figure class="about-image">${image(about.image, pick(about, 'name', lang), ctx, { lazy: false })}<figcaption><span>3Dowon / ${c.about}</span><span>01</span></figcaption></figure></div>
-    <div class="article-body"><div class="article-aside"><p class="eyebrow">${c.approach}</p><p class="margin-note">${lang === 'ko' ? '익숙한 풍경을<br />새로운 감각으로.' : 'Familiar scenery,<br />seen anew.'}</p></div><div class="prose about-prose">${paras.slice(1).map((para) => `<p>${esc(para)}</p>`).join('')}</div></div>
-    <section class="field-list"><h2>${c.fields}</h2><ul>${fields.map((field) => `<li>${field}</li>`).join('')}</ul></section>${folio('Profile', '03')}
+    <section class="about-information" tabindex="0" aria-labelledby="page-title">
+      <header class="about-heading"><h1 id="page-title">${esc(pick(about, 'name', lang))}</h1><p class="about-meta">${esc(pick(about, 'meta', lang)).replace(/\r?\n/g, '<br />')}</p></header>
+      <div class="prose about-prose">${paras.map((para) => `<p>${esc(para)}</p>`).join('')}</div>
+      <section class="about-fields"><h2 class="visually-hidden">${c.fields}</h2><ul>${fields.map((field) => `<li>${field}</li>`).join('')}</ul></section>
+      <address class="about-contact">${socials(site)}</address>
+    </section>
+    <figure class="about-image">${image(about.image, pick(about, 'name', lang), ctx, { lazy: false })}</figure>
   </article>`;
   return shell(ctx, site, { active: 'about', title: c.about, body, pageClass: 'page-about' });
 }
 
-export function cvPage(cv, about, site, lang) {
+export function portfolioPage(site, lang) {
+  const ctx = context(lang, 'portfolio.html');
+  return shell(ctx, site, {
+    active: 'portfolio', title: ctx.c.portfolio, pageClass: 'page-portfolio',
+    body: `<h1 id="page-title" class="visually-hidden">${ctx.c.portfolio}</h1>`,
+  });
+}
+
+export function cvPage(cv, site, lang) {
   const ctx = context(lang, 'cv.html');
   const { c } = ctx;
   const titles = { Education: '학력', Experience: '경력', Exhibitions: '전시', Awards: '수상', Training: '교육', Courses: '교육', 'Training & Courses': '교육' };
   const sections = cv.sections.map((section, index) => `<section class="cv-section"><h2><span class="section-number">${number(index + 1)}</span>${esc(lang === 'ko' ? titles[section.title] || section.title : section.title)}</h2><dl>${section.entries.map((entry) => `<div class="cv-row"><dt>${esc(entry.year)}</dt><dd>${richText(pick(entry, 'description', lang))}</dd></div>`).join('')}</dl></section>`);
-  const split = Math.ceil(sections.length / 2);
-  const body = `<article class="editorial-article cv-article"><header class="chapter-heading"><div><p class="eyebrow">04 / Curriculum vitae</p><h1 id="page-title">${c.cv}</h1></div><p class="chapter-note">${esc(pick(about, 'name', lang))}<br />${c.artist}</p></header><div class="cv-spread"><div class="cv-column">${sections.slice(0, split).join('')}</div><div class="cv-column">${sections.slice(split).join('')}</div></div><div class="cv-contact"><span>${lang === 'ko' ? '전시와 협업에 관한 연락' : 'For exhibitions & collaborations'}</span><a href="mailto:${esc(site.email)}">${esc(site.email)} ↗</a></div>${folio('Curriculum vitae', '04')}</article>`;
+  const body = `<article class="editorial-article cv-article" aria-labelledby="page-title">
+    <h1 id="page-title" class="visually-hidden">${c.cv}</h1>
+    <div class="cv-sections">${sections.join('')}</div>
+  </article>`;
   return shell(ctx, site, { active: 'cv', title: c.cv, body, pageClass: 'page-cv' });
 }
 
