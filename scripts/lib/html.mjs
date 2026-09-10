@@ -26,7 +26,7 @@ export function vimeoEmbedHtml(url, title = 'Video') {
   if (!id) return '';
   return `<div class="post-video reveal">
         <div class="post-video-frame">
-          <iframe src="https://player.vimeo.com/video/${id}?title=0&amp;byline=0&amp;portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="${escapeHtml(title)}"></iframe>
+          <iframe src="https://player.vimeo.com/video/${id}?title=0&amp;byline=0&amp;portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="eager" title="${escapeHtml(title)}"></iframe>
         </div>
       </div>`;
 }

@@ -1,6 +1,6 @@
 {
   "slug": "soft-machine",
-  "title": "Soft Machine",
+  "title": "50/50 VISION",
   "year": 2024,
   "type": "영상",
   "tags": [
@@ -10,11 +10,11 @@
     "Unreal"
   ],
   "production": "개인",
-  "thumbnail": "/3dowonWebpage/assets/uploads/soft-machine-1783535930416-588092.jpg",
+  "thumbnail": "/3dowonWebpage/assets/uploads/soft-machine-1789062688480-833271.jpg",
   "grid_type_label": "영상",
   "index_type_label": "영상",
-  "preview_bg": "/3dowonWebpage/assets/uploads/soft-machine-1783535930416-588092.jpg",
-  "hero_image": "/3dowonWebpage/assets/uploads/soft-machine-1783535930416-588092.jpg",
+  "preview_bg": "/3dowonWebpage/assets/uploads/soft-machine-1789062688480-833271.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/soft-machine-1789062688480-833271.jpg",
   "description": "<p>기계와 유기체의 경계를 탐구하는 인터랙티브 전시입니다.</p>",
   "meta_year": "2024",
   "meta_type": "영상",
@@ -22,9 +22,9 @@
   "meta_tech": "Arduino, Unity",
   "meta_production": "개인",
   "gallery": [
-    "https://picsum.photos/seed/softmach1/1920/1440",
-    "https://picsum.photos/seed/softmach2/1920/1440",
-    "https://picsum.photos/seed/softmach3/1920/1440"
+    "/3dowonWebpage/assets/uploads/soft-machine-1789062919288-465917.jpg",
+    "/3dowonWebpage/assets/uploads/soft-machine-1789062921517-446570.jpg",
+    "/3dowonWebpage/assets/uploads/soft-machine-1789062923962-681435.jpg"
   ],
   "grid_type_label_en": "Video",
   "index_type_label_en": "Video",

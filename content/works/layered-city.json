@@ -1,7 +1,7 @@
 {
   "slug": "layered-city",
-  "title": "Layered City",
-  "year": 2023,
+  "title": "At the moment",
+  "year": 2024,
   "type": "인터랙티브",
   "tags": [
     "인터랙티브"
@@ -11,21 +11,20 @@
     "3ds Max"
   ],
   "production": "공동",
-  "thumbnail": "/3dowonWebpage/assets/uploads/layered-city-1783536481692-955235.jpg",
+  "thumbnail": "/3dowonWebpage/assets/uploads/layered-city-1789062795567-345217.jpg",
   "grid_type_label": "인터랙티브",
   "index_type_label": "인터랙티브",
-  "preview_bg": "/3dowonWebpage/assets/uploads/layered-city-1783536481692-955235.jpg",
-  "hero_image": "/3dowonWebpage/assets/uploads/layered-city-1783536481692-955235.jpg",
+  "preview_bg": "/3dowonWebpage/assets/uploads/layered-city-1789062795567-345217.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/layered-city-1789062795567-345217.jpg",
   "description": "<p>도시의 시간적 층위를 인터랙티브 매핑으로 탐구하는 전시 프로젝트입니다.</p>",
-  "meta_year": "2023",
+  "meta_year": "2024",
   "meta_type": "인터랙티브",
   "meta_medium": "인터랙티브",
   "meta_tech": "Unity, 프로젝션",
   "meta_production": "공동",
   "gallery": [
-    "https://picsum.photos/seed/layeredc1/1920/1440",
-    "https://picsum.photos/seed/layeredc2/1920/1440",
-    "https://picsum.photos/seed/layeredc3/1920/1440"
+    "/3dowonWebpage/assets/uploads/layered-city-1789062862437-353864.jpg",
+    "/3dowonWebpage/assets/uploads/layered-city-1789062864805-780061.jpg"
   ],
   "grid_type_label_en": "Interactive",
   "index_type_label_en": "Interactive",

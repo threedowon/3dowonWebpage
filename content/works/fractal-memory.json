@@ -10,11 +10,11 @@
     "Unity"
   ],
   "production": "회사",
-  "thumbnail": "/3dowonWebpage/assets/uploads/fractal-memory-1783536361480-700792.jpg",
+  "thumbnail": "/3dowonWebpage/assets/uploads/fractal-memory-1789062817252-132092.jpg",
   "grid_type_label": "영상",
   "index_type_label": "영상",
-  "preview_bg": "/3dowonWebpage/assets/uploads/fractal-memory-1783536361480-700792.jpg",
-  "hero_image": "/3dowonWebpage/assets/uploads/fractal-memory-1783536361480-700792.jpg",
+  "preview_bg": "/3dowonWebpage/assets/uploads/fractal-memory-1789062817252-132092.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/fractal-memory-1789062817252-132092.jpg",
   "description": "<p>기억의 층위를 프랙탈 구조로 시각화한 프로젝션 설치이다. 관객의 움직임에 따라 영상 레이어가 분기·중첩되며 새로운 패턴을 만든다.</p>\n            <p>담당</p>\n            <p>TouchDesigner 프로젝션 매핑 설계</p>\n            <p>MadMapper 출력·블렌딩 구성</p>\n            <p>설치 공간 레이아웃 협의</p>",
   "meta_year": "2022",
   "meta_type": "영상",
@@ -22,9 +22,8 @@
   "meta_tech": "TouchDesigner, MadMapper",
   "meta_production": "회사",
   "gallery": [
-    "https://picsum.photos/seed/fractalm1/1920/1440",
-    "https://picsum.photos/seed/fractalm2/1920/1440",
-    "https://picsum.photos/seed/fractalm3/1920/1440"
+    "/3dowonWebpage/assets/uploads/fractal-memory-1789062838195-783049.jpg",
+    "/3dowonWebpage/assets/uploads/fractal-memory-1789062840357-760026.jpg"
   ],
   "grid_type_label_en": "Video",
   "index_type_label_en": "Video",

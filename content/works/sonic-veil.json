@@ -1,6 +1,6 @@
 {
   "slug": "sonic-veil",
-  "title": "Sonic Veil",
+  "title": "Dear Actor",
   "year": 2024,
   "type": "인터랙티브",
   "tags": [
@@ -10,11 +10,11 @@
     "Unreal"
   ],
   "production": "개인",
-  "thumbnail": "/3dowonWebpage/assets/uploads/sonic-veil-1783536089311-914832.jpg",
+  "thumbnail": "/3dowonWebpage/assets/uploads/sonic-veil-1789062721088-423920.jpg",
   "grid_type_label": "인터랙티브",
   "index_type_label": "인터랙티브",
-  "preview_bg": "/3dowonWebpage/assets/uploads/sonic-veil-1783536089311-914832.jpg",
-  "hero_image": "/3dowonWebpage/assets/uploads/sonic-veil-1783536089311-914832.jpg",
+  "preview_bg": "/3dowonWebpage/assets/uploads/sonic-veil-1789062721088-423920.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/sonic-veil-1789062721088-423920.jpg",
   "description": "<p>공간음향과 프로젝션을 결합한 설치 작업이다. 관객의 위치에 따라 소리의 밀도와 빛의 결이 달라지는 경험을 설계했다.</p>\n            <p>담당</p>\n            <p>Max/MSP 공간음향 패치 개발</p>\n            <p>TouchDesigner 비주얼 연동</p>\n            <p>설치·시연 환경 세팅</p>",
   "meta_year": "2024",
   "meta_type": "인터랙티브",
@@ -22,9 +22,9 @@
   "meta_tech": "Max/MSP, TouchDesigner",
   "meta_production": "개인",
   "gallery": [
-    "https://picsum.photos/seed/sonicvei1/1920/1440",
-    "https://picsum.photos/seed/sonicvei2/1920/1440",
-    "https://picsum.photos/seed/sonicvei3/1920/1440"
+    "/3dowonWebpage/assets/uploads/sonic-veil-1789062891939-45230.jpg",
+    "/3dowonWebpage/assets/uploads/sonic-veil-1789062894456-326788.jpg",
+    "/3dowonWebpage/assets/uploads/sonic-veil-1789062902701-580359.jpg"
   ],
   "grid_type_label_en": "Interactive",
   "index_type_label_en": "Interactive",
