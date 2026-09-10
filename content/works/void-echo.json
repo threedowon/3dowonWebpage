@@ -1,6 +1,6 @@
 {
   "slug": "void-echo",
-  "title": "Void Echo",
+  "title": "Back To the master",
   "year": 2018,
   "type": "인터랙티브",
   "tags": [
@@ -23,9 +23,9 @@
   "meta_tech": "Unreal Engine, Leap Motion",
   "meta_production": "개인",
   "gallery": [
-    "https://picsum.photos/seed/voidecho1/1920/1440",
-    "https://picsum.photos/seed/voidecho2/1920/1440",
-    "https://picsum.photos/seed/voidecho3/1920/1440"
+    "/3dowonWebpage/assets/uploads/void-echo-1789063170900-851026.jpg",
+    "/3dowonWebpage/assets/uploads/void-echo-1789063241554-809531.jpg",
+    "/3dowonWebpage/assets/uploads/void-echo-1789063244624-991827.jpg"
   ],
   "grid_type_label_en": "Interactive",
   "index_type_label_en": "Interactive",

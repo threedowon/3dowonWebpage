@@ -1,6 +1,6 @@
 {
   "slug": "mirror-phase",
-  "title": "Mirror Phase",
+  "title": "May your day Shine Bright",
   "year": 2018,
   "type": "인터랙티브",
   "tags": [
@@ -20,9 +20,11 @@
   "meta_tech": "Kinect, TouchDesigner",
   "meta_production": "공동",
   "gallery": [
-    "https://picsum.photos/seed/mirrorph1/1920/1440",
-    "https://picsum.photos/seed/mirrorph2/1920/1440",
-    "https://picsum.photos/seed/mirrorph3/1920/1440"
+    "/3dowonWebpage/assets/uploads/mirror-phase-1789063276413-522089.jpg",
+    "/3dowonWebpage/assets/uploads/mirror-phase-1789063283098-526617.jpg",
+    "/3dowonWebpage/assets/uploads/mirror-phase-1789063285245-791690.jpg",
+    "/3dowonWebpage/assets/uploads/mirror-phase-1789063287255-557251.jpg",
+    "/3dowonWebpage/assets/uploads/mirror-phase-1789063289722-55764.jpg"
   ],
   "grid_type_label_en": "Interactive",
   "index_type_label_en": "Interactive",

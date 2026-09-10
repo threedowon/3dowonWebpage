@@ -84,7 +84,7 @@ function initCatalog() {
 function trackImageRatio(img) {
   const applyRatio = () => {
     if (!img.naturalWidth || !img.naturalHeight) return;
-    const ratio = img.naturalHeight > img.naturalWidth ? '4 / 3' : '16 / 9';
+    const ratio = img.naturalHeight > img.naturalWidth ? '3 / 4' : '16 / 9';
     img.style.setProperty('--image-ratio', ratio);
     img.closest('.overview-image-link')?.style.setProperty('--image-ratio', ratio);
   };

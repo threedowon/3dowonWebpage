@@ -1,6 +1,6 @@
 {
   "slug": "ghost-frequency",
-  "title": "Ghost Frequency",
+  "title": "입체동화책 : 불가사리의 모험",
   "year": 2020,
   "type": "인터랙티브",
   "tags": [
@@ -11,11 +11,11 @@
     "3ds Max"
   ],
   "production": "공동",
-  "thumbnail": "/3dowonWebpage/assets/uploads/ghost-frequency-1783536430417-714178.jpg",
+  "thumbnail": "/3dowonWebpage/assets/uploads/ghost-frequency-1789063318364-391631.jpg",
   "grid_type_label": "인터랙티브",
   "index_type_label": "인터랙티브",
-  "preview_bg": "/3dowonWebpage/assets/uploads/ghost-frequency-1783536430417-714178.jpg",
-  "hero_image": "/3dowonWebpage/assets/uploads/ghost-frequency-1783536430417-714178.jpg",
+  "preview_bg": "/3dowonWebpage/assets/uploads/ghost-frequency-1789063318364-391631.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/ghost-frequency-1789063318364-391631.jpg",
   "description": "<p>보이지 않는 주파수 대역을 빛으로 번역한 인터랙티브 설치입니다.</p>",
   "meta_year": "2020",
   "meta_type": "인터랙티브",
@@ -23,9 +23,7 @@
   "meta_tech": "ESP32, TouchOSC",
   "meta_production": "공동",
   "gallery": [
-    "https://picsum.photos/seed/ghostfre1/1920/1440",
-    "https://picsum.photos/seed/ghostfre2/1920/1440",
-    "https://picsum.photos/seed/ghostfre3/1920/1440"
+    "/3dowonWebpage/assets/uploads/ghost-frequency-1789063323560-649882.jpg"
   ],
   "grid_type_label_en": "Interactive",
   "index_type_label_en": "Interactive",
