@@ -1,36 +1,36 @@
 {
   "slug": "body-signal",
-  "title": "Body Signal",
+  "title": "The Piano Room",
   "year": 2024,
-  "type": "영상",
+  "type": "인터랙티브",
   "tags": [
-    "영상"
+    "인터랙티브"
   ],
   "tech": [
     "Unreal"
   ],
   "production": "공동",
-  "thumbnail": "/3dowonWebpage/assets/uploads/body-signal-1783535949713-10705.jpg",
-  "grid_type_label": "영상",
-  "index_type_label": "영상",
-  "preview_bg": "/3dowonWebpage/assets/uploads/body-signal-1783535949713-10705.jpg",
-  "hero_image": "/3dowonWebpage/assets/uploads/body-signal-1783535949713-10705.jpg",
-  "description": "<p>공연자의 생체 신호를 실시간으로 시각·청각 요소로 변환하는 퍼포먼스 작업이다. 심박과 호흡의 변화가 빛과 소리로 확장된다.</p>\n            <p>담당</p>\n            <p>ESP32 바이오 센서 인터페이스 개발</p>\n            <p>Max/MSP 실시간 오디오 비주얼라이제이션</p>\n            <p>공연 연출·리허설 협업</p>",
+  "thumbnail": "/3dowonWebpage/assets/uploads/body-signal-1789061971253-698106.jpg",
+  "grid_type_label": "인터랙티브",
+  "index_type_label": "인터랙티브",
+  "preview_bg": "/3dowonWebpage/assets/uploads/body-signal-1789061971253-698106.jpg",
+  "hero_image": "/3dowonWebpage/assets/uploads/body-signal-1789061971253-698106.jpg",
+  "description": "<p>아이패드의 Touch OSC 앱과 Unreal Engine을 결합한 이 인터랙티브 콘텐츠를 통해 사용자는 디지털 피아노를 연주하며 실시간으로 언리얼 장면 내에서 음악을 만들어낼 수 있습니다.</p>\n            <p>아이패드 상의 건반 입력이 즉각적으로 언리얼 환경의 피아노로 반영되어, 생동감 있는 연주 경험을 제공합니다.</p>",
   "meta_year": "2024",
-  "meta_type": "영상",
-  "meta_medium": "영상",
-  "meta_tech": "ESP32, Max/MSP",
+  "meta_type": "인터랙티브",
+  "meta_medium": "인터랙티브",
+  "meta_tech": "Unreal Engine, OSC, TouchOSC",
   "meta_production": "공동",
   "gallery": [
-    "https://picsum.photos/seed/bodysign1/1920/1440",
-    "https://picsum.photos/seed/bodysign2/1920/1440",
-    "https://picsum.photos/seed/bodysign3/1920/1440"
+    "/3dowonWebpage/assets/uploads/body-signal-1789061945322-113866.jpg",
+    "/3dowonWebpage/assets/uploads/body-signal-1789061947993-877609.jpg",
+    "/3dowonWebpage/assets/uploads/body-signal-1789061952533-964377.jpg"
   ],
-  "grid_type_label_en": "Video",
-  "index_type_label_en": "Video",
-  "meta_type_en": "Video",
-  "meta_medium_en": "Video",
-  "meta_tech_en": "ESP32, Max/MSP",
+  "grid_type_label_en": "Interactive",
+  "index_type_label_en": "Interactive",
+  "meta_type_en": "Interactive",
+  "meta_medium_en": "Interactive",
+  "meta_tech_en": "Unreal Engine, OSC, TouchOSC",
   "meta_production_en": "Collaborative",
   "description_en": "<p>A performance work that converts a performer's biometric signals into visual and auditory elements in real time. Changes in heartbeat and breath expand into light and sound.</p>\n            <p>Role</p>\n            <p>Developed an ESP32 bio-sensor interface</p>\n            <p>Built real-time audio visualization in Max/MSP</p>\n            <p>Collaborated on performance direction and rehearsals</p>",
   "vimeo_url": ""
