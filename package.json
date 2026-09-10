@@ -5,6 +5,7 @@
   "scripts": {
     "extract": "node scripts/extract-content.mjs",
     "build": "node scripts/build.mjs",
+    "preview": "node scripts/preview.mjs",
     "admin": "node admin/server.js"
   },
   "dependencies": {
