@@ -24,8 +24,6 @@ body {
 }
 .admin-tab.active { background: #fff; color: #1a1a1a; border-color: #fff; }
 
-<<<<<<< HEAD
-=======
 .deploy-bar { display: flex; align-items: center; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
 .deploy-bar input {
   flex: 1;
@@ -42,7 +40,6 @@ body {
 .deploy-status.ok { color: #6fd68a; }
 .deploy-status.error { color: #ff8a80; }
 
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 main { max-width: 900px; margin: 0 auto; padding: 24px; }
 .admin-panel { display: none; }
 .admin-panel.active { display: block; }
@@ -107,14 +104,10 @@ button.secondary { background: #666; }
 .cv-section-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
 .cv-entry-row { display: flex; gap: 8px; margin: 6px 0; align-items: center; }
 .cv-entry-row input:first-child { width: 80px; }
-<<<<<<< HEAD
-.cv-entry-row input:nth-child(2) { flex: 1; }
-=======
 .cv-entry-row input:nth-child(2),
 .cv-entry-row input:nth-child(3) { flex: 1; }
 
 .lab-card.thumb-row .lab-caption { flex: 1; min-width: 140px; }
->>>>>>> cac3545c2c1cb80a8103a67eccf8cc4dc93d98b9
 
 .thumb-row { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
 .thumb-row img { width: 100px; height: 100px; object-fit: cover; border-radius: 4px; background: #ddd; display: block; margin-bottom: 6px; }
