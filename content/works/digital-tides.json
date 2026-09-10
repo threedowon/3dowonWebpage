@@ -21,7 +21,9 @@
   "meta_medium": "영상",
   "meta_tech": "TouchDesigner, Unity",
   "meta_production": "개인",
-  "gallery": [],
+  "gallery": [
+    "/3dowonWebpage/assets/uploads/digital-tides-1789065014288-685645.jpg"
+  ],
   "grid_type_label_en": "Video",
   "index_type_label_en": "Video",
   "meta_type_en": "Video",

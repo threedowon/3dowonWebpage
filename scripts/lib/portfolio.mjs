@@ -1,7 +1,7 @@
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
 import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 
-const VERSION = '925';
+const VERSION = '926';
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
   en: { works: 'Works', lab: 'Lab', about: 'About', cv: 'CV', photos: 'Images', index: 'Index', allYears: 'All years', allFields: 'All fields', space: 'Space', object: 'Object', screen: 'Screen', year: 'Year', field: 'Field', name: 'Project', back: 'All works', previous: 'Previous work', next: 'Next work', close: 'Close', enlarge: 'Enlarge image', practice: 'Practice', approach: 'Approach', fields: 'Fields', noResults: 'No work matches these filters.', reset: 'Reset filters', note: 'Interactive installations and media experiments\nwith light, space, and everyday objects.', artist: 'Interactive media artist', type: 'Type', medium: 'Medium', tech: 'Technology', production: 'Production', skip: 'Skip to content' },
@@ -90,7 +90,7 @@ function overviewGrid(works, ctx) {
       ? (ctx.lang === 'ko' ? '실험 보기' : 'View study')
       : (ctx.lang === 'ko' ? '작업 보기' : 'View project');
     const attrs = `data-year="${esc(work.year || '')}" data-field="${field}"`;
-    return `<article class="overview-project" data-overview-project ${attrs}>
+    return `<article class="overview-project" data-overview-project data-project="${esc(work.slug)}" ${attrs}>
       <a class="project-summary" href="${esc(href)}"><div><span class="project-number">${projectNumber}</span><h2>${esc(title)}</h2><ul class="project-categories">${categories.map((category, i) => `<li><span>${projectNumber}.${i + 1}</span> ${esc(category)}</li>`).join('')}</ul></div><div class="project-summary-bottom"><p>${esc(work.meta_year || work.year || '')}</p><p>${esc(pick(work, 'meta_tech', ctx.lang) || '')}</p></div></a>
     </article>${media.map((src, i) => `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}><span class="image-reference">${projectNumber}.${i + 1}.1</span><a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><img src="${esc(src)}" alt="${esc(title)} — ${i + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`).join('')}`;
   }).join('\n')}</div>`;

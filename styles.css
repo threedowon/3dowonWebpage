@@ -59,6 +59,8 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:1px solid var(
 .overview-image[data-orientation="landscape"] .overview-image-link::before{padding-top:calc((100% - 2 * var(--cell-inset)) * 2 / 3)}
 .overview-image-link img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 180ms ease}
 .overview-image-link:hover img{opacity:.7}
+/* Keep the title cells and row rules in place while previewing one project's images. */
+.page-works .overview-image.is-hover-hidden>*{visibility:hidden}
 .catalog-empty{text-align:center;padding:80px 16px}
 .catalog-empty button{margin-top:20px;text-decoration:underline;text-underline-offset:3px}
 /* The same column rhythm continues through the archive and project pages. */

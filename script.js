@@ -26,6 +26,23 @@ function syncLanguageLinks() {
   });
 }
 
+function initProjectHover(catalog, projects, plates) {
+  if (catalog.dataset.catalog !== 'works') return () => {};
+  const showProject = (slug = '') => {
+    plates.forEach((plate) => plate.classList.toggle('is-hover-hidden', Boolean(slug) && plate.dataset.project !== slug));
+  };
+  const clear = () => showProject();
+  projects.forEach((project) => {
+    project.addEventListener('pointerenter', (event) => {
+      if (event.pointerType === 'mouse' || event.pointerType === 'pen') showProject(project.dataset.project);
+    });
+    project.addEventListener('pointerleave', clear);
+    project.addEventListener('pointercancel', clear);
+  });
+  window.addEventListener('blur', clear);
+  return clear;
+}
+
 function initCatalog() {
   const catalog = document.querySelector('[data-catalog]');
   if (!catalog) return;
@@ -33,6 +50,7 @@ function initCatalog() {
   const field = catalog.querySelector('[name="field"]');
   const plates = [...catalog.querySelectorAll('[data-plate]')];
   const projects = [...catalog.querySelectorAll('[data-overview-project]')];
+  const clearProjectHover = initProjectHover(catalog, projects, plates);
   const count = document.getElementById('catalog-count');
   const empty = catalog.querySelector('.catalog-empty');
 
@@ -43,6 +61,7 @@ function initCatalog() {
     field.value = valid(field, params.get('field'));
   };
   const render = (writeUrl = false) => {
+    clearProjectHover();
     const yearValue = year?.value || 'all';
     const matches = (item) => (yearValue === 'all' || yearValue === item.dataset.year) && (field.value === 'all' || field.value === item.dataset.field);
     let visible = 0;
