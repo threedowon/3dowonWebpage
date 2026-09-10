@@ -1,7 +1,7 @@
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
 import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 
-const VERSION = '917';
+const VERSION = '919';
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
   en: { works: 'Works', lab: 'Lab', about: 'About', cv: 'CV', photos: 'Images', index: 'Index', allYears: 'All years', allFields: 'All fields', space: 'Space', object: 'Object', screen: 'Screen', year: 'Year', field: 'Field', name: 'Project', back: 'All works', previous: 'Previous work', next: 'Next work', close: 'Close', enlarge: 'Enlarge image', practice: 'Practice', approach: 'Approach', fields: 'Fields', noResults: 'No work matches these filters.', reset: 'Reset filters', note: 'Interactive installations and media experiments\nwith light, space, and everyday objects.', artist: 'Interactive media artist', type: 'Type', medium: 'Medium', tech: 'Technology', production: 'Production', skip: 'Skip to content' },
@@ -30,7 +30,7 @@ function socials(site) {
     .filter(([, href]) => href).map(([label, href]) => `<a href="${esc(href)}"${href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${label}<span aria-hidden="true"> ↗</span></a>`).join('');
 }
 
-function shell(ctx, site, { active, title, body, pageClass = '' }) {
+function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', catalog = '' }) {
   const { c, home, assets, relPath, lang } = ctx;
   return `<!DOCTYPE html>
 <html lang="${lang}">
@@ -55,7 +55,10 @@ function shell(ctx, site, { active, title, body, pageClass = '' }) {
       <p class="header-note">${esc(c.note).replace(/\n/g, ' ')}</p>
       <nav class="language-nav" aria-label="${lang === 'ko' ? '언어' : 'Language'}"><a href="${assets}${relPath}" lang="en" data-language="en"${lang === 'en' ? ' aria-current="true"' : ''}>EN</a><span aria-hidden="true">/</span><a href="${assets}ko/${relPath}" lang="ko" data-language="ko"${lang === 'ko' ? ' aria-current="true"' : ''}>KO</a></nav>
     </header>
-    <main id="main" tabindex="-1">${body}</main>
+    <main id="main" tabindex="-1"${catalog ? ` data-catalog="${catalog}"` : ''}>
+      <div class="page-toolbar"${toolbar ? '' : ' aria-hidden="true"'}>${toolbar}</div>
+      <div class="page-content">${body}</div>
+    </main>
     <footer class="site-footer"><a class="footer-wordmark" href="${home}index.html">3Dowon</a><div class="footer-contact"><p>${lang === 'ko' ? '문의' : 'Enquiries'}</p><a href="mailto:${esc(site.email)}">E. &nbsp;${esc(site.email)}</a></div><div class="footer-links">${socials(site)}</div><a class="back-to-top" href="#main">${lang === 'ko' ? '맨 위로' : 'Back to top'} ↑</a><span class="footer-copyright">© ${new Date().getFullYear()} 3Dowon</span><span class="footer-practice">${c.artist}</span></footer>
   </div>
   <dialog class="media-dialog" id="media-dialog" aria-labelledby="viewer-title"><header><h2 id="viewer-title"></h2><a id="viewer-work" hidden>${lang === 'ko' ? '작업 보기' : 'View work'} ↗</a><button type="button" data-close-viewer>${c.close} ×</button></header><div id="viewer-media"></div></dialog>
@@ -83,7 +86,7 @@ function overviewGrid(works, ctx) {
     const attrs = `data-year="${esc(work.year || '')}" data-field="${field}"`;
     return `<article class="overview-project" data-overview-project ${attrs}>
       <a class="project-summary" href="${esc(href)}"><div><span class="project-number">${projectNumber}</span><h2>${esc(title)}</h2><ul class="project-categories">${categories.map((category, i) => `<li><span>${projectNumber}.${i + 1}</span> ${esc(category)}</li>`).join('')}</ul></div><div class="project-summary-bottom"><p>${esc(work.meta_year || work.year || '')}</p><p>${esc(pick(work, 'meta_tech', ctx.lang) || '')}</p></div></a>
-    </article>${media.map((src, i) => `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}><span class="image-reference">${projectNumber}.${i + 1}</span><a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><img src="${esc(src)}" alt="${esc(title)} — ${i + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`).join('')}`;
+    </article>${media.map((src, i) => `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}><span class="image-reference">${projectNumber}.${i + 1}.1</span><a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><img src="${esc(src)}" alt="${esc(title)} — ${i + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`).join('')}`;
   }).join('\n')}</div>`;
 }
 
@@ -97,16 +100,16 @@ export function catalogPage(works, site, lang, relPath = 'works.html', section =
     for (const src of media) photos.push({ number: photos.length + 1, project: work.slug, title: pick(work, 'title', lang), year: work.year || '', field: formKey(workFormY(work)), medium: pick(work, 'meta_medium', lang) || pick(work, 'meta_type', lang) || '', href: `work/${work.slug}.html`, src });
   }
   const countLabel = section === 'lab' ? (lang === 'ko' ? '개 실험' : ' studies') : (lang === 'ko' ? '개 작업' : ' works');
-  const body = `<section class="catalog-section" aria-labelledby="page-title" data-catalog="${section}">
-    <h1 id="page-title" class="visually-hidden">${c[section]}</h1>
-    <header class="catalog-toolbar">
+  const toolbar = `<header class="catalog-toolbar">
       <p id="catalog-count" role="status">${works.length}${countLabel} · ${photos.length}${lang === 'ko' ? '장' : ' images'}</p>
       <div class="toolbar-cell catalog-filters">${years.length ? `<label><span class="visually-hidden">${c.year}</span><select name="year" aria-label="${c.year}"><option value="all">${c.allYears}</option>${years.map((year) => `<option value="${year}">${year}</option>`).join('')}</select></label>` : ''}<label><span class="visually-hidden">${c.field}</span><select name="field" aria-label="${c.field}"><option value="all">${c.allFields}</option>${['space', 'object', 'screen'].map((key) => `<option value="${key}">${c[key]}</option>`).join('')}</select></label></div>
-    </header>
+    </header>`;
+  const body = `<section class="catalog-section" aria-labelledby="page-title">
+    <h1 id="page-title" class="visually-hidden">${c[section]}</h1>
     ${overviewGrid(works, ctx)}
     <div class="catalog-empty" hidden><p>${c.noResults}</p><button type="button" data-reset-filters>${c.reset} ↗</button></div>
   </section>`;
-  return shell(ctx, site, { active: section, title: c[section], body, pageClass: `page-${section}` });
+  return shell(ctx, site, { active: section, title: c[section], body, toolbar, catalog: section, pageClass: `page-${section}` });
 }
 
 export function labPage(studies, site, lang) {
