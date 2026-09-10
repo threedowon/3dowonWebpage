@@ -43,7 +43,8 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:1px solid var(
 #catalog-count{margin-left:auto;color:var(--muted);font-size:var(--type-meta);font-variant-numeric:tabular-nums}
 .catalog-filters{display:flex;gap:18px}
 .catalog-filters select{display:block;max-width:150px;border:0;border-radius:0;background:transparent;font-size:var(--type-ui);line-height:1.25;text-transform:uppercase;padding:5px 0}
-.overview-grid{display:grid;grid-template-columns:repeat(var(--columns),minmax(0,1fr));margin:-1px calc(-1*var(--cell-inset)) 0}
+/* Size the grid cells to the smaller images, keeping the original space between them. */
+.overview-grid{--image-scale:.80;display:grid;grid-template-columns:repeat(auto-fill,calc((100% / var(--columns) - 2 * var(--cell-inset)) * var(--image-scale) + 2 * var(--cell-inset)));margin:-1px calc(-1*var(--cell-inset)) 0}
 .overview-project,.overview-image{min-width:0;padding:var(--content-inset) var(--cell-inset) 16px;border-top:1px solid var(--line);font-size:var(--type-ui)}
 .project-summary{height:100%;display:flex;flex-direction:column;justify-content:space-between;gap:24px;overflow-wrap:anywhere}
 .project-number{display:block;margin-bottom:5px;font-size:var(--type-meta);font-variant-numeric:tabular-nums}
@@ -55,7 +56,7 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:1px solid var(
 .image-reference{display:block;flex-shrink:0;font-size:var(--type-meta);font-variant-numeric:tabular-nums;letter-spacing:.025em;margin-bottom:8px}
 .overview-image-link{position:relative;display:block;flex:none;width:100%;overflow:hidden;cursor:pointer}
 .overview-image-link::before{content:"";display:block;padding-top:calc(100% * 4 / 3)}
-/* Two columns include one extra gutter: subtract it before matching a 3:4 portrait's height. */
+/* Two columns include one extra gutter: subtract it to match the portrait height. */
 .overview-image[data-orientation="landscape"] .overview-image-link::before{padding-top:calc((100% - 2 * var(--cell-inset)) * 2 / 3)}
 .overview-image-link img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 180ms ease}
 .overview-image-link:hover img{opacity:.7}
