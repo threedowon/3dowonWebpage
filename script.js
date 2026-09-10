@@ -84,6 +84,8 @@ function initCatalog() {
 function trackImageRatio(img) {
   const applyRatio = () => {
     if (!img.naturalWidth || !img.naturalHeight) return;
+    const plate = img.closest('[data-plate]');
+    if (plate) plate.dataset.orientation = img.naturalWidth > img.naturalHeight ? 'landscape' : 'portrait';
     const ratio = img.naturalHeight > img.naturalWidth ? '3 / 4' : '16 / 9';
     img.style.setProperty('--image-ratio', ratio);
     img.closest('.overview-image-link')?.style.setProperty('--image-ratio', ratio);

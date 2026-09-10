@@ -51,9 +51,13 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:1px solid var(
 .project-categories span{font-variant-numeric:tabular-nums;margin-right:3px}
 .project-summary-bottom{max-width:190px;overflow-wrap:anywhere}
 .overview-image{display:flex;flex-direction:column}
+.overview-image[data-orientation="landscape"]{grid-column:span 2}
 .image-reference{display:block;flex-shrink:0;font-size:var(--type-meta);font-variant-numeric:tabular-nums;letter-spacing:.025em;margin-bottom:8px}
-.overview-image-link{display:block;flex:none;width:100%;aspect-ratio:var(--image-ratio,16/9);overflow:hidden;cursor:pointer}
-.overview-image-link img{width:100%;height:100%;object-fit:cover;transition:opacity 180ms ease}
+.overview-image-link{position:relative;display:block;flex:none;width:100%;overflow:hidden;cursor:pointer}
+.overview-image-link::before{content:"";display:block;padding-top:calc(100% * 4 / 3)}
+/* Two columns include one extra gutter: subtract it before matching a 3:4 portrait's height. */
+.overview-image[data-orientation="landscape"] .overview-image-link::before{padding-top:calc((100% - 2 * var(--cell-inset)) * 2 / 3)}
+.overview-image-link img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 180ms ease}
 .overview-image-link:hover img{opacity:.7}
 .catalog-empty{text-align:center;padding:80px 16px}
 .catalog-empty button{margin-top:20px;text-decoration:underline;text-underline-offset:3px}
