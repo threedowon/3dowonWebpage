@@ -23,13 +23,9 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:1px solid var(
 .visually-hidden{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .skip-link{position:fixed;z-index:20;top:8px;left:16px;padding:10px;background:var(--ink);color:white;transform:translateY(-180%)}
 .skip-link:focus{transform:none}
-/* A quiet wordmark while the first visible Works images are being prepared. */
-.works-loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:var(--paper);opacity:0;visibility:hidden;pointer-events:none;transition:opacity 300ms ease,visibility 0s linear 300ms}
-.works-loader-wordmark{font-size:24px;font-weight:600;line-height:1;text-transform:uppercase;letter-spacing:-.035em;animation:works-loading-pulse 1200ms ease-in-out infinite}
-.works-loading{overflow:hidden}
-.works-loading .works-loader{opacity:1;visibility:visible;pointer-events:auto;transition:opacity 200ms ease 120ms,visibility 0s}
-.works-loading .page-works>.site-frame,.works-loading .page-works>.skip-link{visibility:hidden}
-@keyframes works-loading-pulse{0%,100%{opacity:.45}50%{opacity:1}}
+/* Reserve tile space, revealing only the uninterrupted run of decoded images. */
+.works-reveal .works-image-grid .overview-image:not(.is-image-ready){visibility:hidden}
+.works-image-grid .overview-image.is-image-error{display:none!important}
 /* Keep the original Lab header positions independent of the page margins. */
 :root{--catalog-title-width:112px;--catalog-title-track:calc(var(--catalog-title-width) + 2 * var(--cell-inset));--catalog-menu-offset:calc(var(--catalog-title-track) + 4 * var(--catalog-track));--header-width:min(var(--page-width),calc(round(down,calc(100% - 2 * var(--gutter) + 2 * var(--cell-inset)),var(--catalog-track)) - 2 * var(--cell-inset)))}
 /* The header keeps its original four-pair width; Lab tiles retain their size. */
@@ -100,7 +96,7 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:1px solid var(
 .works-image-grid.is-project-preview{padding-top:var(--project-preview-offset,0px);background-image:none}
 .works-image-grid .overview-image.is-hover-hidden{display:none}
 /* Project details replace the gallery in the same Works surface. */
-.works-project-panel{--detail-paper:#ddd;--detail-stage-height:max(420px,calc(100dvh - var(--header-height) - var(--toolbar-height)));--detail-media-inset:24px;--inline-info-top:max(64px,calc(50dvh - 120px));min-width:0;container:works-detail / inline-size}
+.works-project-panel{--detail-paper:#ddd;--detail-stage-height:max(420px,calc(100dvh - var(--header-height) - var(--toolbar-height)));--detail-media-inset:24px;--inline-info-top:max(64px,calc(50dvh - 120px));min-width:0}
 .works-project-panel:focus{outline:none}
 .inline-work{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"gallery" "information";align-items:start}
 .inline-project-information{grid-area:information;min-width:0;width:100%;max-width:728px;padding:32px var(--detail-media-inset)}
@@ -109,13 +105,10 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:1px solid var(
 .inline-project-heading .eyebrow{margin-bottom:8px}
 .inline-project-heading h2{font-size:var(--type-body);line-height:1.4;overflow-wrap:anywhere}
 .inline-all-works{display:none;font-size:var(--type-ui);margin:0 var(--cell-inset) 16px}
-/* Keep text beside the images until the available text column becomes too narrow. */
-@media(min-width:901px){
- @container works-detail (min-width:850px){
-  .inline-work{grid-template-columns:minmax(0,2.4fr) minmax(0,1fr);grid-template-areas:"gallery information"}
-  .inline-project-information{position:sticky;top:var(--inline-info-top);margin-top:max(32px,calc(var(--detail-stage-height) / 2 - 120px));max-width:none;max-height:calc(100dvh - var(--inline-info-top) - 24px);overflow-y:auto;padding:0 var(--cell-inset)}
- }
-}
+/* The title and metadata determine when the side column has enough room. */
+.has-side-information .inline-work{grid-template-columns:minmax(0,2.4fr) minmax(0,1fr);grid-template-areas:"gallery information"}
+.has-side-information .inline-project-information{position:sticky;top:var(--inline-info-top);margin-top:max(32px,calc(var(--detail-stage-height) / 2 - 120px));max-width:none;max-height:calc(100dvh - var(--inline-info-top) - 24px);overflow-y:auto;padding:0 var(--cell-inset)}
+.inline-text-measure{position:fixed;left:0;top:0;visibility:hidden;pointer-events:none;white-space:pre}
 .catalog-empty{text-align:center;padding:80px 16px}
 .catalog-empty button{margin-top:20px;text-decoration:underline;text-underline-offset:3px}
 /* The same column rhythm continues through the archive and project pages. */
@@ -267,8 +260,7 @@ figcaption{display:flex;justify-content:space-between;gap:12px;padding-top:8px;f
  @page{size:A4;margin:12mm}
  :root{--page-edge:var(--cell-inset)}
  .site-nav,.language-nav,.page-toolbar,.site-footer,.skip-link,.media-dialog,.project-pagination,.archive-back,.post-video{display:none!important}
- .works-loader{display:none!important}
- .works-loading .page-works>.site-frame{visibility:visible}
+ .works-reveal .works-image-grid .overview-image{visibility:visible!important}
  .site-frame{width:auto;max-width:none;margin:0}
  .site-header{min-height:70px}
  .overview-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background-image:none}
@@ -276,7 +268,7 @@ figcaption{display:flex;justify-content:space-between;gap:12px;padding-top:8px;f
  .works-index{position:static;max-height:none;overflow:visible;margin-bottom:24px}
  .works-all,.inline-all-works{display:none!important}
  .inline-work{display:block}
- .inline-project-information{position:static;margin:0 0 24px;max-height:none;overflow:visible}
+ .inline-project-information,.has-side-information .inline-project-information{position:static;margin:0 0 24px;max-height:none;overflow:visible}
  .works-image-grid .overview-image{width:auto;max-width:none}
  .works-image-grid.is-project-preview{min-height:0!important;padding-top:0}
  .works-image-grid .overview-image.is-hover-hidden{display:block}
@@ -292,4 +284,4 @@ figcaption{display:flex;justify-content:space-between;gap:12px;padding-top:8px;f
  .about-image{margin-top:24px}
  .about-image,.about-image img{height:auto}
 }
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}.works-loader-wordmark{animation:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}}

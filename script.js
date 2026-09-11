@@ -26,7 +26,7 @@ function syncLanguageLinks() {
   });
 }
 
-function initProjectHover(catalog, projects, plates) {
+function initProjectHover(catalog, projects, plates, refreshImages) {
   if (catalog.dataset.catalog !== 'works') return () => {};
   const imageGrid = catalog.querySelector('.works-image-grid');
   const index = catalog.querySelector('.works-index');
@@ -56,6 +56,7 @@ function initProjectHover(catalog, projects, plates) {
       plate.classList.toggle('is-hover-hidden', Boolean(slug) && plate.dataset.project !== slug);
       if (slug && plate.dataset.project === slug) plate.querySelector('img').loading = 'eager';
     });
+    refreshImages();
   };
   const clear = () => showProject();
   const suspend = () => {
@@ -106,6 +107,40 @@ function initWorksProjectView(catalog, projects, clearProjectHover, refreshCatal
   let opener;
   allWorks.hidden = false;
 
+  const updateDetailLayout = () => {
+    const information = panel.querySelector('.inline-project-information');
+    if (!information) return;
+    const measure = document.createElement('span');
+    measure.className = 'inline-text-measure';
+    measure.setAttribute('aria-hidden', 'true');
+    panel.append(measure);
+    const textWidth = (element) => {
+      const style = getComputedStyle(element);
+      measure.style.font = style.font;
+      measure.style.letterSpacing = style.letterSpacing;
+      measure.textContent = element.textContent.trim();
+      return measure.getBoundingClientRect().width;
+    };
+    // Body paragraphs already span lines; title and fact rows identify new wrapping.
+    let requiredWidth = textWidth(information.querySelector('h2'));
+    information.querySelectorAll('.work-meta > div').forEach((row) => {
+      const cellWidth = Math.max(...[...row.children].map(textWidth));
+      requiredWidth = Math.max(requiredWidth, 2 * cellWidth + parseFloat(getComputedStyle(row).columnGap));
+    });
+    measure.remove();
+    const inset = parseFloat(getComputedStyle(panel).getPropertyValue('--cell-inset'));
+    const availableWidth = panel.clientWidth / 3.4 - 2 * inset;
+    panel.classList.toggle('has-side-information', window.matchMedia('(min-width:901px)').matches && availableWidth >= Math.ceil(requiredWidth));
+  };
+  let previousPanelWidth;
+  const panelResize = new ResizeObserver(([entry]) => {
+    if (entry.contentRect.width === previousPanelWidth) return;
+    previousPanelWidth = entry.contentRect.width;
+    updateDetailLayout();
+  });
+  panelResize.observe(panel);
+  document.fonts?.ready.then(updateDetailLayout);
+
   const writeUrl = (slug, { replace = false, resetFilters = false } = {}) => {
     const url = new URL(location.href);
     if (slug) url.searchParams.set('project', slug);
@@ -137,6 +172,7 @@ function initWorksProjectView(catalog, projects, clearProjectHover, refreshCatal
     if (dialog?.open) dialog.close();
     panel.querySelectorAll('video').forEach((video) => video.pause());
     panel.replaceChildren();
+    panel.classList.remove('has-side-information');
     grid.hidden = Boolean(slug);
     panel.hidden = !slug;
     layout.classList.toggle('is-detail-open', Boolean(slug));
@@ -151,6 +187,7 @@ function initWorksProjectView(catalog, projects, clearProjectHover, refreshCatal
     currentSlug = slug;
     if (slug) {
       panel.append(templates.get(slug).content.cloneNode(true));
+      updateDetailLayout();
       panel.querySelectorAll('img').forEach(trackImageRatio);
       const firstImage = panel.querySelector('img');
       if (firstImage) firstImage.loading = 'eager';
@@ -190,14 +227,14 @@ function initWorksProjectView(catalog, projects, clearProjectHover, refreshCatal
   return { syncFromUrl };
 }
 
-function initCatalog() {
+function initCatalog(refreshImages = () => {}) {
   const catalog = document.querySelector('[data-catalog]');
   if (!catalog) return;
   const year = catalog.querySelector('[name="year"]');
   const field = catalog.querySelector('[name="field"]');
   const plates = [...catalog.querySelectorAll('[data-plate]')];
   const projects = [...catalog.querySelectorAll('[data-overview-project]')];
-  const clearProjectHover = initProjectHover(catalog, projects, plates);
+  const clearProjectHover = initProjectHover(catalog, projects, plates, refreshImages);
   const count = document.getElementById('catalog-count');
   const empty = catalog.querySelector('.catalog-empty');
   let projectView;
@@ -237,6 +274,7 @@ function initCatalog() {
     }
     syncLanguageLinks();
     projectView?.syncFromUrl();
+    refreshImages();
   };
   for (const select of [year, field].filter(Boolean)) select.addEventListener('change', () => render(true));
   catalog.querySelector('[data-reset-filters]').addEventListener('click', () => {
@@ -268,62 +306,53 @@ function initImageRatios() {
   document.querySelectorAll('.portfolio img').forEach(trackImageRatio);
 }
 
-function initWorksLoader() {
-  const root = document.documentElement;
-  const catalog = document.querySelector('[data-catalog="works"]');
-  if (!catalog || !root.classList.contains('works-loading')) return;
-  const controller = new AbortController();
-  const { signal } = controller;
-  const prepared = new Set();
-  catalog.setAttribute('aria-busy', 'true');
-
-  const finish = () => {
-    clearTimeout(window.worksLoadingGuard);
-    controller.abort();
-    catalog.removeAttribute('aria-busy');
-    root.classList.remove('works-loading');
-  };
-  // Replace the early guard with cleanup that also releases image listeners.
-  clearTimeout(window.worksLoadingGuard);
-  window.worksLoadingGuard = setTimeout(finish, 8000);
-  window.addEventListener('pagehide', finish, { once: true, signal });
-
-  const prepareImage = (img) => new Promise((resolve) => {
-    let done = false;
-    const settle = () => {
-      if (done) return;
-      done = true;
-      img.removeEventListener('load', loaded);
-      img.removeEventListener('error', settle);
-      signal.removeEventListener('abort', settle);
-      resolve();
-    };
-    const loaded = () => {
-      if (img.naturalWidth && img.decode) img.decode().catch(() => {}).then(settle);
-      else settle();
-    };
-    signal.addEventListener('abort', settle, { once: true });
-    img.addEventListener('load', loaded, { once: true });
-    img.addEventListener('error', settle, { once: true });
-    // Hidden content must not leave native lazy loading waiting on this overlay.
-    img.loading = 'eager';
-    if (img.complete) loaded();
-  });
-
-  const prepareViewport = async () => {
-    while (!signal.aborted) {
-      const pending = [...catalog.querySelectorAll('.overview-image img')].filter((img) => {
-        if (prepared.has(img)) return false;
-        const rect = img.getBoundingClientRect();
-        return rect.width > 0 && rect.bottom > 0 && rect.top < window.innerHeight;
-      });
-      if (!pending.length) break;
-      pending.forEach((img) => prepared.add(img));
-      await Promise.all(pending.map(prepareImage));
-      // Loaded image ratios may move another image into the first viewport.
+function initWorksImageReveal() {
+  const grid = document.querySelector('.works-image-grid');
+  if (!grid) return () => {};
+  const entries = [...grid.querySelectorAll('[data-plate]')].map((plate) => ({
+    plate, img: plate.querySelector('img'), state: 'pending',
+  }));
+  const refresh = () => {
+    const selected = entries.filter(({ plate }) => !plate.hidden && !plate.classList.contains('is-hover-hidden'));
+    let blocked = false;
+    entries.forEach(({ plate }) => plate.classList.remove('is-image-ready'));
+    for (const entry of selected) {
+      if (entry.state === 'failed') continue;
+      if (entry.state !== 'ready') blocked = true;
+      if (!blocked) entry.plate.classList.add('is-image-ready');
+    }
+    if (grid.hidden) return;
+    // Fetch ahead concurrently, even when pending tiles are hidden or offscreen.
+    // Keep the window anchored to the first gap rather than waiting for scrolling.
+    const firstPending = selected.findIndex(({ state }) => state !== 'ready' && state !== 'failed');
+    if (firstPending !== -1) {
+      selected.slice(firstPending, firstPending + 8).forEach(({ img }) => { img.loading = 'eager'; });
     }
   };
-  prepareViewport().finally(finish);
+  entries.forEach((entry) => {
+    const { img, plate } = entry;
+    const finish = (state) => {
+      if (entry.state === 'ready' || entry.state === 'failed') return;
+      entry.state = state;
+      plate.classList.toggle('is-image-error', state === 'failed');
+      img.removeEventListener('load', loaded);
+      img.removeEventListener('error', failed);
+      refresh();
+    };
+    const failed = () => finish('failed');
+    const loaded = () => {
+      if (entry.state !== 'pending') return;
+      if (!img.naturalWidth) return failed();
+      entry.state = 'decoding';
+      if (img.decode) img.decode().then(() => finish('ready'), failed);
+      else finish('ready');
+    };
+    img.addEventListener('load', loaded);
+    img.addEventListener('error', failed);
+    if (img.complete) loaded();
+  });
+  refresh();
+  return refresh;
 }
 
 function initMediaViewer() {
@@ -374,8 +403,7 @@ function initMediaViewer() {
 
 if (!restoreLegacyRoute()) {
   initImageRatios();
-  initCatalog();
-  initWorksLoader();
+  initCatalog(initWorksImageReveal());
   initMediaViewer();
   syncLanguageLinks();
 }
