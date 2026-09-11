@@ -34,7 +34,7 @@
           <label>슬러그 (영문/숫자/하이픈)<input name="slug" required pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="new-work" /></label>
           <label>작업명<input name="title" required /></label>
         </div>
-        <label>연도<input name="year" type="number" /></label>
+        <label>연도 / 월<input name="year" type="text" placeholder="2025.03 (월 생략 가능)" /></label>
         <label>유형<div class="chk-group" id="newWorkTypes"></div></label>
         <button type="submit">추가</button>
       </form>
@@ -117,7 +117,7 @@
     </section>
   </main>
 
-  <script src="admin.js?v=4"></script>
+  <script src="admin.js?v=5"></script>
   <script src="portfolio.js?v=1"></script>
   <script src="materials.js?v=1"></script>
 </body>

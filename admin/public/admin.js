@@ -1,6 +1,7 @@
 // 사이트 필터에서는 유형(설치~전시·VR/AR)과 태그(인터랙티브/프로젝션)가 한 목록으로 합쳐져 보이므로
 // admin에서도 이 7개를 하나의 다중선택으로 다룬다.
-const TYPE_OPTIONS = ['설치', '영상', '퍼포먼스', '전시', 'VR/AR', '인터랙티브', '프로젝션'];
+const TYPE_OPTIONS = ['설치', '영상', '퍼포먼스', '전시', 'VR/AR', '인터랙티브', '프로젝션', '모바일'];
+const workDateLabel = work => work.month ? `${work.year}.${String(work.month).padStart(2, '0')}` : String(work.year || '');
 let techOptions = [];
 let techOptionsDirty = false;
 const PRODUCTION_OPTIONS = ['개인', '공동', '회사'];
@@ -109,7 +110,7 @@ function previewPath(work) {
 }
 function updateWorkCardHead(card, work) {
   card.querySelector('.work-title').textContent = work.title;
-  card.querySelector('.work-subtitle').textContent = [work.year, work.type].filter(Boolean).join(' · ');
+  card.querySelector('.work-subtitle').textContent = [workDateLabel(work), work.type].filter(Boolean).join(' · ');
   const preview = card.querySelector('.work-preview');
   if (previewPath(work)) {
     preview.innerHTML = '<img src="' + escapeAttr(imgUrl(previewPath(work))) + '" alt="" loading="lazy" />';
@@ -274,7 +275,7 @@ function renderWorkCard(work) {
       <form class="admin-form edit-form">
         <div class="field-row">
           <label>작업명<input name="title" value="${escapeAttr(work.title)}" /></label>
-          <label>연도<input name="year" type="number" value="${escapeAttr(work.year)}" /></label>
+          <label>연도 / 월<input name="year" type="text" placeholder="2025.03 (월 생략 가능)" value="${escapeAttr(workDateLabel(work))}" required /></label>
         </div>
         <label>유형<div class="chk-group">${checkboxGroup('types', TYPE_OPTIONS, [work.type, ...(work.tags || [])])}</div></label>
         <label>제작<select name="production">${selectOptions(PRODUCTION_OPTIONS, work.production)}</select></label>

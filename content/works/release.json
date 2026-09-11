@@ -1,0 +1,31 @@
+{
+  "slug": "release",
+  "title": "RELEASE",
+  "year": 2026,
+  "type": "설치",
+  "tags": [
+    "설치"
+  ],
+  "tech": [],
+  "production": "개인",
+  "thumbnail": "",
+  "grid_type_label": "설치",
+  "index_type_label": "설치",
+  "preview_bg": "",
+  "hero_image": "",
+  "meta_year": "2026",
+  "meta_type": "설치",
+  "meta_medium": "설치",
+  "meta_tech": "",
+  "meta_tech_en": "",
+  "meta_production": "개인",
+  "meta_production_en": "Solo",
+  "description": "",
+  "description_en": "",
+  "vimeo_url": "",
+  "gallery": [],
+  "grid_type_label_en": "Installation",
+  "index_type_label_en": "Installation",
+  "meta_type_en": "Installation",
+  "meta_medium_en": "Installation"
+}

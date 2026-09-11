@@ -70,13 +70,13 @@
       "entries": [
         {
           "year": "2026.03–Present",
-          "description": "테크니컬 아티스트, Nerdy Artist Union",
-          "description_en": "Technical Artist, Nerdy Artist Union"
+          "description": "테크니컬 아티스트, <a class=\"cv-company-link\" href=\"https://nerdyau.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Nerdy Artist Union</a>",
+          "description_en": "Technical Artist, <a class=\"cv-company-link\" href=\"https://nerdyau.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Nerdy Artist Union</a>"
         },
         {
           "year": "2025.02–2026.01",
-          "description": "미디어아트 개발자, I M fine",
-          "description_en": "Media Art Developer, I M fine"
+          "description": "미디어아트 개발자, <a class=\"cv-company-link\" href=\"https://www.im-fine.co.kr/\" target=\"_blank\" rel=\"noopener noreferrer\">I M fine</a>",
+          "description_en": "Media Art Developer, <a class=\"cv-company-link\" href=\"https://www.im-fine.co.kr/\" target=\"_blank\" rel=\"noopener noreferrer\">I M fine</a>"
         },
         {
           "year": "2024.07–2024.08",
@@ -86,8 +86,8 @@
         },
         {
           "year": "2022.01–2023.12",
-          "description": "미디어아트 개발자, d'strict",
-          "description_en": "Media Art Developer, d'strict"
+          "description": "미디어아트 개발자, <a class=\"cv-company-link\" href=\"https://www.dstrict.com/\" target=\"_blank\" rel=\"noopener noreferrer\">d'strict</a>",
+          "description_en": "Media Art Developer, <a class=\"cv-company-link\" href=\"https://www.dstrict.com/\" target=\"_blank\" rel=\"noopener noreferrer\">d'strict</a>"
         }
       ]
     },

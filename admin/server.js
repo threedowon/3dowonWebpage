@@ -9,6 +9,7 @@ import express from 'express';
 import multer from 'multer';
 import sharp from 'sharp';
 import { randomUUID } from 'node:crypto';
+import { parseWorkDate, compareWorkDates } from '../scripts/lib/work-date.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -54,6 +55,7 @@ function isValidSlug(slug) {
 }
 
 const TYPE_EN = {
+  '모바일': 'Mobile',
   '설치': 'Installation',
   '영상': 'Video',
   '퍼포먼스': 'Performance',
@@ -253,7 +255,7 @@ app.put('/api/tech-options', (req, res) => {
 
 app.get('/api/works', (req, res) => {
   const works = listWorkSlugs().map(loadWork);
-  works.sort((a, b) => b.year - a.year || String(a.title).localeCompare(String(b.title), 'ko'));
+  works.sort(compareWorkDates);
   res.json(
     works.map((w) => ({
       ...w,
@@ -268,11 +270,14 @@ app.post('/api/works', (req, res) => {
   if (!isValidSlug(slug)) return res.status(400).json({ error: '슬러그는 영문 소문자/숫자/하이픈만 가능해요.' });
   if (listWorkSlugs().includes(slug)) return res.status(400).json({ error: '이미 존재하는 슬러그예요.' });
 
-  const resolvedYear = Number(year) || new Date().getFullYear();
+  const date = parseWorkDate(year || String(new Date().getFullYear()));
+  if (!date) return res.status(400).json({ error: '날짜는 2025 또는 2025.03 형식으로 입력해주세요.' });
+  const resolvedYear = date.year;
   const work = {
     slug,
     title: title || '',
     year: resolvedYear,
+    month: date.month,
     type: '',
     tags: [],
     tech: [],
@@ -303,6 +308,12 @@ app.post('/api/works', (req, res) => {
 app.put('/api/works/:slug', (req, res) => {
   if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({ error: 'not found' });
   const work = loadWork(req.params.slug);
+  if (req.body.year !== undefined) {
+    const date = parseWorkDate(req.body.year);
+    if (!date) return res.status(400).json({ error: '날짜는 2025 또는 2025.03 형식으로 입력해주세요.' });
+    work.year = date.year;
+    work.month = date.month;
+  }
   if (req.body.detail_background !== undefined) {
     if (typeof req.body.detail_background !== 'string' || !/^#[0-9a-f]{6}$/i.test(req.body.detail_background)) return res.status(400).json({ error: '배경색은 올바른 HEX 색상이어야 해요.' });
     work.detail_background = req.body.detail_background.toLowerCase();
@@ -314,7 +325,7 @@ app.put('/api/works/:slug', (req, res) => {
     work.meta_tech = work.tech.join(', ');
     work.meta_tech_en = work.tech.map((name) => options.find((item) => item.name === name)?.en || TECH_TRANSLATIONS[name] || name).join(', ');
   }
-  const editable = ['title', 'year', 'production', 'vimeo_url'];
+  const editable = ['title', 'production', 'vimeo_url'];
   for (const key of editable) {
     if (req.body[key] !== undefined) work[key] = req.body[key];
   }

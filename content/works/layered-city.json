@@ -24,7 +24,11 @@
   "meta_production": "공동",
   "gallery": [
     "/3dowonWebpage/assets/uploads/layered-city-1789062862437-353864.jpg",
-    "/3dowonWebpage/assets/uploads/layered-city-1789062864805-780061.jpg"
+    "/3dowonWebpage/assets/uploads/layered-city-1789062864805-780061.jpg",
+    "/3dowonWebpage/assets/uploads/layered-city-1789151694226-45579.jpg",
+    "/3dowonWebpage/assets/uploads/layered-city-1789151694520-381902.jpg",
+    "/3dowonWebpage/assets/uploads/layered-city-1789151694979-712546.jpg",
+    "/3dowonWebpage/assets/uploads/layered-city-1789151695501-769289.jpg"
   ],
   "grid_type_label_en": "Interactive",
   "index_type_label_en": "Interactive",
@@ -33,5 +37,7 @@
   "meta_tech_en": "Unity, projection",
   "meta_production_en": "Collaborative",
   "description_en": "<p>An exhibition project exploring the temporal layers of a city through interactive mapping.</p>",
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "month": null,
+  "detail_background": "#dddddd"
 }

@@ -1,9 +1,10 @@
 {
   "slug": "code-landscape",
-  "title": "Code Landscape",
+  "title": "Apple Cook",
   "year": 2018,
-  "type": "인터랙티브",
+  "type": "VR/AR",
   "tags": [
+    "VR/AR",
     "인터랙티브"
   ],
   "tech": [
@@ -12,25 +13,26 @@
   ],
   "production": "개인",
   "thumbnail": "/3dowonWebpage/assets/uploads/code-landscape-1783536554583-83414.jpg",
-  "grid_type_label": "인터랙티브",
-  "index_type_label": "인터랙티브",
+  "grid_type_label": "VR/AR, 인터랙티브",
+  "index_type_label": "VR/AR, 인터랙티브",
   "preview_bg": "/3dowonWebpage/assets/uploads/code-landscape-1783536554583-83414.jpg",
   "hero_image": "/3dowonWebpage/assets/uploads/code-landscape-1783536554583-83414.jpg",
   "description": "<p>알고리즘이 생성한 풍경이 관객의 입력에 따라 변화하는 인터랙티브 영상입니다.</p>",
   "meta_year": "2018",
-  "meta_type": "인터랙티브",
-  "meta_medium": "인터랙티브",
+  "meta_type": "VR/AR, 인터랙티브",
+  "meta_medium": "VR/AR, 인터랙티브",
   "meta_tech": "Processing, OpenFrameworks",
   "meta_production": "개인",
   "gallery": [
     "/3dowonWebpage/assets/uploads/code-landscape-1789063305427-139037.jpg"
   ],
-  "grid_type_label_en": "Interactive",
-  "index_type_label_en": "Interactive",
-  "meta_type_en": "Interactive",
-  "meta_medium_en": "Interactive",
+  "grid_type_label_en": "VR/AR, Interactive",
+  "index_type_label_en": "VR/AR, Interactive",
+  "meta_type_en": "VR/AR, Interactive",
+  "meta_medium_en": "VR/AR, Interactive",
   "meta_tech_en": "Processing, OpenFrameworks",
   "meta_production_en": "Solo",
   "description_en": "<p>An interactive video in which an algorithmically generated landscape shifts in response to audience input.</p>",
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "detail_background": "#dddddd"
 }

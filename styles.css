@@ -1,6 +1,6 @@
 @font-face{font-family:InterVariable;src:url('assets/fonts/InterVariable.woff2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}
 /* A continuous studio archive: small type, open space, numbered images. */
-:root{--paper:#fff;--ink:#434343;--muted:#919191;--line:#858585;--light-line:#d5d5d5;--sans:'InterVariable',Arial,Helvetica,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;--gutter:16px;--catalog-image-width:78px;--catalog-track:calc(var(--catalog-image-width) + 2 * var(--cell-inset));--page-width:calc(4 * (var(--catalog-title-track) + var(--catalog-portrait-track)) - 2 * var(--cell-inset));--type-body:.875rem;--type-ui:.75rem;--type-meta:.6875rem;--header-height:144px;--toolbar-height:calc(var(--type-ui)*1.25 + 19px);--column-gap:16px;--cell-inset:8px;--content-inset:9px;--detail-offset:calc(25% + var(--column-gap)/4)}
+:root{--paper:#fff;--ink:#434343;--muted:#919191;--line:#858585;--light-line:#d5d5d5;--sans:'InterVariable',Arial,Helvetica,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;--gutter:16px;--catalog-image-width:78px;--catalog-track:calc(var(--catalog-image-width) + 2 * var(--cell-inset));--page-width:calc(4 * (var(--catalog-title-track) + var(--catalog-portrait-track)) - 2 * var(--cell-inset));--type-body:.875rem;--type-ui:.75rem;--type-meta:.6875rem;--header-height:94px;--toolbar-height:calc(var(--type-ui)*1.25 + 19px);--column-gap:16px;--cell-inset:8px;--content-inset:9px;--detail-offset:calc(25% + var(--column-gap)/4)}
 :root{--page-edge:32px;--page-frame-inset:calc(var(--page-edge) - var(--cell-inset));--works-index-width:320px;--works-landscape-width:144px;--header-start:calc(var(--page-edge) + var(--works-index-width));--header-track:calc(var(--works-landscape-width) + 2 * var(--cell-inset));--header-width:calc(100% - var(--header-start) - var(--page-edge))}
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;scrollbar-width:none}
@@ -144,6 +144,8 @@ figcaption{display:flex;justify-content:space-between;gap:12px;padding-top:8px;f
 .prose ul,.prose ol{list-style:revert;margin:18px 0;padding-left:20px}
 .prose li+li{margin-top:8px}
 .prose a,.cv-row a{text-decoration:underline;text-underline-offset:3px}
+.cv-row .cv-company-link{text-decoration:none}
+.cv-row .cv-company-link:hover,.cv-row .cv-company-link:focus-visible{text-decoration:underline}
 .about-prose{font-size:var(--type-body);line-height:1.8}
 .about-fields{margin-top:32px;font-size:var(--type-body);line-height:1.8}
 .about-fields ul{list-style:"– ";padding-left:1em}

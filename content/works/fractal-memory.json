@@ -1,36 +1,41 @@
 {
   "slug": "fractal-memory",
-  "title": "Fractal Memory",
-  "year": 2022,
-  "type": "영상",
+  "title": "Arte Kids park",
+  "year": 2023,
+  "type": "전시",
   "tags": [
-    "영상"
+    "전시",
+    "인터랙티브"
   ],
   "tech": [
-    "Unity"
+    "Unreal",
+    "Unity",
+    "Depth Camera"
   ],
   "production": "회사",
   "thumbnail": "/3dowonWebpage/assets/uploads/fractal-memory-1789062817252-132092.jpg",
-  "grid_type_label": "영상",
-  "index_type_label": "영상",
+  "grid_type_label": "전시, 인터랙티브",
+  "index_type_label": "전시, 인터랙티브",
   "preview_bg": "/3dowonWebpage/assets/uploads/fractal-memory-1789062817252-132092.jpg",
   "hero_image": "/3dowonWebpage/assets/uploads/fractal-memory-1789062817252-132092.jpg",
   "description": "<p>기억의 층위를 프랙탈 구조로 시각화한 프로젝션 설치이다. 관객의 움직임에 따라 영상 레이어가 분기·중첩되며 새로운 패턴을 만든다.</p>\n            <p>담당</p>\n            <p>TouchDesigner 프로젝션 매핑 설계</p>\n            <p>MadMapper 출력·블렌딩 구성</p>\n            <p>설치 공간 레이아웃 협의</p>",
-  "meta_year": "2022",
-  "meta_type": "영상",
-  "meta_medium": "영상",
-  "meta_tech": "TouchDesigner, MadMapper",
+  "meta_year": "2023",
+  "meta_type": "전시, 인터랙티브",
+  "meta_medium": "전시, 인터랙티브",
+  "meta_tech": "Unreal, Unity, Depth Camera",
   "meta_production": "회사",
   "gallery": [
     "/3dowonWebpage/assets/uploads/fractal-memory-1789062838195-783049.jpg",
     "/3dowonWebpage/assets/uploads/fractal-memory-1789062840357-760026.jpg"
   ],
-  "grid_type_label_en": "Video",
-  "index_type_label_en": "Video",
-  "meta_type_en": "Video",
-  "meta_medium_en": "Video",
-  "meta_tech_en": "TouchDesigner, MadMapper",
+  "grid_type_label_en": "Exhibition, Interactive",
+  "index_type_label_en": "Exhibition, Interactive",
+  "meta_type_en": "Exhibition, Interactive",
+  "meta_medium_en": "Exhibition, Interactive",
+  "meta_tech_en": "Unreal, Unity, Depth Camera",
   "meta_production_en": "Company",
   "description_en": "<p>A projection installation visualizing layers of memory through a fractal structure. As the audience moves, video layers branch and overlap to create new patterns.</p>\n            <p>Role</p>\n            <p>Designed projection mapping in TouchDesigner</p>\n            <p>Configured output and blending in MadMapper</p>\n            <p>Coordinated the installation space layout</p>",
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "detail_background": "#dddddd",
+  "month": null
 }

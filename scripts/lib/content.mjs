@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { compareWorkDates } from './work-date.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -14,7 +15,7 @@ export function loadWorks() {
     .readdirSync(dir)
     .filter((name) => name.endsWith('.json'))
     .map((name) => loadJson(`content/works/${name}`));
-  return works.sort((a, b) => b.year - a.year || a.title.localeCompare(b.title, 'ko'));
+  return works.sort(compareWorkDates);
 }
 
 export function writeOutput(relPath, html) {
