@@ -190,6 +190,42 @@ figcaption{display:flex;justify-content:space-between;gap:12px;padding-top:8px;f
 .teaching-card>a{display:inline-block;margin-right:16px;text-decoration:underline;text-underline-offset:3px}
 .pdf-preview{width:100%;height:280px;border:1px solid var(--light-line);background:#eee}
 .teaching-empty{padding:32px 0;color:var(--muted)}
+.pdf-mobile-preview{display:none}
+.pdf-reader{position:fixed;inset:0;width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;padding:0;border:0;background:var(--paper);color:var(--ink)}
+.pdf-reader[open]{display:flex;flex-direction:column}
+.pdf-reader::backdrop{background:#fff}
+.pdf-reader header,.pdf-reader footer{display:flex;align-items:center;gap:16px;padding:12px max(16px,env(safe-area-inset-right)) 12px max(16px,env(safe-area-inset-left));font-size:var(--type-ui);flex:none}
+.pdf-reader header{border-bottom:1px solid var(--light-line);padding-top:max(12px,env(safe-area-inset-top))}
+.pdf-reader-title{flex:1;min-width:0}
+.pdf-reader button{min-width:44px;min-height:44px}
+.pdf-reader [data-pdf-close]{font-size:26px}
+.pdf-reader-stage{position:relative;flex:1;min-height:0;background:#eee;touch-action:pan-x pan-y pinch-zoom}
+.pdf-canvas-scroll{position:absolute;inset:0;overflow:scroll;display:block;padding:12px;touch-action:pan-x pan-y pinch-zoom;overscroll-behavior:contain;scrollbar-gutter:stable;scrollbar-width:auto;scrollbar-color:#888 #e4e4e4}
+.portfolio .pdf-canvas-scroll::-webkit-scrollbar{display:block;width:10px;height:10px}
+.pdf-canvas-scroll::-webkit-scrollbar-thumb{background:#888;border:2px solid #e4e4e4;border-radius:8px}
+.pdf-canvas-scroll::-webkit-scrollbar-track{background:#e4e4e4}
+.pdf-scroll-page{position:relative;margin:0 auto 16px;background:#fff;flex:none}
+.pdf-scroll-page:last-child{margin-bottom:0}
+.pdf-canvas-scroll canvas{display:block;flex:none;background:white;max-width:none}
+.pdf-page-prev,.pdf-page-next{position:absolute;top:0;bottom:0;width:50%;z-index:1}
+.pdf-page-prev{left:0;cursor:url('assets/cursor-previous.svg') 16 16,w-resize}
+.pdf-page-next{right:0;cursor:url('assets/cursor-next.svg') 16 16,e-resize}
+.pdf-reader footer{justify-content:center;padding-bottom:max(12px,env(safe-area-inset-bottom))}
+.pdf-page-status{font-variant-numeric:tabular-nums;min-width:60px;text-align:center}
+.pdf-reader [data-pdf-zoom]{margin-left:auto}
+.pdf-reader button:disabled{opacity:.3;cursor:default}
+.pdf-reader.is-zoomed .pdf-page-prev,.pdf-reader.is-zoomed .pdf-page-next{display:none}
+.pdf-reader.is-zoomed .pdf-canvas-scroll{display:block;touch-action:pan-x pan-y pinch-zoom}
+.pdf-reader-error{font-size:var(--type-ui);padding:0 16px 12px}
+.pdf-reader-error:empty{display:none}
+.pdf-reader-open{overflow:hidden}
+@media(max-width:900px){
+ .teaching-card .pdf-preview{display:none}
+ .pdf-mobile-preview{display:block;width:100%;min-height:140px;background:#eee;text-align:left;padding:8px}
+ .pdf-mobile-preview canvas{display:block;width:100%;height:auto}
+ .pdf-mobile-preview span{display:block;padding:8px}
+ .teaching-grid{grid-template-columns:minmax(0,1fr)}
+}
 .cv-sections{display:flex;flex-direction:column;gap:48px}
 .cv-section{min-width:0}
 .cv-section h2{display:flex;align-items:baseline;gap:12px;padding:14px 0 18px;border-top:1px solid var(--line);font-size:var(--type-ui);font-weight:400;line-height:1.5;text-transform:uppercase}

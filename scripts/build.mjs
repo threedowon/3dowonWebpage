@@ -1,4 +1,10 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
+import fs from 'node:fs';
+
+fs.mkdirSync('assets/pdfjs', {recursive:true});
+for (const file of ['pdf.mjs', 'pdf.worker.mjs']) fs.copyFileSync(`node_modules/pdfjs-dist/legacy/build/${file}`, `assets/pdfjs/${file}`);
+for (const folder of ['cmaps','standard_fonts','wasm']) fs.cpSync(`node_modules/pdfjs-dist/${folder}`, `assets/pdfjs/${folder}`, {recursive:true});
+fs.copyFileSync('node_modules/pdfjs-dist/LICENSE', 'assets/pdfjs/LICENSE');
 import { normalizeWork, normalizeLabItems } from './lib/catalog.mjs';
 import { catalogPage, labPage, aboutPage, portfolioPage, cvPage, workPage, teachingMaterialsPage } from './lib/portfolio.mjs';
 
