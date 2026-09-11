@@ -79,6 +79,7 @@ function captureWorkForm(form) {
     description: fd.get('description'),
     description_en: fd.get('description_en'),
     vimeo_url: fd.get('vimeo_url'),
+    detail_background: fd.get('detail_background'),
   };
 }
 
@@ -90,6 +91,7 @@ function applyWorkForm(form, draft) {
   form.description.value = draft.description ?? '';
   form.description_en.value = draft.description_en ?? '';
   form.vimeo_url.value = draft.vimeo_url ?? '';
+  form.detail_background.value = draft.detail_background || '#dddddd';
   form.querySelectorAll('input[name="types"]').forEach((input) => {
     input.checked = draft.types.includes(input.value);
   });
@@ -280,6 +282,7 @@ function renderWorkCard(work) {
         <label>설명 (엔터로 줄바꿈)<textarea name="description" rows="4">${escapeHtml(work.description)}</textarea></label>
         <label>설명 (EN)<textarea name="description_en" rows="4">${escapeHtml(work.description_en)}</textarea></label>
         <label>Vimeo URL<input name="vimeo_url" value="${escapeAttr(work.vimeo_url)}" /></label>
+        <div class="field-row"><label>상세 이미지 배경색<input type="color" name="detail_background" value="${/^#[0-9a-f]{6}$/i.test(work.detail_background || '') ? work.detail_background : '#dddddd'}" /></label><button type="button" class="reset-detail-background">기본 회색으로</button></div>
         <div class="field-row">
           <button type="submit">저장</button>
           <button type="button" class="danger delete-work">삭제</button>
@@ -308,6 +311,10 @@ function renderWorkCard(work) {
   });
 
   const editForm = card.querySelector('.edit-form');
+  card.querySelector('.reset-detail-background').addEventListener('click', () => {
+    editForm.detail_background.value = '#dddddd';
+    markWorkDirty(work.slug);
+  });
   editForm.addEventListener('input', () => markWorkDirty(work.slug));
   editForm.addEventListener('change', () => markWorkDirty(work.slug));
 
@@ -329,6 +336,7 @@ function renderWorkCard(work) {
         description: fd.get('description'),
         description_en: fd.get('description_en'),
         vimeo_url: fd.get('vimeo_url'),
+        detail_background: fd.get('detail_background'),
       }),
     });
     dirtyWorks.delete(work.slug);

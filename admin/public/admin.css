@@ -146,6 +146,10 @@ button:disabled, input:disabled { opacity: .5; cursor: wait; }
 .gallery-grid { gap: 14px; }
 .gallery-item { width: 126px; height: 122px; padding-bottom: 28px; cursor: grab; border: 2px solid transparent; border-radius: 5px; }
 .gallery-item img { user-select: none; }
+#portfolioImages .portfolio-controls{position:absolute;bottom:0;left:0;right:0;display:flex;gap:4px;justify-content:center}
+#portfolioImages .portfolio-controls button{position:static;width:auto;height:24px;padding:2px 7px;border-radius:3px}
+#portfolioImages .portfolio-page-number{position:absolute;left:4px;top:4px;background:white;color:#333;padding:2px 5px;border-radius:3px;font-size:11px}
+#portfolioImages .drag-over{border-color:#2866ad}
 .gallery-item.dragging { opacity: .4; }
 .gallery-item.drop-target { border-color: #2866ad; }
 .gallery-number { position: absolute; top: 3px; left: 3px; padding: 2px 6px; border-radius: 3px; background: #fff; font-size: 12px; }

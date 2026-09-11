@@ -110,27 +110,10 @@ function initWorksProjectView(catalog, projects, clearProjectHover, refreshCatal
   const updateDetailLayout = () => {
     const information = panel.querySelector('.inline-project-information');
     if (!information) return;
-    const measure = document.createElement('span');
-    measure.className = 'inline-text-measure';
-    measure.setAttribute('aria-hidden', 'true');
-    panel.append(measure);
-    const textWidth = (element) => {
-      const style = getComputedStyle(element);
-      measure.style.font = style.font;
-      measure.style.letterSpacing = style.letterSpacing;
-      measure.textContent = element.textContent.trim();
-      return measure.getBoundingClientRect().width;
-    };
-    // Body paragraphs already span lines; title and fact rows identify new wrapping.
-    let requiredWidth = textWidth(information.querySelector('h2'));
-    information.querySelectorAll('.work-meta > div').forEach((row) => {
-      const cellWidth = Math.max(...[...row.children].map(textWidth));
-      requiredWidth = Math.max(requiredWidth, 2 * cellWidth + parseFloat(getComputedStyle(row).columnGap));
-    });
-    measure.remove();
-    const inset = parseFloat(getComputedStyle(panel).getPropertyValue('--cell-inset'));
-    const availableWidth = panel.clientWidth / 3.4 - 2 * inset;
-    panel.classList.toggle('has-side-information', window.matchMedia('(min-width:901px)').matches && availableWidth >= Math.ceil(requiredWidth));
+    const informationWidth = parseFloat(getComputedStyle(panel).getPropertyValue('--inline-information-width'));
+    // Long metadata wraps within the fixed information column, without moving it.
+    const minimumGalleryWidth = 320;
+    panel.classList.toggle('has-side-information', window.matchMedia('(min-width:901px)').matches && panel.clientWidth >= informationWidth + minimumGalleryWidth);
   };
   let previousPanelWidth;
   const panelResize = new ResizeObserver(([entry]) => {
@@ -243,7 +226,7 @@ function initCatalog(refreshImages = () => {}) {
     const params = new URLSearchParams(location.search);
     const valid = (select, value) => [...select.options].some((option) => option.value === value) ? value : 'all';
     if (year) year.value = valid(year, params.get('year'));
-    field.value = valid(field, params.get('field'));
+    field.value = catalog.dataset.catalog === 'lab' ? 'all' : valid(field, params.get('field'));
   };
   const render = (writeUrl = false) => {
     clearProjectHover();
@@ -355,6 +338,56 @@ function initWorksImageReveal() {
   return refresh;
 }
 
+function initDetailScrollChaining() {
+  let activeText, pending = 0, frame = 0, previousTime = 0;
+  const stop = () => {
+    cancelAnimationFrame(frame);
+    frame = 0;
+    pending = 0;
+    previousTime = 0;
+  };
+  const move = (text, delta) => {
+    const max = Math.max(0, text.scrollHeight - text.clientHeight);
+    const start = Math.max(0, Math.min(max, text.scrollTop));
+    const end = Math.max(0, Math.min(max, start + delta));
+    if (end !== start) text.scrollTop = end;
+    const remaining = delta - (end - start);
+    if (remaining) window.scrollBy({ top: remaining, behavior: 'instant' });
+  };
+  const tick = (time) => {
+    if (!activeText?.isConnected || !activeText.getClientRects().length || document.documentElement.classList.contains('viewer-open')) return stop();
+    const elapsed = previousTime ? Math.min(32, time - previousTime) : 16;
+    previousTime = time;
+    const step = Math.abs(pending) < 0.5 ? pending : pending * (1 - Math.exp(-elapsed / 55));
+    pending -= step;
+    move(activeText, step);
+    if (pending) frame = requestAnimationFrame(tick);
+    else { frame = 0; previousTime = 0; }
+  };
+  window.addEventListener('pointerdown', stop, { passive: true });
+  window.addEventListener('keydown', stop);
+  window.addEventListener('blur', stop);
+  document.addEventListener('wheel', (event) => {
+    if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.shiftKey || !event.cancelable || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+    if (document.documentElement.classList.contains('viewer-open')) return;
+    const information = event.target.closest?.('.inline-project-information, .project-information');
+    const text = information?.querySelector('.post-des');
+    if (!text || !event.deltaY) { stop(); return; }
+    const style = getComputedStyle(text);
+    if (!['auto', 'scroll'].includes(style.overflowY)) return;
+    const max = Math.max(0, text.scrollHeight - text.clientHeight);
+    if (!max) return;
+    const unit = event.deltaMode === 1 ? (parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.2 || 16) : event.deltaMode === 2 ? text.clientHeight : 1;
+    const delta = event.deltaY * unit;
+    event.preventDefault();
+    if (activeText !== text || (pending && Math.sign(pending) !== Math.sign(delta))) stop();
+    activeText = text;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { move(text, delta); return; }
+    pending += delta;
+    if (!frame) frame = requestAnimationFrame(tick);
+  }, { passive: false });
+}
+
 function initMediaViewer() {
   const dialog = document.getElementById('media-dialog');
   if (!dialog || !dialog.showModal) return;
@@ -389,9 +422,8 @@ function initMediaViewer() {
   });
   dialog.querySelector('[data-close-viewer]').addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', (event) => {
-    if (event.target !== dialog) return;
-    const rect = dialog.getBoundingClientRect();
-    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+    if (event.target.closest('video')) return;
+    dialog.close();
   });
   dialog.addEventListener('close', () => {
     media.querySelector('video')?.pause();
@@ -401,10 +433,37 @@ function initMediaViewer() {
   });
 }
 
+function initPortfolioBook() {
+  const book = document.querySelector('.portfolio-book');
+  if (!book) return;
+  const slides = [...book.querySelectorAll('.portfolio-slide')];
+  const previous = book.querySelector('.portfolio-prev');
+  const next = book.querySelector('.portfolio-next');
+  let index = 0;
+  const show = (value) => {
+    index = Math.max(0, Math.min(slides.length - 1, value));
+    slides.forEach((slide, i) => { slide.hidden = i !== index; });
+    if (slides[index + 1]) slides[index + 1].loading = 'eager';
+    if (previous) previous.disabled = index === 0;
+    if (next) next.disabled = index === slides.length - 1;
+    book.querySelector('.portfolio-status').textContent = slides.length ? `${index + 1} / ${slides.length}` : '';
+  };
+  previous?.addEventListener('click', () => show(index - 1));
+  next?.addEventListener('click', () => show(index + 1));
+  book.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      event.preventDefault(); show(index + (event.key === 'ArrowRight' ? 1 : -1));
+    }
+  });
+  show(0);
+}
+
 if (!restoreLegacyRoute()) {
+  initPortfolioBook();
   initImageRatios();
   initCatalog(initWorksImageReveal());
   initMediaViewer();
+  initDetailScrollChaining();
   syncLanguageLinks();
 }
 window.addEventListener('hashchange', () => { if (!restoreLegacyRoute()) syncLanguageLinks(); });

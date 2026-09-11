@@ -1,10 +1,10 @@
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
 import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 
-const VERSION = '974';
+const VERSION = '1010';
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
-  en: { works: 'Works', lab: 'Lab', about: 'About', portfolio: 'Portfolio', cv: 'CV', photos: 'Images', index: 'Index', allYears: 'All years', allFields: 'All fields', space: 'Space', object: 'Object', screen: 'Screen', year: 'Year', field: 'Field', name: 'Project', back: 'All works', previous: 'Previous work', next: 'Next work', close: 'Close', enlarge: 'Enlarge image', practice: 'Practice', approach: 'Approach', fields: 'Fields', noResults: 'No work matches these filters.', reset: 'Reset filters', note: 'Interactive installations and media experiments\nwith light, space, and everyday objects.', artist: 'Interactive media artist', type: 'Type', medium: 'Medium', tech: 'Technology', production: 'Production', skip: 'Skip to content' },
+  en: { works: 'Works', lab: 'Lab', about: 'About', portfolio: 'Portfolio', cv: 'CV', photos: 'Images', index: 'Index', allYears: 'All years', allFields: 'All fields', space: 'Space', object: 'Object', screen: 'Screen', year: 'Year', field: 'Field', name: 'Project', back: 'All works', previous: 'Previous work', next: 'Next work', close: 'Close', enlarge: 'Enlarge image', practice: 'Practice', approach: 'Approach', fields: 'Fields', noResults: 'No work matches these filters.', reset: 'Reset filters', note: 'How do familiar objects change\nour experience of space? How do everyday\nactions change it?', artist: 'Interactive media artist', type: 'Type', medium: 'Medium', tech: 'Technology', production: 'Production', skip: 'Skip to content' },
 };
 const number = (n) => String(n).padStart(2, '0');
 const paragraphs = (value) => String(value || '').split(/\r?\n\s*\r?\n/).map((p) => p.replace(/\s+/g, ' ').trim()).filter(Boolean);
@@ -49,7 +49,7 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
   <div class="site-frame">
     <header class="site-header archive-site-header">
       <a class="wordmark" href="${home}index.html" aria-label="3Dowon ${lang === 'ko' ? '홈' : 'Home'}">3Dowon</a>
-      <p class="header-note">${esc(c.note).replace(/\n/g, ' ')}</p>
+      <p class="header-note">${esc(c.note).replace(/\n/g, '<br />')}</p>
       <nav class="site-nav" aria-label="${lang === 'ko' ? '주 메뉴' : 'Main navigation'}">
         ${['works', 'lab', 'about', 'portfolio', 'cv'].map((key, index, items) => `<a href="${home}${key}.html"${active === key ? ' aria-current="page"' : ''}>${c[key]}${index < items.length - 1 ? ',' : ''}</a>`).join('')}
       </nav>
@@ -72,7 +72,7 @@ function projectImages(work, ctx) {
   return ctx.section === 'works' ? media.filter((src) => src !== thumbnail) : media;
 }
 
-function overviewGrid(works, ctx) {
+function overviewGrid(works, ctx, toolbar = '') {
   const entries = works.map((work, index) => {
     const title = pick(work, 'title', ctx.lang);
     const projectNumber = number(index + 1);
@@ -86,11 +86,11 @@ function overviewGrid(works, ctx) {
       : (ctx.lang === 'ko' ? '작업 보기' : 'View project');
     const attrs = `data-year="${esc(work.year || '')}" data-field="${field}"`;
     const project = ctx.section === 'works'
-      ? `<li class="works-index-item" data-overview-project data-project="${esc(work.slug)}" ${attrs}><a class="works-index-link" href="${esc(href)}"><span class="works-index-number">${projectNumber}</span><h2 class="works-index-title">${esc(title)}</h2><span class="works-index-medium">${esc(medium)}</span><span class="works-index-year">${esc(work.meta_year || work.year || '')}</span></a></li>`
+      ? `<li class="works-index-item" data-overview-project data-project="${esc(work.slug)}" ${attrs}><a class="works-index-link" href="${esc(href)}"><span class="works-index-number">${projectNumber}</span><h2 class="works-index-title">${esc(title)}</h2><span class="works-index-year">${esc(work.meta_year || work.year || '')}</span></a></li>`
       : `<article class="overview-project" data-overview-project data-project="${esc(work.slug)}" ${attrs}>
-      <a class="project-summary" href="${esc(href)}"><div><span class="project-number">${projectNumber}</span><h2>${esc(title)}</h2><ul class="project-categories">${categories.map((category, i) => `<li><span>${projectNumber}.${i + 1}</span> ${esc(category)}</li>`).join('')}</ul></div><div class="project-summary-bottom"><p>${esc(work.meta_year || work.year || '')}</p><p>${esc(pick(work, 'meta_tech', ctx.lang) || '')}</p></div></a>
+      <a class="project-summary" href="${esc(href)}"><div><span class="project-number">${projectNumber}</span><h2>${esc(title)}</h2></div><div class="project-summary-bottom"><p>${esc(work.meta_year || work.year || '')}</p><p>${esc(pick(work, 'meta_tech', ctx.lang) || '')}</p></div></a>
     </article>`;
-    const images = media.map((src, i) => `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}><span class="image-reference">${projectNumber}.${i + 1}.1</span><a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><img src="${esc(src)}" alt="${esc(title)} — ${i + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`).join('');
+    const images = media.map((src, i) => `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}>${ctx.section === 'lab' ? '' : `<span class="image-reference">${projectNumber}.${i + 1}</span>`}<a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><img src="${esc(src)}" alt="${esc(title)} — ${i + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`).join('');
     return { project, images };
   });
   if (ctx.section === 'works') {
@@ -98,7 +98,7 @@ function overviewGrid(works, ctx) {
       const { title, metadata, description, gallery } = projectContent(work, ctx);
       return `<template data-project-detail="${esc(work.slug)}"><button type="button" class="inline-all-works" data-all-works>← All Works</button><article class="inline-work" aria-labelledby="works-project-title">${gallery}<div class="inline-project-information"><header class="inline-project-heading"><p class="eyebrow">Work ${number(index + 1)}</p><h2 id="works-project-title">${esc(title)}</h2></header>${metadata ? `<div class="project-facts">${metadata}</div>` : ''}${description ? `<div class="prose post-des">${description}</div>` : ''}</div></article></template>`;
     }).join('');
-    return `<div class="works-layout"><nav class="works-index" aria-label="${ctx.lang === 'ko' ? '작품 목록' : 'Project index'}"><button type="button" class="works-all" data-all-works hidden>All Works</button><ol>${entries.map((entry) => entry.project).join('\n')}</ol></nav><div class="works-stage"><div class="overview-grid works-image-grid">${entries.map((entry) => entry.images).join('\n')}</div><section class="works-project-panel" tabindex="-1" aria-labelledby="works-project-title" hidden></section></div>${templates}</div>`;
+    return `<div class="works-layout"><nav class="works-index" aria-label="${ctx.lang === 'ko' ? '작품 목록' : 'Project index'}">${toolbar}<button type="button" class="works-all" data-all-works hidden>All Works</button><ol>${entries.map((entry) => entry.project).join('\n')}</ol></nav><div class="works-stage"><div class="overview-grid works-image-grid">${entries.map((entry) => entry.images).join('\n')}</div><section class="works-project-panel" tabindex="-1" aria-labelledby="works-project-title" hidden></section></div>${templates}</div>`;
   }
   return `<div class="overview-grid">${entries.map((entry) => entry.project + entry.images).join('\n')}</div>`;
 }
@@ -110,15 +110,15 @@ export function catalogPage(works, site, lang, relPath = 'works.html', section =
   const photoCount = works.reduce((count, work) => count + projectImages(work, ctx).length, 0);
   const countLabel = section === 'lab' ? (lang === 'ko' ? '개 실험' : ' studies') : (lang === 'ko' ? '개 작업' : ' works');
   const toolbar = `<header class="catalog-toolbar">
-      <p id="catalog-count" role="status">${works.length}${countLabel} · ${photoCount}${lang === 'ko' ? '장' : ' images'}</p>
-      <div class="toolbar-cell catalog-filters">${years.length ? `<label><span class="visually-hidden">${c.year}</span><select name="year" aria-label="${c.year}"><option value="all">${c.allYears}</option>${years.map((year) => `<option value="${year}">${year}</option>`).join('')}</select></label>` : ''}<label><span class="visually-hidden">${c.field}</span><select name="field" aria-label="${c.field}"><option value="all">${c.allFields}</option>${['space', 'object', 'screen'].map((key) => `<option value="${key}">${c[key]}</option>`).join('')}</select></label></div>
+      <p id="catalog-count" role="status"${section === 'lab' ? ' hidden' : ''}>${works.length}${countLabel} · ${photoCount}${lang === 'ko' ? '장' : ' images'}</p>
+      <div class="toolbar-cell catalog-filters">${years.length ? `<label><span class="visually-hidden">${c.year}</span><select name="year" aria-label="${c.year}"><option value="all">${c.allYears}</option>${years.map((year) => `<option value="${year}">${year}</option>`).join('')}</select></label>` : ''}<label${section === 'lab' ? ' hidden' : ''}><span class="visually-hidden">${c.field}</span><select name="field" aria-label="${c.field}"><option value="all">${c.allFields}</option>${['space', 'object', 'screen'].map((key) => `<option value="${key}">${c[key]}</option>`).join('')}</select></label></div>
     </header>`;
   const body = `<section class="catalog-section" aria-labelledby="page-title">
     <h1 id="page-title" class="visually-hidden">${c[section]}</h1>
-    ${overviewGrid(works, ctx)}
+    ${overviewGrid(works, ctx, section === 'works' ? toolbar : '')}
     <div class="catalog-empty" hidden><p>${c.noResults}</p><button type="button" data-reset-filters>${c.reset} ↗</button></div>
   </section>`;
-  return shell(ctx, site, { active: section, title: c[section], body, toolbar, catalog: section, pageClass: `page-${section}` });
+  return shell(ctx, site, { active: section, title: c[section], body, toolbar: section === 'works' ? '' : toolbar, catalog: section, pageClass: `page-${section}` });
 }
 
 export function labPage(studies, site, lang) {
@@ -142,11 +142,12 @@ export function aboutPage(about, site, lang) {
   return shell(ctx, site, { active: 'about', title: c.about, body, pageClass: 'page-about' });
 }
 
-export function portfolioPage(site, lang) {
+export function portfolioPage(site, lang, portfolio = { images: [] }) {
   const ctx = context(lang, 'portfolio.html');
+  const pages = portfolio.images || [];
   return shell(ctx, site, {
     active: 'portfolio', title: ctx.c.portfolio, pageClass: 'page-portfolio',
-    body: `<h1 id="page-title" class="visually-hidden">${ctx.c.portfolio}</h1>`,
+    body: `<h1 id="page-title" class="visually-hidden">${ctx.c.portfolio}</h1><section class="portfolio-book" aria-label="Portfolio" tabindex="0">${pages.map((src, i) => `<img class="portfolio-slide" src="${esc(resolveMediaPath(src, ctx.assets))}" alt="Portfolio ${i + 1}" ${i ? 'hidden loading="lazy"' : 'fetchpriority="high"'} decoding="async" />`).join('')}${pages.length > 1 ? `<button class="portfolio-prev" aria-label="${lang === 'ko' ? '이전 페이지' : 'Previous page'}"></button><button class="portfolio-next" aria-label="${lang === 'ko' ? '다음 페이지' : 'Next page'}"></button>` : ''}<span class="visually-hidden portfolio-status" role="status"></span></section>`,
   });
 }
 
@@ -174,7 +175,8 @@ function projectContent(work, ctx) {
     [['tech', pick(work, 'meta_tech', lang)], ['production', pick(work, 'meta_production', lang)]],
   ].map((entries) => entries.filter(([, value]) => value)).filter((entries) => entries.length)
     .map((entries) => `<dl class="work-meta">${entries.map(([label, value]) => `<div><dt>${c[label]}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>`).join('');
-  return { title, metadata, description: richText(pick(work, 'description', lang)), gallery: `<div class="feature-gallery">${video}${media.map(figure).join('')}</div>` };
+  const background = /^#[0-9a-f]{6}$/i.test(work.detail_background || '') ? work.detail_background : '#dddddd';
+  return { title, metadata, description: richText(pick(work, 'description', lang)), gallery: `<div class="feature-gallery" style="--detail-paper:${background}">${video}${media.map(figure).join('')}</div>` };
 }
 
 export function workPage(work, works, site, lang, section = 'works') {

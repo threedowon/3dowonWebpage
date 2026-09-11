@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>3Dowon — Admin</title>
-<link rel="stylesheet" href="admin.css?v=2" />
+<link rel="stylesheet" href="admin.css?v=3" />
 </head>
 <body>
   <header class="admin-header">
@@ -13,6 +13,7 @@
     <nav class="admin-tabs">
       <button class="admin-tab active" data-tab="works">Works</button>
       <button class="admin-tab" data-tab="about">About</button>
+      <button class="admin-tab" data-tab="portfolio">Portfolio</button>
       <button class="admin-tab" data-tab="cv">CV</button>
       <button class="admin-tab" data-tab="lab">Lab</button>
       <button class="admin-tab" data-tab="site">Site</button>
@@ -51,6 +52,14 @@
       <div id="worksList" class="works-list"></div>
     </section>
 
+    <section id="tab-portfolio" class="admin-panel">
+      <h2>Portfolio</h2>
+      <p>포트폴리오 페이지를 이미지로 올리세요. 한 장씩 크게 표시되며, 좌우 클릭으로 넘길 수 있어요.</p>
+      <label class="gallery-upload">이미지 여러 장 추가<input id="portfolioUpload" type="file" accept="image/*" multiple /></label>
+      <p class="field-help">한 번에 최대 20장. 드래그 또는 화살표로 순서를 바꾸면 자동 저장됩니다.</p>
+      <p id="portfolioStatus" role="status"></p>
+      <div id="portfolioImages" class="gallery-grid"></div>
+    </section>
     <section id="tab-about" class="admin-panel">
       <h2>About</h2>
       <form id="aboutForm" class="admin-form">
@@ -98,6 +107,7 @@
     </section>
   </main>
 
-  <script src="admin.js?v=2"></script>
+  <script src="admin.js?v=4"></script>
+  <script src="portfolio.js?v=1"></script>
 </body>
 </html>

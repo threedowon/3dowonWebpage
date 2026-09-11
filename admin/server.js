@@ -211,6 +211,7 @@ function isImagePathReferenced(publicPath) {
     if ([w.thumbnail, w.preview_bg, w.hero_image, ...(w.gallery || [])].includes(publicPath)) return true;
   }
   if (loadJson('content/about.json').image === publicPath) return true;
+  if (loadJson('content/portfolio.json').images.includes(publicPath)) return true;
   if (loadJson('content/lab.json').items.some((item) => item.image === publicPath)) return true;
   return false;
 }
@@ -301,6 +302,10 @@ app.post('/api/works', (req, res) => {
 app.put('/api/works/:slug', (req, res) => {
   if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({ error: 'not found' });
   const work = loadWork(req.params.slug);
+  if (req.body.detail_background !== undefined) {
+    if (typeof req.body.detail_background !== 'string' || !/^#[0-9a-f]{6}$/i.test(req.body.detail_background)) return res.status(400).json({ error: '배경색은 올바른 HEX 색상이어야 해요.' });
+    work.detail_background = req.body.detail_background.toLowerCase();
+  }
   if (req.body.tech !== undefined) {
     if (!Array.isArray(req.body.tech) || req.body.tech.some((value) => typeof value !== 'string' || value.length > 100)) return res.status(400).json({ error: '기술 선택값이 올바르지 않아요.' });
     const options = technologyOptions();
@@ -387,6 +392,28 @@ app.delete('/api/works/:slug/gallery/:index', (req, res) => {
 });
 
 // ── Site content (about / cv / lab / site) ──
+
+app.get('/api/portfolio', (req, res) => res.json(loadJson('content/portfolio.json')));
+app.post('/api/portfolio/images', upload.array('images', 20), asyncHandler(async (req, res) => {
+  if (!req.files?.length) return res.status(400).json({ error: '이미지를 선택해주세요.' });
+  const added = [];
+  for (const file of req.files) added.push(publicUploadPath(await saveImage(file.buffer, 'portfolio')));
+  const portfolio = loadJson('content/portfolio.json');
+  portfolio.images.push(...added);
+  saveJson('content/portfolio.json', portfolio);
+  build();
+  res.json(portfolio);
+}));
+app.put('/api/portfolio/images', (req, res) => {
+  const portfolio = loadJson('content/portfolio.json');
+  const { images, expected } = req.body;
+  if (JSON.stringify(expected) !== JSON.stringify(portfolio.images)) return res.status(409).json({ error: '목록이 변경됐어요. 새로고침 후 다시 시도해주세요.' });
+  if (!Array.isArray(images) || new Set(images).size !== images.length || images.some(src => !portfolio.images.includes(src))) return res.status(400).json({ error: '이미지 목록이 올바르지 않아요.' });
+  portfolio.images = images;
+  saveJson('content/portfolio.json', portfolio);
+  build();
+  res.json(portfolio);
+});
 
 app.get('/api/site', (req, res) => {
   res.json({
