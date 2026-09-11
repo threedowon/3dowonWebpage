@@ -1,34 +1,46 @@
 {
   "items": [
     {
-      "image": "https://picsum.photos/seed/lab-sensor/600/750",
-      "caption": "센서 반응 매핑 테스트",
-      "caption_en": "Sensor response mapping test"
+      "caption": "ESP32 RFID",
+      "caption_en": "ESP32 RFID",
+      "video": "/3dowonWebpage/assets/uploads/lab-8cac1887-965e-42bb-9f0e-0de4b12db8dc.mp4",
+      "year": 2024,
+      "month": 11
     },
     {
       "image": "https://picsum.photos/seed/lab-unreal/600/750",
-      "caption": "언리얼 조명·그림자 테스트",
-      "caption_en": "Unreal lighting & shadow test"
+      "caption": "Unreal PCG 1",
+      "caption_en": "Unreal PCG 1",
+      "year": 2024,
+      "month": 4
     },
     {
-      "image": "https://picsum.photos/seed/lab-window/600/750",
-      "caption": "창문 인터랙션 프로토타입",
-      "caption_en": "Window interaction prototype"
+      "caption": "Unreal PCG 2",
+      "caption_en": "Unreal PCG 2",
+      "year": "",
+      "month": null,
+      "video": "/3dowonWebpage/assets/uploads/lab-65e7dc70-ed53-4627-a9d0-cfe7eee22630.mp4"
     },
     {
-      "image": "https://picsum.photos/seed/lab-pcomp/600/750",
       "caption": "피지컬 컴퓨팅 회로 실험",
-      "caption_en": "Physical computing circuit experiment"
+      "caption_en": "Physical computing circuit experiment",
+      "video": "/3dowonWebpage/assets/uploads/lab-83bcff30-50dc-4033-8254-eb8971c4cccf.mp4",
+      "year": 2024,
+      "month": 7
     },
     {
-      "image": "https://picsum.photos/seed/lab-projection/600/750",
       "caption": "프로젝션 캘리브레이션",
-      "caption_en": "Projection calibration"
+      "caption_en": "Projection calibration",
+      "video": "/3dowonWebpage/assets/uploads/lab-f1780175-9e8b-4dde-9876-4d609f07c5e4.mp4",
+      "year": 2024,
+      "month": 8
     },
     {
-      "image": "https://picsum.photos/seed/lab-archive/600/750",
       "caption": "이전 작업 아카이브 정리",
-      "caption_en": "Archiving previous work"
+      "caption_en": "Archiving previous work",
+      "video": "/3dowonWebpage/assets/uploads/lab-f7033837-8f2f-4e5a-a181-cd178fbd9cb7.mp4",
+      "year": 2024,
+      "month": 8
     },
     {
       "image": "https://picsum.photos/seed/lab-touch/600/750",

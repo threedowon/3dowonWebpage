@@ -97,6 +97,7 @@
     <section id="tab-lab" class="admin-panel">
       <h2>Lab</h2>
       <form id="newLabForm" class="admin-form">
+        <label>날짜 (연·월)<input name="date" placeholder="2026.03" pattern="[0-9]{4}([.\-](0?[1-9]|1[0-2]))?" /></label>
         <label>캡션<input name="caption" required /></label>
         <label>캡션 (EN)<input name="caption_en" /></label>
         <input type="file" id="labImageInput" accept="image/*,video/*,.mp4,.mov,.webm,.m4v" required />
@@ -119,7 +120,7 @@
     </section>
   </main>
 
-  <script src="admin.js?v=8"></script>
+  <script src="admin.js?v=9"></script>
   <script src="portfolio.js?v=1"></script>
   <script src="materials.js?v=1"></script>
 </body>

@@ -72,6 +72,7 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:1px solid var(
 .project-summary-bottom{max-width:190px;overflow-wrap:anywhere}
 .overview-image{display:flex;flex-direction:column;flex:0 0 var(--catalog-track)}
 .page-lab .overview-image{justify-content:center;padding-block:calc(var(--content-inset) + 1px)}
+.page-lab .project-summary .lab-date{margin-top:6px;color:var(--muted);font-size:var(--type-meta)}
 .overview-image[data-orientation="portrait"],.page-lab .overview-image:not([data-orientation]){flex-basis:var(--catalog-portrait-track)}
 .overview-image[data-orientation="landscape"]{flex-basis:calc(2 * var(--catalog-track));grid-column:span 2}
 .image-reference{display:block;flex-shrink:0;font-size:var(--type-meta);font-variant-numeric:tabular-nums;letter-spacing:.025em;margin-bottom:8px}

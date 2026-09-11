@@ -533,13 +533,50 @@ app.put('/api/lab', (req, res) => {
 });
 
 const labUpload = multer({storage:multer.memoryStorage(),limits:{fileSize:150*1024*1024}}).single('image');
+const receiveLabFile = (req,res,next) => labUpload(req,res,error => error ? res.status(400).json({error:'파일은 150MB 이하로 올려주세요.'}) : next());
+app.put('/api/lab/items/:index', (req,res) => {
+  const lab = loadJson('content/lab.json');
+  const item = lab.items[Number(req.params.index)];
+  if (!item) return res.status(404).json({error:'항목을 찾을 수 없어요.'});
+  const date = req.body.date ? parseWorkDate(req.body.date) : null;
+  if (req.body.date && !date) return res.status(400).json({error:'날짜는 2026.03 형식으로 입력해주세요.'});
+  Object.assign(item, {caption:req.body.caption || '', caption_en:req.body.caption_en || '', year:date?.year || '', month:date?.month || null});
+  saveJson('content/lab.json',lab);
+  build();
+  res.json(lab);
+});
+app.post('/api/lab/items/:index/file', receiveLabFile, asyncHandler(async (req,res) => {
+  const index = Number(req.params.index);
+  const previous = loadJson('content/lab.json').items[index];
+  if (!previous) return res.status(404).json({error:'항목을 찾을 수 없어요.'});
+  if (!req.file) return res.status(400).json({error:'파일을 선택해주세요.'});
+  const isVideo = req.file.mimetype.startsWith('video/') || /\.(mp4|mov|webm|m4v)$/i.test(req.file.originalname);
+  if (!isVideo && !req.file.mimetype.startsWith('image/')) return res.status(400).json({error:'이미지 또는 영상을 선택해주세요.'});
+  const filename = isVideo ? await saveLabVideo(req.file.buffer,UPLOADS_DIR) : await saveImage(req.file.buffer);
+  const lab = loadJson('content/lab.json');
+  const item = lab.items[index];
+  if (!item || item.image !== previous.image || item.video !== previous.video) {
+    removeUploadedFile(publicUploadPath(filename));
+    return res.status(409).json({error:'항목이 변경되었어요. 새로고침 후 다시 시도해주세요.'});
+  }
+  delete item.image;
+  delete item.video;
+  item[isVideo ? 'video' : 'image'] = publicUploadPath(filename);
+  saveJson('content/lab.json',lab);
+  removeUploadedFile(previous.image);
+  removeUploadedFile(previous.video);
+  build();
+  res.json(lab);
+}));
 app.post('/api/lab/items', (req,res,next) => labUpload(req,res,error => error ? res.status(400).json({error:'파일은 150MB 이하로 올려주세요.'}) : next()), asyncHandler(async (req, res) => {
   if (!req.file) return res.status(400).json({ error: '이미지 또는 영상 파일이 필요해요.' });
+  const date = req.body.date ? parseWorkDate(req.body.date) : null;
+  if (req.body.date && !date) return res.status(400).json({error:'날짜는 2026.03 형식으로 입력해주세요.'});
   const isVideo = req.file.mimetype.startsWith('video/') || /\.(mp4|mov|webm|m4v)$/i.test(req.file.originalname);
   if (!isVideo && !req.file.mimetype.startsWith('image/')) return res.status(400).json({error:'이미지 또는 영상 파일을 선택해주세요.'});
   const filename = isVideo ? await saveLabVideo(req.file.buffer, UPLOADS_DIR) : await saveImage(req.file.buffer);
   const lab = loadJson('content/lab.json');
-  lab.items.push({ [isVideo ? 'video' : 'image']: publicUploadPath(filename), caption: req.body.caption || '', caption_en: req.body.caption_en || '' });
+  lab.items.push({ [isVideo ? 'video' : 'image']: publicUploadPath(filename), caption: req.body.caption || '', caption_en: req.body.caption_en || '', year:date?.year || '', month:date?.month || null });
   saveJson('content/lab.json', lab);
   build();
   res.json(lab);

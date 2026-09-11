@@ -1,7 +1,7 @@
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
 import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 
-const VERSION = '1038';
+const VERSION = '1039';
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
   en: { works: 'Works', lab: 'Lab', about: 'About', portfolio: 'Portfolio', cv: 'CV', photos: 'Images', index: 'Index', allYears: 'All years', allFields: 'All fields', space: 'Space', object: 'Object', screen: 'Screen', year: 'Year', field: 'Field', name: 'Project', back: 'All works', previous: 'Previous work', next: 'Next work', close: 'Close', enlarge: 'Enlarge image', practice: 'Practice', approach: 'Approach', fields: 'Fields', noResults: 'No work matches these filters.', reset: 'Reset filters', note: 'How do familiar objects change\nour experience of space? How do everyday\nactions change it?', artist: 'Interactive media artist', type: 'Type', medium: 'Medium', tech: 'Technology', production: 'Production', skip: 'Skip to content' },
@@ -51,7 +51,7 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
       <a class="wordmark" href="${home}index.html" aria-label="3Dowon ${lang === 'ko' ? '홈' : 'Home'}">3Dowon</a>
       <p class="header-note">${esc(c.note).replace(/\n/g, '<br />')}</p>
       <nav class="site-nav" aria-label="${lang === 'ko' ? '주 메뉴' : 'Main navigation'}">
-        ${['works', 'lab', 'about', 'portfolio', 'cv'].map((key, index, items) => `<a href="${home}${key}.html"${active === key ? ' aria-current="page"' : ''}>${c[key]}${index < items.length - 1 ? ',' : ''}</a>`).join('')}
+        ${['works', 'lab', 'about', 'portfolio', 'cv'].map((key) => `<a href="${home}${key}.html"${active === key ? ' aria-current="page"' : ''}>${c[key]}</a>`).join('')}
       </nav>
     </header>
     <main id="main" tabindex="-1"${catalog ? ` data-catalog="${catalog}"` : ''}>
@@ -93,7 +93,7 @@ function overviewGrid(works, ctx, toolbar = '') {
     const project = ctx.section === 'works'
       ? `<li class="works-index-item" data-overview-project data-project="${esc(work.slug)}" ${attrs}><a class="works-index-link" href="${esc(href)}"><span class="works-index-number">${projectNumber}</span><h2 class="works-index-title">${esc(title)}</h2><span class="works-index-year">${esc(work.meta_year || work.year || '')}</span></a></li>`
       : `<article class="overview-project" data-overview-project data-project="${esc(work.slug)}" ${attrs}>
-      <a class="project-summary" href="${esc(href)}"><div><span class="project-number">${projectNumber}</span><h2>${esc(title)}</h2></div><div class="project-summary-bottom"><p>${esc(work.meta_year || work.year || '')}</p><p>${esc(pick(work, 'meta_tech', ctx.lang) || '')}</p></div></a>
+      <a class="project-summary" href="${esc(href)}"><div><span class="project-number">${projectNumber}</span><h2>${esc(title)}</h2>${work.year ? `<p class="lab-date">${esc(work.year)}${work.month ? '.' + String(work.month).padStart(2, '0') : ''}</p>` : ''}</div><div class="project-summary-bottom"><p>${esc(pick(work, 'meta_tech', ctx.lang) || '')}</p></div></a>
     </article>`;
     const images = media.map((src, i) => `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}>${ctx.section === 'lab' ? '' : `<span class="image-reference">${projectNumber}.${i + 1}</span>`}<a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><img src="${esc(src)}" alt="${esc(title)} — ${i + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`).join('');
     const video = ctx.section === 'lab' && work.video ? `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}><a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><video src="${esc(resolveMediaPath(work.video, ctx.assets))}" autoplay muted loop playsinline preload="metadata" aria-label="${esc(title)}"></video></a></figure>` : '';
@@ -138,7 +138,7 @@ export function aboutPage(about, site, lang) {
   const fields = lang === 'ko' ? ['인터랙티브 설치', '피지컬 컴퓨팅', '실시간 그래픽', '센서 기술'] : ['Interactive installation', 'Physical computing', 'Real-time graphics', 'Sensor technology'];
   const body = `<article class="editorial-article about-article">
     <section class="about-information" tabindex="0" aria-labelledby="page-title">
-      <header class="about-heading"><h1 id="page-title">${esc(pick(about, 'name', lang))}</h1><p class="about-meta">${esc(pick(about, 'meta', lang)).replace(/\r?\n/g, '<br />')}</p></header>
+      <h1 id="page-title" class="visually-hidden">${esc(pick(about, 'name', lang))}</h1>
       <div class="prose about-prose">${paras.map((para) => `<p>${esc(para)}</p>`).join('')}</div>
       <section class="about-fields"><h2 class="visually-hidden">${c.fields}</h2><ul>${fields.map((field) => `<li>${field}</li>`).join('')}</ul></section>
       <address class="about-contact">${socials(site)}</address>

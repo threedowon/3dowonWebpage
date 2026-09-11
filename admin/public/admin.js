@@ -581,20 +581,36 @@ async function loadLab() {
       <input value="${escapeAttr(item.caption)}" class="lab-caption" placeholder="캡션" />
       <input value="${escapeAttr(item.caption_en || '')}" class="lab-caption" placeholder="캡션 (EN)" />
       <button type="button" class="danger">삭제</button>
+      <label>날짜 (연·월)<input class="lab-date" value="${escapeAttr(item.year ? `${item.year}${item.month ? '.' + String(item.month).padStart(2,'0') : ''}` : '')}" placeholder="2026.03" /></label>
+      <label>파일 교체<input class="lab-replace" type="file" accept="image/*,video/*,.mp4,.mov,.webm,.m4v" /></label>
+      <span class="lab-status" role="status"></span>
     `;
     const [img, captionInput, captionEnInput, removeBtn] = card.children;
     const saveCaptions = async () => {
-      const items = lab.items.map((it, idx) =>
-        idx === i ? { ...it, caption: captionInput.value, caption_en: captionEnInput.value } : it
-      );
-      await api('/api/lab', {
+      try { await api(`/api/lab/items/${i}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items }),
-      });
+        body: JSON.stringify({ caption:captionInput.value, caption_en:captionEnInput.value, date:card.querySelector('.lab-date').value.trim() }),
+      }); card.querySelector('.lab-status').textContent = '저장되었습니다.';
+      } catch(error) { card.querySelector('.lab-status').textContent = error.message; }
     };
     captionInput.addEventListener('change', saveCaptions);
     captionEnInput.addEventListener('change', saveCaptions);
+    card.querySelector('.lab-date').addEventListener('change',saveCaptions);
+    card.querySelector('.lab-replace').addEventListener('change',async (event) => {
+      const input = event.target;
+      const file = input.files[0];
+      if (!file) return;
+      if (file.size > 150*1024*1024) { input.value=''; return alert('파일은 150MB 이하로 올려주세요.'); }
+      const status = card.querySelector('.lab-status');
+      input.disabled = true;
+      removeBtn.disabled = true;
+      status.textContent = '파일 교체 중입니다. 영상 변환은 잠시 걸릴 수 있어요.';
+      const data = new FormData(); data.append('image',file);
+      try { await api(`/api/lab/items/${i}/file`,{method:'POST',body:data}); await loadLab(); }
+      catch(error) { status.textContent=error.message; }
+      finally { input.disabled=false; removeBtn.disabled=false; input.value=''; }
+    });
     removeBtn.addEventListener('click', async () => {
       await api(`/api/lab/items/${i}`, { method: 'DELETE' });
       loadLab();
@@ -612,6 +628,7 @@ document.getElementById('newLabForm').addEventListener('submit', async (e) => {
   fd.append('image', file);
   fd.append('caption', e.target.caption.value);
   fd.append('caption_en', e.target.caption_en.value);
+  fd.append('date', e.target.date.value.trim());
   const button = e.target.querySelector('button[type="submit"]');
   const status = document.getElementById('labUploadStatus');
   if (button.disabled) return;
