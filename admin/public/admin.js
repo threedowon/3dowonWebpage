@@ -1,7 +1,8 @@
 // 사이트 필터에서는 유형(설치~전시·VR/AR)과 태그(인터랙티브/프로젝션)가 한 목록으로 합쳐져 보이므로
 // admin에서도 이 7개를 하나의 다중선택으로 다룬다.
 const TYPE_OPTIONS = ['설치', '영상', '퍼포먼스', '전시', 'VR/AR', '인터랙티브', '프로젝션'];
-const TECH_OPTIONS = ['Unreal', 'Unity', 'Arduino', '3ds Max', 'Depth Camera'];
+let techOptions = [];
+let techOptionsDirty = false;
 const PRODUCTION_OPTIONS = ['개인', '공동', '회사'];
 
 function imgUrl(p) {
@@ -61,7 +62,7 @@ document.querySelectorAll('.admin-tab').forEach((tab) => {
 });
 
 window.addEventListener('beforeunload', (e) => {
-  if (dirtyWorks.size > 0) {
+  if (dirtyWorks.size > 0 || techOptionsDirty) {
     e.preventDefault();
     e.returnValue = '';
   }
@@ -75,8 +76,6 @@ function captureWorkForm(form) {
     types: fd.getAll('types'),
     production: fd.get('production'),
     tech: fd.getAll('tech'),
-    meta_tech: fd.get('meta_tech'),
-    meta_tech_en: fd.get('meta_tech_en'),
     description: fd.get('description'),
     description_en: fd.get('description_en'),
     vimeo_url: fd.get('vimeo_url'),
@@ -88,8 +87,6 @@ function applyWorkForm(form, draft) {
   form.title.value = draft.title ?? '';
   form.year.value = draft.year ?? '';
   form.production.value = draft.production ?? '';
-  form.meta_tech.value = draft.meta_tech ?? '';
-  form.meta_tech_en.value = draft.meta_tech_en ?? '';
   form.description.value = draft.description ?? '';
   form.description_en.value = draft.description_en ?? '';
   form.vimeo_url.value = draft.vimeo_url ?? '';
@@ -105,28 +102,131 @@ function markWorkDirty(slug) {
   dirtyWorks.add(slug);
 }
 
+function previewPath(work) {
+  return work.thumbnail || work.gallery?.[0] || work.hero_image || '';
+}
 function updateWorkCardHead(card, work) {
-  const h3 = card.querySelector('.work-card-head h3');
-  if (!h3) return;
-  h3.innerHTML = `${escapeHtml(work.title)} <span>${work.year} · ${escapeHtml(work.type)}</span>`;
+  card.querySelector('.work-title').textContent = work.title;
+  card.querySelector('.work-subtitle').textContent = [work.year, work.type].filter(Boolean).join(' · ');
+  const preview = card.querySelector('.work-preview');
+  if (previewPath(work)) {
+    preview.innerHTML = '<img src="' + escapeAttr(imgUrl(previewPath(work))) + '" alt="" loading="lazy" />';
+  } else preview.textContent = '이미지 없음';
 }
+function filterWorks() {
+  const query = document.getElementById('workSearch').value.trim().toLocaleLowerCase();
+  const cards = [...document.querySelectorAll('.work-card')];
+  cards.forEach(card => { card.hidden = !card.querySelector('.work-card-head').textContent.toLocaleLowerCase().includes(query); });
+  document.getElementById('workCount').textContent = cards.filter(card => !card.hidden).length + ' / ' + cards.length;
+}
+document.getElementById('workSearch').addEventListener('input', filterWorks);
 
+function addTechRow(option = {name:'', en:''}) {
+  const row = document.createElement('div');
+  row.className = 'tech-option-row';
+  row.innerHTML = '<label>기술 이름<input class="tech-name" required maxlength="100" value="' + escapeAttr(option.name) + '" /></label><label>영문 이름<input class="tech-en" maxlength="100" value="' + escapeAttr(option.en) + '" /></label><button type="button" class="secondary">항목 삭제</button>';
+  row.querySelector('button').addEventListener('click', () => { row.remove(); techOptionsDirty = true; });
+  document.getElementById('techOptionsRows').appendChild(row);
+}
+function techCheckboxes(selected) {
+  return checkboxGroup('tech', [...new Set([...techOptions.map(option => option.name), ...selected])], selected);
+}
+async function loadTechnologyOptions() {
+  techOptions = await api('/api/tech-options');
+  techOptions.forEach(addTechRow);
+}
+document.getElementById('addTechOption').addEventListener('click', () => {
+  addTechRow(); techOptionsDirty = true;
+  document.querySelector('#techOptionsRows .tech-option-row:last-child input').focus();
+});
+document.getElementById('techOptionsForm').addEventListener('input', () => { techOptionsDirty = true; });
+document.getElementById('techOptionsForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  const status = document.getElementById('techOptionsStatus');
+  const submit = event.target.querySelector('[type="submit"]');
+  submit.disabled = true;
+  try {
+    const options = [...document.querySelectorAll('.tech-option-row')].map(row => ({name:row.querySelector('.tech-name').value, en:row.querySelector('.tech-en').value}));
+    techOptions = await api('/api/tech-options', {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({options})});
+    document.querySelectorAll('.work-tech-options').forEach(group => {
+      const selected = [...group.querySelectorAll(':checked')].map(input => input.value);
+      group.innerHTML = techCheckboxes(selected);
+    });
+    techOptionsDirty = false;
+    status.textContent = '기술 목록을 저장했어요.';
+  } catch (error) { status.textContent = error.message; }
+  finally { submit.disabled = false; }
+});
+
+function galleryBusy(grid, busy, message = '') {
+  grid.dataset.busy = String(busy);
+  const card = grid.closest('.work-card');
+  card.querySelector('.gallery-input').disabled = busy;
+  grid.querySelectorAll('button').forEach(button => { button.disabled = busy; });
+  card.querySelector('.gallery-status').textContent = message;
+}
 function refreshGalleryGrid(galleryGrid, work, gallery) {
+  work.gallery = [...gallery];
   galleryGrid.innerHTML = '';
-  (gallery || []).forEach((src, i) => appendGalleryItem(galleryGrid, work, src, i));
+  gallery.forEach((src, i) => appendGalleryItem(galleryGrid, work, src, i));
+  updateWorkCardHead(galleryGrid.closest('.work-card'), work);
 }
-
+async function moveGalleryImage(grid, work, from, to) {
+  if (grid.dataset.busy === 'true' || from === to || to < 0 || to >= work.gallery.length) return;
+  const order = work.gallery.map((_, index) => index);
+  order.splice(to, 0, order.splice(from, 1)[0]);
+  galleryBusy(grid, true, '이미지 순서를 저장하고 있어요…');
+  try {
+    const updated = await api('/api/works/' + work.slug + '/gallery/order', {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({order,expected:work.gallery})});
+    refreshGalleryGrid(grid, work, updated.gallery || []);
+    galleryBusy(grid, false, '이미지 순서를 저장했어요.');
+    grid.children[to]?.focus();
+  } catch (error) { galleryBusy(grid, false, error.message); }
+}
 function appendGalleryItem(galleryGrid, work, src, index) {
   const item = document.createElement('div');
-  item.className = 'gallery-item';
+  item.className = 'gallery-item'; item.draggable = true; item.tabIndex = 0;
   item.dataset.index = String(index);
-  item.innerHTML = `<img src="${imgUrl(src)}" alt="" /><button type="button">×</button>`;
-  item.querySelector('button').addEventListener('click', async () => {
-    const idx = Number(item.dataset.index);
-    const updated = await api(`/api/works/${work.slug}/gallery/${idx}`, { method: 'DELETE' });
-    refreshGalleryGrid(galleryGrid, work, updated.gallery || []);
-    openWorkSlugs.add(work.slug);
-    galleryGrid.closest('.work-card')?.classList.add('open');
+  item.setAttribute('aria-label', '갤러리 이미지 ' + (index + 1) + ', Alt와 방향키로 순서 변경');
+  item.innerHTML = '<img src="' + escapeAttr(imgUrl(src)) + '" alt="갤러리 이미지 ' + (index + 1) + '" draggable="false" loading="lazy" /><span class="gallery-number">' + (index + 1) + '</span><button type="button" class="gallery-remove" aria-label="이미지 ' + (index + 1) + ' 삭제">×</button><div class="gallery-move"><button type="button" class="move-previous" aria-label="이미지 ' + (index + 1) + ' 앞으로">←</button><button type="button" class="move-next" aria-label="이미지 ' + (index + 1) + ' 뒤로">→</button></div>';
+  item.querySelector('.gallery-remove').addEventListener('click', async () => {
+    if (galleryGrid.dataset.busy === 'true') return;
+    galleryBusy(galleryGrid, true, '이미지를 삭제하고 있어요…');
+    try {
+      const updated = await api('/api/works/' + work.slug + '/gallery/' + item.dataset.index, {method:'DELETE'});
+      refreshGalleryGrid(galleryGrid, work, updated.gallery || []);
+      galleryBusy(galleryGrid, false, '이미지를 삭제했어요.');
+    } catch (error) { galleryBusy(galleryGrid, false, error.message); }
+  });
+  item.querySelector('.move-previous').addEventListener('click', () => moveGalleryImage(galleryGrid, work, index, index - 1));
+  item.querySelector('.move-next').addEventListener('click', () => moveGalleryImage(galleryGrid, work, index, index + 1));
+  item.addEventListener('keydown', event => {
+    if (event.altKey && ['ArrowLeft','ArrowRight'].includes(event.key)) {
+      event.preventDefault(); moveGalleryImage(galleryGrid, work, index, index + (event.key === 'ArrowLeft' ? -1 : 1));
+    }
+  });
+  item.addEventListener('dragstart', event => {
+    if (galleryGrid.dataset.busy === 'true' || event.target.closest('button')) { event.preventDefault(); return; }
+    galleryGrid.dataset.dragIndex = String(index);
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/plain', work.slug + ':' + index);
+    item.classList.add('dragging');
+  });
+  item.addEventListener('dragover', event => {
+    if (galleryGrid.dataset.dragIndex === undefined || galleryGrid.dataset.busy === 'true') return;
+    event.preventDefault(); event.dataTransfer.dropEffect = 'move'; item.classList.add('drop-target');
+  });
+  item.addEventListener('dragleave', () => item.classList.remove('drop-target'));
+  item.addEventListener('drop', event => {
+    if (galleryGrid.dataset.dragIndex === undefined) return;
+    event.preventDefault(); item.classList.remove('drop-target');
+    const from = Number(galleryGrid.dataset.dragIndex);
+    delete galleryGrid.dataset.dragIndex;
+    moveGalleryImage(galleryGrid, work, from, index);
+  });
+  item.addEventListener('dragend', () => {
+    delete galleryGrid.dataset.dragIndex;
+    galleryGrid.querySelectorAll('.gallery-item').forEach(tile => tile.classList.remove('dragging','drop-target'));
   });
   galleryGrid.appendChild(item);
 }
@@ -151,6 +251,7 @@ async function loadWorks() {
     if (drafts.has(work.slug)) applyWorkForm(card.querySelector('.edit-form'), drafts.get(work.slug));
     list.appendChild(card);
   });
+  filterWorks();
 }
 
 function renderWorkCard(work) {
@@ -158,15 +259,14 @@ function renderWorkCard(work) {
   card.className = 'work-card';
   card.dataset.slug = work.slug;
   card.innerHTML = `
-    <div class="work-card-head">
-      <h3>${escapeHtml(work.title)} <span>${work.year} · ${escapeHtml(work.type)}</span></h3>
-      <span>${escapeHtml(work.slug)}</span>
-    </div>
+    <button type="button" class="work-card-head" aria-expanded="${openWorkSlugs.has(work.slug)}">
+      <span class="work-preview"></span><span class="work-card-caption"><strong class="work-title"></strong><span class="work-subtitle"></span><span class="work-slug">${escapeHtml(work.slug)}</span></span><span class="work-expand" aria-hidden="true">＋</span>
+    </button>
     <div class="work-card-body">
       <div class="thumb-row">
         <div>
           <img src="${imgUrl(work.thumbnail)}" alt="" />
-          <div class="thumb-label">썸네일 (그리드/미리보기/히어로 공통)<input type="file" accept="image/*" class="img-input" data-field="thumbnail" /></div>
+          <div class="thumb-label">목록 미리보기 썸네일<input type="file" accept="image/*" class="img-input" data-field="thumbnail" /></div>
         </div>
       </div>
       <form class="admin-form edit-form">
@@ -176,9 +276,7 @@ function renderWorkCard(work) {
         </div>
         <label>유형<div class="chk-group">${checkboxGroup('types', TYPE_OPTIONS, [work.type, ...(work.tags || [])])}</div></label>
         <label>제작<select name="production">${selectOptions(PRODUCTION_OPTIONS, work.production)}</select></label>
-        <label>기술<div class="chk-group">${checkboxGroup('tech', TECH_OPTIONS, work.tech || [])}</div></label>
-        <label>상세-기술<input name="meta_tech" value="${escapeAttr(work.meta_tech)}" /></label>
-        <label>상세-기술 (EN)<input name="meta_tech_en" value="${escapeAttr(work.meta_tech_en)}" /></label>
+        <fieldset class="tech-field"><legend>기술 (복수 선택)</legend><div class="chk-group work-tech-options">${techCheckboxes(work.tech || [])}</div><p class="field-help">선택을 바꾸고 저장하면 상세페이지의 기술 정보에도 반영됩니다. 항목은 위의 ‘기술 선택 목록 편집’에서 수정할 수 있어요.</p></fieldset>
         <label>설명 (엔터로 줄바꿈)<textarea name="description" rows="4">${escapeHtml(work.description)}</textarea></label>
         <label>설명 (EN)<textarea name="description_en" rows="4">${escapeHtml(work.description_en)}</textarea></label>
         <label>Vimeo URL<input name="vimeo_url" value="${escapeAttr(work.vimeo_url)}" /></label>
@@ -187,12 +285,13 @@ function renderWorkCard(work) {
           <button type="button" class="danger delete-work">삭제</button>
         </div>
       </form>
-      <h4>갤러리 이미지</h4>
+      <h4>갤러리 이미지</h4><p class="field-help">이미지를 드래그하거나 화살표 버튼으로 옮기면 순서가 바로 저장됩니다.</p>
       <div class="gallery-grid"></div>
-      <input type="file" accept="image/*" multiple class="gallery-input" />
+      <label class="gallery-upload">이미지 여러 장 추가<input type="file" accept="image/*" multiple class="gallery-input" /></label><p class="field-help">Ctrl 또는 Shift로 여러 파일을 선택할 수 있어요. 한 번에 최대 20장까지 추가됩니다.</p><p class="gallery-status" role="status"></p>
     </div>
   `;
 
+  updateWorkCardHead(card, work);
   const galleryGrid = card.querySelector('.gallery-grid');
   (work.gallery || []).forEach((src, i) => appendGalleryItem(galleryGrid, work, src, i));
 
@@ -203,6 +302,7 @@ function renderWorkCard(work) {
       dirtyWorks.delete(work.slug);
     }
     card.classList.toggle('open');
+    card.querySelector('.work-card-head').setAttribute('aria-expanded', String(card.classList.contains('open')));
     if (card.classList.contains('open')) openWorkSlugs.add(work.slug);
     else openWorkSlugs.delete(work.slug);
   });
@@ -213,6 +313,9 @@ function renderWorkCard(work) {
 
   editForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const saveButton = editForm.querySelector('[type="submit"]');
+    saveButton.disabled = true;
+    try {
     const fd = new FormData(e.target);
     const updated = await api(`/api/works/${work.slug}`, {
       method: 'PUT',
@@ -222,9 +325,7 @@ function renderWorkCard(work) {
         year: fd.get('year'),
         types: fd.getAll('types'),
         production: fd.get('production'),
-        tech: fd.getAll('tech'),
-        meta_tech: fd.get('meta_tech'),
-        meta_tech_en: fd.get('meta_tech_en'),
+        ...(JSON.stringify(fd.getAll('tech').slice().sort()) !== JSON.stringify((work.tech || []).slice().sort()) ? {tech:fd.getAll('tech')} : {}),
         description: fd.get('description'),
         description_en: fd.get('description_en'),
         vimeo_url: fd.get('vimeo_url'),
@@ -233,8 +334,12 @@ function renderWorkCard(work) {
     dirtyWorks.delete(work.slug);
     openWorkSlugs.add(work.slug);
     card.classList.add('open');
+    Object.assign(work, updated);
     updateWorkCardHead(card, updated);
+    filterWorks();
     alert('저장했어요.');
+    } catch (error) { alert(error.message); }
+    finally { saveButton.disabled = false; }
   });
 
   card.querySelector('.delete-work').addEventListener('click', async () => {
@@ -253,6 +358,7 @@ function renderWorkCard(work) {
         const updated = await api(`/api/works/${work.slug}/${input.dataset.field}`, { method: 'POST', body: fd });
         const thumbImg = card.querySelector('.thumb-row img');
         if (thumbImg && updated.thumbnail) thumbImg.src = imgUrl(updated.thumbnail);
+        Object.assign(work, updated); updateWorkCardHead(card, work);
         openWorkSlugs.add(work.slug);
         card.classList.add('open');
       } catch (err) {
@@ -265,16 +371,19 @@ function renderWorkCard(work) {
   card.querySelector('.gallery-input').addEventListener('change', async (e) => {
     const files = e.target.files;
     if (!files.length) return;
+    if (files.length > 20) { card.querySelector('.gallery-status').textContent = '한 번에 최대 20장까지 선택해주세요.'; e.target.value = ''; return; }
+    galleryBusy(galleryGrid, true, files.length + '장의 이미지를 추가하고 있어요…');
     const fd = new FormData();
     for (const f of files) fd.append('images', f);
     try {
       const updated = await api(`/api/works/${work.slug}/gallery`, { method: 'POST', body: fd });
       refreshGalleryGrid(galleryGrid, work, updated.gallery || []);
+      galleryBusy(galleryGrid, false, files.length + '장의 이미지를 추가했어요.');
       openWorkSlugs.add(work.slug);
       card.classList.add('open');
       e.target.value = '';
     } catch (err) {
-      alert(err.message);
+      galleryBusy(galleryGrid, false, err.message);
       e.target.value = '';
     }
   });
@@ -531,7 +640,7 @@ document.getElementById('deployBtn').addEventListener('click', async () => {
   }
 });
 
-loadWorks();
+loadTechnologyOptions().then(loadWorks).catch(error => { document.getElementById('worksList').textContent = error.message; });
 loadAbout();
 loadCv();
 loadLab();

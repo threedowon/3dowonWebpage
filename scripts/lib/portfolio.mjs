@@ -1,7 +1,7 @@
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
 import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 
-const VERSION = '971';
+const VERSION = '974';
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
   en: { works: 'Works', lab: 'Lab', about: 'About', portfolio: 'Portfolio', cv: 'CV', photos: 'Images', index: 'Index', allYears: 'All years', allFields: 'All fields', space: 'Space', object: 'Object', screen: 'Screen', year: 'Year', field: 'Field', name: 'Project', back: 'All works', previous: 'Previous work', next: 'Next work', close: 'Close', enlarge: 'Enlarge image', practice: 'Practice', approach: 'Approach', fields: 'Fields', noResults: 'No work matches these filters.', reset: 'Reset filters', note: 'Interactive installations and media experiments\nwith light, space, and everyday objects.', artist: 'Interactive media artist', type: 'Type', medium: 'Medium', tech: 'Technology', production: 'Production', skip: 'Skip to content' },
@@ -53,7 +53,6 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
       <nav class="site-nav" aria-label="${lang === 'ko' ? '주 메뉴' : 'Main navigation'}">
         ${['works', 'lab', 'about', 'portfolio', 'cv'].map((key, index, items) => `<a href="${home}${key}.html"${active === key ? ' aria-current="page"' : ''}>${c[key]}${index < items.length - 1 ? ',' : ''}</a>`).join('')}
       </nav>
-      <nav class="language-nav" aria-label="${lang === 'ko' ? '언어' : 'Language'}"><a href="${assets}${relPath}" lang="en" data-language="en"${lang === 'en' ? ' aria-current="true"' : ''}>EN</a><span aria-hidden="true">/</span><a href="${assets}ko/${relPath}" lang="ko" data-language="ko"${lang === 'ko' ? ' aria-current="true"' : ''}>KO</a></nav>
     </header>
     <main id="main" tabindex="-1"${catalog ? ` data-catalog="${catalog}"` : ''}>
       <div class="page-toolbar"${toolbar ? '' : ' aria-hidden="true"'}>${toolbar}</div>

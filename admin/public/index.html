@@ -2,8 +2,9 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>3Dowon — Admin</title>
-<link rel="stylesheet" href="admin.css" />
+<link rel="stylesheet" href="admin.css?v=2" />
 </head>
 <body>
   <header class="admin-header">
@@ -25,7 +26,7 @@
 
   <main>
     <section id="tab-works" class="admin-panel active">
-      <h2>새 작업 추가</h2>
+      <details class="work-tools"><summary>새 작업 추가</summary>
       <form id="newWorkForm" class="admin-form">
         <div class="field-row">
           <label>슬러그 (영문/숫자/하이픈)<input name="slug" required pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="new-work" /></label>
@@ -35,8 +36,18 @@
         <label>유형<div class="chk-group" id="newWorkTypes"></div></label>
         <button type="submit">추가</button>
       </form>
+      </details>
 
-      <h2>작업 목록</h2>
+      <details class="work-tools" id="techSettings"><summary>기술 선택 목록 편집</summary>
+        <form id="techOptionsForm" class="admin-form">
+          <p class="field-help">기술 이름과 상세페이지에 표시할 영문 이름을 편집하세요. 목록을 수정해도 기존 작업의 선택값은 유지됩니다.</p>
+          <div id="techOptionsRows"></div>
+          <div class="field-row"><button type="button" id="addTechOption">기술 추가</button><button type="submit">기술 목록 저장</button></div>
+          <p id="techOptionsStatus" role="status"></p>
+        </form>
+      </details>
+
+      <div class="works-heading"><h2>작업 목록 <span id="workCount"></span></h2><label>작업 찾기<input type="search" id="workSearch" placeholder="작업명, 연도, 슬러그 검색" /></label></div>
       <div id="worksList" class="works-list"></div>
     </section>
 
@@ -87,6 +98,6 @@
     </section>
   </main>
 
-  <script src="admin.js"></script>
+  <script src="admin.js?v=2"></script>
 </body>
 </html>

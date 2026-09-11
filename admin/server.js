@@ -17,6 +17,9 @@ const UPLOADS_DIR = path.join(ROOT, 'assets', 'uploads');
 const PUBLIC_UPLOADS_PREFIX = '/3dowonWebpage/assets/uploads'; // must match admin/config.yml's public_folder
 const PORT = process.env.PORT || 4848;
 const HOST = '127.0.0.1'; // localhost only — this server has no auth
+const TECH_OPTIONS_FILE = path.join(__dirname, 'tech-options.json');
+const DEFAULT_TECH_OPTIONS = ['Unreal', 'Unity', 'Arduino', '3ds Max', 'Depth Camera'];
+const TECH_TRANSLATIONS = { '영상 스케줄링': 'video scheduling', '센서': 'sensors', '프로젝션': 'projection', '실시간 그래픽': 'real-time graphics', '시리얼 통신': 'serial communication' };
 
 const app = express();
 app.use(express.json());
@@ -223,6 +226,29 @@ function removeUploadedFile(publicPath) {
 
 // ── Works ──
 
+function technologyOptions() {
+  if (fs.existsSync(TECH_OPTIONS_FILE)) return JSON.parse(fs.readFileSync(TECH_OPTIONS_FILE, 'utf8'));
+  const names = new Set(DEFAULT_TECH_OPTIONS);
+  for (const slug of listWorkSlugs()) {
+    const work = loadWork(slug);
+    [...(work.tech || []), ...String(work.meta_tech || '').split(','), ...String(work.meta_tech_en || '').split(',')]
+      .map((value) => value.trim()).filter(Boolean).forEach((value) => names.add(value));
+  }
+  return [...names].map((name) => ({ name, en: TECH_TRANSLATIONS[name] || name }));
+}
+
+app.get('/api/tech-options', (req, res) => res.json(technologyOptions()));
+app.put('/api/tech-options', (req, res) => {
+  const options = req.body.options;
+  if (!Array.isArray(options) || options.length > 200 || options.some((item) => !item || typeof item.name !== 'string' || !item.name.trim() || item.name.length > 100 || typeof item.en !== 'string' || item.en.length > 100)) {
+    return res.status(400).json({ error: '기술 이름을 입력해주세요. 항목은 최대 200개, 이름은 100자까지 사용할 수 있어요.' });
+  }
+  const normalized = options.map(({ name, en }) => ({ name: name.trim(), en: en.trim() || name.trim() }));
+  if (new Set(normalized.map((item) => item.name)).size !== normalized.length) return res.status(400).json({ error: '중복된 기술 이름이 있어요.' });
+  fs.writeFileSync(TECH_OPTIONS_FILE, JSON.stringify(normalized, null, 2) + '\n');
+  res.json(normalized);
+});
+
 app.get('/api/works', (req, res) => {
   const works = listWorkSlugs().map(loadWork);
   works.sort((a, b) => b.year - a.year || String(a.title).localeCompare(String(b.title), 'ko'));
@@ -275,7 +301,14 @@ app.post('/api/works', (req, res) => {
 app.put('/api/works/:slug', (req, res) => {
   if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({ error: 'not found' });
   const work = loadWork(req.params.slug);
-  const editable = ['title', 'year', 'tech', 'production', 'meta_tech', 'meta_tech_en', 'vimeo_url'];
+  if (req.body.tech !== undefined) {
+    if (!Array.isArray(req.body.tech) || req.body.tech.some((value) => typeof value !== 'string' || value.length > 100)) return res.status(400).json({ error: '기술 선택값이 올바르지 않아요.' });
+    const options = technologyOptions();
+    work.tech = [...new Set(req.body.tech.map((value) => value.trim()).filter(Boolean))];
+    work.meta_tech = work.tech.join(', ');
+    work.meta_tech_en = work.tech.map((name) => options.find((item) => item.name === name)?.en || TECH_TRANSLATIONS[name] || name).join(', ');
+  }
+  const editable = ['title', 'year', 'production', 'vimeo_url'];
   for (const key of editable) {
     if (req.body[key] !== undefined) work[key] = req.body[key];
   }
@@ -328,6 +361,21 @@ app.post('/api/works/:slug/gallery', upload.array('images', 20), asyncHandler(as
   build();
   res.json(work);
 }));
+
+app.put('/api/works/:slug/gallery/order', (req, res) => {
+  if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({ error: '작업을 찾을 수 없어요.' });
+  const work = loadWork(req.params.slug);
+  const gallery = work.gallery || [];
+  const { order, expected } = req.body;
+  if (JSON.stringify(expected) !== JSON.stringify(gallery)) return res.status(409).json({ error: '갤러리가 다른 화면에서 변경됐어요. 페이지를 새로고침한 뒤 다시 시도해주세요.' });
+  if (!Array.isArray(order) || order.length !== gallery.length || new Set(order).size !== gallery.length || order.some((index) => !Number.isInteger(index) || index < 0 || index >= gallery.length)) {
+    return res.status(400).json({ error: '이미지 순서가 올바르지 않아요.' });
+  }
+  work.gallery = order.map((index) => gallery[index]);
+  saveJson(`content/works/${req.params.slug}.json`, work);
+  build();
+  res.json(work);
+});
 
 app.delete('/api/works/:slug/gallery/:index', (req, res) => {
   const work = loadWork(req.params.slug);
