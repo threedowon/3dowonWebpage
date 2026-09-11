@@ -57,7 +57,7 @@ export function normalizeLabItems(lab) {
       meta_medium: fields[field][0],
       meta_medium_en: fields[field][1],
     });
-  }).filter((item) => item.thumbnail);
+  }).filter((item) => item.thumbnail || item.video);
 }
 
 export function workFormY(work) {

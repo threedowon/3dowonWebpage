@@ -81,6 +81,7 @@ function captureWorkForm(form) {
     description_en: fd.get('description_en'),
     vimeo_url: fd.get('vimeo_url'),
     detail_background: fd.get('detail_background'),
+    detail_columns: fd.get('detail_columns'),
   };
 }
 
@@ -93,6 +94,7 @@ function applyWorkForm(form, draft) {
   form.description_en.value = draft.description_en ?? '';
   form.vimeo_url.value = draft.vimeo_url ?? '';
   form.detail_background.value = draft.detail_background || '#dddddd';
+  form.detail_columns.value = draft.detail_columns || '1';
   form.querySelectorAll('input[name="types"]').forEach((input) => {
     input.checked = draft.types.includes(input.value);
   });
@@ -303,6 +305,7 @@ function renderWorkCard(work) {
         <label>설명 (EN)<textarea name="description_en" rows="4">${escapeHtml(work.description_en)}</textarea></label>
         <label>Vimeo URL<input name="vimeo_url" value="${escapeAttr(work.vimeo_url)}" /></label>
         <div class="field-row"><label>상세 이미지 배경색<input type="color" name="detail_background" value="${/^#[0-9a-f]{6}$/i.test(work.detail_background || '') ? work.detail_background : '#dddddd'}" /></label><button type="button" class="reset-detail-background">기본 회색으로</button></div>
+        <label>상세 이미지 배치<select name="detail_columns">${[1,2,3].map(n => `<option value="${n}"${Number(work.detail_columns || 1) === n ? ' selected' : ''}>한 줄에 ${n}장</option>`).join('')}</select></label>
         <div class="field-row">
           <button type="submit">저장</button>
           <button type="button" class="danger delete-work">삭제</button>
@@ -357,6 +360,7 @@ function renderWorkCard(work) {
         description_en: fd.get('description_en'),
         vimeo_url: fd.get('vimeo_url'),
         detail_background: fd.get('detail_background'),
+        detail_columns: Number(fd.get('detail_columns')),
       }),
     });
     dirtyWorks.delete(work.slug);
@@ -573,7 +577,7 @@ async function loadLab() {
     const card = document.createElement('div');
     card.className = 'lab-card thumb-row';
     card.innerHTML = `
-      <img src="${imgUrl(item.image)}" alt="" />
+      ${item.video ? `<video src="${escapeAttr(imgUrl(item.video))}" muted autoplay loop playsinline style="width:100px;height:100px;object-fit:cover" aria-label="영상 미리보기"></video>` : `<img src="${escapeAttr(imgUrl(item.image))}" alt="" />`}
       <input value="${escapeAttr(item.caption)}" class="lab-caption" placeholder="캡션" />
       <input value="${escapeAttr(item.caption_en || '')}" class="lab-caption" placeholder="캡션 (EN)" />
       <button type="button" class="danger">삭제</button>
@@ -602,17 +606,27 @@ async function loadLab() {
 document.getElementById('newLabForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const file = document.getElementById('labImageInput').files[0];
-  if (!file) return alert('이미지를 선택하세요.');
+  if (!file) return alert('이미지 또는 영상을 선택하세요.');
+  if (file.size > 150 * 1024 * 1024) return alert('파일은 150MB 이하로 올려주세요.');
   const fd = new FormData();
   fd.append('image', file);
   fd.append('caption', e.target.caption.value);
   fd.append('caption_en', e.target.caption_en.value);
+  const button = e.target.querySelector('button[type="submit"]');
+  const status = document.getElementById('labUploadStatus');
+  if (button.disabled) return;
+  button.disabled = true;
+  status.textContent = '업로드 및 처리 중입니다. 영상 변환은 잠시 걸릴 수 있어요.';
   try {
     await api('/api/lab/items', { method: 'POST', body: fd });
     e.target.reset();
-    loadLab();
+    await loadLab();
+    status.textContent = '추가되었습니다.';
   } catch (err) {
+    status.textContent = '추가하지 못했습니다.';
     alert(err.message);
+  } finally {
+    button.disabled = false;
   }
 });
 

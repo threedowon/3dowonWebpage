@@ -99,7 +99,9 @@
       <form id="newLabForm" class="admin-form">
         <label>캡션<input name="caption" required /></label>
         <label>캡션 (EN)<input name="caption_en" /></label>
-        <input type="file" id="labImageInput" accept="image/*" required />
+        <input type="file" id="labImageInput" accept="image/*,video/*,.mp4,.mov,.webm,.m4v" required />
+        <p>이미지 또는 영상 · 최대 150MB. 영상은 무음 MP4로 변환되어 자동 반복 재생됩니다.</p>
+        <p id="labUploadStatus" role="status"></p>
         <button type="submit">추가</button>
       </form>
       <div id="labList" class="lab-list"></div>
@@ -117,7 +119,7 @@
     </section>
   </main>
 
-  <script src="admin.js?v=6"></script>
+  <script src="admin.js?v=8"></script>
   <script src="portfolio.js?v=1"></script>
   <script src="materials.js?v=1"></script>
 </body>

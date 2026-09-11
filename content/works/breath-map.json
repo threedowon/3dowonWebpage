@@ -33,5 +33,7 @@
   "meta_tech_en": "Arduino, Max/MSP",
   "meta_production_en": "Solo",
   "description_en": "<p>A live performance in which the rhythm of breath maps the entire space.</p>",
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "month": null,
+  "detail_background": "#000000"
 }

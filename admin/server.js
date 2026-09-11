@@ -10,6 +10,7 @@ import multer from 'multer';
 import sharp from 'sharp';
 import { randomUUID } from 'node:crypto';
 import { parseWorkDate, compareWorkDates } from '../scripts/lib/work-date.mjs';
+import { saveLabVideo } from './lab-video.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -215,7 +216,7 @@ function isImagePathReferenced(publicPath) {
   }
   if (loadJson('content/about.json').image === publicPath) return true;
   if (loadJson('content/portfolio.json').images.includes(publicPath)) return true;
-  if (loadJson('content/lab.json').items.some((item) => item.image === publicPath)) return true;
+  if (loadJson('content/lab.json').items.some((item) => item.image === publicPath || item.video === publicPath)) return true;
   return false;
 }
 
@@ -317,6 +318,10 @@ app.put('/api/works/:slug', (req, res) => {
   if (req.body.detail_background !== undefined) {
     if (typeof req.body.detail_background !== 'string' || !/^#[0-9a-f]{6}$/i.test(req.body.detail_background)) return res.status(400).json({ error: '배경색은 올바른 HEX 색상이어야 해요.' });
     work.detail_background = req.body.detail_background.toLowerCase();
+  }
+  if (req.body.detail_columns !== undefined) {
+    if (![1, 2, 3].includes(req.body.detail_columns)) return res.status(400).json({ error: '상세 이미지 배치는 1장, 2장, 3장 중 선택해주세요.' });
+    work.detail_columns = req.body.detail_columns;
   }
   if (req.body.tech !== undefined) {
     if (!Array.isArray(req.body.tech) || req.body.tech.some((value) => typeof value !== 'string' || value.length > 100)) return res.status(400).json({ error: '기술 선택값이 올바르지 않아요.' });
@@ -527,11 +532,14 @@ app.put('/api/lab', (req, res) => {
   res.json(lab);
 });
 
-app.post('/api/lab/items', upload.single('image'), asyncHandler(async (req, res) => {
-  if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });
+const labUpload = multer({storage:multer.memoryStorage(),limits:{fileSize:150*1024*1024}}).single('image');
+app.post('/api/lab/items', (req,res,next) => labUpload(req,res,error => error ? res.status(400).json({error:'파일은 150MB 이하로 올려주세요.'}) : next()), asyncHandler(async (req, res) => {
+  if (!req.file) return res.status(400).json({ error: '이미지 또는 영상 파일이 필요해요.' });
+  const isVideo = req.file.mimetype.startsWith('video/') || /\.(mp4|mov|webm|m4v)$/i.test(req.file.originalname);
+  if (!isVideo && !req.file.mimetype.startsWith('image/')) return res.status(400).json({error:'이미지 또는 영상 파일을 선택해주세요.'});
+  const filename = isVideo ? await saveLabVideo(req.file.buffer, UPLOADS_DIR) : await saveImage(req.file.buffer);
   const lab = loadJson('content/lab.json');
-  const filename = await saveImage(req.file.buffer);
-  lab.items.push({ image: publicUploadPath(filename), caption: req.body.caption || '', caption_en: req.body.caption_en || '' });
+  lab.items.push({ [isVideo ? 'video' : 'image']: publicUploadPath(filename), caption: req.body.caption || '', caption_en: req.body.caption_en || '' });
   saveJson('content/lab.json', lab);
   build();
   res.json(lab);
@@ -541,7 +549,10 @@ app.delete('/api/lab/items/:index', (req, res) => {
   const lab = loadJson('content/lab.json');
   const [removed] = lab.items.splice(Number(req.params.index), 1);
   saveJson('content/lab.json', lab);
-  if (removed) removeUploadedFile(removed.image);
+  if (removed) {
+    removeUploadedFile(removed.image);
+    removeUploadedFile(removed.video);
+  }
   build();
   res.json(lab);
 });

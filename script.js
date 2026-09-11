@@ -275,6 +275,7 @@ function initCatalog(refreshImages = () => {}) {
 function trackImageRatio(img) {
   const applyRatio = () => {
     if (!img.naturalWidth || !img.naturalHeight) return;
+    img.dataset.orientation = img.naturalWidth > img.naturalHeight ? 'landscape' : 'portrait';
     const plate = img.closest('[data-plate]');
     if (plate) plate.dataset.orientation = img.naturalWidth > img.naturalHeight ? 'landscape' : 'portrait';
     const ratio = img.naturalHeight > img.naturalWidth ? '3 / 4' : '16 / 9';
@@ -287,6 +288,17 @@ function trackImageRatio(img) {
 
 function initImageRatios() {
   document.querySelectorAll('.portfolio img').forEach(trackImageRatio);
+  document.querySelectorAll('.portfolio video').forEach((video) => {
+    const applyRatio = () => {
+      if (!video.videoWidth || !video.videoHeight) return;
+      const portrait = video.videoHeight > video.videoWidth;
+      const plate = video.closest('[data-plate]');
+      if (plate) plate.dataset.orientation = portrait ? 'portrait' : 'landscape';
+      video.closest('.overview-image-link')?.style.setProperty('--image-ratio', portrait ? '3 / 4' : '16 / 9');
+    };
+    video.addEventListener('loadedmetadata', applyRatio);
+    applyRatio();
+  });
 }
 
 function initWorksImageReveal() {
@@ -395,7 +407,15 @@ function initMediaViewer() {
   const media = document.getElementById('viewer-media');
   const workLink = document.getElementById('viewer-work');
   let opener;
-  const open = (link) => {
+  let viewerEntry = null;
+  const historyKey = '__3dowonViewer';
+  // A reload does not restore a modal, so discard any stale modal marker.
+  if (history.state?.[historyKey]) {
+    const state = { ...history.state };
+    delete state[historyKey];
+    history.replaceState(state, '', location.href);
+  }
+  const open = (link, restoreEntry = null) => {
     opener = link;
     title.textContent = link.dataset.viewerTitle || '';
     workLink.hidden = !link.dataset.viewerWork;
@@ -413,7 +433,23 @@ function initMediaViewer() {
     if (!isVideo) trackImageRatio(element);
     dialog.showModal();
     document.documentElement.classList.add('viewer-open');
+    viewerEntry = restoreEntry;
+    if (!restoreEntry && window.matchMedia('(max-width:900px)').matches) {
+      viewerEntry = { id: `${Date.now()}-${Math.random()}`, src: link.dataset.viewer, url: location.href };
+      history.pushState({ ...history.state, [historyKey]: viewerEntry }, '', location.href);
+    }
   };
+  window.addEventListener('popstate', () => {
+    const entry = history.state?.[historyKey];
+    if (entry && entry.url === location.href) {
+      if (dialog.open) return;
+      const link = [...document.querySelectorAll('[data-viewer]')].find(link => link.dataset.viewer === entry.src);
+      if (link) open(link, entry);
+    } else {
+      viewerEntry = null;
+      if (dialog.open) dialog.close();
+    }
+  });
   document.addEventListener('click', (event) => {
     const link = event.target.closest('[data-viewer]');
     if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
@@ -430,6 +466,9 @@ function initMediaViewer() {
     media.replaceChildren();
     document.documentElement.classList.remove('viewer-open');
     opener?.focus({ preventScroll: true });
+    const entry = viewerEntry;
+    viewerEntry = null;
+    if (entry && history.state?.[historyKey]?.id === entry.id && location.href === entry.url) history.back();
   });
 }
 
