@@ -686,10 +686,10 @@ document.getElementById('newLabForm').addEventListener('submit', async (e) => {
 async function loadSiteInfo() {
   const { site } = await api('/api/site');
   const form = document.getElementById('siteForm');
-  form.email.value = site.email;
-  form.instagram.value = site.instagram;
-  form.vimeo.value = site.vimeo;
-  form.youtube.value = site.youtube;
+  form.instagram.value = site.instagram || '';
+  form.youtube.value = site.youtube || '';
+  form.github.value = site.github || '';
+  form.naver_blog.value = site.naver_blog || '';
 }
 
 document.getElementById('siteForm').addEventListener('submit', async (e) => {
@@ -699,10 +699,10 @@ document.getElementById('siteForm').addEventListener('submit', async (e) => {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      email: fd.get('email'),
       instagram: fd.get('instagram'),
-      vimeo: fd.get('vimeo'),
       youtube: fd.get('youtube'),
+      github: fd.get('github'),
+      naver_blog: fd.get('naver_blog'),
     }),
   });
   alert('저장했어요.');
