@@ -1,7 +1,7 @@
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
 import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 
-const VERSION = '944';
+const VERSION = '970';
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
   en: { works: 'Works', lab: 'Lab', about: 'About', portfolio: 'Portfolio', cv: 'CV', photos: 'Images', index: 'Index', allYears: 'All years', allFields: 'All fields', space: 'Space', object: 'Object', screen: 'Screen', year: 'Year', field: 'Field', name: 'Project', back: 'All works', previous: 'Previous work', next: 'Next work', close: 'Close', enlarge: 'Enlarge image', practice: 'Practice', approach: 'Approach', fields: 'Fields', noResults: 'No work matches these filters.', reset: 'Reset filters', note: 'Interactive installations and media experiments\nwith light, space, and everyday objects.', artist: 'Interactive media artist', type: 'Type', medium: 'Medium', tech: 'Technology', production: 'Production', skip: 'Skip to content' },
@@ -40,10 +40,12 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
   <meta name="theme-color" content="#ffffff" />
   <meta name="description" content="${esc(c.note.replace(/\n/g, ' '))}" />
   <title>${esc(title)} — 3Dowon</title>
+  ${catalog === 'works' ? `<script>document.documentElement.classList.add('works-loading');window.worksLoadingGuard=setTimeout(function(){document.documentElement.classList.remove('works-loading')},10000);</script>` : ''}
   <link rel="stylesheet" href="${assets}styles.css?v=${VERSION}" />
   <script src="${assets}script.js?v=${VERSION}" defer></script>
 </head>
 <body class="portfolio ${pageClass}" data-home="${home}" data-section="${active}">
+  ${catalog === 'works' ? `<div class="works-loader" role="status" aria-live="polite"><span class="works-loader-wordmark" aria-hidden="true">3Dowon</span><span class="visually-hidden">${lang === 'ko' ? '작업 이미지를 불러오는 중입니다.' : 'Loading project images.'}</span></div>` : ''}
   <a class="skip-link" href="#main">${c.skip}</a>
   <div class="site-frame">
     <header class="site-header archive-site-header">
@@ -73,7 +75,7 @@ function projectImages(work, ctx) {
 }
 
 function overviewGrid(works, ctx) {
-  return `<div class="overview-grid">${works.map((work, index) => {
+  const entries = works.map((work, index) => {
     const title = pick(work, 'title', ctx.lang);
     const projectNumber = number(index + 1);
     const field = work.field || formKey(workFormY(work));
@@ -85,10 +87,22 @@ function overviewGrid(works, ctx) {
       ? (ctx.lang === 'ko' ? '실험 보기' : 'View study')
       : (ctx.lang === 'ko' ? '작업 보기' : 'View project');
     const attrs = `data-year="${esc(work.year || '')}" data-field="${field}"`;
-    return `<article class="overview-project" data-overview-project data-project="${esc(work.slug)}" ${attrs}>
+    const project = ctx.section === 'works'
+      ? `<li class="works-index-item" data-overview-project data-project="${esc(work.slug)}" ${attrs}><a class="works-index-link" href="${esc(href)}"><span class="works-index-number">${projectNumber}</span><h2 class="works-index-title">${esc(title)}</h2><span class="works-index-medium">${esc(medium)}</span><span class="works-index-year">${esc(work.meta_year || work.year || '')}</span></a></li>`
+      : `<article class="overview-project" data-overview-project data-project="${esc(work.slug)}" ${attrs}>
       <a class="project-summary" href="${esc(href)}"><div><span class="project-number">${projectNumber}</span><h2>${esc(title)}</h2><ul class="project-categories">${categories.map((category, i) => `<li><span>${projectNumber}.${i + 1}</span> ${esc(category)}</li>`).join('')}</ul></div><div class="project-summary-bottom"><p>${esc(work.meta_year || work.year || '')}</p><p>${esc(pick(work, 'meta_tech', ctx.lang) || '')}</p></div></a>
-    </article>${media.map((src, i) => `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}><span class="image-reference">${projectNumber}.${i + 1}.1</span><a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><img src="${esc(src)}" alt="${esc(title)} — ${i + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`).join('')}`;
-  }).join('\n')}</div>`;
+    </article>`;
+    const images = media.map((src, i) => `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}><span class="image-reference">${projectNumber}.${i + 1}.1</span><a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><img src="${esc(src)}" alt="${esc(title)} — ${i + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`).join('');
+    return { project, images };
+  });
+  if (ctx.section === 'works') {
+    const templates = works.map((work, index) => {
+      const { title, metadata, description, gallery } = projectContent(work, ctx);
+      return `<template data-project-detail="${esc(work.slug)}"><button type="button" class="inline-all-works" data-all-works>← All Works</button><article class="inline-work" aria-labelledby="works-project-title">${gallery}<div class="inline-project-information"><header class="inline-project-heading"><p class="eyebrow">Work ${number(index + 1)}</p><h2 id="works-project-title">${esc(title)}</h2></header>${metadata ? `<div class="project-facts">${metadata}</div>` : ''}${description ? `<div class="prose post-des">${description}</div>` : ''}</div></article></template>`;
+    }).join('');
+    return `<div class="works-layout"><nav class="works-index" aria-label="${ctx.lang === 'ko' ? '작품 목록' : 'Project index'}"><button type="button" class="works-all" data-all-works hidden>All Works</button><ol>${entries.map((entry) => entry.project).join('\n')}</ol></nav><div class="works-stage"><div class="overview-grid works-image-grid">${entries.map((entry) => entry.images).join('\n')}</div><section class="works-project-panel" tabindex="-1" aria-labelledby="works-project-title" hidden></section></div>${templates}</div>`;
+  }
+  return `<div class="overview-grid">${entries.map((entry) => entry.project + entry.images).join('\n')}</div>`;
 }
 
 export function catalogPage(works, site, lang, relPath = 'works.html', section = 'works') {
@@ -150,17 +164,10 @@ export function cvPage(cv, site, lang) {
   return shell(ctx, site, { active: 'cv', title: c.cv, body, pageClass: 'page-cv' });
 }
 
-export function workPage(work, works, site, lang, section = 'works') {
-  const directory = section === 'lab' ? 'lab' : 'work';
-  const ctx = context(lang, `${directory}/${work.slug}.html`, section);
-  const { c } = ctx;
+function projectContent(work, ctx) {
+  const { c, lang } = ctx;
   const title = pick(work, 'title', lang);
   const media = projectImages(work, ctx);
-  const index = works.findIndex((item) => item.slug === work.slug);
-  const adjacent = (offset, label) => {
-    const next = works[index + offset];
-    return next ? `<a href="${esc(next.slug)}.html"><span>${label} ${offset < 0 ? '↖' : '↗'}</span><strong>${esc(pick(next, 'title', lang))}</strong></a>` : '<span></span>';
-  };
   const year = work.meta_year || work.year;
   const video = vimeoEmbedHtml(work.vimeo_url, title) || (work.video ? `<div class="post-video"><video controls playsinline preload="metadata" aria-label="${esc(title)}" src="${esc(resolveMediaPath(work.video, ctx.assets))}"></video></div>` : '');
   const figure = (src, position) => `<figure class="project-image"><a href="${esc(src)}" data-viewer="${esc(src)}" data-viewer-title="${esc(title)} — ${number(position + 1)}" aria-label="${esc(title)} ${position + 1} — ${c.enlarge}"><img src="${esc(src)}" alt="${esc(title)} — ${position + 1}" class="project-detail-image" ${position === 0 && !video ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`;
@@ -169,14 +176,27 @@ export function workPage(work, works, site, lang, section = 'works') {
     [['tech', pick(work, 'meta_tech', lang)], ['production', pick(work, 'meta_production', lang)]],
   ].map((entries) => entries.filter(([, value]) => value)).filter((entries) => entries.length)
     .map((entries) => `<dl class="work-meta">${entries.map(([label, value]) => `<div><dt>${c[label]}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>`).join('');
-  const description = richText(pick(work, 'description', lang));
+  return { title, metadata, description: richText(pick(work, 'description', lang)), gallery: `<div class="feature-gallery">${video}${media.map(figure).join('')}</div>` };
+}
+
+export function workPage(work, works, site, lang, section = 'works') {
+  const directory = section === 'lab' ? 'lab' : 'work';
+  const ctx = context(lang, `${directory}/${work.slug}.html`, section);
+  const { c } = ctx;
+  const { title, metadata, description, gallery } = projectContent(work, ctx);
+  const index = works.findIndex((item) => item.slug === work.slug);
+  const adjacent = (offset, label) => {
+    const next = works[index + offset];
+    return next ? `<a href="${esc(next.slug)}.html"><span>${label} ${offset < 0 ? '↖' : '↗'}</span><strong>${esc(pick(next, 'title', lang))}</strong></a>` : '<span></span>';
+  };
   const toolbar = `<nav class="detail-toolbar" aria-label="${c[section]}"><a class="archive-back" href="../${section}.html">← ${c.back}</a><span class="eyebrow">${section === 'lab' ? 'Lab' : 'Work'} ${number(index + 1)}</span></nav>`;
   const body = `<article class="editorial-article work-article" aria-labelledby="page-title">
-    <div class="project-information"><header class="feature-heading"><h1 class="post-title" id="page-title">${esc(title)}</h1></header>
+    <header class="feature-heading"><h1 class="post-title" id="page-title">${esc(title)}</h1></header>
+    <div class="project-information">
       ${metadata ? `<div class="project-facts">${metadata}</div>` : ''}
       ${description ? `<div class="prose post-des">${description}</div>` : ''}
     </div>
-    <div class="feature-gallery">${video}${media.map(figure).join('')}</div>
+    ${gallery}
   </article><nav class="project-pagination" aria-label="${c[section]}">${adjacent(-1, c.previous)}${adjacent(1, c.next)}</nav>`;
   return shell(ctx, site, { active: section, title, body, toolbar, pageClass: `page-work page-archive-work${section === 'lab' ? ' page-study' : ''}` });
 }
