@@ -158,6 +158,11 @@ button:disabled, input:disabled { opacity: .5; cursor: wait; }
 .gallery-item .gallery-remove { top: -7px; right: -7px; width: 24px; height: 24px; }
 .gallery-move { position: absolute; bottom: 0; inset-inline: 0; display: flex; gap: 4px; }
 .gallery-move button { position: static; width: 50%; height: 24px; border-radius: 3px; background: #eee; color: #222; font-size: 16px; }
+.work-gallery-item{height:148px;padding-bottom:54px}
+.work-gallery-item .gallery-move{bottom:26px}
+.gallery-visibility{position:absolute;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:4px;height:24px;font-size:11px;cursor:pointer}
+.gallery-visibility input{width:auto;margin:0}
+.work-gallery-item.works-excluded>img{opacity:.4}
 .gallery-upload { padding: 12px; border: 1px dashed #aaa; border-radius: 6px; background: #fafafa; }
 .gallery-upload input { max-width: 100%; background: #fff; }
 .gallery-status { min-height: 20px; font-size: 13px; color: #444; }

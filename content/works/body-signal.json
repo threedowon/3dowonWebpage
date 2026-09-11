@@ -22,6 +22,7 @@
   "meta_tech": "Unreal Engine, OSC, TouchOSC",
   "meta_production": "공동",
   "gallery": [
+    "/3dowonWebpage/assets/uploads/body-signal-1789151773815-849406.jpg",
     "/3dowonWebpage/assets/uploads/body-signal-1789061945322-113866.jpg",
     "/3dowonWebpage/assets/uploads/body-signal-1789061947993-877609.jpg",
     "/3dowonWebpage/assets/uploads/body-signal-1789061952533-964377.jpg"
@@ -33,5 +34,7 @@
   "meta_tech_en": "Unreal Engine, OSC, TouchOSC",
   "meta_production_en": "Collaborative",
   "description_en": "<p>A performance work that converts a performer's biometric signals into visual and auditory elements in real time. Changes in heartbeat and breath expand into light and sound.</p>\n            <p>Role</p>\n            <p>Developed an ESP32 bio-sensor interface</p>\n            <p>Built real-time audio visualization in Max/MSP</p>\n            <p>Collaborated on performance direction and rehearsals</p>",
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "month": null,
+  "detail_background": "#dddddd"
 }

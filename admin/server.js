@@ -379,6 +379,19 @@ app.post('/api/works/:slug/gallery', upload.array('images', 20), asyncHandler(as
   res.json(work);
 }));
 
+app.put('/api/works/:slug/gallery/visibility', (req, res) => {
+  if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({ error: '작업을 찾을 수 없어요.' });
+  const work = loadWork(req.params.slug);
+  const { src, visible } = req.body;
+  if (typeof visible !== 'boolean' || !(work.gallery || []).includes(src)) return res.status(400).json({ error: '이미지와 표시 여부를 확인해주세요.' });
+  const hidden = new Set(work.works_hidden_images || []);
+  if (visible) hidden.delete(src); else hidden.add(src);
+  work.works_hidden_images = [...hidden];
+  saveJson(`content/works/${req.params.slug}.json`, work);
+  build();
+  res.json(work);
+});
+
 app.put('/api/works/:slug/gallery/order', (req, res) => {
   if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({ error: '작업을 찾을 수 없어요.' });
   const work = loadWork(req.params.slug);

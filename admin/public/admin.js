@@ -165,7 +165,7 @@ function galleryBusy(grid, busy, message = '') {
   grid.dataset.busy = String(busy);
   const card = grid.closest('.work-card');
   card.querySelector('.gallery-input').disabled = busy;
-  grid.querySelectorAll('button').forEach(button => { button.disabled = busy; });
+  grid.querySelectorAll('button, input').forEach(button => { button.disabled = busy; });
   card.querySelector('.gallery-status').textContent = message;
 }
 function refreshGalleryGrid(galleryGrid, work, gallery) {
@@ -190,8 +190,27 @@ function appendGalleryItem(galleryGrid, work, src, index) {
   const item = document.createElement('div');
   item.className = 'gallery-item'; item.draggable = true; item.tabIndex = 0;
   item.dataset.index = String(index);
+  item.classList.add('work-gallery-item');
   item.setAttribute('aria-label', '갤러리 이미지 ' + (index + 1) + ', Alt와 방향키로 순서 변경');
   item.innerHTML = '<img src="' + escapeAttr(imgUrl(src)) + '" alt="갤러리 이미지 ' + (index + 1) + '" draggable="false" loading="lazy" /><span class="gallery-number">' + (index + 1) + '</span><button type="button" class="gallery-remove" aria-label="이미지 ' + (index + 1) + ' 삭제">×</button><div class="gallery-move"><button type="button" class="move-previous" aria-label="이미지 ' + (index + 1) + ' 앞으로">←</button><button type="button" class="move-next" aria-label="이미지 ' + (index + 1) + ' 뒤로">→</button></div>';
+  const visibility = document.createElement('label');
+  visibility.className = 'gallery-visibility';
+  const toggle = document.createElement('input');
+  toggle.type = 'checkbox';
+  toggle.checked = !(work.works_hidden_images || []).includes(src);
+  visibility.append(toggle, document.createTextNode('Works에 표시'));
+  item.append(visibility);
+  item.classList.toggle('works-excluded', !toggle.checked);
+  toggle.addEventListener('change', async () => {
+    const visible = toggle.checked;
+    galleryBusy(galleryGrid, true, '표시 설정을 저장하고 있어요…');
+    try {
+      const updated = await api('/api/works/' + work.slug + '/gallery/visibility', {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({src,visible})});
+      work.works_hidden_images = updated.works_hidden_images;
+      item.classList.toggle('works-excluded', !visible);
+      galleryBusy(galleryGrid, false, visible ? 'Works에 표시됩니다.' : 'Works에서 숨겼어요. 상세페이지에는 유지됩니다.');
+    } catch (error) { toggle.checked = !visible; galleryBusy(galleryGrid, false, error.message); }
+  });
   item.querySelector('.gallery-remove').addEventListener('click', async () => {
     if (galleryGrid.dataset.busy === 'true') return;
     galleryBusy(galleryGrid, true, '이미지를 삭제하고 있어요…');
@@ -209,7 +228,7 @@ function appendGalleryItem(galleryGrid, work, src, index) {
     }
   });
   item.addEventListener('dragstart', event => {
-    if (galleryGrid.dataset.busy === 'true' || event.target.closest('button')) { event.preventDefault(); return; }
+    if (galleryGrid.dataset.busy === 'true' || event.target.closest('button, input, label')) { event.preventDefault(); return; }
     galleryGrid.dataset.dragIndex = String(index);
     event.dataTransfer.effectAllowed = 'move';
     event.dataTransfer.setData('text/plain', work.slug + ':' + index);
