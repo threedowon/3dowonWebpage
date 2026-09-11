@@ -221,6 +221,15 @@ function initCatalog(refreshImages = () => {}) {
   const clearProjectHover = initProjectHover(catalog, projects, plates, refreshImages);
   const count = document.getElementById('catalog-count');
   const empty = catalog.querySelector('.catalog-empty');
+  const filterToggle = catalog.querySelector('.works-filter-toggle');
+  const filterPanel = catalog.querySelector('#works-filter-panel');
+  const filterTags = catalog.querySelector('.works-filter-tags');
+  filterToggle?.addEventListener('click', () => {
+    const expanded = filterToggle.getAttribute('aria-expanded') !== 'true';
+    filterToggle.setAttribute('aria-expanded', String(expanded));
+    filterToggle.textContent = expanded ? 'Filter −' : 'Filter +';
+    filterPanel.hidden = !expanded;
+  });
   let projectView;
 
   const readUrl = () => {
@@ -244,6 +253,24 @@ function initCatalog(refreshImages = () => {}) {
     const label = catalog.dataset.catalog === 'lab' ? (ko ? '개 실험' : ' studies') : (ko ? '개 작업' : ' works');
     count.textContent = `${visible}${label} · ${photos}${ko ? '장' : ' images'}`;
     empty.hidden = visible !== 0;
+    if (filterTags) {
+      filterTags.replaceChildren();
+      for (const select of [year, field].filter(Boolean)) {
+        if (select.value === 'all') continue;
+        const button = document.createElement('button');
+        button.type = 'button';
+        const text = select.selectedOptions[0].textContent;
+        button.textContent = `${text} ×`;
+        button.setAttribute('aria-label', ko ? `${text} 필터 해제` : `Remove ${text} filter`);
+        button.addEventListener('click', () => {
+          select.value = 'all';
+          render(true);
+          (filterTags.querySelector('button') || filterToggle).focus({preventScroll:true});
+        });
+        filterTags.append(button);
+      }
+      filterTags.hidden = !filterTags.childElementCount;
+    }
     const params = new URLSearchParams(location.search);
     if (writeUrl) params.delete('project');
     for (const [key, value] of [['year', yearValue], ['field', field.value]]) {
@@ -265,7 +292,7 @@ function initCatalog(refreshImages = () => {}) {
     if (year) year.value = 'all';
     field.value = 'all';
     render(true);
-    (year || field).focus();
+    (filterPanel?.hidden ? filterToggle : (year || field)).focus();
   });
   window.addEventListener('popstate', () => { readUrl(); render(); });
   readUrl();
