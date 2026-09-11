@@ -5,6 +5,8 @@ body {
   background: #f5f5f5;
   color: #1a1a1a;
 }
+.material-editor{padding:20px 0;border-bottom:1px solid #bbb}
+.material-editor h3{margin:0}
 .admin-header {
   background: #1a1a1a;
   color: #fff;

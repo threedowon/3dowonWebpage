@@ -1,7 +1,7 @@
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
 import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 
-const VERSION = '1010';
+const VERSION = '1015';
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
   en: { works: 'Works', lab: 'Lab', about: 'About', portfolio: 'Portfolio', cv: 'CV', photos: 'Images', index: 'Index', allYears: 'All years', allFields: 'All fields', space: 'Space', object: 'Object', screen: 'Screen', year: 'Year', field: 'Field', name: 'Project', back: 'All works', previous: 'Previous work', next: 'Next work', close: 'Close', enlarge: 'Enlarge image', practice: 'Practice', approach: 'Approach', fields: 'Fields', noResults: 'No work matches these filters.', reset: 'Reset filters', note: 'How do familiar objects change\nour experience of space? How do everyday\nactions change it?', artist: 'Interactive media artist', type: 'Type', medium: 'Medium', tech: 'Technology', production: 'Production', skip: 'Skip to content' },
@@ -154,13 +154,25 @@ export function portfolioPage(site, lang, portfolio = { images: [] }) {
 export function cvPage(cv, site, lang) {
   const ctx = context(lang, 'cv.html');
   const { c } = ctx;
-  const titles = { Education: '학력', Experience: '경력', Exhibitions: '전시', Awards: '수상', Training: '교육', Courses: '교육', 'Training & Courses': '교육' };
-  const sections = cv.sections.map((section, index) => `<section class="cv-section"><h2><span class="section-number">${number(index + 1)}</span>${esc(lang === 'ko' ? titles[section.title] || section.title : section.title)}</h2><dl>${section.entries.map((entry) => `<div class="cv-row"><dt>${esc(entry.year)}</dt><dd>${richText(pick(entry, 'description', lang))}</dd></div>`).join('')}</dl></section>`);
+  const titles = { Education: '학력', Experience: '경력', 'Professional Experience': '경력', Exhibitions: '전시', Awards: '수상', Training: '교육', Courses: '교육', 'Training & Courses': '교육' };
+  const sections = cv.sections.map((section, index) => `<section class="cv-section"><h2><span class="section-number">${number(index + 1)}</span>${esc(lang === 'ko' ? titles[section.title] || section.title : section.title)}</h2><dl>${section.entries.map((entry) => `<div class="cv-row"><dt>${esc(entry.year)}</dt><dd>${richText(pick(entry, 'description', lang))}${entry.teaching_materials ? ` <a class="teaching-link" href="teaching-materials.html">${lang === 'ko' ? '강의 자료' : 'Teaching Materials'} ↗</a>` : ''}</dd></div>`).join('')}</dl></section>`);
   const body = `<article class="editorial-article cv-article" aria-labelledby="page-title">
-    <h1 id="page-title" class="visually-hidden">${c.cv}</h1>
+    <h1 id="page-title" class="cv-title">CV</h1>
     <div class="cv-sections">${sections.join('')}</div>
   </article>`;
   return shell(ctx, site, { active: 'cv', title: c.cv, body, pageClass: 'page-cv' });
+}
+
+export function teachingMaterialsPage(materials, site, lang) {
+  const ctx = context(lang, 'teaching-materials.html');
+  const title = lang === 'ko' ? '강의 자료' : 'Teaching Materials';
+  const items = materials.items || [];
+  const body = `<article class="teaching-materials"><a class="archive-back" href="cv.html">← CV</a><h1>${title}</h1><p class="teaching-intro">${lang === 'ko' ? 'XR실감형 영상 콘텐츠 편집 및 제작 · 한강미디어고등학교' : 'XR Immersive Video Content Editing and Production · Hangang Media High School'}<br>2024.07–2024.08</p>${items.length ? `<div class="teaching-grid">${items.map((item, index) => {
+    const href = resolveMediaPath(item.file, ctx.assets);
+    const label = pick(item, 'title', lang);
+    return `<section class="teaching-card"><iframe class="pdf-preview" src="${esc(href)}#page=1&view=FitH&toolbar=0&navpanes=0" title="${esc(label)}" loading="lazy"></iframe><h2><span>${number(index + 1)}</span> ${esc(label)}</h2><a href="${esc(href)}" target="_blank" rel="noopener">${lang === 'ko' ? 'PDF 보기' : 'View PDF'} ↗</a> <a href="${esc(href)}" download>${lang === 'ko' ? '다운로드' : 'Download'} ↓</a></section>`;
+  }).join('')}</div>` : `<p class="teaching-empty">${lang === 'ko' ? '강의 자료를 준비 중입니다.' : 'Teaching materials will be available soon.'}</p>`}</article>`;
+  return shell(ctx, site, { active: 'cv', title, body, pageClass: 'page-teaching-materials' });
 }
 
 function projectContent(work, ctx) {

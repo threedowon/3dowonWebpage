@@ -8,6 +8,7 @@ import { execFileSync } from 'node:child_process';
 import express from 'express';
 import multer from 'multer';
 import sharp from 'sharp';
+import { randomUUID } from 'node:crypto';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -413,6 +414,50 @@ app.put('/api/portfolio/images', (req, res) => {
   saveJson('content/portfolio.json', portfolio);
   build();
   res.json(portfolio);
+});
+
+const pdfUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024, files: 6 } }).array('pdfs', 6);
+const receivePdfs = (req, res, next) => pdfUpload(req, res, error => error ? res.status(400).json({ error: 'PDF는 한 번에 6개까지, 파일당 50MB까지 올릴 수 있어요.' }) : next());
+app.get('/api/teaching-materials', (req, res) => res.json(loadJson('content/teaching-materials.json')));
+app.post('/api/teaching-materials', receivePdfs, asyncHandler(async (req, res) => {
+  if (!req.files?.length || req.files.some(file => file.buffer.subarray(0, 5).toString() !== '%PDF-')) return res.status(400).json({ error: '올바른 PDF 파일을 선택해주세요.' });
+  const materials = loadJson('content/teaching-materials.json');
+  const directory = path.join(ROOT, 'assets', 'documents');
+  fs.mkdirSync(directory, { recursive: true });
+  for (const file of req.files) {
+    const id = randomUUID();
+    fs.writeFileSync(path.join(directory, `${id}.pdf`), file.buffer);
+    const decodedName = Buffer.from(file.originalname, 'latin1').toString('utf8');
+    const title = (decodedName.includes('\uFFFD') ? file.originalname : decodedName).replace(/\.pdf$/i, '').slice(0, 200);
+    materials.items.push({ id, title, title_en: '', file: `/3dowonWebpage/assets/documents/${id}.pdf` });
+  }
+  saveJson('content/teaching-materials.json', materials);
+  build();
+  res.json(materials);
+}));
+app.post('/api/teaching-materials/:id/file', receivePdfs, asyncHandler(async (req, res) => {
+  const materials = loadJson('content/teaching-materials.json');
+  const item = materials.items.find(item => item.id === req.params.id);
+  if (!item) return res.status(404).json({ error: '자료를 찾을 수 없어요.' });
+  if (req.files?.length !== 1 || req.files[0].buffer.subarray(0, 5).toString() !== '%PDF-') return res.status(400).json({ error: '교체할 PDF 한 개를 선택해주세요.' });
+  const directory = path.join(ROOT, 'assets', 'documents');
+  fs.mkdirSync(directory, { recursive: true });
+  const filename = `${randomUUID()}.pdf`;
+  fs.writeFileSync(path.join(directory, filename), req.files[0].buffer);
+  item.file = `/3dowonWebpage/assets/documents/${filename}`;
+  saveJson('content/teaching-materials.json', materials);
+  build();
+  res.json(materials);
+}));
+app.put('/api/teaching-materials', (req, res) => {
+  const materials = loadJson('content/teaching-materials.json');
+  if (JSON.stringify(req.body.expected) !== JSON.stringify(materials.items)) return res.status(409).json({ error: '다른 화면에서 변경됐어요. 새로고침 후 다시 시도해주세요.' });
+  const items = req.body.items;
+  if (!Array.isArray(items) || new Set(items.map(item => item?.id)).size !== items.length || items.some(item => !item || !materials.items.some(old => old.id === item.id) || typeof item.title !== 'string' || !item.title.trim() || item.title.length > 200 || typeof item.title_en !== 'string' || item.title_en.length > 200)) return res.status(400).json({ error: '자료 제목과 목록을 확인해주세요. 제목은 200자까지 입력할 수 있어요.' });
+  materials.items = items.map(item => ({ ...materials.items.find(old => old.id === item.id), title: item.title.trim(), title_en: item.title_en.trim() }));
+  saveJson('content/teaching-materials.json', materials);
+  build();
+  res.json(materials);
 });
 
 app.get('/api/site', (req, res) => {

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>3Dowon — Admin</title>
-<link rel="stylesheet" href="admin.css?v=3" />
+<link rel="stylesheet" href="admin.css?v=4" />
 </head>
 <body>
   <header class="admin-header">
@@ -15,6 +15,7 @@
       <button class="admin-tab" data-tab="about">About</button>
       <button class="admin-tab" data-tab="portfolio">Portfolio</button>
       <button class="admin-tab" data-tab="cv">CV</button>
+      <button class="admin-tab" data-tab="materials">Teaching Materials</button>
       <button class="admin-tab" data-tab="lab">Lab</button>
       <button class="admin-tab" data-tab="site">Site</button>
     </nav>
@@ -84,6 +85,15 @@
       <button id="saveCv" type="button">저장</button>
     </section>
 
+    <section id="tab-materials" class="admin-panel">
+      <h2>강의 자료 · 한강미디어고등학교</h2>
+      <p>PDF를 올리면 CV의 Teaching Materials 링크와 연결된 자료 페이지에 표시됩니다.</p>
+      <label>PDF 여러 개 추가<input id="materialsUpload" type="file" accept="application/pdf,.pdf" multiple /></label>
+      <p class="field-help">한 번에 6개, 파일당 50MB까지. 제목을 수정하거나 순서를 바꾼 뒤 ‘목록 저장’을 눌러주세요.</p>
+      <p id="materialsStatus" role="status"></p>
+      <div id="materialsList"></div>
+      <button id="saveMaterials" type="button">목록 저장</button>
+    </section>
     <section id="tab-lab" class="admin-panel">
       <h2>Lab</h2>
       <form id="newLabForm" class="admin-form">
@@ -109,5 +119,6 @@
 
   <script src="admin.js?v=4"></script>
   <script src="portfolio.js?v=1"></script>
+  <script src="materials.js?v=1"></script>
 </body>
 </html>

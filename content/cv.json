@@ -1,52 +1,17 @@
 {
   "sections": [
     {
-      "title": "Education",
-      "entries": [
-        {
-          "year": "2017–2019",
-          "description": "명지전문대학 소프트웨어콘텐츠",
-          "description_en": "Myongji College, Software Content"
-        }
-      ]
-    },
-    {
-      "title": "Experience",
-      "entries": [
-        {
-          "year": "2026.03–",
-          "description": "Nerdy Artist Union, 테크니컬 아티스트",
-          "description_en": "Nerdy Artist Union, Technical Artist"
-        },
-        {
-          "year": "2024.01–",
-          "description": "3Dowon, 인터랙티브 미디어 아티스트",
-          "description_en": "3Dowon, Interactive Media Artist"
-        },
-        {
-          "year": "2025.02–2026.01",
-          "description": "I M fine, 미디어아트 개발자",
-          "description_en": "I M fine, Media Art Developer"
-        },
-        {
-          "year": "2022.01–2023.12",
-          "description": "d'strict, 미디어아트 개발자",
-          "description_en": "d'strict, Media Art Developer"
-        }
-      ]
-    },
-    {
       "title": "Exhibitions",
       "entries": [
         {
-          "year": "2025.11",
-          "description": "단체전, <em>3Dowon's workdesk</em>, Uprising Festa vol.1, SETEC, 서울",
-          "description_en": "Group Exhibition, <em>3Dowon's workdesk</em>, Uprising Festa vol.1, SETEC, Seoul"
+          "year": "2025",
+          "description": "몇 동 몇 호 (Postcode), 개인전, CICA Museum, 김포, KR",
+          "description_en": "Postcode, Solo Exhibition, CICA Museum, Gimpo, KR"
         },
         {
-          "year": "2025.03",
-          "description": "개인전, <em>몇 동 몇 호 (Postcode)</em>, CICA Museum, 김포",
-          "description_en": "Solo Exhibition, <em>Postcode</em>, CICA Museum, Gimpo"
+          "year": "2025",
+          "description": "3Dowon's Workdesk, Uprising Festa Vol. 1, SETEC, 서울, KR",
+          "description_en": "3Dowon's Workdesk, Uprising Festa Vol. 1, SETEC, Seoul, KR"
         }
       ]
     },
@@ -60,13 +25,13 @@
         },
         {
           "year": "2019",
-          "description": "대상, VR 콘텐츠 공모, 문화체육관광부/KOCCA",
-          "description_en": "Grand Prize, VR Content Competition, Ministry of Culture, Sports and Tourism / KOCCA"
+          "description": "대상, VR 콘텐츠 공모, 문화체육관광부 / KOCCA",
+          "description_en": "Grand Prize, VR Content Competition, MCST / KOCCA"
         },
         {
           "year": "2018",
-          "description": "대상, 성남 커넥트 게임캠프, 성남산업진흥원",
-          "description_en": "Grand Prize, Seongnam Connect Game Camp, Seongnam Industry Promotion Agency"
+          "description": "대상, 성남 커넥트 게임캠프",
+          "description_en": "Grand Prize, Seongnam Connect Game Camp"
         },
         {
           "year": "2018",
@@ -87,6 +52,42 @@
           "year": "2017",
           "description": "대상, 가상현실 콘텐츠 기획 경진대회, 명지전문대학",
           "description_en": "Grand Prize, Virtual Reality Content Planning Competition, Myongji College"
+        }
+      ]
+    },
+    {
+      "title": "Education",
+      "entries": [
+        {
+          "year": "2017–2019",
+          "description": "명지전문대학, 소프트웨어콘텐츠",
+          "description_en": "Myongji College, Software Content"
+        }
+      ]
+    },
+    {
+      "title": "Professional Experience",
+      "entries": [
+        {
+          "year": "2026.03–Present",
+          "description": "테크니컬 아티스트, Nerdy Artist Union",
+          "description_en": "Technical Artist, Nerdy Artist Union"
+        },
+        {
+          "year": "2025.02–2026.01",
+          "description": "미디어아트 개발자, I M fine",
+          "description_en": "Media Art Developer, I M fine"
+        },
+        {
+          "year": "2024.07–2024.08",
+          "description": "XR실감형 영상 콘텐츠 편집 및 제작 강의, 한강미디어고등학교",
+          "description_en": "Instructor, XR Immersive Video Content Editing and Production, Hangang Media High School",
+          "teaching_materials": true
+        },
+        {
+          "year": "2022.01–2023.12",
+          "description": "미디어아트 개발자, d'strict",
+          "description_en": "Media Art Developer, d'strict"
         }
       ]
     },
