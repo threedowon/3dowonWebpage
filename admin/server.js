@@ -11,6 +11,7 @@ import sharp from 'sharp';
 import { randomUUID } from 'node:crypto';
 import { parseWorkDate, compareWorkDates } from '../scripts/lib/work-date.mjs';
 import { saveLabVideo } from './lab-video.mjs';
+import { translationStatus, saveTranslationKey, autoTranslateLab } from './translation.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -534,18 +535,35 @@ app.put('/api/lab', (req, res) => {
 
 const labUpload = multer({storage:multer.memoryStorage(),limits:{fileSize:150*1024*1024}}).single('image');
 const receiveLabFile = (req,res,next) => labUpload(req,res,error => error ? res.status(400).json({error:'파일은 150MB 이하로 올려주세요.'}) : next());
-app.put('/api/lab/items/:index', (req,res) => {
+app.get('/api/lab/translation', (req,res) => res.json(translationStatus()));
+app.put('/api/lab/translation', (req,res) => {
+  const key = typeof req.body.key === 'string' ? req.body.key.trim() : '';
+  if (!key || key.length > 256 || /\s/.test(key)) return res.status(400).json({error:'DeepL API 키를 입력해주세요.'});
+  saveTranslationKey(key);
+  res.json(translationStatus());
+});
+app.put('/api/lab/items/:index', asyncHandler(async (req,res) => {
   const lab = loadJson('content/lab.json');
   const item = lab.items[Number(req.params.index)];
   if (!item) return res.status(404).json({error:'항목을 찾을 수 없어요.'});
+  const previous = {...item};
   const date = req.body.date ? parseWorkDate(req.body.date) : null;
   if (req.body.date && !date) return res.status(400).json({error:'날짜는 2026.03 형식으로 입력해주세요.'});
   Object.assign(item, {caption:req.body.caption || '', caption_en:req.body.caption_en || '', year:date?.year || '', month:date?.month || null});
   for (const key of ['description', 'description_en']) if (typeof req.body[key] === 'string') item[key] = req.body[key];
   saveJson('content/lab.json',lab);
+  const warning = await autoTranslateLab(item, previous);
+  const latest = loadJson('content/lab.json');
+  const current = latest.items[Number(req.params.index)];
+  if (!current || current.image !== item.image || current.video !== item.video || current.description !== item.description || current.description_en !== (req.body.description_en ?? previous.description_en)) {
+    build();
+    return res.json({...latest, translationWarning:'내용이 변경되어 이전 번역 결과를 적용하지 않았어요.'});
+  }
+  current.description_en = item.description_en;
+  saveJson('content/lab.json', latest);
   build();
-  res.json(lab);
-});
+  res.json({...latest, translationWarning:warning});
+}));
 app.post('/api/lab/items/:index/file', receiveLabFile, asyncHandler(async (req,res) => {
   const index = Number(req.params.index);
   const previous = loadJson('content/lab.json').items[index];
@@ -576,11 +594,13 @@ app.post('/api/lab/items', (req,res,next) => labUpload(req,res,error => error ? 
   const isVideo = req.file.mimetype.startsWith('video/') || /\.(mp4|mov|webm|m4v)$/i.test(req.file.originalname);
   if (!isVideo && !req.file.mimetype.startsWith('image/')) return res.status(400).json({error:'이미지 또는 영상 파일을 선택해주세요.'});
   const filename = isVideo ? await saveLabVideo(req.file.buffer, UPLOADS_DIR) : await saveImage(req.file.buffer);
+  const draft = {description:req.body.description || '', description_en:req.body.description_en || ''};
+  const warning = await autoTranslateLab(draft);
   const lab = loadJson('content/lab.json');
-  lab.items.push({ [isVideo ? 'video' : 'image']: publicUploadPath(filename), caption: req.body.caption || '', caption_en: req.body.caption_en || '', description:req.body.description || '', description_en:req.body.description_en || '', year:date?.year || '', month:date?.month || null });
+  lab.items.push({ [isVideo ? 'video' : 'image']: publicUploadPath(filename), caption: req.body.caption || '', caption_en: req.body.caption_en || '', ...draft, year:date?.year || '', month:date?.month || null });
   saveJson('content/lab.json', lab);
   build();
-  res.json(lab);
+  res.json({...lab, translationWarning:warning});
 }));
 
 app.delete('/api/lab/items/:index', (req, res) => {

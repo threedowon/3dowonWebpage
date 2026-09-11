@@ -96,6 +96,12 @@
     </section>
     <section id="tab-lab" class="admin-panel">
       <h2>Lab</h2>
+      <form id="labTranslationForm" class="admin-form">
+        <label>DeepL API 키<input type="password" name="key" autocomplete="new-password" placeholder="등록할 때만 입력" required /></label>
+        <p>한글 내용을 저장하면 영어로 자동 번역합니다. 입력한 내용은 DeepL로 전송됩니다. API 키는 이 컴퓨터에만 저장됩니다.</p>
+        <button type="submit">API 키 등록</button>
+        <p id="labTranslationStatus" role="status"></p>
+      </form>
       <form id="newLabForm" class="admin-form">
         <label>날짜 (연·월)<input name="date" placeholder="2026.03" pattern="[0-9]{4}([.\-](0?[1-9]|1[0-2]))?" /></label>
         <label>캡션<input name="caption" required /></label>
@@ -122,7 +128,7 @@
     </section>
   </main>
 
-  <script src="admin.js?v=10"></script>
+  <script src="admin.js?v=11"></script>
   <script src="portfolio.js?v=1"></script>
   <script src="materials.js?v=1"></script>
 </body>

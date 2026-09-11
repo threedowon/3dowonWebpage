@@ -1,7 +1,7 @@
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
 import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 
-const VERSION = '1052';
+const VERSION = '1066';
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
   en: { works: 'Works', lab: 'Lab', about: 'About', portfolio: 'Portfolio', cv: 'CV', photos: 'Images', index: 'Index', allYears: 'All years', allFields: 'All fields', space: 'Space', object: 'Object', screen: 'Screen', year: 'Year', field: 'Field', name: 'Project', back: 'All works', previous: 'Previous work', next: 'Next work', close: 'Close', enlarge: 'Enlarge image', practice: 'Practice', approach: 'Approach', fields: 'Fields', noResults: 'No work matches these filters.', reset: 'Reset filters', note: 'How do familiar objects change\nour experience of space? How do everyday\nactions change it?', artist: 'Interactive media artist', type: 'Type', medium: 'Medium', tech: 'Technology', production: 'Production', skip: 'Skip to content' },
@@ -117,7 +117,7 @@ export function catalogPage(works, site, lang, relPath = 'works.html', section =
   const countLabel = section === 'lab' ? (lang === 'ko' ? '개 실험' : ' studies') : (lang === 'ko' ? '개 작업' : ' works');
   const toolbar = `<header class="catalog-toolbar">
       <p id="catalog-count" role="status"${section === 'lab' ? ' hidden' : ''}>${works.length}${countLabel} · ${photoCount}${lang === 'ko' ? '장' : ' images'}</p>
-      <div class="toolbar-cell catalog-filters">${years.length ? `<label><span class="visually-hidden">${c.year}</span><select name="year" aria-label="${c.year}"><option value="all">${c.allYears}</option>${years.map((year) => `<option value="${year}">${year}</option>`).join('')}</select></label>` : ''}<label${section === 'lab' ? ' hidden' : ''}><span class="visually-hidden">${c.field}</span><select name="field" aria-label="${c.field}"><option value="all">${c.allFields}</option>${['space', 'object', 'screen'].map((key) => `<option value="${key}">${c[key]}</option>`).join('')}</select></label></div>
+      <div class="toolbar-cell catalog-filters">${section !== 'lab' && years.length ? `<label><span class="visually-hidden">${c.year}</span><select name="year" aria-label="${c.year}"><option value="all">${c.allYears}</option>${years.map((year) => `<option value="${year}">${year}</option>`).join('')}</select></label>` : ''}<label${section === 'lab' ? ' hidden' : ''}><span class="visually-hidden">${c.field}</span><select name="field" aria-label="${c.field}"><option value="all">${c.allFields}</option>${['space', 'object', 'screen'].map((key) => `<option value="${key}">${c[key]}</option>`).join('')}</select></label></div>
     </header>`;
   const body = `<section class="catalog-section" aria-labelledby="page-title">
     <h1 id="page-title" class="visually-hidden">${c[section]}</h1>
@@ -208,8 +208,7 @@ export function workPage(work, works, site, lang, section = 'works') {
     const target = works[index + offset];
     const direction = offset < 0 ? 'previous' : 'next';
     const label = offset < 0 ? c.previous : c.next;
-    const icon = `<svg viewBox="0 0 24 48" aria-hidden="true"><path d="${offset < 0 ? 'M20 4 L4 24 L20 44' : 'M4 4 L20 24 L4 44'}" /></svg>`;
-    return target ? `<a class="study-arrow study-arrow-${direction}" href="${esc(target.slug)}.html" aria-label="${esc(label)}: ${esc(pick(target, 'title', lang))}">${icon}</a>` : `<span class="study-arrow study-arrow-${direction}" aria-hidden="true" data-disabled>${icon}</span>`;
+    return target ? `<a class="study-arrow study-arrow-${direction}" href="${esc(target.slug)}.html" aria-label="${esc(label)}: ${esc(pick(target, 'title', lang))}"></a>` : `<span class="study-arrow study-arrow-${direction}" aria-hidden="true" data-disabled></span>`;
   };
   const detailGallery = section === 'lab' ? `${gallery.slice(0, -6)}${mediaArrow(-1)}${mediaArrow(1)}</div>` : gallery;
   const adjacent = (offset, label) => {
@@ -224,7 +223,7 @@ export function workPage(work, works, site, lang, section = 'works') {
       ${description ? `<div class="prose post-des">${description}</div>` : ''}
     </div>
     ${detailGallery}
-  </article><nav class="project-pagination" aria-label="${c[section]}">${adjacent(-1, c.previous)}${adjacent(1, c.next)}</nav>`;
+  </article>${section === 'lab' ? '' : `<nav class="project-pagination" aria-label="${c[section]}">${adjacent(-1, c.previous)}${adjacent(1, c.next)}</nav>`}`;
   return shell(ctx, site, { active: section, title, body, toolbar, pageClass: `page-work page-archive-work${section === 'lab' ? ' page-study' : ''}` });
 }
 

@@ -178,7 +178,8 @@ function initWorksProjectView(catalog, projects, clearProjectHover, refreshCatal
       if (focus) {
         const narrow = window.matchMedia('(max-width:900px)').matches;
         const target = narrow ? panel : layout;
-        const top = target.getBoundingClientRect().top + window.scrollY - (narrow ? 16 : 48);
+        const headerHeight = document.querySelector('.site-header')?.getBoundingClientRect().height || 0;
+        const top = target.getBoundingClientRect().top + window.scrollY - (narrow ? headerHeight + 12 : 48);
         window.scrollTo({ top: narrow ? Math.max(0, top) : Math.min(window.scrollY, Math.max(0, top)), behavior: 'instant' });
         panel.focus({ preventScroll: true });
       }
@@ -286,7 +287,40 @@ function trackImageRatio(img) {
   if (img.complete) applyRatio();
 }
 
+let studyAlignmentObserver;
 function initImageRatios() {
+  studyAlignmentObserver?.disconnect();
+  const study = document.querySelector('.page-study .work-article');
+  const studyMedia = study?.querySelector('.feature-gallery img, .feature-gallery video, .feature-gallery iframe');
+  if (studyMedia) {
+    const alignStudyText = () => {
+      if (!study.isConnected) return;
+      const media = studyMedia.getBoundingClientRect();
+      const article = study.getBoundingClientRect();
+      if (!media.height) return;
+      const sourceWidth = studyMedia.naturalWidth || studyMedia.videoWidth;
+      const sourceHeight = studyMedia.naturalHeight || studyMedia.videoHeight;
+      const height = sourceWidth && sourceHeight ? Math.min(media.height, media.width * sourceHeight / sourceWidth) : media.height;
+      const center = media.top - article.top + (studyMedia.tagName === 'IMG' ? height / 2 : media.height / 2);
+      study.style.setProperty('--study-media-center', `${center}px`);
+      const facts = study.querySelector('.project-facts');
+      study.style.setProperty('--study-facts-half', `${(facts?.getBoundingClientRect().height || 0) / 2}px`);
+    };
+    studyAlignmentObserver = new ResizeObserver(alignStudyText);
+    studyAlignmentObserver.observe(study.querySelector('.feature-gallery'));
+    studyAlignmentObserver.observe(studyMedia);
+    studyMedia.addEventListener('load', alignStudyText);
+    studyMedia.addEventListener('loadedmetadata', alignStudyText);
+    alignStudyText();
+  }
+  const aboutText = document.querySelector('.about-information');
+  const aboutArticle = document.querySelector('.about-article');
+  if (aboutText && aboutArticle && !aboutArticle.dataset.heightObserved) {
+    aboutArticle.dataset.heightObserved = 'true';
+    const syncHeight = () => aboutArticle.style.setProperty('--about-text-height', `${aboutText.getBoundingClientRect().height}px`);
+    new ResizeObserver(syncHeight).observe(aboutText);
+    syncHeight();
+  }
   document.querySelectorAll('.portfolio img').forEach(trackImageRatio);
   document.querySelectorAll('.portfolio video').forEach((video) => {
     const applyRatio = () => {

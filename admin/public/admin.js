@@ -569,6 +569,26 @@ document.getElementById('saveCv').addEventListener('click', async () => {
 });
 
 // ── Lab ──
+async function loadLabTranslationStatus() {
+  try {
+    const status = await api('/api/lab/translation');
+    document.getElementById('labTranslationStatus').textContent = status.configured ? 'API 키 등록됨 · 저장 시 자동 번역' : 'API 키를 등록하면 자동 번역을 사용할 수 있어요.';
+  } catch (error) { document.getElementById('labTranslationStatus').textContent = error.message; }
+}
+document.getElementById('labTranslationForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  const form = event.target;
+  const button = form.querySelector('button');
+  button.disabled = true;
+  try {
+    await api('/api/lab/translation', {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({key:form.key.value})});
+    form.reset();
+    await loadLabTranslationStatus();
+  } catch (error) { document.getElementById('labTranslationStatus').textContent = error.message; }
+  finally { button.disabled = false; }
+});
+loadLabTranslationStatus();
+
 async function loadLab() {
   const { lab } = await api('/api/site');
   const list = document.getElementById('labList');
@@ -588,13 +608,22 @@ async function loadLab() {
       <label>내용 (EN)<textarea class="lab-description-en" rows="3">${escapeAttr(item.description_en || '')}</textarea></label>
     `;
     const [img, captionInput, captionEnInput, removeBtn] = card.children;
+    let saving = false;
     const saveCaptions = async () => {
-      try { await api(`/api/lab/items/${i}`, {
+      if (saving) return;
+      saving = true;
+      const controls = [...card.querySelectorAll('input, textarea, button')];
+      controls.forEach(control => control.disabled = true);
+      card.querySelector('.lab-status').textContent = '저장 및 번역 중…';
+      try { const result = await api(`/api/lab/items/${i}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ caption:captionInput.value, caption_en:captionEnInput.value, date:card.querySelector('.lab-date').value.trim(), description:card.querySelector('.lab-description').value, description_en:card.querySelector('.lab-description-en').value }),
-      }); card.querySelector('.lab-status').textContent = '저장되었습니다.';
+      });
+      card.querySelector('.lab-description-en').value = result.items[i]?.description_en || '';
+      card.querySelector('.lab-status').textContent = result.translationWarning || '저장되었습니다.';
       } catch(error) { card.querySelector('.lab-status').textContent = error.message; }
+      finally { saving = false; controls.forEach(control => control.disabled = false); }
     };
     captionInput.addEventListener('change', saveCaptions);
     captionEnInput.addEventListener('change', saveCaptions);
@@ -641,10 +670,10 @@ document.getElementById('newLabForm').addEventListener('submit', async (e) => {
   button.disabled = true;
   status.textContent = '업로드 및 처리 중입니다. 영상 변환은 잠시 걸릴 수 있어요.';
   try {
-    await api('/api/lab/items', { method: 'POST', body: fd });
+    const result = await api('/api/lab/items', { method: 'POST', body: fd });
     e.target.reset();
     await loadLab();
-    status.textContent = '추가되었습니다.';
+    status.textContent = result.translationWarning || '추가되었습니다.';
   } catch (err) {
     status.textContent = '추가하지 못했습니다.';
     alert(err.message);
