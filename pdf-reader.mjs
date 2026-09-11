@@ -27,7 +27,14 @@ const thumbnails = new IntersectionObserver(entries => {
   for (const entry of entries) if (entry.isIntersecting && mobile.matches) {
     thumbnails.unobserve(entry.target);
     const card = entry.target;
-    loadPdf(card.dataset.pdf).then(pdf => pdf.getPage(1)).then(page => paint(page, card.querySelector('canvas'), card.clientWidth)).catch(() => {});
+    loadPdf(card.dataset.pdf).then(pdf => pdf.getPage(1)).then(page => paint(page, card.querySelector('canvas'), card.clientWidth)).then(() => {
+      card.classList.add('pdf-mobile-ready');
+      if (mobile.matches) desktopFrames.get(card)?.remove();
+    }).catch(() => {
+      card.classList.remove('pdf-mobile-ready');
+      const frame = desktopFrames.get(card);
+      if (frame && !frame.isConnected) card.prepend(frame);
+    });
   }
 }, {rootMargin:'100px'});
 const desktopFrames = new Map(cards.map(card => [card, card.querySelector('iframe')]));
@@ -37,7 +44,10 @@ function syncMode() {
   lastMode = mobile.matches;
   for (const card of cards) {
     const frame = desktopFrames.get(card);
-    if (mobile.matches) { frame.remove(); thumbnails.observe(card); }
+    if (mobile.matches) {
+      if (card.classList.contains('pdf-mobile-ready')) frame.remove();
+      else thumbnails.observe(card);
+    }
     else {
       thumbnails.unobserve(card);
       if (!frame.isConnected) card.prepend(frame);
