@@ -1,7 +1,7 @@
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
 import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 
-const VERSION = '1039';
+const VERSION = '1051';
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
   en: { works: 'Works', lab: 'Lab', about: 'About', portfolio: 'Portfolio', cv: 'CV', photos: 'Images', index: 'Index', allYears: 'All years', allFields: 'All fields', space: 'Space', object: 'Object', screen: 'Screen', year: 'Year', field: 'Field', name: 'Project', back: 'All works', previous: 'Previous work', next: 'Next work', close: 'Close', enlarge: 'Enlarge image', practice: 'Practice', approach: 'Approach', fields: 'Fields', noResults: 'No work matches these filters.', reset: 'Reset filters', note: 'How do familiar objects change\nour experience of space? How do everyday\nactions change it?', artist: 'Interactive media artist', type: 'Type', medium: 'Medium', tech: 'Technology', production: 'Production', skip: 'Skip to content' },
@@ -93,7 +93,7 @@ function overviewGrid(works, ctx, toolbar = '') {
     const project = ctx.section === 'works'
       ? `<li class="works-index-item" data-overview-project data-project="${esc(work.slug)}" ${attrs}><a class="works-index-link" href="${esc(href)}"><span class="works-index-number">${projectNumber}</span><h2 class="works-index-title">${esc(title)}</h2><span class="works-index-year">${esc(work.meta_year || work.year || '')}</span></a></li>`
       : `<article class="overview-project" data-overview-project data-project="${esc(work.slug)}" ${attrs}>
-      <a class="project-summary" href="${esc(href)}"><div><span class="project-number">${projectNumber}</span><h2>${esc(title)}</h2>${work.year ? `<p class="lab-date">${esc(work.year)}${work.month ? '.' + String(work.month).padStart(2, '0') : ''}</p>` : ''}</div><div class="project-summary-bottom"><p>${esc(pick(work, 'meta_tech', ctx.lang) || '')}</p></div></a>
+      <a class="project-summary" href="${esc(href)}"><div><span class="project-number">${projectNumber}</span><h2>${esc(title)}</h2></div><div class="project-summary-bottom"><p>${esc(pick(work, 'meta_tech', ctx.lang) || '')}</p>${work.year ? `<p class="lab-date">${esc(work.year)}${work.month ? '.' + String(work.month).padStart(2, '0') : ''}</p>` : ''}</div></a>
     </article>`;
     const images = media.map((src, i) => `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}>${ctx.section === 'lab' ? '' : `<span class="image-reference">${projectNumber}.${i + 1}</span>`}<a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><img src="${esc(src)}" alt="${esc(title)} — ${i + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`).join('');
     const video = ctx.section === 'lab' && work.video ? `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}><a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><video src="${esc(resolveMediaPath(work.video, ctx.assets))}" autoplay muted loop playsinline preload="metadata" aria-label="${esc(title)}"></video></a></figure>` : '';
@@ -106,7 +106,7 @@ function overviewGrid(works, ctx, toolbar = '') {
     }).join('');
     return `<div class="works-layout"><nav class="works-index" aria-label="${ctx.lang === 'ko' ? '작품 목록' : 'Project index'}">${toolbar}<button type="button" class="works-all" data-all-works hidden>All Works</button><ol>${entries.map((entry) => entry.project).join('\n')}</ol></nav><div class="works-stage"><div class="overview-grid works-image-grid">${entries.map((entry) => entry.images).join('\n')}</div><section class="works-project-panel" tabindex="-1" aria-labelledby="works-project-title" hidden></section></div>${templates}</div>`;
   }
-  return `<div class="overview-grid">${entries.map((entry) => entry.project + entry.images).join('\n')}</div>`;
+  return `<div class="overview-grid">${entries.map((entry) => `<div class="lab-entry">${entry.images}${entry.project}</div>`).join('\n')}</div>`;
 }
 
 export function catalogPage(works, site, lang, relPath = 'works.html', section = 'works') {
@@ -189,7 +189,7 @@ function projectContent(work, ctx) {
   const video = vimeoEmbedHtml(work.vimeo_url, title) || (work.video ? `<div class="post-video"><video ${ctx.section === 'lab' ? 'autoplay muted loop' : 'controls'} playsinline preload="metadata" aria-label="${esc(title)}" src="${esc(resolveMediaPath(work.video, ctx.assets))}"></video></div>` : '');
   const figure = (src, position) => `<figure class="project-image"><a href="${esc(src)}" data-viewer="${esc(src)}" data-viewer-title="${esc(title)} — ${number(position + 1)}" aria-label="${esc(title)} ${position + 1} — ${c.enlarge}"><img src="${esc(src)}" alt="${esc(title)} — ${position + 1}" class="project-detail-image" ${position === 0 && !video ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`;
   const metadata = [
-    [['year', year], ['type', pick(work, 'meta_type', lang)], ['medium', pick(work, 'meta_medium', lang)]],
+    [['year', year], ...(ctx.section === 'lab' ? [] : [['type', pick(work, 'meta_type', lang)], ['medium', pick(work, 'meta_medium', lang)]])],
     [['tech', pick(work, 'meta_tech', lang)], ['production', pick(work, 'meta_production', lang)]],
   ].map((entries) => entries.filter(([, value]) => value)).filter((entries) => entries.length)
     .map((entries) => `<dl class="work-meta">${entries.map(([label, value]) => `<div><dt>${c[label]}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>`).join('');
@@ -204,6 +204,14 @@ export function workPage(work, works, site, lang, section = 'works') {
   const { c } = ctx;
   const { title, metadata, description, gallery } = projectContent(work, ctx);
   const index = works.findIndex((item) => item.slug === work.slug);
+  const mediaArrow = (offset) => {
+    const target = works[index + offset];
+    const direction = offset < 0 ? 'previous' : 'next';
+    const label = offset < 0 ? c.previous : c.next;
+    const icon = `<svg viewBox="0 0 24 48" aria-hidden="true"><path d="${offset < 0 ? 'M20 4 L4 24 L20 44' : 'M4 4 L20 24 L4 44'}" /></svg>`;
+    return target ? `<a class="study-arrow study-arrow-${direction}" href="${esc(target.slug)}.html" aria-label="${esc(label)}: ${esc(pick(target, 'title', lang))}">${icon}</a>` : `<span class="study-arrow study-arrow-${direction}" aria-hidden="true" data-disabled>${icon}</span>`;
+  };
+  const detailGallery = section === 'lab' ? `${gallery.slice(0, -6)}${mediaArrow(-1)}${mediaArrow(1)}</div>` : gallery;
   const adjacent = (offset, label) => {
     const next = works[index + offset];
     return next ? `<a href="${esc(next.slug)}.html"><span>${label} ${offset < 0 ? '↖' : '↗'}</span><strong>${esc(pick(next, 'title', lang))}</strong></a>` : '<span></span>';
@@ -215,7 +223,7 @@ export function workPage(work, works, site, lang, section = 'works') {
       ${metadata ? `<div class="project-facts">${metadata}</div>` : ''}
       ${description ? `<div class="prose post-des">${description}</div>` : ''}
     </div>
-    ${gallery}
+    ${detailGallery}
   </article><nav class="project-pagination" aria-label="${c[section]}">${adjacent(-1, c.previous)}${adjacent(1, c.next)}</nav>`;
   return shell(ctx, site, { active: section, title, body, toolbar, pageClass: `page-work page-archive-work${section === 'lab' ? ' page-study' : ''}` });
 }

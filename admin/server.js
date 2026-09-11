@@ -541,6 +541,7 @@ app.put('/api/lab/items/:index', (req,res) => {
   const date = req.body.date ? parseWorkDate(req.body.date) : null;
   if (req.body.date && !date) return res.status(400).json({error:'날짜는 2026.03 형식으로 입력해주세요.'});
   Object.assign(item, {caption:req.body.caption || '', caption_en:req.body.caption_en || '', year:date?.year || '', month:date?.month || null});
+  for (const key of ['description', 'description_en']) if (typeof req.body[key] === 'string') item[key] = req.body[key];
   saveJson('content/lab.json',lab);
   build();
   res.json(lab);
@@ -576,7 +577,7 @@ app.post('/api/lab/items', (req,res,next) => labUpload(req,res,error => error ? 
   if (!isVideo && !req.file.mimetype.startsWith('image/')) return res.status(400).json({error:'이미지 또는 영상 파일을 선택해주세요.'});
   const filename = isVideo ? await saveLabVideo(req.file.buffer, UPLOADS_DIR) : await saveImage(req.file.buffer);
   const lab = loadJson('content/lab.json');
-  lab.items.push({ [isVideo ? 'video' : 'image']: publicUploadPath(filename), caption: req.body.caption || '', caption_en: req.body.caption_en || '', year:date?.year || '', month:date?.month || null });
+  lab.items.push({ [isVideo ? 'video' : 'image']: publicUploadPath(filename), caption: req.body.caption || '', caption_en: req.body.caption_en || '', description:req.body.description || '', description_en:req.body.description_en || '', year:date?.year || '', month:date?.month || null });
   saveJson('content/lab.json', lab);
   build();
   res.json(lab);

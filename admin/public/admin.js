@@ -584,19 +584,23 @@ async function loadLab() {
       <label>날짜 (연·월)<input class="lab-date" value="${escapeAttr(item.year ? `${item.year}${item.month ? '.' + String(item.month).padStart(2,'0') : ''}` : '')}" placeholder="2026.03" /></label>
       <label>파일 교체<input class="lab-replace" type="file" accept="image/*,video/*,.mp4,.mov,.webm,.m4v" /></label>
       <span class="lab-status" role="status"></span>
+      <label>내용<textarea class="lab-description" rows="3">${escapeAttr(item.description || '')}</textarea></label>
+      <label>내용 (EN)<textarea class="lab-description-en" rows="3">${escapeAttr(item.description_en || '')}</textarea></label>
     `;
     const [img, captionInput, captionEnInput, removeBtn] = card.children;
     const saveCaptions = async () => {
       try { await api(`/api/lab/items/${i}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ caption:captionInput.value, caption_en:captionEnInput.value, date:card.querySelector('.lab-date').value.trim() }),
+        body: JSON.stringify({ caption:captionInput.value, caption_en:captionEnInput.value, date:card.querySelector('.lab-date').value.trim(), description:card.querySelector('.lab-description').value, description_en:card.querySelector('.lab-description-en').value }),
       }); card.querySelector('.lab-status').textContent = '저장되었습니다.';
       } catch(error) { card.querySelector('.lab-status').textContent = error.message; }
     };
     captionInput.addEventListener('change', saveCaptions);
     captionEnInput.addEventListener('change', saveCaptions);
     card.querySelector('.lab-date').addEventListener('change',saveCaptions);
+    card.querySelector('.lab-description').addEventListener('change',saveCaptions);
+    card.querySelector('.lab-description-en').addEventListener('change',saveCaptions);
     card.querySelector('.lab-replace').addEventListener('change',async (event) => {
       const input = event.target;
       const file = input.files[0];
@@ -629,6 +633,8 @@ document.getElementById('newLabForm').addEventListener('submit', async (e) => {
   fd.append('caption', e.target.caption.value);
   fd.append('caption_en', e.target.caption_en.value);
   fd.append('date', e.target.date.value.trim());
+  fd.append('description', e.target.description.value);
+  fd.append('description_en', e.target.description_en.value);
   const button = e.target.querySelector('button[type="submit"]');
   const status = document.getElementById('labUploadStatus');
   if (button.disabled) return;

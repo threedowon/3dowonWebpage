@@ -5,7 +5,9 @@
       "caption_en": "ESP32 RFID",
       "video": "/3dowonWebpage/assets/uploads/lab-8cac1887-965e-42bb-9f0e-0de4b12db8dc.mp4",
       "year": 2024,
-      "month": 11
+      "month": 11,
+      "description": "너무너무 잼있당 :)",
+      "description_en": ""
     },
     {
       "image": "https://picsum.photos/seed/lab-unreal/600/750",
@@ -17,9 +19,11 @@
     {
       "caption": "Unreal PCG 2",
       "caption_en": "Unreal PCG 2",
-      "year": "",
-      "month": null,
-      "video": "/3dowonWebpage/assets/uploads/lab-65e7dc70-ed53-4627-a9d0-cfe7eee22630.mp4"
+      "year": 2024,
+      "month": 4,
+      "video": "/3dowonWebpage/assets/uploads/lab-65e7dc70-ed53-4627-a9d0-cfe7eee22630.mp4",
+      "description": "pcg 쉽지만 어렵도다",
+      "description_en": ""
     },
     {
       "caption": "피지컬 컴퓨팅 회로 실험",

@@ -472,6 +472,49 @@ function initMediaViewer() {
   });
 }
 
+function initStudyNavigation() {
+  if (!document.body.classList.contains('page-study')) return;
+  let currentPath = location.pathname;
+  let controller;
+  const navigate = async (url, push, direction) => {
+    controller?.abort();
+    const request = new AbortController();
+    controller = request;
+    const main = document.getElementById('main');
+    main.setAttribute('aria-busy', 'true');
+    try {
+      const response = await fetch(url, { signal: request.signal });
+      if (!response.ok) throw new Error('Unable to load study');
+      const page = new DOMParser().parseFromString(await response.text(), 'text/html');
+      const next = page.querySelector('body.page-study #main');
+      if (!next) throw new Error('Not a study page');
+      if (request.signal.aborted) return;
+      main.querySelectorAll('video').forEach(video => video.pause());
+      main.replaceChildren(...next.childNodes);
+      document.title = page.title;
+      if (push) history.pushState(null, '', url);
+      currentPath = location.pathname;
+      initImageRatios();
+      syncLanguageLinks();
+      const focus = direction && main.querySelector(`.study-arrow-${direction}[href]`);
+      (focus || main).focus({ preventScroll: true });
+    } catch (error) {
+      if (error.name !== 'AbortError') location.assign(url);
+    } finally {
+      if (controller === request) main.removeAttribute('aria-busy');
+    }
+  };
+  document.addEventListener('click', event => {
+    const link = event.target.closest('.study-arrow[href], .page-study .project-pagination a');
+    if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    navigate(link.href, true, link.classList.contains('study-arrow-previous') ? 'previous' : 'next');
+  });
+  window.addEventListener('popstate', () => {
+    if (location.pathname !== currentPath) navigate(location.href, false);
+  });
+}
+
 function initPortfolioBook() {
   const book = document.querySelector('.portfolio-book');
   if (!book) return;
@@ -499,6 +542,7 @@ function initPortfolioBook() {
 
 if (!restoreLegacyRoute()) {
   initPortfolioBook();
+  initStudyNavigation();
   initImageRatios();
   initCatalog(initWorksImageReveal());
   initMediaViewer();
