@@ -600,6 +600,7 @@ function initStudyNavigation() {
       if (push) history.pushState(null, '', url);
       currentPath = location.pathname;
       initImageRatios();
+      document.dispatchEvent(new Event('lab:navigated'));
       syncLanguageLinks();
       const focus = direction && main.querySelector(`.study-arrow-${direction}[href]`);
       (focus || main).focus({ preventScroll: true });

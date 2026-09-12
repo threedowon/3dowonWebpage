@@ -6,6 +6,7 @@ for (const file of ['pdf.mjs', 'pdf.worker.mjs']) fs.copyFileSync(`node_modules/
 for (const folder of ['cmaps','standard_fonts','wasm']) fs.cpSync(`node_modules/pdfjs-dist/${folder}`, `assets/pdfjs/${folder}`, {recursive:true});
 fs.copyFileSync('node_modules/pdfjs-dist/LICENSE', 'assets/pdfjs/LICENSE');
 import { normalizeWork, normalizeLabItems } from './lib/catalog.mjs';
+import { prepareLabPreviews } from './lib/lab-previews.mjs';
 import { catalogPage, labPage, aboutPage, portfolioPage, cvPage, workPage, teachingMaterialsPage } from './lib/portfolio.mjs';
 
 const site = loadJson('content/site.json');
@@ -15,6 +16,7 @@ const cv = loadJson('content/cv.json');
 const teachingMaterials = loadJson('content/teaching-materials.json');
 const lab = loadJson('content/lab.json');
 const studies = normalizeLabItems(lab);
+await prepareLabPreviews(studies);
 const works = loadWorks().map(normalizeWork);
 const workPaths = [];
 
