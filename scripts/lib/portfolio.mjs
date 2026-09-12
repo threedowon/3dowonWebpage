@@ -1,7 +1,7 @@
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
 import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 
-const VERSION = '1079';
+const VERSION = '1081';
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
   en: { works: 'Works', lab: 'Lab', about: 'About', portfolio: 'Portfolio', cv: 'CV', photos: 'Images', index: 'Index', allYears: 'All years', allFields: 'All fields', space: 'Space', object: 'Object', screen: 'Screen', year: 'Year', field: 'Field', name: 'Project', back: 'All works', previous: 'Previous work', next: 'Next work', close: 'Close', enlarge: 'Enlarge image', practice: 'Practice', approach: 'Approach', fields: 'Fields', noResults: 'No work matches these filters.', reset: 'Reset filters', note: 'How do familiar objects change\nour experience of space? How do familiar actions\nchange our experience of space?', artist: 'Interactive media artist', type: 'Type', medium: 'Medium', tech: 'Technology', production: 'Production', skip: 'Skip to content' },
@@ -96,7 +96,7 @@ function overviewGrid(works, ctx, toolbar = '') {
       <a class="project-summary" href="${esc(href)}"><div><span class="project-number">${projectNumber}</span><h2>${esc(title)}</h2></div><div class="project-summary-bottom"><p>${esc(pick(work, 'meta_tech', ctx.lang) || '')}</p>${work.year ? `<p class="lab-date">${esc(work.year)}${work.month ? '.' + String(work.month).padStart(2, '0') : ''}</p>` : ''}</div></a>
     </article>`;
     const images = media.map((src, i) => `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}>${ctx.section === 'lab' ? '' : `<span class="image-reference">${projectNumber}.${i + 1}</span>`}<a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><img src="${esc(src)}" alt="${esc(title)} — ${i + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`).join('');
-    const video = ctx.section === 'lab' && work.video ? `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}><a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><video src="${esc(resolveMediaPath(work.video, ctx.assets))}" autoplay muted loop playsinline preload="metadata" aria-label="${esc(title)}"></video></a></figure>` : '';
+    const video = ctx.section === 'lab' && work.video && !work.mux?.playback_id ? `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}><a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><video src="${esc(resolveMediaPath(work.video, ctx.assets))}" autoplay muted loop playsinline preload="metadata" aria-label="${esc(title)}"></video></a></figure>` : '';
     return { project, images: video + images };
   });
   if (ctx.section === 'works') {
@@ -196,7 +196,7 @@ function projectContent(work, ctx) {
   const title = pick(work, 'title', lang);
   const media = projectImages(work, ctx);
   const year = work.meta_year || work.year;
-  const video = vimeoEmbedHtml(work.vimeo_url, title) || (work.video ? `<div class="post-video"><video ${ctx.section === 'lab' ? 'autoplay muted loop' : 'controls'} playsinline preload="metadata" aria-label="${esc(title)}" src="${esc(resolveMediaPath(work.video, ctx.assets))}"></video></div>` : '');
+  const video = (work.mux?.playback_id && /^[a-zA-Z0-9]+$/.test(work.mux.playback_id) ? `<div class="post-video"><div class="post-video-frame"><iframe src="https://player.mux.com/${work.mux.playback_id}" title="${esc(title)}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div></div>` : '') || vimeoEmbedHtml(work.vimeo_url, title) || (work.video ? `<div class="post-video"><video ${ctx.section === 'lab' ? 'autoplay muted loop' : 'controls'} playsinline preload="metadata" aria-label="${esc(title)}" src="${esc(resolveMediaPath(work.video, ctx.assets))}"></video></div>` : '');
   const figure = (src, position) => `<figure class="project-image"><a href="${esc(src)}" data-viewer="${esc(src)}" data-viewer-title="${esc(title)} — ${number(position + 1)}" aria-label="${esc(title)} ${position + 1} — ${c.enlarge}"><img src="${esc(src)}" alt="${esc(title)} — ${position + 1}" class="project-detail-image" ${position === 0 && !video ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`;
   const metadata = [
     [['year', year], ...(ctx.section === 'lab' ? [] : [['type', pick(work, 'meta_type', lang)]])],

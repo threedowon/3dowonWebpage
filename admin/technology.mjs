@@ -1,0 +1,2 @@
+export const TECH_ENGLISH = {'영상 스케줄링':'Video Scheduling','video scheduling':'Video Scheduling','센서':'Sensors','sensors':'Sensors','프로젝션':'Projection','projection':'Projection','실시간 그래픽':'Real-time Graphics','real-time graphics':'Real-time Graphics','시리얼 통신':'Serial Communication','serial communication':'Serial Communication'};
+export const englishTechnology = value => TECH_ENGLISH[String(value).trim()] || String(value).trim();

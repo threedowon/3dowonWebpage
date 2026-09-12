@@ -10,11 +10,11 @@
       "description_en": "This is so much fun :)"
     },
     {
-      "image": "https://picsum.photos/seed/lab-unreal/600/750",
       "caption": "Unreal PCG 1",
       "caption_en": "Unreal PCG 1",
       "year": 2024,
-      "month": 4
+      "month": 4,
+      "video": "/3dowonWebpage/assets/uploads/lab-98208464-daca-4a29-ad27-eeeb8f96c745.mp4"
     },
     {
       "caption": "Unreal PCG 2",

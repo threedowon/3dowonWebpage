@@ -19,7 +19,7 @@
   "meta_year": "2022",
   "meta_type": "인터랙티브",
   "meta_medium": "인터랙티브",
-  "meta_tech": "Arduino, TouchDesigner",
+  "meta_tech": "Unreal",
   "meta_production": "개인",
   "gallery": [
     "/3dowonWebpage/assets/uploads/slow-circuit-1789062474949-136085.jpg",
@@ -30,7 +30,7 @@
   "index_type_label_en": "Interactive",
   "meta_type_en": "Interactive",
   "meta_medium_en": "Interactive",
-  "meta_tech_en": "Arduino, TouchDesigner",
+  "meta_tech_en": "Unreal",
   "meta_production_en": "Solo",
   "description_en": "<p>A projection installation visualizing the slow flow of time through the speed of a circuit.</p>",
   "vimeo_url": ""

@@ -6,7 +6,10 @@
   "tags": [
     "인터랙티브"
   ],
-  "tech": [],
+  "tech": [
+    "Kinect",
+    "TouchDesigner"
+  ],
   "production": "공동",
   "thumbnail": "/3dowonWebpage/assets/uploads/mirror-phase-1783536573739-652675.jpg",
   "grid_type_label": "인터랙티브",

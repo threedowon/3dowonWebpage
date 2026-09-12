@@ -21,7 +21,7 @@
   "meta_year": "2025",
   "meta_type": "전시, 인터랙티브",
   "meta_medium": "전시, 인터랙티브",
-  "meta_tech": "Unreal Engine, Arduino",
+  "meta_tech": "Unreal, Arduino",
   "meta_production": "개인",
   "gallery": [
     "/3dowonWebpage/assets/uploads/light-archive-1789063646317-474316.jpg",
@@ -39,7 +39,7 @@
   "index_type_label_en": "Exhibition, Interactive",
   "meta_type_en": "Exhibition, Interactive",
   "meta_medium_en": "Exhibition, Interactive",
-  "meta_tech_en": "Premiere, TouchDesigner",
+  "meta_tech_en": "Unreal, Arduino",
   "meta_production_en": "Solo",
   "description_en": "<p>A large-scale video installation reconstructing a record of light in an archival format.</p>"
 }

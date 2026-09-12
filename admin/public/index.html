@@ -4,12 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>3Dowon — Admin</title>
-<link rel="stylesheet" href="admin.css?v=5" />
+<link rel="stylesheet" href="admin.css?v=7" />
 </head>
 <body>
   <header class="admin-header">
-    <h1>3Dowon Admin</h1>
-    <p class="admin-note">로컬 전용 도구입니다. 저장하면 content/*.json과 HTML이 바로 수정돼요. 다 마쳤으면 아래 배포 버튼으로 실제 사이트에 올리세요.</p>
+    <h1>3DOWON <span style="font-weight:400;color:#869082;font-size:12px">STUDIO</span></h1>
+    <p class="admin-note">콘텐츠를 편집하고 저장하세요.<br />실제 사이트 반영은 배포 버튼으로.</p>
     <nav class="admin-tabs">
       <button class="admin-tab active" data-tab="works">Works</button>
       <button class="admin-tab" data-tab="about">About</button>
@@ -20,18 +20,18 @@
       <button class="admin-tab" data-tab="site">Site</button>
     </nav>
     <div class="deploy-bar">
-      <input type="text" id="deployMessage" placeholder="배포 메시지 (선택, 비우면 자동 생성)" />
-      <button id="deployBtn" type="button">🚀 배포</button>
+      <input type="text" id="deployMessage" placeholder="변경 메모 (선택)" />
+      <button id="deployBtn" type="button">사이트에 배포</button>
       <span id="deployStatus" class="deploy-status"></span>
     </div>
   </header>
 
   <main>
     <section id="tab-works" class="admin-panel active">
+      <div class="works-heading"><h2>작업 목록 <span id="workCount"></span></h2><label>작업 찾기<input type="search" id="workSearch" placeholder="작업명, 연도, 슬러그 검색" /></label></div>
       <details class="work-tools"><summary>새 작업 추가</summary>
-      <form id="newWorkForm" class="admin-form">
+      <form id="newWorkForm" class="admin-form"><p class="field-help">주소는 작업명에서 자동 생성됩니다. 같은 이름이 있으면 숫자가 붙어요.</p>
         <div class="field-row">
-          <label>슬러그 (영문/숫자/하이픈)<input name="slug" required pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="new-work" /></label>
           <label>작업명<input name="title" required /></label>
         </div>
         <label>연도 / 월<input name="year" type="text" placeholder="2025.03 (월 생략 가능)" /></label>
@@ -40,16 +40,17 @@
       </form>
       </details>
 
+      <details class="work-tools"><summary>유형 선택 목록 편집</summary><form id="typeOptionsForm" class="admin-form"><p class="field-help">유형 이름과 영문 표기를 편집하세요. 기존 작업에 선택된 유형은 유지됩니다.</p><div id="typeOptionsRows"></div><div class="field-row"><button type="button" id="addTypeOption">유형 추가</button><button type="submit">유형 목록 저장</button></div><p id="typeOptionsStatus" role="status"></p></form></details>
       <details class="work-tools" id="techSettings"><summary>기술 선택 목록 편집</summary>
         <form id="techOptionsForm" class="admin-form">
-          <p class="field-help">기술 이름과 상세페이지에 표시할 영문 이름을 편집하세요. 목록을 수정해도 기존 작업의 선택값은 유지됩니다.</p>
+          <p class="field-help">기술 이름을 영문으로 입력하세요. 모든 언어의 상세페이지에 같은 이름으로 표시됩니다. 목록을 수정해도 기존 작업의 선택값은 유지됩니다.</p>
           <div id="techOptionsRows"></div>
           <div class="field-row"><button type="button" id="addTechOption">기술 추가</button><button type="submit">기술 목록 저장</button></div>
           <p id="techOptionsStatus" role="status"></p>
         </form>
       </details>
 
-      <div class="works-heading"><h2>작업 목록 <span id="workCount"></span></h2><label>작업 찾기<input type="search" id="workSearch" placeholder="작업명, 연도, 슬러그 검색" /></label></div>
+
       <div id="worksList" class="works-list"></div>
     </section>
 
@@ -96,13 +97,8 @@
     </section>
     <section id="tab-lab" class="admin-panel">
       <h2>Lab</h2>
-      <form id="labTranslationForm" class="admin-form">
-        <label>DeepL API 키<input type="password" name="key" autocomplete="new-password" placeholder="등록할 때만 입력" required /></label>
-        <p>한글 내용을 저장하면 영어로 자동 번역합니다. 입력한 내용은 DeepL로 전송됩니다. API 키는 이 컴퓨터에만 저장됩니다.</p>
-        <button type="submit">API 키 등록</button>
-        <p id="labTranslationStatus" role="status"></p>
-      </form>
-      <form id="newLabForm" class="admin-form">
+
+      <details class="settings-fold"><summary>새 Lab 추가</summary><form id="newLabForm" class="admin-form">
         <label>날짜 (연·월)<input name="date" placeholder="2026.03" pattern="[0-9]{4}([.\-](0?[1-9]|1[0-2]))?" /></label>
         <label>캡션<input name="caption" required /></label>
         <label>캡션 (EN)<input name="caption_en" /></label>
@@ -113,10 +109,15 @@
         <p id="labUploadStatus" role="status"></p>
         <button type="submit">추가</button>
       </form>
-      <div id="labList" class="lab-list"></div>
+      </details><div id="labList" class="lab-list"></div>
     </section>
 
-    <section id="tab-site" class="admin-panel">
+    <section id="tab-site" class="admin-panel"><h2>Site settings</h2><p class="panel-intro">연락처와 외부 서비스 연결을 관리합니다.</p><details class="settings-fold"><summary>자동 번역 · DeepL</summary>      <form id="labTranslationForm" class="admin-form">
+        <label>DeepL API 키<input type="password" name="key" autocomplete="new-password" placeholder="등록할 때만 입력" required /></label>
+        <p>한글 내용을 저장하면 영어로 자동 번역합니다. 입력한 내용은 DeepL로 전송됩니다. API 키는 이 컴퓨터에만 저장됩니다.</p>
+        <button type="submit">API 키 등록</button>
+        <p id="labTranslationStatus" role="status"></p>
+      </form></details><form id="muxSettings" class="admin-form"><details><summary>Mux 연결 설정</summary><p>Video 읽기/쓰기 권한이 있는 Token ID / Secret을 등록하세요. 키는 이 컴퓨터에만 저장됩니다.</p><label>Token ID<input name="id" type="password" autocomplete="off" required /></label><label>Token Secret<input name="secret" type="password" autocomplete="new-password" required /></label><button>키 확인하고 저장</button></details><p id="muxConnection" role="status"></p></form>
       <h2>연락처 / SNS</h2>
       <form id="siteForm" class="admin-form">
         <label>Instagram URL<input name="instagram" /></label>
@@ -128,8 +129,9 @@
     </section>
   </main>
 
-  <script src="admin.js?v=13"></script>
+  <script src="admin.js?v=19"></script>
   <script src="portfolio.js?v=1"></script>
   <script src="materials.js?v=1"></script>
+<script src="mux.js?v=3"></script>
 </body>
 </html>

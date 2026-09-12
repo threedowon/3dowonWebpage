@@ -1,3 +1,6 @@
+import { englishTechnology } from './technology.mjs';
+import { uniqueWorkSlug } from './work-slug.mjs';
+import { installMuxRoutes } from './mux.mjs';
 // Local-only content admin for the site. Do not expose this beyond localhost —
 // it writes directly to the filesystem with no authentication.
 import fs from 'node:fs';
@@ -74,7 +77,8 @@ const PRODUCTION_EN = { '개인': 'Solo', '공동': 'Collaborative', '회사': '
 // 원본 값을 유지하고, 화면에 보여지는 라벨만 영문 버전(_en)을 함께 채운다.
 function applySelectedTypes(work, selected) {
   const types = Array.isArray(selected) ? selected.filter(Boolean) : [];
-  const typesEn = types.map((t) => TYPE_EN[t] || t);
+  const options=typeOptions();
+  const typesEn = types.map((t) => options.find(o=>o.name===t)?.en || TYPE_EN[t] || t);
   work.type = types[0] || '';
   work.tags = types;
   work.grid_type_label = types.join(', ');
@@ -240,16 +244,31 @@ function technologyOptions() {
     [...(work.tech || []), ...String(work.meta_tech || '').split(','), ...String(work.meta_tech_en || '').split(',')]
       .map((value) => value.trim()).filter(Boolean).forEach((value) => names.add(value));
   }
-  return [...names].map((name) => ({ name, en: TECH_TRANSLATIONS[name] || name }));
+  return [...new Set([...names].map(englishTechnology))].map(name=>({name,en:name}));
 }
+
+
+const TYPE_OPTIONS_FILE=path.join(__dirname,'type-options.json');
+function typeOptions(){
+ if(fs.existsSync(TYPE_OPTIONS_FILE))return JSON.parse(fs.readFileSync(TYPE_OPTIONS_FILE,'utf8'));
+ return Object.entries(TYPE_EN).map(([name,en])=>({name,en}));
+}
+app.get('/api/type-options',(req,res)=>res.json(typeOptions()));
+app.put('/api/type-options',(req,res)=>{
+ const options=req.body.options;
+ if(!Array.isArray(options)||!options.length||options.length>100||options.some(o=>!o||typeof o.name!=='string'||!o.name.trim()||o.name.length>100||typeof o.en!=='string'||o.en.length>100))return res.status(400).json({error:'유형 이름을 입력해주세요. 최소 1개, 최대 100개까지 가능합니다.'});
+ const values=options.map(o=>({name:o.name.trim(),en:o.en.trim()||o.name.trim()}));
+ if(new Set(values.map(o=>o.name)).size!==values.length)return res.status(400).json({error:'중복된 유형 이름이 있어요.'});
+ fs.writeFileSync(TYPE_OPTIONS_FILE,JSON.stringify(values,null,2)+'\n');res.json(values);
+});
 
 app.get('/api/tech-options', (req, res) => res.json(technologyOptions()));
 app.put('/api/tech-options', (req, res) => {
   const options = req.body.options;
-  if (!Array.isArray(options) || options.length > 200 || options.some((item) => !item || typeof item.name !== 'string' || !item.name.trim() || item.name.length > 100 || typeof item.en !== 'string' || item.en.length > 100)) {
+  if (!Array.isArray(options) || options.length > 200 || options.some((item) => !item || typeof item.name !== 'string' || !item.name.trim() || item.name.length > 100)) {
     return res.status(400).json({ error: '기술 이름을 입력해주세요. 항목은 최대 200개, 이름은 100자까지 사용할 수 있어요.' });
   }
-  const normalized = options.map(({ name, en }) => ({ name: name.trim(), en: en.trim() || name.trim() }));
+  const normalized = options.map(({name})=>({name:englishTechnology(name),en:englishTechnology(name)}));
   if (new Set(normalized.map((item) => item.name)).size !== normalized.length) return res.status(400).json({ error: '중복된 기술 이름이 있어요.' });
   fs.writeFileSync(TECH_OPTIONS_FILE, JSON.stringify(normalized, null, 2) + '\n');
   res.json(normalized);
@@ -268,9 +287,9 @@ app.get('/api/works', (req, res) => {
 });
 
 app.post('/api/works', (req, res) => {
-  const { slug, title, year, types } = req.body;
-  if (!isValidSlug(slug)) return res.status(400).json({ error: '슬러그는 영문 소문자/숫자/하이픈만 가능해요.' });
-  if (listWorkSlugs().includes(slug)) return res.status(400).json({ error: '이미 존재하는 슬러그예요.' });
+  const { title, year, types } = req.body;
+  if(typeof title!=='string'||!title.trim()) return res.status(400).json({error:'작업명을 입력해주세요.'});
+  const slug=uniqueWorkSlug(title,listWorkSlugs());
 
   const date = parseWorkDate(year || String(new Date().getFullYear()));
   if (!date) return res.status(400).json({ error: '날짜는 2025 또는 2025.03 형식으로 입력해주세요.' });
@@ -327,9 +346,9 @@ app.put('/api/works/:slug', (req, res) => {
   if (req.body.tech !== undefined) {
     if (!Array.isArray(req.body.tech) || req.body.tech.some((value) => typeof value !== 'string' || value.length > 100)) return res.status(400).json({ error: '기술 선택값이 올바르지 않아요.' });
     const options = technologyOptions();
-    work.tech = [...new Set(req.body.tech.map((value) => value.trim()).filter(Boolean))];
+    work.tech = [...new Set(req.body.tech.map(englishTechnology).filter(Boolean))];
     work.meta_tech = work.tech.join(', ');
-    work.meta_tech_en = work.tech.map((name) => options.find((item) => item.name === name)?.en || TECH_TRANSLATIONS[name] || name).join(', ');
+    work.meta_tech_en = work.meta_tech;
   }
   const editable = ['title', 'production', 'vimeo_url'];
   for (const key of editable) {
@@ -674,6 +693,8 @@ app.post('/api/deploy', (req, res) => {
 process.on('unhandledRejection', (err) => {
   console.error('Unhandled rejection (server stayed up):', err);
 });
+
+installMuxRoutes(app, {loadJson,saveJson,listWorkSlugs,loadWork,build,root:ROOT});
 
 app.listen(PORT, HOST, () => {
   console.log(`Admin running at http://localhost:${PORT} (local only)`);

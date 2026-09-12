@@ -1,9 +1,10 @@
 // 사이트 필터에서는 유형(설치~전시·VR/AR)과 태그(인터랙티브/프로젝션)가 한 목록으로 합쳐져 보이므로
 // admin에서도 이 7개를 하나의 다중선택으로 다룬다.
-const TYPE_OPTIONS = ['설치', '영상', '퍼포먼스', '전시', 'VR/AR', '인터랙티브', '프로젝션', '모바일'];
+let TYPE_OPTIONS = ['설치', '영상', '퍼포먼스', '전시', 'VR/AR', '인터랙티브', '프로젝션', '모바일'];
 const workDateLabel = work => work.month ? `${work.year}.${String(work.month).padStart(2, '0')}` : String(work.year || '');
 let techOptions = [];
 let techOptionsDirty = false;
+let typeOptionsDirty = false;
 const PRODUCTION_OPTIONS = ['개인', '공동', '회사'];
 
 function imgUrl(p) {
@@ -63,7 +64,7 @@ document.querySelectorAll('.admin-tab').forEach((tab) => {
 });
 
 window.addEventListener('beforeunload', (e) => {
-  if (dirtyWorks.size > 0 || techOptionsDirty) {
+  if (dirtyWorks.size > 0 || techOptionsDirty || typeOptionsDirty) {
     e.preventDefault();
     e.returnValue = '';
   }
@@ -129,7 +130,7 @@ document.getElementById('workSearch').addEventListener('input', filterWorks);
 function addTechRow(option = {name:'', en:''}) {
   const row = document.createElement('div');
   row.className = 'tech-option-row';
-  row.innerHTML = '<label>기술 이름<input class="tech-name" required maxlength="100" value="' + escapeAttr(option.name) + '" /></label><label>영문 이름<input class="tech-en" maxlength="100" value="' + escapeAttr(option.en) + '" /></label><button type="button" class="secondary">항목 삭제</button>';
+  row.innerHTML = '<label>기술 이름 (영문)<input class="tech-name" required maxlength="100" value="' + escapeAttr(option.name) + '" /></label><button type="button" class="secondary">항목 삭제</button>';
   row.querySelector('button').addEventListener('click', () => { row.remove(); techOptionsDirty = true; });
   document.getElementById('techOptionsRows').appendChild(row);
 }
@@ -151,7 +152,7 @@ document.getElementById('techOptionsForm').addEventListener('submit', async even
   const submit = event.target.querySelector('[type="submit"]');
   submit.disabled = true;
   try {
-    const options = [...document.querySelectorAll('.tech-option-row')].map(row => ({name:row.querySelector('.tech-name').value, en:row.querySelector('.tech-en').value}));
+    const options = [...document.querySelectorAll('#techOptionsRows .tech-option-row')].map(row => ({name:row.querySelector('.tech-name').value}));
     techOptions = await api('/api/tech-options', {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({options})});
     document.querySelectorAll('.work-tech-options').forEach(group => {
       const selected = [...group.querySelectorAll(':checked')].map(input => input.value);
@@ -195,6 +196,7 @@ function appendGalleryItem(galleryGrid, work, src, index) {
   item.classList.add('work-gallery-item');
   item.setAttribute('aria-label', '갤러리 이미지 ' + (index + 1) + ', Alt와 방향키로 순서 변경');
   item.innerHTML = '<img src="' + escapeAttr(imgUrl(src)) + '" alt="갤러리 이미지 ' + (index + 1) + '" draggable="false" loading="lazy" /><span class="gallery-number">' + (index + 1) + '</span><button type="button" class="gallery-remove" aria-label="이미지 ' + (index + 1) + ' 삭제">×</button><div class="gallery-move"><button type="button" class="move-previous" aria-label="이미지 ' + (index + 1) + ' 앞으로">←</button><button type="button" class="move-next" aria-label="이미지 ' + (index + 1) + ' 뒤로">→</button></div>';
+  const fileLink=document.createElement('a');fileLink.className='gallery-download';fileLink.textContent='이미지 다운로드';fileLink.setAttribute('aria-label','갤러리 이미지 '+(index+1)+' 다운로드');fileLink.href='/api/mux/local-download?target='+encodeURIComponent('works:'+work.slug)+'&src='+encodeURIComponent(src);fileLink.draggable=false;item.append(fileLink);
   const visibility = document.createElement('label');
   visibility.className = 'gallery-visibility';
   const toggle = document.createElement('input');
@@ -290,7 +292,7 @@ function renderWorkCard(work) {
       <div class="thumb-row">
         <div>
           <img src="${imgUrl(work.thumbnail)}" alt="" />
-          <div class="thumb-label">목록 미리보기 썸네일<input type="file" accept="image/*" class="img-input" data-field="thumbnail" /></div>
+          <a href="/api/mux/local-download?target=${encodeURIComponent('works:'+work.slug)}&field=thumbnail">썸네일 다운로드</a><div class="thumb-label">목록 미리보기 썸네일<input type="file" accept="image/*" class="img-input" data-field="thumbnail" /></div>
         </div>
       </div>
       <form class="admin-form edit-form">
@@ -298,12 +300,12 @@ function renderWorkCard(work) {
           <label>작업명<input name="title" value="${escapeAttr(work.title)}" /></label>
           <label>연도 / 월<input name="year" type="text" placeholder="2025.03 (월 생략 가능)" value="${escapeAttr(workDateLabel(work))}" required /></label>
         </div>
-        <label>유형<div class="chk-group">${checkboxGroup('types', TYPE_OPTIONS, [work.type, ...(work.tags || [])])}</div></label>
+        <label>유형<div class="chk-group">${checkboxGroup('types', [...new Set([...TYPE_OPTIONS,work.type,...(work.tags||[])].filter(Boolean))], [work.type,...(work.tags||[])])}</div></label>
         <label>제작<select name="production">${selectOptions(PRODUCTION_OPTIONS, work.production)}</select></label>
         <fieldset class="tech-field"><legend>기술 (복수 선택)</legend><div class="chk-group work-tech-options">${techCheckboxes(work.tech || [])}</div><p class="field-help">선택을 바꾸고 저장하면 상세페이지의 기술 정보에도 반영됩니다. 항목은 위의 ‘기술 선택 목록 편집’에서 수정할 수 있어요.</p></fieldset>
         <label>설명 (엔터로 줄바꿈)<textarea name="description" rows="4">${escapeHtml(work.description)}</textarea></label>
         <label>설명 (EN)<textarea name="description_en" rows="4">${escapeHtml(work.description_en)}</textarea></label>
-        <label>Vimeo URL<input name="vimeo_url" value="${escapeAttr(work.vimeo_url)}" /></label>
+        <label>외부 영상 링크 · Vimeo<input name="vimeo_url" value="${escapeAttr(work.vimeo_url)}" /></label>
         <div class="field-row"><label>상세 이미지 배경색<input type="color" name="detail_background" value="${/^#[0-9a-f]{6}$/i.test(work.detail_background || '') ? work.detail_background : '#dddddd'}" /></label><button type="button" class="reset-detail-background">기본 회색으로</button></div>
         <label>상세 이미지 배치<select name="detail_columns">${[1,2,3].map(n => `<option value="${n}"${Number(work.detail_columns || 1) === n ? ' selected' : ''}>한 줄에 ${n}장</option>`).join('')}</select></label>
         <div class="field-row">
@@ -311,6 +313,7 @@ function renderWorkCard(work) {
           <button type="button" class="danger delete-work">삭제</button>
         </div>
       </form>
+      <div class="project-video-tools" data-video-target="works:${escapeAttr(work.slug)}"></div>
       <h4>갤러리 이미지</h4><p class="field-help">이미지를 드래그하거나 화살표 버튼으로 옮기면 순서가 바로 저장됩니다.</p>
       <div class="gallery-grid"></div>
       <label class="gallery-upload">이미지 여러 장 추가<input type="file" accept="image/*" multiple class="gallery-input" /></label><p class="field-help">Ctrl 또는 Shift로 여러 파일을 선택할 수 있어요. 한 번에 최대 20장까지 추가됩니다.</p><p class="gallery-status" role="status"></p>
@@ -429,19 +432,17 @@ document.getElementById('newWorkForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const fd = new FormData(e.target);
   try {
-    const slug = fd.get('slug');
-    await api('/api/works', {
+    const created = await api('/api/works', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        slug,
         title: fd.get('title'),
         year: fd.get('year'),
         types: fd.getAll('types'),
       }),
     });
     e.target.reset();
-    if (slug) openWorkSlugs.add(slug);
+    if (created.slug) openWorkSlugs.add(created.slug);
     loadWorks();
   } catch (err) {
     alert(err.message);
@@ -598,8 +599,8 @@ async function loadLab() {
     card.className = 'lab-card thumb-row';
     card.innerHTML = `
       ${item.video ? `<video src="${escapeAttr(imgUrl(item.video))}" muted autoplay loop playsinline style="width:100px;height:100px;object-fit:cover" aria-label="영상 미리보기"></video>` : `<img src="${escapeAttr(imgUrl(item.image))}" alt="" />`}
-      <input value="${escapeAttr(item.caption)}" class="lab-caption" placeholder="캡션" />
-      <input value="${escapeAttr(item.caption_en || '')}" class="lab-caption" placeholder="캡션 (EN)" />
+      <input value="${escapeAttr(item.caption)}" class="lab-caption" aria-label="제목 (한글)" placeholder="제목 (한글)" />
+      <input value="${escapeAttr(item.caption_en || '')}" class="lab-caption" aria-label="제목 (영문)" placeholder="제목 (영문)" />
       <button type="button" class="danger">삭제</button>
       <label>날짜 (연·월)<input class="lab-date" value="${escapeAttr(item.year ? `${item.year}${item.month ? '.' + String(item.month).padStart(2,'0') : ''}` : '')}" placeholder="2026.03" /></label>
       <label>파일 교체<input class="lab-replace" type="file" accept="image/*,video/*,.mp4,.mov,.webm,.m4v" /></label>
@@ -607,6 +608,8 @@ async function loadLab() {
       <label>내용<textarea class="lab-description" rows="3">${escapeAttr(item.description || '')}</textarea></label>
       <label>내용 (EN)<textarea class="lab-description-en" rows="3">${escapeAttr(item.description_en || '')}</textarea></label>
     `;
+    const download=document.createElement('a');download.textContent='파일 다운로드';download.href='/api/mux/local-download?target='+encodeURIComponent('lab:'+i)+'&src='+encodeURIComponent(item.video||item.image||'');card.append(download);
+
     const [img, captionInput, captionEnInput, removeBtn] = card.children;
     let saving = false;
     const saveCaptions = async () => {
@@ -734,8 +737,22 @@ document.getElementById('deployBtn').addEventListener('click', async () => {
   }
 });
 
-loadTechnologyOptions().then(loadWorks).catch(error => { document.getElementById('worksList').textContent = error.message; });
+Promise.all([loadTechnologyOptions(),loadTypeOptions()]).then(loadWorks).catch(error => { document.getElementById('worksList').textContent = error.message; });
 loadAbout();
 loadCv();
 loadLab();
 loadSiteInfo();
+
+function addTypeRow(option={name:'',en:''}){
+ const row=document.createElement('div');row.className='tech-option-row';row.innerHTML='<label>유형 이름<input class="type-name" required maxlength="100" value="'+escapeAttr(option.name)+'" /></label><label>영문 표기<input class="type-en" maxlength="100" value="'+escapeAttr(option.en)+'" /></label><button type="button" class="danger">목록에서 제거</button>';
+ row.querySelector('button').onclick=()=>{row.remove();typeOptionsDirty=true;};document.getElementById('typeOptionsRows').append(row);
+}
+async function loadTypeOptions(){const options=await api('/api/type-options');TYPE_OPTIONS=options.map(o=>o.name);options.forEach(addTypeRow);document.getElementById('newWorkTypes').innerHTML=checkboxGroup('types',TYPE_OPTIONS,[]);}
+document.getElementById('addTypeOption').onclick=()=>{addTypeRow();typeOptionsDirty=true;document.querySelector('#typeOptionsRows .tech-option-row:last-child input').focus();};
+document.getElementById('typeOptionsForm').oninput=()=>{typeOptionsDirty=true;};
+document.getElementById('typeOptionsForm').onsubmit=async event=>{
+ event.preventDefault();const button=event.target.querySelector('[type=submit]'),status=document.getElementById('typeOptionsStatus');button.disabled=true;
+ try{const options=[...document.querySelectorAll('#typeOptionsRows .tech-option-row')].map(row=>({name:row.querySelector('.type-name').value,en:row.querySelector('.type-en').value}));const saved=await api('/api/type-options',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({options})});TYPE_OPTIONS=saved.map(o=>o.name);
+ document.querySelectorAll('#newWorkTypes,.edit-form .chk-group').forEach(group=>{if(group.id!=='newWorkTypes'&&!group.querySelector('input[name=types]'))return;const selected=[...group.querySelectorAll(':checked')].map(i=>i.value);group.innerHTML=checkboxGroup('types',[...new Set([...TYPE_OPTIONS,...selected])],selected);});typeOptionsDirty=false;status.textContent='유형 목록을 저장했어요.';
+ }catch(e){status.textContent=e.message;}finally{button.disabled=false;}
+};

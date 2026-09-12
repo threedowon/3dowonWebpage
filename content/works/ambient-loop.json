@@ -3,7 +3,7 @@
   "slug": "ambient-loop",
   "thumbnail": "/3dowonWebpage/assets/uploads/ambient-loop-1789062207794-632080.jpg",
   "meta_medium": "영상",
-  "meta_tech": "Unity, 영상 스케줄링",
+  "meta_tech": "Unreal",
   "gallery": [
     "/3dowonWebpage/assets/uploads/ambient-loop-1789062213412-564993.jpg",
     "/3dowonWebpage/assets/uploads/ambient-loop-1789062217223-947887.jpg",
@@ -30,7 +30,7 @@
   "grid_type_label_en": "Video",
   "index_type_label_en": "Video",
   "meta_medium_en": "Video",
-  "meta_tech_en": "Unity, video scheduling",
+  "meta_tech_en": "Unreal",
   "meta_production_en": "Solo",
   "meta_type_en": "Video",
   "description_en": "<p>A media art curation project that presents environmental data in a circular structure. Multiple channels of video loop together to form a single spatial narrative.</p>\n            <p>Role</p>\n            <p>Built a multi-channel video scheduling system</p>\n            <p>Developed a Unity-based playback and sync environment</p>\n            <p>Collaborated on sound and video placement in the exhibition space</p>",

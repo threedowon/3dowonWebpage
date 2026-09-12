@@ -19,7 +19,7 @@
   "meta_year": "2024",
   "meta_type": "인터랙티브",
   "meta_medium": "인터랙티브",
-  "meta_tech": "Max/MSP, TouchDesigner",
+  "meta_tech": "Unreal",
   "meta_production": "개인",
   "gallery": [
     "/3dowonWebpage/assets/uploads/sonic-veil-1789062891939-45230.jpg",
@@ -30,7 +30,7 @@
   "index_type_label_en": "Interactive",
   "meta_type_en": "Interactive",
   "meta_medium_en": "Interactive",
-  "meta_tech_en": "Max/MSP, TouchDesigner",
+  "meta_tech_en": "Unreal",
   "meta_production_en": "Solo",
   "description_en": "<p>An installation combining spatial audio and projection. The experience was designed so that the density of sound and texture of light shift depending on the audience's position.</p>\n            <p>Role</p>\n            <p>Developed spatial audio patches in Max/MSP</p>\n            <p>Integrated visuals in TouchDesigner</p>\n            <p>Set up the installation and demonstration environment</p>",
   "vimeo_url": ""

@@ -19,7 +19,7 @@
   "meta_year": "2024",
   "meta_type": "영상",
   "meta_medium": "영상",
-  "meta_tech": "Arduino, Unity",
+  "meta_tech": "Unreal",
   "meta_production": "개인",
   "gallery": [
     "/3dowonWebpage/assets/uploads/soft-machine-1789062919288-465917.jpg",
@@ -30,7 +30,7 @@
   "index_type_label_en": "Video",
   "meta_type_en": "Video",
   "meta_medium_en": "Video",
-  "meta_tech_en": "Arduino, Unity",
+  "meta_tech_en": "Unreal",
   "meta_production_en": "Solo",
   "description_en": "<p>An interactive exhibition exploring the boundary between machine and organism.</p>",
   "vimeo_url": ""

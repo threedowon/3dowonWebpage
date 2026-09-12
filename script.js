@@ -355,7 +355,8 @@ function initImageRatios() {
       const portrait = video.videoHeight > video.videoWidth;
       const plate = video.closest('[data-plate]');
       if (plate) plate.dataset.orientation = portrait ? 'portrait' : 'landscape';
-      video.closest('.overview-image-link')?.style.setProperty('--image-ratio', portrait ? '3 / 4' : '16 / 9');
+      const preview = video.closest('.overview-image-link');
+      preview?.style.setProperty('--image-ratio', video.closest('.page-lab') ? '3 / 4' : portrait ? '3 / 4' : '16 / 9');
     };
     video.addEventListener('loadedmetadata', applyRatio);
     applyRatio();

@@ -1,0 +1,34 @@
+[
+  {
+    "name": "게임",
+    "en": "Game"
+  },
+  {
+    "name": "설치",
+    "en": "Installation"
+  },
+  {
+    "name": "영상",
+    "en": "Video"
+  },
+  {
+    "name": "퍼포먼스",
+    "en": "Performance"
+  },
+  {
+    "name": "전시",
+    "en": "Exhibition"
+  },
+  {
+    "name": "VR",
+    "en": "VR"
+  },
+  {
+    "name": "인터랙티브",
+    "en": "Interactive"
+  },
+  {
+    "name": "AR",
+    "en": "AR"
+  }
+]

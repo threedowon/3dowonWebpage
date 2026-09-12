@@ -19,7 +19,7 @@
   "meta_year": "2024",
   "meta_type": "인터랙티브",
   "meta_medium": "인터랙티브",
-  "meta_tech": "Arduino, DMX",
+  "meta_tech": "Unreal",
   "meta_production": "개인",
   "gallery": [
     "/3dowonWebpage/assets/uploads/resonant-grid-1789065350271-434224.jpg",
@@ -31,7 +31,7 @@
   "index_type_label_en": "Interactive",
   "meta_type_en": "Interactive",
   "meta_medium_en": "Interactive",
-  "meta_tech_en": "Arduino, DMX",
+  "meta_tech_en": "Unreal",
   "meta_production_en": "Solo",
   "description_en": "<p>An interactive media installation for a brand launch event. Grid-shaped lighting and sensor input combine so the space responds to audience participation.</p>\n            <p>Role</p>\n            <p>Developed an Arduino-based sensor and lighting control system</p>\n            <p>Programmed the DMX lighting sequence</p>\n            <p>Handled on-site installation and interaction testing</p>",
   "vimeo_url": ""

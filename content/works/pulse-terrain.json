@@ -20,7 +20,7 @@
   "meta_year": "2024",
   "meta_type": "인터랙티브",
   "meta_medium": "인터랙티브",
-  "meta_tech": "Unreal Engine, TouchDesigner",
+  "meta_tech": "Unreal, Arduino",
   "meta_production": "공동",
   "gallery": [
     "/3dowonWebpage/assets/uploads/pulse-terrain-1789062299752-749305.jpg",
@@ -31,7 +31,7 @@
   "index_type_label_en": "Interactive",
   "meta_type_en": "Interactive",
   "meta_medium_en": "Interactive",
-  "meta_tech_en": "Unreal Engine, TouchDesigner",
+  "meta_tech_en": "Unreal, Arduino",
   "meta_production_en": "Collaborative",
   "description_en": "<p>An immersive projection in which abstract video based on terrain data covers the entire floor.</p>",
   "vimeo_url": ""

@@ -20,7 +20,7 @@
   "meta_year": "2021",
   "meta_type": "인터랙티브",
   "meta_medium": "인터랙티브",
-  "meta_tech": "Arduino, 시리얼 통신",
+  "meta_tech": "Unreal, Arduino",
   "meta_production": "개인",
   "gallery": [
     "/3dowonWebpage/assets/uploads/silent-circuit-1789062941246-630440.jpg",
@@ -32,7 +32,7 @@
   "index_type_label_en": "Interactive",
   "meta_type_en": "Interactive",
   "meta_medium_en": "Interactive",
-  "meta_tech_en": "Arduino, serial communication",
+  "meta_tech_en": "Unreal, Arduino",
   "meta_production_en": "Solo",
   "description_en": "<p>An interactive installation visualizing the flow of electrical signals as a circuit of light.</p>",
   "vimeo_url": ""

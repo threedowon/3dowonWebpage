@@ -20,7 +20,7 @@
   "meta_year": "2020",
   "meta_type": "인터랙티브",
   "meta_medium": "인터랙티브",
-  "meta_tech": "ESP32, TouchOSC",
+  "meta_tech": "Unity, 3ds Max",
   "meta_production": "공동",
   "gallery": [
     "/3dowonWebpage/assets/uploads/ghost-frequency-1789063323560-649882.jpg"
@@ -29,7 +29,7 @@
   "index_type_label_en": "Interactive",
   "meta_type_en": "Interactive",
   "meta_medium_en": "Interactive",
-  "meta_tech_en": "ESP32, TouchOSC",
+  "meta_tech_en": "Unity, 3ds Max",
   "meta_production_en": "Collaborative",
   "description_en": "<p>An interactive installation translating an invisible frequency band into light.</p>",
   "vimeo_url": ""

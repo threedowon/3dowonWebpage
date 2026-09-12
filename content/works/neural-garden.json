@@ -19,7 +19,7 @@
   "meta_year": "2024",
   "meta_type": "영상",
   "meta_medium": "영상",
-  "meta_tech": "Arduino, 실시간 그래픽",
+  "meta_tech": "Unreal",
   "meta_production": "개인",
   "gallery": [
     "/3dowonWebpage/assets/uploads/neural-garden-1789062261004-49630.jpg",
@@ -30,7 +30,7 @@
   "index_type_label_en": "Video",
   "meta_type_en": "Video",
   "meta_medium_en": "Video",
-  "meta_tech_en": "Arduino, real-time graphics",
+  "meta_tech_en": "Unreal",
   "meta_production_en": "Solo",
   "description_en": "<p>A generative installation in which plant forms produced by a neural network grow and dissolve within the space.</p>",
   "vimeo_url": ""

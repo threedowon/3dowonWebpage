@@ -20,7 +20,7 @@
   "meta_year": "2018",
   "meta_type": "인터랙티브",
   "meta_medium": "인터랙티브",
-  "meta_tech": "Unreal Engine, Leap Motion",
+  "meta_tech": "Unity, 3ds Max",
   "meta_production": "개인",
   "gallery": [
     "/3dowonWebpage/assets/uploads/void-echo-1789063170900-851026.jpg",
@@ -31,7 +31,7 @@
   "index_type_label_en": "Interactive",
   "meta_type_en": "Interactive",
   "meta_medium_en": "Interactive",
-  "meta_tech_en": "Unreal Engine, Leap Motion",
+  "meta_tech_en": "Unity, 3ds Max",
   "meta_production_en": "Solo",
   "description_en": "<p>An echoing installation in which the audience's footsteps resounding through an empty space return as visual patterns.</p>",
   "vimeo_url": ""

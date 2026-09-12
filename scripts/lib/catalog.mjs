@@ -50,14 +50,14 @@ export function normalizeLabItems(lab) {
       title_en: item.title_en || item.caption_en || item.title || item.caption,
       year: item.year || '',
       field,
-      thumbnail: item.image,
+      thumbnail: item.image || (item.mux?.playback_id ? `https://image.mux.com/${item.mux.playback_id}/thumbnail.jpg` : ''),
       hero_image: item.image,
       meta_type: '실험',
       meta_type_en: 'Study',
       meta_medium: fields[field][0],
       meta_medium_en: fields[field][1],
     });
-  }).filter((item) => item.thumbnail || item.video);
+  }).filter((item) => item.thumbnail || item.video || item.mux?.playback_id);
 }
 
 export function workFormY(work) {

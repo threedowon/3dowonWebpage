@@ -7,7 +7,10 @@
     "영상",
     "퍼포먼스"
   ],
-  "tech": [],
+  "tech": [
+    "TouchDesigner",
+    "DMX"
+  ],
   "production": "회사",
   "thumbnail": "/3dowonWebpage/assets/uploads/prism-field-1789063367755-754507.jpg",
   "grid_type_label": "영상, 퍼포먼스",
