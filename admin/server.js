@@ -417,6 +417,18 @@ app.put('/api/works/:slug/gallery/visibility', (req, res) => {
   res.json(work);
 });
 
+app.put('/api/works/:slug/gallery/layout', (req, res) => {
+  if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({error:'작업을 찾을 수 없어요.'});
+  const work = loadWork(req.params.slug);
+  const { rows, expected, expectedRows } = req.body;
+  if (JSON.stringify(expected) !== JSON.stringify(work.gallery) || JSON.stringify(expectedRows ?? null) !== JSON.stringify(work.detail_rows ?? null)) return res.status(409).json({error:'갤러리가 변경됐어요. 새로고침한 뒤 다시 시도해주세요.'});
+  if (!Array.isArray(rows) || rows.some(row => !Array.isArray(row) || row.length < 1 || row.length > 3)) return res.status(400).json({error:'한 줄에는 1~3장을 배치해주세요.'});
+  const flat = rows.flat();
+  if (flat.length !== work.gallery.length || new Set(flat).size !== flat.length || flat.some(src => !work.gallery.includes(src))) return res.status(400).json({error:'갤러리 이미지 목록이 올바르지 않아요.'});
+  work.gallery = flat; work.detail_rows = rows; work.detail_columns = 1;
+  saveJson(`content/works/${work.slug}.json`, work); build(); res.json(work);
+});
+
 app.put('/api/works/:slug/gallery/order', (req, res) => {
   if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({ error: '작업을 찾을 수 없어요.' });
   const work = loadWork(req.params.slug);
@@ -467,6 +479,33 @@ app.put('/api/portfolio/images', (req, res) => {
 
 const pdfUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024, files: 6 } }).array('pdfs', 6);
 const receivePdfs = (req, res, next) => pdfUpload(req, res, error => error ? res.status(400).json({ error: 'PDF는 한 번에 6개까지, 파일당 50MB까지 올릴 수 있어요.' }) : next());
+app.post('/api/works/:slug/documents', receivePdfs, asyncHandler(async (req, res) => {
+  if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({ error: '작업을 찾을 수 없어요.' });
+  if (!req.files?.length || req.files.some(file => file.buffer.subarray(0, 5).toString() !== '%PDF-')) return res.status(400).json({ error: '올바른 PDF 파일을 선택해주세요.' });
+  const work = loadWork(req.params.slug);
+  const directory = path.join(ROOT, 'assets', 'documents');
+  fs.mkdirSync(directory, { recursive: true });
+  work.documents ||= [];
+  for (const file of req.files) {
+    const id = randomUUID();
+    fs.writeFileSync(path.join(directory, `${id}.pdf`), file.buffer);
+    const decoded = Buffer.from(file.originalname, 'latin1').toString('utf8');
+    const name = (decoded.includes('\uFFFD') ? file.originalname : decoded).slice(0, 200);
+    work.documents.push({ id, name, file: `/3dowonWebpage/assets/documents/${id}.pdf` });
+  }
+  saveJson(`content/works/${work.slug}.json`, work);
+  build();
+  res.json(work.documents);
+}));
+app.delete('/api/works/:slug/documents/:id', (req, res) => {
+  if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({ error: '작업을 찾을 수 없어요.' });
+  const work = loadWork(req.params.slug);
+  work.documents = (work.documents || []).filter(item => item.id !== req.params.id);
+  saveJson(`content/works/${work.slug}.json`, work);
+  build();
+  res.json(work.documents);
+});
+
 app.get('/api/teaching-materials', (req, res) => res.json(loadJson('content/teaching-materials.json')));
 app.post('/api/teaching-materials', receivePdfs, asyncHandler(async (req, res) => {
   if (!req.files?.length || req.files.some(file => file.buffer.subarray(0, 5).toString() !== '%PDF-')) return res.status(400).json({ error: '올바른 PDF 파일을 선택해주세요.' });

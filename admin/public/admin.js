@@ -1,3 +1,33 @@
+const rowNumberDrafts = new Map();
+function galleryRows(work) {
+  const gallery = work.gallery || [];
+  const remaining = new Set(gallery);
+  const rows = [];
+  const source = Array.isArray(work.detail_rows) ? work.detail_rows : Array.from({length: Math.ceil(gallery.length / (Number(work.detail_columns) || 1))}, (_, i) => gallery.slice(i * (Number(work.detail_columns) || 1), (i + 1) * (Number(work.detail_columns) || 1)));
+  for (const row of source) {
+    const valid = row.filter(src => remaining.has(src)).slice(0, 3);
+    valid.forEach(src => remaining.delete(src));
+    if (valid.length) rows.push(valid);
+  }
+  for (const src of remaining) rows.push([src]);
+  return rows;
+}
+function groupSelection(rows, selected, ungroup = false) {
+  const picked = rows.flat().filter(src => selected.includes(src));
+  const result = []; let inserted = false;
+  for (const row of rows) {
+    if (!row.some(src => picked.includes(src))) { result.push(row); continue; }
+    if (!inserted && !ungroup) { result.push(picked); inserted = true; }
+    for (const src of row) if (ungroup || !picked.includes(src)) result.push([src]);
+  }
+  return result;
+}
+function moveRow(rows, from, to) {
+  const result = rows.map(row => [...row]);
+  if (from === to || from < 0 || to < 0 || to >= rows.length) return result;
+  result.splice(to, 0, result.splice(from, 1)[0]);
+  return result;
+}
 // 사이트 필터에서는 유형(설치~전시·VR/AR)과 태그(인터랙티브/프로젝션)가 한 목록으로 합쳐져 보이므로
 // admin에서도 이 7개를 하나의 다중선택으로 다룬다.
 let TYPE_OPTIONS = ['설치', '영상', '퍼포먼스', '전시', 'VR/AR', '인터랙티브', '프로젝션', '모바일'];
@@ -64,7 +94,7 @@ document.querySelectorAll('.admin-tab').forEach((tab) => {
 });
 
 window.addEventListener('beforeunload', (e) => {
-  if (dirtyWorks.size > 0 || techOptionsDirty || typeOptionsDirty) {
+  if (dirtyWorks.size > 0 || techOptionsDirty || typeOptionsDirty || rowNumberDrafts.size > 0) {
     e.preventDefault();
     e.returnValue = '';
   }
@@ -109,7 +139,7 @@ function markWorkDirty(slug) {
 }
 
 function previewPath(work) {
-  return work.thumbnail || work.gallery?.[0] || work.hero_image || '';
+  return work.gallery?.[0] || (work.mux?.playback_id ? 'https://image.mux.com/'+work.mux.playback_id+'/thumbnail.jpg' : '');
 }
 function updateWorkCardHead(card, work) {
   card.querySelector('.work-title').textContent = work.title;
@@ -175,19 +205,36 @@ function refreshGalleryGrid(galleryGrid, work, gallery) {
   work.gallery = [...gallery];
   galleryGrid.innerHTML = '';
   gallery.forEach((src, i) => appendGalleryItem(galleryGrid, work, src, i));
+  decorateGalleryRows(galleryGrid, work);
   updateWorkCardHead(galleryGrid.closest('.work-card'), work);
 }
-async function moveGalleryImage(grid, work, from, to) {
-  if (grid.dataset.busy === 'true' || from === to || to < 0 || to >= work.gallery.length) return;
-  const order = work.gallery.map((_, index) => index);
-  order.splice(to, 0, order.splice(from, 1)[0]);
-  galleryBusy(grid, true, '이미지 순서를 저장하고 있어요…');
+function decorateGalleryRows(grid, work) {
+  // Keep tiles in place while numbers are edited; applying is the only regroup action.
+  const drafts = rowNumberDrafts.get(work.slug);
+  if (drafts) for (const input of grid.querySelectorAll('.gallery-row-number')) {
+    const src=work.gallery[Number(input.closest('.gallery-item').dataset.index)];
+    if(drafts.has(src)) input.value=drafts.get(src);
+  }
+}
+async function saveGalleryRows(grid, work, rows) {
+  if(grid.dataset.busy==='true')return;
+  galleryBusy(grid,true,'이미지 배치를 저장하고 있어요…');
   try {
-    const updated = await api('/api/works/' + work.slug + '/gallery/order', {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({order,expected:work.gallery})});
-    refreshGalleryGrid(grid, work, updated.gallery || []);
-    galleryBusy(grid, false, '이미지 순서를 저장했어요.');
-    grid.children[to]?.focus();
-  } catch (error) { galleryBusy(grid, false, error.message); }
+    const updated=await api(`/api/works/${work.slug}/gallery/layout`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({rows,expected:work.gallery,expectedRows:work.detail_rows??null})});
+    rowNumberDrafts.delete(work.slug);
+    work.detail_rows=updated.detail_rows; work.detail_columns=1;
+    refreshGalleryGrid(grid,work,updated.gallery);
+    galleryBusy(grid,false,'이미지 배치를 저장했어요.');
+  } catch(error){galleryBusy(grid,false,error.message);}
+}
+async function moveGalleryImage(grid, work, from, to) {
+  if(rowNumberDrafts.has(work.slug)){grid.closest('.work-card').querySelector('.gallery-status').textContent='줄 번호를 먼저 배치 적용해주세요.';return;}
+  if(to<0 || to>=work.gallery.length)return;
+  const rows=galleryRows(work), a=rows.findIndex(row=>row.includes(work.gallery[from]));
+  let b=rows.findIndex(row=>row.includes(work.gallery[to]));
+  if(a===b) b=a+(to>from?1:-1);
+  if(b<0 || b>=rows.length)return;
+  await saveGalleryRows(grid,work,moveRow(rows,a,b));
 }
 function appendGalleryItem(galleryGrid, work, src, index) {
   const item = document.createElement('div');
@@ -204,6 +251,19 @@ function appendGalleryItem(galleryGrid, work, src, index) {
   toggle.checked = !(work.works_hidden_images || []).includes(src);
   visibility.append(toggle, document.createTextNode('Works에 표시'));
   item.append(visibility);
+  const rowLabel=document.createElement('label'); rowLabel.className='gallery-row-input';
+  const rowInput=document.createElement('input'); rowInput.className='gallery-row-number';
+  rowInput.type='number';rowInput.min='1';rowInput.step='1';rowInput.setAttribute('aria-label',`이미지 ${index+1} 줄 번호`);
+  rowInput.value=galleryRows(work).findIndex(row=>row.includes(src))+1;
+  rowLabel.append(document.createTextNode('줄 번호'),rowInput);item.append(rowLabel);
+  rowInput.addEventListener('input',()=>{
+    if(!rowNumberDrafts.has(work.slug))rowNumberDrafts.set(work.slug,new Map());
+    const draft=rowNumberDrafts.get(work.slug);
+    if(rowInput.value===String(galleryRows(work).findIndex(row=>row.includes(src))+1))draft.delete(src);
+    else draft.set(src,rowInput.value);
+    if(!draft.size)rowNumberDrafts.delete(work.slug);
+    galleryGrid.closest('.work-card').querySelector('.gallery-status').textContent='줄 번호 수정 중 · 배치 적용을 누르면 저장됩니다.';
+  });
   item.classList.toggle('works-excluded', !toggle.checked);
   toggle.addEventListener('change', async () => {
     const visible = toggle.checked;
@@ -248,7 +308,7 @@ function appendGalleryItem(galleryGrid, work, src, index) {
     event.preventDefault(); item.classList.remove('drop-target');
     const from = Number(galleryGrid.dataset.dragIndex);
     delete galleryGrid.dataset.dragIndex;
-    moveGalleryImage(galleryGrid, work, from, index);
+    if(!galleryRows(work).some(row=>row.includes(work.gallery[from]) && row.includes(src))) moveGalleryImage(galleryGrid, work, from, index);
   });
   item.addEventListener('dragend', () => {
     delete galleryGrid.dataset.dragIndex;
@@ -289,12 +349,6 @@ function renderWorkCard(work) {
       <span class="work-preview"></span><span class="work-card-caption"><strong class="work-title"></strong><span class="work-subtitle"></span><span class="work-slug">${escapeHtml(work.slug)}</span></span><span class="work-expand" aria-hidden="true">＋</span>
     </button>
     <div class="work-card-body">
-      <div class="thumb-row">
-        <div>
-          <img src="${imgUrl(work.thumbnail)}" alt="" />
-          <a href="/api/mux/local-download?target=${encodeURIComponent('works:'+work.slug)}&field=thumbnail">썸네일 다운로드</a><div class="thumb-label">목록 미리보기 썸네일<input type="file" accept="image/*" class="img-input" data-field="thumbnail" /></div>
-        </div>
-      </div>
       <form class="admin-form edit-form">
         <div class="field-row">
           <label>작업명<input name="title" value="${escapeAttr(work.title)}" /></label>
@@ -307,14 +361,14 @@ function renderWorkCard(work) {
         <label>설명 (EN)<textarea name="description_en" rows="4">${escapeHtml(work.description_en)}</textarea></label>
         <label>외부 영상 링크 · Vimeo<input name="vimeo_url" value="${escapeAttr(work.vimeo_url)}" /></label>
         <div class="field-row"><label>상세 이미지 배경색<input type="color" name="detail_background" value="${/^#[0-9a-f]{6}$/i.test(work.detail_background || '') ? work.detail_background : '#dddddd'}" /></label><button type="button" class="reset-detail-background">기본 회색으로</button></div>
-        <label>상세 이미지 배치<select name="detail_columns">${[1,2,3].map(n => `<option value="${n}"${Number(work.detail_columns || 1) === n ? ' selected' : ''}>한 줄에 ${n}장</option>`).join('')}</select></label>
+        <input type="hidden" name="detail_columns" value="${Number(work.detail_columns || 1)}" />
         <div class="field-row">
           <button type="submit">저장</button>
           <button type="button" class="danger delete-work">삭제</button>
         </div>
       </form>
       <div class="project-video-tools" data-video-target="works:${escapeAttr(work.slug)}"></div>
-      <h4>갤러리 이미지</h4><p class="field-help">이미지를 드래그하거나 화살표 버튼으로 옮기면 순서가 바로 저장됩니다.</p>
+      <h4>갤러리 이미지</h4><p class="field-help">이미지마다 줄 번호를 입력하고 배치 적용을 눌러주세요. 같은 줄 안에서는 갤러리 순서대로 표시됩니다.</p>
       <div class="gallery-grid"></div>
       <label class="gallery-upload">이미지 여러 장 추가<input type="file" accept="image/*" multiple class="gallery-input" /></label><p class="field-help">Ctrl 또는 Shift로 여러 파일을 선택할 수 있어요. 한 번에 최대 20장까지 추가됩니다.</p><p class="gallery-status" role="status"></p>
     </div>
@@ -323,6 +377,21 @@ function renderWorkCard(work) {
   updateWorkCardHead(card, work);
   const galleryGrid = card.querySelector('.gallery-grid');
   (work.gallery || []).forEach((src, i) => appendGalleryItem(galleryGrid, work, src, i));
+  decorateGalleryRows(galleryGrid, work);
+  const layoutTools=document.createElement('div'); layoutTools.className='gallery-layout-tools';
+  layoutTools.innerHTML='<span>같은 줄 번호는 나란히 배치됩니다. 한 줄에 최대 3장 · 작은 번호부터 표시 · 적용 전에는 이미지 위치가 유지됩니다.</span><button type="button" class="primary">배치 적용</button>';
+  galleryGrid.before(layoutTools);
+  layoutTools.querySelector('button').onclick=()=>{
+    const rows=new Map();
+    for(const input of galleryGrid.querySelectorAll('.gallery-row-number')){
+      const number=Number(input.value);
+      if(!Number.isSafeInteger(number)||number<1){input.focus();card.querySelector('.gallery-status').textContent='줄 번호는 1 이상의 정수로 입력해주세요.';return;}
+      if(!rows.has(number))rows.set(number,[]);
+      rows.get(number).push(work.gallery[Number(input.closest('.gallery-item').dataset.index)]);
+    }
+    for(const [number,row] of rows)if(row.length>3){card.querySelector('.gallery-status').textContent=`${number}번 줄에 ${row.length}장이 있어요. 한 줄에는 최대 3장까지 배치할 수 있어요.`;return;}
+    saveGalleryRows(galleryGrid,work,[...rows].sort((a,b)=>a[0]-b[0]).map(([,row])=>row));
+  };
 
   card.querySelector('.work-card-head').addEventListener('click', () => {
     const willClose = card.classList.contains('open');
@@ -337,6 +406,56 @@ function renderWorkCard(work) {
   });
 
   const editForm = card.querySelector('.edit-form');
+  editForm.id = `work-editor-${work.slug}`;
+  const videoSection = document.createElement('section');
+  videoSection.className = 'work-video-section';
+  const videoLink = editForm.querySelector('[name="vimeo_url"]');
+  videoLink.setAttribute('form', editForm.id);
+  videoLink.addEventListener('input', () => markWorkDirty(work.slug));
+  videoLink.addEventListener('change', () => markWorkDirty(work.slug));
+  videoSection.append(card.querySelector('.project-video-tools'), videoLink.closest('label'));
+  const actions = editForm.querySelector('[type="submit"]').parentElement;
+  actions.className = 'work-actions';
+  actions.querySelector('[type="submit"]').setAttribute('form', editForm.id);
+  const documentsSection = document.createElement('section');
+  documentsSection.className = 'work-documents';
+  documentsSection.innerHTML = `<h4>PDF 첨부</h4><p class="field-help">첨부하면 상세 설명 맨 아래에 보도자료 링크가 표시됩니다. 파일당 50MB, 한 번에 6개까지 올릴 수 있어요. 첨부와 제거는 바로 저장됩니다.</p><div class="work-document-list"></div><label>PDF 파일 추가<input type="file" accept="application/pdf,.pdf" multiple /></label><p role="status"></p>`;
+  const pdfInput = documentsSection.querySelector('input');
+  const pdfStatus = documentsSection.querySelector('[role="status"]');
+  const renderDocuments = () => {
+    const list = documentsSection.querySelector('.work-document-list');
+    list.replaceChildren();
+    for (const item of work.documents || []) {
+      const row = document.createElement('div');
+      const link = document.createElement('a');
+      link.textContent = item.name || 'PDF 보기';
+      link.href = item.file.replace('/3dowonWebpage/assets/', '/site/assets/'); link.target = '_blank'; link.rel = 'noopener';
+      const remove = document.createElement('button');
+      remove.type = 'button'; remove.className = 'danger'; remove.textContent = '첨부 제거';
+      remove.onclick = async () => {
+        if (!confirm('이 PDF 첨부를 제거할까요?')) return;
+        remove.disabled = true;
+        try {
+          work.documents = await api(`/api/works/${work.slug}/documents/${item.id}`, { method: 'DELETE' });
+          renderDocuments(); pdfStatus.textContent = '첨부를 제거했어요.';
+        } catch (error) { pdfStatus.textContent = error.message; remove.disabled = false; }
+      };
+      row.append(link, remove); list.append(row);
+    }
+  };
+  pdfInput.onchange = async () => {
+    if (!pdfInput.files.length) return;
+    const data = new FormData();
+    for (const file of pdfInput.files) data.append('pdfs', file);
+    pdfInput.disabled = true; pdfStatus.textContent = 'PDF를 첨부하고 있어요…';
+    try {
+      work.documents = await api(`/api/works/${work.slug}/documents`, { method: 'POST', body: data });
+      renderDocuments(); pdfStatus.textContent = 'PDF를 첨부했어요.';
+    } catch (error) { pdfStatus.textContent = error.message; }
+    finally { pdfInput.disabled = false; pdfInput.value = ''; }
+  };
+  renderDocuments();
+  card.querySelector('.work-card-body').append(videoSection, documentsSection, actions);
   card.querySelector('.reset-detail-background').addEventListener('click', () => {
     editForm.detail_background.value = '#dddddd';
     markWorkDirty(work.slug);
@@ -346,7 +465,7 @@ function renderWorkCard(work) {
 
   editForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const saveButton = editForm.querySelector('[type="submit"]');
+    const saveButton = card.querySelector('.work-actions [type="submit"]');
     saveButton.disabled = true;
     try {
     const fd = new FormData(e.target);
@@ -363,7 +482,7 @@ function renderWorkCard(work) {
         description_en: fd.get('description_en'),
         vimeo_url: fd.get('vimeo_url'),
         detail_background: fd.get('detail_background'),
-        detail_columns: Number(fd.get('detail_columns')),
+        detail_columns: work.detail_rows ? 1 : Number(fd.get('detail_columns')),
       }),
     });
     dirtyWorks.delete(work.slug);
@@ -381,26 +500,6 @@ function renderWorkCard(work) {
     if (!confirm(`"${work.title}"을(를) 삭제할까요?`)) return;
     await api(`/api/works/${work.slug}`, { method: 'DELETE' });
     loadWorks();
-  });
-
-  card.querySelectorAll('.img-input').forEach((input) => {
-    input.addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const fd = new FormData();
-      fd.append('image', file);
-      try {
-        const updated = await api(`/api/works/${work.slug}/${input.dataset.field}`, { method: 'POST', body: fd });
-        const thumbImg = card.querySelector('.thumb-row img');
-        if (thumbImg && updated.thumbnail) thumbImg.src = imgUrl(updated.thumbnail);
-        Object.assign(work, updated); updateWorkCardHead(card, work);
-        openWorkSlugs.add(work.slug);
-        card.classList.add('open');
-      } catch (err) {
-        alert(err.message);
-        e.target.value = '';
-      }
-    });
   });
 
   card.querySelector('.gallery-input').addEventListener('change', async (e) => {

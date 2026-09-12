@@ -26,12 +26,16 @@
   "description_en": "",
   "vimeo_url": "",
   "gallery": [
-    "/3dowonWebpage/assets/uploads/postcode-1789151991805-379164.jpg",
-    "/3dowonWebpage/assets/uploads/postcode-1789151992284-919152.jpg"
+    "/3dowonWebpage/assets/uploads/postcode-1789222527559-199535.jpg",
+    "/3dowonWebpage/assets/uploads/postcode-1789222528062-649129.jpg",
+    "/3dowonWebpage/assets/uploads/postcode-1789222528532-308827.jpg",
+    "/3dowonWebpage/assets/uploads/postcode-1789222528971-508417.jpg",
+    "/3dowonWebpage/assets/uploads/postcode-1789222529386-414340.jpg"
   ],
   "grid_type_label_en": "Exhibition, Interactive",
   "index_type_label_en": "Exhibition, Interactive",
   "meta_type_en": "Exhibition, Interactive",
   "meta_medium_en": "Exhibition, Interactive",
-  "detail_background": "#dddddd"
+  "detail_background": "#dddddd",
+  "detail_columns": 1
 }

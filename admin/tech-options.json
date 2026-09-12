@@ -1,0 +1,66 @@
+[
+  {
+    "name": "Unreal Engine",
+    "en": "Unreal Engine"
+  },
+  {
+    "name": "Unity",
+    "en": "Unity"
+  },
+  {
+    "name": "Physical Computing",
+    "en": "Physical Computing"
+  },
+  {
+    "name": "3ds Max",
+    "en": "3ds Max"
+  },
+  {
+    "name": "VIVE",
+    "en": "VIVE"
+  },
+  {
+    "name": "Oculus Quest 2",
+    "en": "Oculus Quest 2"
+  },
+  {
+    "name": "Azure Kinect",
+    "en": "Azure Kinect"
+  },
+  {
+    "name": "Oculus Rift",
+    "en": "Oculus Rift"
+  },
+  {
+    "name": "Orbbec Astra PRO",
+    "en": "Orbbec Astra PRO"
+  },
+  {
+    "name": "Python",
+    "en": "Python"
+  },
+  {
+    "name": "OpenCV",
+    "en": "OpenCV"
+  },
+  {
+    "name": "MediaPipe",
+    "en": "MediaPipe"
+  },
+  {
+    "name": "TouchOSC",
+    "en": "TouchOSC"
+  },
+  {
+    "name": "Leap Motion",
+    "en": "Leap Motion"
+  },
+  {
+    "name": "JavaScript",
+    "en": "JavaScript"
+  },
+  {
+    "name": "Node.js",
+    "en": "Node.js"
+  }
+]
