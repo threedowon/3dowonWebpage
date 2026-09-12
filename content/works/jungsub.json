@@ -2,30 +2,70 @@
   "slug": "jungsub",
   "title": "ㅈㅜㅇㅅㅓㅂ",
   "year": 2019,
-  "type": "VR/AR",
+  "type": "VR",
   "tags": [
-    "VR/AR"
+    "VR"
   ],
-  "tech": [],
-  "production": "개인",
+  "tech": [
+    "Unity",
+    "3ds Max",
+    "Oculus Rift"
+  ],
+  "production": "공동",
   "thumbnail": "",
-  "grid_type_label": "VR/AR",
-  "index_type_label": "VR/AR",
+  "grid_type_label": "VR",
+  "index_type_label": "VR",
   "preview_bg": "",
   "hero_image": "",
   "meta_year": "2019",
-  "meta_type": "VR/AR",
-  "meta_medium": "VR/AR",
-  "meta_tech": "",
-  "meta_tech_en": "",
-  "meta_production": "개인",
-  "meta_production_en": "Solo",
+  "meta_type": "VR",
+  "meta_medium": "VR",
+  "meta_tech": "Unity, 3ds Max, Oculus Rift",
+  "meta_tech_en": "Unity, 3ds Max, Oculus Rift",
+  "meta_production": "공동",
+  "meta_production_en": "Collaborative",
   "description": "",
   "description_en": "",
   "vimeo_url": "",
-  "gallery": [],
-  "grid_type_label_en": "VR/AR",
-  "index_type_label_en": "VR/AR",
-  "meta_type_en": "VR/AR",
-  "meta_medium_en": "VR/AR"
+  "gallery": [
+    "/3dowonWebpage/assets/uploads/jungsub-1789224513276-661926.jpg",
+    "/3dowonWebpage/assets/uploads/jungsub-1789224513463-438512.jpg",
+    "/3dowonWebpage/assets/uploads/jungsub-1789224513085-635425.jpg",
+    "/3dowonWebpage/assets/uploads/jungsub-1789224512932-291065.jpg",
+    "/3dowonWebpage/assets/uploads/jungsub-1789224513665-858008.jpg"
+  ],
+  "grid_type_label_en": "VR",
+  "index_type_label_en": "VR",
+  "meta_type_en": "VR",
+  "meta_medium_en": "VR",
+  "mux": {
+    "upload_id": "C00M5qIt3uCJgwHXuI1YCGU024FEuH1fl6TWFWtabuMJ4",
+    "asset_id": "DSFmMZdPft00Y1PObFpQ7lyb01sdy1yRXHTK6rLPwgbJo",
+    "playback_id": "rJgXRvPTcFPI2WOSj4lmOERfjYn6NQzp02lzUwf7lSjo",
+    "aspect_ratio": "16:9"
+  },
+  "month": null,
+  "detail_background": "#dddddd",
+  "detail_columns": 1,
+  "detail_rows": [
+    [
+      "/3dowonWebpage/assets/uploads/jungsub-1789224513276-661926.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/jungsub-1789224513463-438512.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/jungsub-1789224513085-635425.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/jungsub-1789224512932-291065.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/jungsub-1789224513665-858008.jpg"
+    ]
+  ],
+  "works_hidden_images": [
+    "/3dowonWebpage/assets/uploads/jungsub-1789224513665-858008.jpg",
+    "/3dowonWebpage/assets/uploads/jungsub-1789224512932-291065.jpg"
+  ]
 }

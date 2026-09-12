@@ -23,7 +23,14 @@
   "meta_tech": "Unity, 3ds Max",
   "meta_production": "공동",
   "gallery": [
-    "/3dowonWebpage/assets/uploads/ghost-frequency-1789063323560-649882.jpg"
+    "/3dowonWebpage/assets/uploads/ghost-frequency-1789225011293-239473.jpg",
+    "/3dowonWebpage/assets/uploads/ghost-frequency-55e5a8e8-30f9-4b45-a37b-056ec8cf9e8e.gif",
+    "/3dowonWebpage/assets/uploads/ghost-frequency-e7d8e50c-2c1f-4cf8-8e32-d7ccc0798b06.gif",
+    "/3dowonWebpage/assets/uploads/ghost-frequency-3356c9f1-6ef3-4a51-9e9d-5d7602d6994e.gif",
+    "/3dowonWebpage/assets/uploads/ghost-frequency-cd952838-c1d4-44f9-8070-00865c2a65ef.gif",
+    "/3dowonWebpage/assets/uploads/ghost-frequency-2d905cbb-6555-473d-94e7-f95f46950cdf.gif",
+    "/3dowonWebpage/assets/uploads/ghost-frequency-63bf4f31-c84a-4238-83d1-123dafac3b2c.gif",
+    "/3dowonWebpage/assets/uploads/ghost-frequency-af1c7a59-d512-4822-8e05-73bb9a5259f5.gif"
   ],
   "grid_type_label_en": "Interactive",
   "index_type_label_en": "Interactive",
@@ -32,5 +39,45 @@
   "meta_tech_en": "Unity, 3ds Max",
   "meta_production_en": "Collaborative",
   "description_en": "<p>An interactive installation translating an invisible frequency band into light.</p>",
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "month": null,
+  "detail_background": "#dddddd",
+  "detail_columns": 1,
+  "mux": {
+    "upload_id": "lOHqOlBQ00CexcWG013Y8dOUIT006BRsgylPZVXusUL8nQ",
+    "asset_id": "1wV1W1Rj865KKbmngf73PA6NhJZLSWCZOE6iE2lVhwQ",
+    "playback_id": "00hXlFoRt8Mxh2kJvUytHP901BCNzFSfC79AFJnHDG55g",
+    "aspect_ratio": "16:9"
+  },
+  "detail_rows": [
+    [
+      "/3dowonWebpage/assets/uploads/ghost-frequency-1789225011293-239473.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/ghost-frequency-55e5a8e8-30f9-4b45-a37b-056ec8cf9e8e.gif"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/ghost-frequency-e7d8e50c-2c1f-4cf8-8e32-d7ccc0798b06.gif"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/ghost-frequency-3356c9f1-6ef3-4a51-9e9d-5d7602d6994e.gif"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/ghost-frequency-cd952838-c1d4-44f9-8070-00865c2a65ef.gif"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/ghost-frequency-2d905cbb-6555-473d-94e7-f95f46950cdf.gif"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/ghost-frequency-63bf4f31-c84a-4238-83d1-123dafac3b2c.gif"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/ghost-frequency-af1c7a59-d512-4822-8e05-73bb9a5259f5.gif"
+    ]
+  ],
+  "works_hidden_images": [
+    "/3dowonWebpage/assets/uploads/ghost-frequency-55e5a8e8-30f9-4b45-a37b-056ec8cf9e8e.gif",
+    "/3dowonWebpage/assets/uploads/ghost-frequency-e7d8e50c-2c1f-4cf8-8e32-d7ccc0798b06.gif",
+    "/3dowonWebpage/assets/uploads/ghost-frequency-cd952838-c1d4-44f9-8070-00865c2a65ef.gif"
+  ]
 }

@@ -23,10 +23,12 @@
   "meta_tech": "Unreal, Arduino",
   "meta_production": "개인",
   "gallery": [
+    "/3dowonWebpage/assets/uploads/silent-circuit-1789224069368-897362.jpg",
     "/3dowonWebpage/assets/uploads/silent-circuit-1789062941246-630440.jpg",
     "/3dowonWebpage/assets/uploads/silent-circuit-1789062945176-861618.jpg",
     "/3dowonWebpage/assets/uploads/silent-circuit-1789062947056-65412.jpg",
-    "/3dowonWebpage/assets/uploads/silent-circuit-1789062948792-383614.jpg"
+    "/3dowonWebpage/assets/uploads/silent-circuit-1789062948792-383614.jpg",
+    "/3dowonWebpage/assets/uploads/silent-circuit-1789224064554-921323.jpg"
   ],
   "grid_type_label_en": "Interactive",
   "index_type_label_en": "Interactive",
@@ -35,5 +37,45 @@
   "meta_tech_en": "Unreal, Arduino",
   "meta_production_en": "Solo",
   "description_en": "<p>An interactive installation visualizing the flow of electrical signals as a circuit of light.</p>",
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "detail_rows": [
+    [
+      "/3dowonWebpage/assets/uploads/silent-circuit-1789224069368-897362.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/silent-circuit-1789062941246-630440.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/silent-circuit-1789062945176-861618.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/silent-circuit-1789062947056-65412.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/silent-circuit-1789062948792-383614.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/silent-circuit-1789224064554-921323.jpg"
+    ]
+  ],
+  "detail_columns": 1,
+  "works_hidden_images": [
+    "/3dowonWebpage/assets/uploads/silent-circuit-1789224069368-897362.jpg",
+    "/3dowonWebpage/assets/uploads/silent-circuit-1789224064554-921323.jpg"
+  ],
+  "documents": [
+    {
+      "id": "6e9c0652-e0e7-4051-9201-3b2f6796efd2",
+      "name": "정령의숲_보도자료.pdf",
+      "file": "/3dowonWebpage/assets/documents/6e9c0652-e0e7-4051-9201-3b2f6796efd2.pdf"
+    }
+  ],
+  "month": null,
+  "detail_background": "#dddddd",
+  "mux": {
+    "upload_id": "WN4eeTVGUsAnt7moZPzZc1Y2f01fUk5g02spnxjq17jKA",
+    "asset_id": "XgEXV3zACzmhWBrgD02wP8YELQmYq776tnKeHNlk4xec",
+    "playback_id": "Kz00pSae9EfxaYmQGjYMM01nvPFVPU6HyHDh0201n9vOwkQ",
+    "aspect_ratio": "16:9"
+  }
 }

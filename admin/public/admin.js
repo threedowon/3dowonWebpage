@@ -1,3 +1,51 @@
+function createProcessEditor(form, work) {
+  const host = document.createElement('section');
+  host.className = 'work-process-editor';
+  host.innerHTML = '<h4>Process · 제작 과정</h4><p class="field-help">제목과 설명은 오른쪽에, 추가한 미디어는 왼쪽 회색 영역에 표시됩니다. 각 과정에 파일을 직접 여러 개 올릴 수 있고, 파일 없이 글만 작성해도 됩니다. 영상은 무음 자동 반복 재생됩니다. 변경 사항은 프로젝트 저장 버튼으로 저장됩니다.</p><div class="process-entry-list"></div><button type="button" class="process-add">+ 과정 추가</button>';
+  form.querySelector('[name="responsibilities"]').closest('.field-row').after(host);
+  form.querySelector('[name="production"]').closest('label').after(form.querySelector('[name="company"]').closest('label'));
+  let entries = [];
+  let uploading = false;
+  const dirty = () => markWorkDirty(work.slug);
+  const render = () => {
+    const list = host.querySelector('.process-entry-list'); list.replaceChildren();
+    entries.forEach((entry, index) => {
+      const row = document.createElement('fieldset'); row.className = 'process-entry';
+      row.innerHTML = `<legend>Process ${index+1}</legend><div class="process-actions"><button type="button" data-move="-1" ${index===0?'disabled':''}>↑ 위로</button><button type="button" data-move="1" ${index===entries.length-1?'disabled':''}>↓ 아래로</button><button type="button" class="danger" data-remove>과정 삭제</button></div><div class="field-row"><label>제목<input data-field="title" value="${escapeAttr(entry.title||'')}" /></label><label>제목 (EN)<input data-field="title_en" value="${escapeAttr(entry.title_en||'')}" /></label></div><label>내용<textarea data-field="description" rows="4">${escapeHtml(entry.description||'')}</textarea></label><label>내용 (EN)<textarea data-field="description_en" rows="4">${escapeHtml(entry.description_en||'')}</textarea></label><label>한 줄에 표시할 개수<select class="process-columns">${[1,2,3].map(n=>`<option value="${n}" ${Number(entry.columns||1)===n?'selected':''}>${n}개</option>`).join('')}</select></label><div class="process-media-options"></div><label>이 과정에 이미지·GIF·영상 추가<input class="process-upload" type="file" accept="image/*,video/*,.mp4,.mov,.webm,.m4v" multiple /></label><p class="field-help">한 번에 최대 20개, 파일당 150MB. 파일 순서대로 배치되며 마지막 줄은 남은 개수만 표시됩니다.</p><p class="process-upload-status" role="status"></p>`;
+      row.querySelectorAll('[data-field]').forEach(input => input.oninput = () => {entry[input.dataset.field]=input.value;dirty();});
+      row.querySelector('[data-remove]').onclick = () => {entries.splice(index,1);dirty();render();};
+      row.querySelectorAll('[data-move]').forEach(button => button.onclick = () => {const next=index+Number(button.dataset.move);[entries[index],entries[next]]=[entries[next],entries[index]];dirty();render();});
+      row.querySelector('.process-columns').onchange=e=>{entry.columns=Number(e.target.value);dirty();};
+      const options=row.querySelector('.process-media-options');
+      entry.images.forEach((src,i)=>{
+        const tile=document.createElement('div');tile.className='process-media-tile';
+        const media=document.createElement(isGalleryVideo(src)?'video':'img');media.src=imgUrl(src);
+        if(media.tagName==='VIDEO'){media.muted=true;media.autoplay=true;media.loop=true;media.playsInline=true;media.preload='metadata';}else{media.alt=`과정 미디어 ${i+1}`;media.loading='lazy';}
+        const controls=document.createElement('div');controls.className='process-actions';
+        for(const [text,offset] of [['←',-1],['→',1],['제거',0]]){
+          const button=document.createElement('button');button.type='button';button.textContent=text;button.disabled=offset!==0&&(i+offset<0||i+offset>=entry.images.length);button.setAttribute('aria-label',`미디어 ${i+1} ${text}`);
+          button.onclick=()=>{if(offset)[entry.images[i],entry.images[i+offset]]=[entry.images[i+offset],entry.images[i]];else entry.images.splice(i,1);dirty();render();};controls.append(button);
+        }
+        tile.append(media,controls);options.append(tile);
+      });
+      row.querySelector('.process-upload').onchange=async e=>{
+        const files=[...e.target.files];if(!files.length)return;
+        const data=new FormData();files.forEach(file=>data.append('images',file));
+        uploading=true;host.querySelectorAll('button,input[type="file"]').forEach(el=>el.disabled=true);
+        const status=row.querySelector('.process-upload-status');status.textContent=`${files.length}개 파일 업로드·변환 중…`;
+        try{const result=await api(`/api/works/${work.slug}/process/media`,{method:'POST',body:data});entry.images.push(...result.added);dirty();}
+        catch(error){alert(error.message);}
+        finally{uploading=false;render();host.querySelector('.process-add').disabled=false;}
+      };
+      list.append(row);
+    });
+  };
+  const editor={get busy(){return uploading;},get:()=>structuredClone(entries),set:value=>{entries=structuredClone(value||[]).map(entry=>({...entry,images:entry.images||[],columns:entry.columns||1}));render();}};
+  host.querySelector('.process-add').onclick=()=>{entries.push({title:'',title_en:'',description:'',description_en:'',images:[]});dirty();render();};
+  editor.set(work.process);form.processEditor=editor;
+}
+
+const isGalleryVideo = src => /\.(mp4|webm|mov|m4v)(?:[?#]|$)/i.test(src || '');
 const rowNumberDrafts = new Map();
 function galleryRows(work) {
   const gallery = work.gallery || [];
@@ -107,6 +155,10 @@ function captureWorkForm(form) {
     year: fd.get('year'),
     types: fd.getAll('types'),
     production: fd.get('production'),
+    company: fd.get('company'),
+    responsibilities: fd.get('responsibilities'),
+    responsibilities_en: fd.get('responsibilities_en'),
+    process: form.processEditor?.get(),
     tech: fd.getAll('tech'),
     description: fd.get('description'),
     description_en: fd.get('description_en'),
@@ -121,6 +173,8 @@ function applyWorkForm(form, draft) {
   form.title.value = draft.title ?? '';
   form.year.value = draft.year ?? '';
   form.production.value = draft.production ?? '';
+  for(const key of ['company','responsibilities','responsibilities_en']) form.elements.namedItem(key).value=draft[key]??'';
+  form.processEditor?.set(draft.process);
   form.description.value = draft.description ?? '';
   form.description_en.value = draft.description_en ?? '';
   form.vimeo_url.value = draft.vimeo_url ?? '';
@@ -147,6 +201,7 @@ function updateWorkCardHead(card, work) {
   const preview = card.querySelector('.work-preview');
   if (previewPath(work)) {
     preview.innerHTML = '<img src="' + escapeAttr(imgUrl(previewPath(work))) + '" alt="" loading="lazy" />';
+    if(isGalleryVideo(previewPath(work))) preview.innerHTML='<video src="'+escapeAttr(imgUrl(previewPath(work)))+'" muted autoplay loop playsinline preload="metadata"></video>';
   } else preview.textContent = '이미지 없음';
 }
 function filterWorks() {
@@ -217,7 +272,7 @@ function decorateGalleryRows(grid, work) {
   }
 }
 async function saveGalleryRows(grid, work, rows) {
-  if(grid.dataset.busy==='true')return;
+  if(grid.dataset.busy==='true')return false;
   galleryBusy(grid,true,'이미지 배치를 저장하고 있어요…');
   try {
     const updated=await api(`/api/works/${work.slug}/gallery/layout`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({rows,expected:work.gallery,expectedRows:work.detail_rows??null})});
@@ -225,16 +280,19 @@ async function saveGalleryRows(grid, work, rows) {
     work.detail_rows=updated.detail_rows; work.detail_columns=1;
     refreshGalleryGrid(grid,work,updated.gallery);
     galleryBusy(grid,false,'이미지 배치를 저장했어요.');
-  } catch(error){galleryBusy(grid,false,error.message);}
+    return true;
+  } catch(error){galleryBusy(grid,false,error.message);return false;}
 }
 async function moveGalleryImage(grid, work, from, to) {
   if(rowNumberDrafts.has(work.slug)){grid.closest('.work-card').querySelector('.gallery-status').textContent='줄 번호를 먼저 배치 적용해주세요.';return;}
   if(to<0 || to>=work.gallery.length)return;
-  const rows=galleryRows(work), a=rows.findIndex(row=>row.includes(work.gallery[from]));
-  let b=rows.findIndex(row=>row.includes(work.gallery[to]));
-  if(a===b) b=a+(to>from?1:-1);
-  if(b<0 || b>=rows.length)return;
-  await saveGalleryRows(grid,work,moveRow(rows,a,b));
+  if(grid.dataset.busy==='true' || from===to)return;
+  const rows=galleryRows(work);
+  const order=[...work.gallery];
+  order.splice(to,0,order.splice(from,1)[0]);
+  let offset=0;
+  const reordered=rows.map(row=>{const result=order.slice(offset,offset+row.length);offset+=row.length;return result;});
+  await saveGalleryRows(grid,work,reordered);
 }
 function appendGalleryItem(galleryGrid, work, src, index) {
   const item = document.createElement('div');
@@ -243,6 +301,7 @@ function appendGalleryItem(galleryGrid, work, src, index) {
   item.classList.add('work-gallery-item');
   item.setAttribute('aria-label', '갤러리 이미지 ' + (index + 1) + ', Alt와 방향키로 순서 변경');
   item.innerHTML = '<img src="' + escapeAttr(imgUrl(src)) + '" alt="갤러리 이미지 ' + (index + 1) + '" draggable="false" loading="lazy" /><span class="gallery-number">' + (index + 1) + '</span><button type="button" class="gallery-remove" aria-label="이미지 ' + (index + 1) + ' 삭제">×</button><div class="gallery-move"><button type="button" class="move-previous" aria-label="이미지 ' + (index + 1) + ' 앞으로">←</button><button type="button" class="move-next" aria-label="이미지 ' + (index + 1) + ' 뒤로">→</button></div>';
+  if(isGalleryVideo(src)){const video=document.createElement('video');video.src=imgUrl(src);video.muted=true;video.autoplay=true;video.loop=true;video.playsInline=true;video.preload='metadata';video.draggable=false;item.querySelector('img').replaceWith(video);}
   const fileLink=document.createElement('a');fileLink.className='gallery-download';fileLink.textContent='이미지 다운로드';fileLink.setAttribute('aria-label','갤러리 이미지 '+(index+1)+' 다운로드');fileLink.href='/api/mux/local-download?target='+encodeURIComponent('works:'+work.slug)+'&src='+encodeURIComponent(src);fileLink.draggable=false;item.append(fileLink);
   const visibility = document.createElement('label');
   visibility.className = 'gallery-visibility';
@@ -308,7 +367,7 @@ function appendGalleryItem(galleryGrid, work, src, index) {
     event.preventDefault(); item.classList.remove('drop-target');
     const from = Number(galleryGrid.dataset.dragIndex);
     delete galleryGrid.dataset.dragIndex;
-    if(!galleryRows(work).some(row=>row.includes(work.gallery[from]) && row.includes(src))) moveGalleryImage(galleryGrid, work, from, index);
+    moveGalleryImage(galleryGrid, work, from, index);
   });
   item.addEventListener('dragend', () => {
     delete galleryGrid.dataset.dragIndex;
@@ -357,8 +416,10 @@ function renderWorkCard(work) {
         <label>유형<div class="chk-group">${checkboxGroup('types', [...new Set([...TYPE_OPTIONS,work.type,...(work.tags||[])].filter(Boolean))], [work.type,...(work.tags||[])])}</div></label>
         <label>제작<select name="production">${selectOptions(PRODUCTION_OPTIONS, work.production)}</select></label>
         <fieldset class="tech-field"><legend>기술 (복수 선택)</legend><div class="chk-group work-tech-options">${techCheckboxes(work.tech || [])}</div><p class="field-help">선택을 바꾸고 저장하면 상세페이지의 기술 정보에도 반영됩니다. 항목은 위의 ‘기술 선택 목록 편집’에서 수정할 수 있어요.</p></fieldset>
-        <label>설명 (엔터로 줄바꿈)<textarea name="description" rows="4">${escapeHtml(work.description)}</textarea></label>
-        <label>설명 (EN)<textarea name="description_en" rows="4">${escapeHtml(work.description_en)}</textarea></label>
+        <p class="field-help">저장 시 한글 소개·주요 업무·Process 제목과 내용을 영어로 자동 번역합니다. 직접 수정한 영어는 유지합니다. DeepL 키는 Lab 상단에서 공통으로 설정합니다.</p><label>소개 (엔터로 줄바꿈)<textarea name="description" rows="4">${escapeHtml(work.description)}</textarea></label>
+        <label>소개 (EN)<textarea name="description_en" rows="4">${escapeHtml(work.description_en)}</textarea></label>
+        <div class="field-row"><label>주요 업무<textarea name="responsibilities" rows="4">${escapeHtml(work.responsibilities||'')}</textarea></label><label>주요 업무 (EN)<textarea name="responsibilities_en" rows="4">${escapeHtml(work.responsibilities_en||'')}</textarea></label></div>
+        <label>회사명 (회사 작업일 때)<input name="company" placeholder="d'strict" value="${escapeAttr(work.company||'')}" /></label>
         <label>외부 영상 링크 · Vimeo<input name="vimeo_url" value="${escapeAttr(work.vimeo_url)}" /></label>
         <div class="field-row"><label>상세 이미지 배경색<input type="color" name="detail_background" value="${/^#[0-9a-f]{6}$/i.test(work.detail_background || '') ? work.detail_background : '#dddddd'}" /></label><button type="button" class="reset-detail-background">기본 회색으로</button></div>
         <input type="hidden" name="detail_columns" value="${Number(work.detail_columns || 1)}" />
@@ -370,7 +431,7 @@ function renderWorkCard(work) {
       <div class="project-video-tools" data-video-target="works:${escapeAttr(work.slug)}"></div>
       <h4>갤러리 이미지</h4><p class="field-help">이미지마다 줄 번호를 입력하고 배치 적용을 눌러주세요. 같은 줄 안에서는 갤러리 순서대로 표시됩니다.</p>
       <div class="gallery-grid"></div>
-      <label class="gallery-upload">이미지 여러 장 추가<input type="file" accept="image/*" multiple class="gallery-input" /></label><p class="field-help">Ctrl 또는 Shift로 여러 파일을 선택할 수 있어요. 한 번에 최대 20장까지 추가됩니다.</p><p class="gallery-status" role="status"></p>
+      <label class="gallery-upload">이미지·GIF·영상 추가<input type="file" accept="image/*,video/*,.mp4,.mov,.webm,.m4v" multiple class="gallery-input" /></label><p class="field-help">Ctrl 또는 Shift로 여러 파일을 선택할 수 있어요. 한 번에 최대 20개, 파일당 150MB까지 추가됩니다. GIF는 그대로 재생하고 영상은 무음 반복 MP4로 변환합니다.</p><p class="gallery-status" role="status"></p>
     </div>
   `;
 
@@ -379,7 +440,7 @@ function renderWorkCard(work) {
   (work.gallery || []).forEach((src, i) => appendGalleryItem(galleryGrid, work, src, i));
   decorateGalleryRows(galleryGrid, work);
   const layoutTools=document.createElement('div'); layoutTools.className='gallery-layout-tools';
-  layoutTools.innerHTML='<span>같은 줄 번호는 나란히 배치됩니다. 한 줄에 최대 3장 · 작은 번호부터 표시 · 적용 전에는 이미지 위치가 유지됩니다.</span><button type="button" class="primary">배치 적용</button>';
+  layoutTools.innerHTML='<span>같은 줄 번호는 나란히 배치됩니다. 한 줄에 최대 3장 · 작은 번호부터 표시 · 배치 적용 또는 맨 아래 저장을 누르면 반영됩니다.</span><button type="button" class="primary">배치 적용</button>';
   galleryGrid.before(layoutTools);
   layoutTools.querySelector('button').onclick=()=>{
     const rows=new Map();
@@ -390,7 +451,7 @@ function renderWorkCard(work) {
       rows.get(number).push(work.gallery[Number(input.closest('.gallery-item').dataset.index)]);
     }
     for(const [number,row] of rows)if(row.length>3){card.querySelector('.gallery-status').textContent=`${number}번 줄에 ${row.length}장이 있어요. 한 줄에는 최대 3장까지 배치할 수 있어요.`;return;}
-    saveGalleryRows(galleryGrid,work,[...rows].sort((a,b)=>a[0]-b[0]).map(([,row])=>row));
+    return saveGalleryRows(galleryGrid,work,[...rows].sort((a,b)=>a[0]-b[0]).map(([,row])=>row));
   };
 
   card.querySelector('.work-card-head').addEventListener('click', () => {
@@ -407,6 +468,7 @@ function renderWorkCard(work) {
 
   const editForm = card.querySelector('.edit-form');
   editForm.id = `work-editor-${work.slug}`;
+  createProcessEditor(editForm, work);
   const videoSection = document.createElement('section');
   videoSection.className = 'work-video-section';
   const videoLink = editForm.querySelector('[name="vimeo_url"]');
@@ -468,7 +530,13 @@ function renderWorkCard(work) {
     const saveButton = card.querySelector('.work-actions [type="submit"]');
     saveButton.disabled = true;
     try {
+    if(editForm.processEditor.busy) throw new Error('Process 파일 업로드가 끝난 뒤 저장해주세요.');
+    if(rowNumberDrafts.has(work.slug) && !(await layoutTools.querySelector('button').onclick())) {
+      throw new Error(card.querySelector('.gallery-status').textContent || '이미지 배치를 먼저 확인해주세요.');
+    }
     const fd = new FormData(e.target);
+    const processBeforeSave=JSON.stringify(editForm.processEditor.get());
+    saveButton.textContent='저장·번역 중…';
     const updated = await api(`/api/works/${work.slug}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -477,6 +545,10 @@ function renderWorkCard(work) {
         year: fd.get('year'),
         types: fd.getAll('types'),
         production: fd.get('production'),
+        company: fd.get('company'),
+        responsibilities: fd.get('responsibilities'),
+        responsibilities_en: fd.get('responsibilities_en'),
+        process: editForm.processEditor.get(),
         ...(JSON.stringify(fd.getAll('tech').slice().sort()) !== JSON.stringify((work.tech || []).slice().sort()) ? {tech:fd.getAll('tech')} : {}),
         description: fd.get('description'),
         description_en: fd.get('description_en'),
@@ -485,15 +557,18 @@ function renderWorkCard(work) {
         detail_columns: work.detail_rows ? 1 : Number(fd.get('detail_columns')),
       }),
     });
-    dirtyWorks.delete(work.slug);
+    const editedDuringSave=JSON.stringify(editForm.processEditor.get())!==processBeforeSave || [...fd.entries()].some(([key,value])=>typeof value==='string' && !['tech','types'].includes(key) && new FormData(editForm).get(key)!==value);
+    if(!editedDuringSave)dirtyWorks.delete(work.slug);
     openWorkSlugs.add(work.slug);
     card.classList.add('open');
+    for(const key of ['description_en','responsibilities_en']){if(editForm.elements.namedItem(key).value===fd.get(key))editForm.elements.namedItem(key).value=updated[key]||'';}
+    if(JSON.stringify(editForm.processEditor.get())===processBeforeSave)editForm.processEditor.set(updated.process);
     Object.assign(work, updated);
     updateWorkCardHead(card, updated);
     filterWorks();
-    alert('저장했어요.');
+    alert(updated.translationWarning || '저장했어요.');
     } catch (error) { alert(error.message); }
-    finally { saveButton.disabled = false; }
+    finally { saveButton.disabled = false;saveButton.textContent='저장'; }
   });
 
   card.querySelector('.delete-work').addEventListener('click', async () => {

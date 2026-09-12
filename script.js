@@ -153,7 +153,7 @@ function initWorksProjectView(catalog, projects, clearProjectHover, refreshCatal
     clearProjectHover();
     const dialog = document.getElementById('media-dialog');
     if (dialog?.open) dialog.close();
-    panel.querySelectorAll('video').forEach((video) => video.pause());
+    panel.querySelectorAll('video, mux-player').forEach((video) => video.pause?.());
     panel.replaceChildren();
     panel.classList.remove('has-side-information');
     grid.hidden = Boolean(slug);
@@ -367,7 +367,7 @@ function initWorksImageReveal() {
   const grid = document.querySelector('.works-image-grid');
   if (!grid) return () => {};
   const entries = [...grid.querySelectorAll('[data-plate]')].map((plate) => ({
-    plate, img: plate.querySelector('img'), state: 'pending',
+    plate, img: plate.querySelector('img, video'), state: 'pending',
   }));
   const refresh = () => {
     const selected = entries.filter(({ plate }) => !plate.hidden && !plate.classList.contains('is-hover-hidden'));
@@ -383,7 +383,7 @@ function initWorksImageReveal() {
     // Keep the window anchored to the first gap rather than waiting for scrolling.
     const firstPending = selected.findIndex(({ state }) => state !== 'ready' && state !== 'failed');
     if (firstPending !== -1) {
-      selected.slice(firstPending, firstPending + 8).forEach(({ img }) => { img.loading = 'eager'; });
+      selected.slice(firstPending, firstPending + 8).forEach(({ img }) => { if(img.tagName==='VIDEO'){img.preload='auto';}else img.loading = 'eager'; });
     }
   };
   entries.forEach((entry) => {
@@ -393,20 +393,22 @@ function initWorksImageReveal() {
       entry.state = state;
       plate.classList.toggle('is-image-error', state === 'failed');
       img.removeEventListener('load', loaded);
+      img.removeEventListener('loadeddata', loaded);
       img.removeEventListener('error', failed);
       refresh();
     };
     const failed = () => finish('failed');
     const loaded = () => {
       if (entry.state !== 'pending') return;
+      if(img.tagName==='VIDEO'){if(img.readyState>=2)finish('ready');return;}
       if (!img.naturalWidth) return failed();
       entry.state = 'decoding';
       if (img.decode) img.decode().then(() => finish('ready'), failed);
       else finish('ready');
     };
-    img.addEventListener('load', loaded);
+    img.addEventListener(img.tagName==='VIDEO'?'loadeddata':'load', loaded);
     img.addEventListener('error', failed);
-    if (img.complete) loaded();
+    if (img.complete || (img.tagName==='VIDEO' && img.readyState>=2)) loaded();
   });
   refresh();
   return refresh;
@@ -551,7 +553,7 @@ function initStudyNavigation() {
       const next = page.querySelector('body.page-study #main');
       if (!next) throw new Error('Not a study page');
       if (request.signal.aborted) return;
-      main.querySelectorAll('video').forEach(video => video.pause());
+      main.querySelectorAll('video, mux-player').forEach(video => video.pause?.());
       main.replaceChildren(...next.childNodes);
       document.title = page.title;
       if (push) history.pushState(null, '', url);

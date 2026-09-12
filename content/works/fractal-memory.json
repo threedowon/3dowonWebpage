@@ -18,12 +18,12 @@
   "index_type_label": "전시, 인터랙티브",
   "preview_bg": "/3dowonWebpage/assets/uploads/fractal-memory-1789062817252-132092.jpg",
   "hero_image": "/3dowonWebpage/assets/uploads/fractal-memory-1789062817252-132092.jpg",
-  "description": "<p>기억의 층위를 프랙탈 구조로 시각화한 프로젝션 설치이다. 관객의 움직임에 따라 영상 레이어가 분기·중첩되며 새로운 패턴을 만든다.</p>\n            <p>담당</p>\n            <p>TouchDesigner 프로젝션 매핑 설계</p>\n            <p>MadMapper 출력·블렌딩 구성</p>\n            <p>설치 공간 레이아웃 협의</p>",
+  "description": "<p>Arte Kids Park의 Live Sketchbook은 관람객이 색칠한 그림을 미디어월 속 캐릭터로 연결하는 참여형 콘텐츠입니다. 종이 위의 그림이 가상 공간에 등장하는 경험을 위해 이미지 처리, 캐릭터 움직임, 공간 연출 시스템을 개발했습니다.</p>",
   "meta_year": "2023",
   "meta_type": "전시, 인터랙티브",
   "meta_medium": "전시, 인터랙티브",
   "meta_tech": "Unreal, Unity, Depth Camera",
-  "meta_production": "회사",
+  "meta_production": "회사. d'strict",
   "gallery": [
     "/3dowonWebpage/assets/uploads/fractal-memory-1789062838195-783049.jpg",
     "/3dowonWebpage/assets/uploads/fractal-memory-1789062840357-760026.jpg"
@@ -33,9 +33,37 @@
   "meta_type_en": "Exhibition, Interactive",
   "meta_medium_en": "Exhibition, Interactive",
   "meta_tech_en": "Unreal, Unity, Depth Camera",
-  "meta_production_en": "Company",
-  "description_en": "<p>A projection installation visualizing layers of memory through a fractal structure. As the audience moves, video layers branch and overlap to create new patterns.</p>\n            <p>Role</p>\n            <p>Designed projection mapping in TouchDesigner</p>\n            <p>Configured output and blending in MadMapper</p>\n            <p>Coordinated the installation space layout</p>",
+  "meta_production_en": "Company. d'strict",
+  "description_en": "<p>Live Sketchbook at Arte Kids Park brings visitors’ drawings into a shared digital environment. A character coloured on paper appears on the media wall. My work connected image processing, character movement and spatial visuals to support this experience.</p>",
   "vimeo_url": "",
   "detail_background": "#dddddd",
-  "month": null
+  "month": null,
+  "responsibilities": "<p>웹캠으로 촬영한 스케치 이미지의 저장·전송 및 OpenCV 기반 텍스처 변환</p>\n            <p>디자인팀의 3D 에셋을 활용한 레벨 구성과 셰이더 개발</p>\n            <p>캐릭터 이동 경로, 개체 수 테스트 및 낮과 밤의 전환 시스템 개발</p>\n            <p>다중 프로젝터 출력·동기화와 블렌딩·매핑 테스트</p>",
+  "responsibilities_en": "<p>Developed webcam image capture, storage and transfer, with OpenCV processing to generate character textures.</p>\n            <p>Built levels and shaders using 3D assets provided by the design team.</p>\n            <p>Developed character paths, population tests and day-to-night transitions.</p>\n            <p>Tested multi-projector output, synchronisation, blending and mapping.</p>",
+  "company": "d'strict",
+  "process": [
+    {
+      "title": "공간의 분위기와 움직임",
+      "title_en": "Building the environment",
+      "description": "<p>디자인팀에서 제작한 3D 에셋을 바탕으로 미디어월의 레벨을 구성했습니다. Timeline으로 낮과 밤의 변화를 연결하고, 수련잎의 흔들림과 거리 안개를 셰이더로 구현했습니다. 볼풀 공간에는 물속에 있는 듯한 느낌을 주는 프로젝션 셰이더를 개발했습니다.</p>",
+      "description_en": "<p>Using 3D assets from the design team, I assembled the media-wall environment and used Timeline to connect day and night. Shaders added movement to the lily pads and distance fog, while a separate projection shader created an underwater feeling in the ball-pit area.</p>",
+      "images": [
+        "/3dowonWebpage/assets/uploads/fractal-memory-1789062838195-783049.jpg"
+      ]
+    },
+    {
+      "title": "그림을 캐릭터로 연결하기",
+      "title_en": "From drawing to character",
+      "description": "<p>웹캠으로 촬영한 스케치를 HTTP 기반 웹 서버에 저장하고, FTP를 통해 실행 PC로 전달하도록 구성했습니다. QR 마커가 포함된 스케치 이미지는 OpenCV로 처리해 캐릭터의 UV 텍스처로 변환했습니다.</p>",
+      "description_en": "<p>Sketches captured by a webcam were stored on a web server over HTTP and transferred to the playback PC via FTP. OpenCV processed the sketches containing QR markers and converted them into textures for the characters’ UV layouts.</p>",
+      "images": []
+    },
+    {
+      "title": "출력 환경에 맞춘 조정",
+      "title_en": "Adapting to the output setup",
+      "description": "<p>초기에는 8K 이상의 출력을 고려해 Unreal Engine과 nDisplay를 테스트했습니다. 이후 출력 해상도 조건이 바뀌면서 Unity 기반 구성으로 전환했습니다. Immersive Display PRO를 활용한 블렌딩·매핑도 테스트하며 현장 출력 조건에 맞춰 구성을 조정했습니다.</p>",
+      "description_en": "<p>The initial output plan exceeded 8K, so I tested Unreal Engine with nDisplay. When the resolution requirements changed, the project moved to a Unity-based setup. I also tested blending and mapping with Immersive Display PRO to adapt the output to the installation.</p>",
+      "images": []
+    }
+  ]
 }

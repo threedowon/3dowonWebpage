@@ -14,7 +14,7 @@ import sharp from 'sharp';
 import { randomUUID } from 'node:crypto';
 import { parseWorkDate, compareWorkDates } from '../scripts/lib/work-date.mjs';
 import { saveLabVideo } from './lab-video.mjs';
-import { translationStatus, saveTranslationKey, autoTranslateLab } from './translation.mjs';
+import { translationStatus, saveTranslationKey, autoTranslateLab, autoTranslateWorks } from './translation.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -223,7 +223,7 @@ function asyncHandler(fn) {
 function isImagePathReferenced(publicPath) {
   for (const slug of listWorkSlugs()) {
     const w = loadWork(slug);
-    if ([w.thumbnail, w.preview_bg, w.hero_image, ...(w.gallery || [])].includes(publicPath)) return true;
+    if ([w.thumbnail, w.preview_bg, w.hero_image, ...(w.gallery || []),...(w.process_media || []),...(w.process || []).flatMap(entry=>entry.images||[])].includes(publicPath)) return true;
   }
   if (loadJson('content/about.json').image === publicPath) return true;
   if (loadJson('content/portfolio.json').images.includes(publicPath)) return true;
@@ -332,9 +332,10 @@ app.post('/api/works', (req, res) => {
   res.json(work);
 });
 
-app.put('/api/works/:slug', (req, res) => {
+app.put('/api/works/:slug', asyncHandler(async (req, res) => {
   if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({ error: 'not found' });
   const work = loadWork(req.params.slug);
+  const previous = structuredClone(work);
   if (req.body.year !== undefined) {
     const date = parseWorkDate(req.body.year);
     if (!date) return res.status(400).json({ error: '날짜는 2025 또는 2025.03 형식으로 입력해주세요.' });
@@ -365,11 +366,12 @@ app.put('/api/works/:slug', (req, res) => {
     const entries=req.body.process;
     if(!Array.isArray(entries)||entries.length>50) return res.status(400).json({error:'제작 과정은 최대 50개까지 추가할 수 있어요.'});
     const used=new Set();
+    const allowedMedia=new Set([...(work.gallery||[]),...(work.process_media||[]),...(work.process||[]).flatMap(entry=>entry.images||[])]);
     for(const entry of entries){
-      if(!entry || ['title','title_en','description','description_en'].some(key=>typeof entry[key]!=='string'||entry[key].length>50000) || !Array.isArray(entry.images) || entry.images.some(src=>!(work.gallery||[]).includes(src)||used.has(src))) return res.status(400).json({error:'과정의 미디어가 삭제되었거나 중복 선택됐어요. 선택 내용을 확인해주세요.'});
+      if(!entry || (entry.columns!==undefined && ![1,2,3].includes(entry.columns)) || ['title','title_en','description','description_en'].some(key=>typeof entry[key]!=='string'||entry[key].length>50000) || !Array.isArray(entry.images) || entry.images.some(src=>!allowedMedia.has(src)||used.has(src))) return res.status(400).json({error:'과정의 미디어가 삭제되었거나 중복 선택됐어요. 선택 내용을 확인해주세요.'});
       for(const src of entry.images){if(used.has(src))return res.status(400).json({error:'같은 미디어를 중복 선택할 수 없어요.'});used.add(src);}
     }
-    work.process=entries.filter(entry=>entry.title.trim()||entry.title_en.trim()||entry.description.trim()||entry.description_en.trim()||entry.images.length).map(entry=>({title:entry.title.trim(),title_en:entry.title_en.trim(),description:plainTextToDescriptionHtml(entry.description),description_en:plainTextToDescriptionHtml(entry.description_en),images:entry.images}));
+    work.process=entries.filter(entry=>entry.title.trim()||entry.title_en.trim()||entry.description.trim()||entry.description_en.trim()||entry.images.length).map(entry=>({title:entry.title.trim(),title_en:entry.title_en.trim(),description:plainTextToDescriptionHtml(entry.description),description_en:plainTextToDescriptionHtml(entry.description_en),images:entry.images,columns:entry.columns||1}));
   }
   const editable = ['title', 'production', 'vimeo_url'];
   for (const key of editable) {
@@ -385,16 +387,27 @@ app.put('/api/works/:slug', (req, res) => {
   work.meta_production_en = PRODUCTION_EN[work.production] || work.production;
   if(work.production === '회사' && work.company){work.meta_production += `. ${work.company}`;work.meta_production_en += `. ${work.company}`;}
   saveJson(`content/works/${req.params.slug}.json`, work);
+  const snapshot=JSON.stringify([work.description,work.description_en,work.responsibilities,work.responsibilities_en,work.process]);
+  const warning=await autoTranslateWorks(work,previous);
+  if(!listWorkSlugs().includes(req.params.slug))return res.status(404).json({error:'번역 중 프로젝트가 삭제되었어요.'});
+  const latest=loadWork(req.params.slug);
+  if(JSON.stringify([latest.description,latest.description_en,latest.responsibilities,latest.responsibilities_en,latest.process])!==snapshot){
+    build();return res.json({...adminWork(latest),translationWarning:'다른 화면에서 내용이 변경되어 이전 번역을 적용하지 않았어요.'});
+  }
+  latest.works_translation_pending=work.works_translation_pending;
+  latest.description_en=work.description_en;latest.responsibilities_en=work.responsibilities_en;
+  (latest.process||[]).forEach((entry,i)=>{entry.title_en=work.process[i].title_en;entry.description_en=work.process[i].description_en;});
+  saveJson(`content/works/${req.params.slug}.json`,latest);
   build();
-  res.json(adminWork(work));
-});
+  res.json({...adminWork(latest),translationWarning:warning});
+}));
 
 app.delete('/api/works/:slug', (req, res) => {
   const file = path.join(WORKS_DIR, `${req.params.slug}.json`);
   if (!fs.existsSync(file)) return res.status(404).json({ error: 'not found' });
   const work = loadWork(req.params.slug);
   fs.unlinkSync(file); // remove the JSON first so the reference check below doesn't see its own entries
-  [work.thumbnail, work.preview_bg, work.hero_image, ...(work.gallery || [])].forEach(removeUploadedFile);
+  [work.thumbnail, work.preview_bg, work.hero_image, ...(work.gallery || []),...(work.process_media || []),...(work.process || []).flatMap(entry=>entry.images||[])].forEach(removeUploadedFile);
   build();
   res.json({ ok: true });
 });
@@ -417,6 +430,23 @@ app.post('/api/works/:slug/thumbnail', upload.single('image'), asyncHandler(asyn
 
 const galleryUpload = multer({storage:multer.memoryStorage(),limits:{fileSize:150*1024*1024,files:20}}).array('images',20);
 const receiveGallery = (req,res,next) => galleryUpload(req,res,error=>error?res.status(400).json({error:'한 번에 20개, 파일당 150MB까지 올릴 수 있어요.'}):next());
+// Process uploads belong to their project without adding cards to the Works gallery.
+app.post('/api/works/:slug/process/media', receiveGallery, asyncHandler(async (req,res)=>{
+  if(!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({error:'작업을 찾을 수 없어요.'});
+  if(!req.files?.length || req.files.some(file=>!/^image\//.test(file.mimetype)&&!/^video\//.test(file.mimetype)&&!/\.(mp4|mov|webm|m4v)$/i.test(file.originalname))) return res.status(400).json({error:'이미지 또는 영상 파일을 선택해주세요.'});
+  const added=[];
+  try{
+    for(const file of req.files){
+      const video=/^video\//.test(file.mimetype)||/\.(mp4|mov|webm|m4v)$/i.test(file.originalname);
+      const filename=video?await saveLabVideo(file.buffer,UPLOADS_DIR):await saveImage(file.buffer,req.params.slug);
+      added.push(publicUploadPath(filename));
+    }
+    if(!listWorkSlugs().includes(req.params.slug)) throw new Error('업로드 중 프로젝트가 삭제되었어요.');
+    const work=loadWork(req.params.slug);work.process_media=[...new Set([...(work.process_media||[]),...added])];
+    saveJson(`content/works/${req.params.slug}.json`,work);
+    res.json({added});
+  }catch(error){added.forEach(removeUploadedFile);throw error;}
+}));
 app.post('/api/works/:slug/gallery', receiveGallery, asyncHandler(async (req, res) => {
   if(!listWorkSlugs().includes(req.params.slug))return res.status(404).json({error:'작업을 찾을 수 없어요.'});
   if(!req.files?.length || req.files.some(file=>!/^image\//.test(file.mimetype) && !/^video\//.test(file.mimetype) && !/\.(mp4|mov|webm|m4v)$/i.test(file.originalname)))return res.status(400).json({error:'이미지 또는 영상 파일을 선택해주세요.'});

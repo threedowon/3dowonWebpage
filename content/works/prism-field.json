@@ -29,7 +29,8 @@
     "/3dowonWebpage/assets/uploads/prism-field-1789063408852-713334.jpg",
     "/3dowonWebpage/assets/uploads/prism-field-1789063416359-351315.jpg",
     "/3dowonWebpage/assets/uploads/prism-field-1789063437232-782714.jpg",
-    "/3dowonWebpage/assets/uploads/prism-field-1789063439544-201989.jpg"
+    "/3dowonWebpage/assets/uploads/prism-field-1789063439544-201989.jpg",
+    "/3dowonWebpage/assets/uploads/prism-field-1789224001107-955402.jpg"
   ],
   "grid_type_label_en": "Video, Performance",
   "index_type_label_en": "Video, Performance",
@@ -38,5 +39,15 @@
   "meta_tech_en": "TouchDesigner, DMX",
   "meta_production_en": "Company",
   "description_en": "<p>A large-scale projection media-wall project installed in a brand exhibition space. Spectral light crosses the space, and the visual rhythm shifts along the viewing path.</p>\n            <p>Role</p>\n            <p>Built the video pipeline in TouchDesigner</p>\n            <p>Integrated DMX lighting and designed the sequence</p>\n            <p>Handled on-site projection mapping and setup</p>",
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "documents": [
+    {
+      "id": "cfcef447-cbaf-4d02-921c-af5468f2d518",
+      "name": "보도자료.pdf",
+      "file": "/3dowonWebpage/assets/documents/cfcef447-cbaf-4d02-921c-af5468f2d518.pdf"
+    }
+  ],
+  "month": null,
+  "detail_background": "#dddddd",
+  "detail_columns": 1
 }

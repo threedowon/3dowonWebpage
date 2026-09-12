@@ -21,12 +21,12 @@ export function vimeoIdFromUrl(url) {
   return match?.[1] || '';
 }
 
-export function vimeoEmbedHtml(url, title = 'Video') {
+export function vimeoEmbedHtml(url, title = 'Video', color = '') {
   const id = vimeoIdFromUrl(url);
   if (!id) return '';
   return `<div class="post-video reveal">
         <div class="post-video-frame">
-          <iframe src="https://player.vimeo.com/video/${id}?title=0&amp;byline=0&amp;portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="eager" title="${escapeHtml(title)}"></iframe>
+          <iframe src="https://player.vimeo.com/video/${id}?title=0&amp;byline=0&amp;portrait=0${/^#[0-9a-f]{6}$/i.test(color) ? `&amp;color=${color.slice(1)}` : ''}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="eager" title="${escapeHtml(title)}"></iframe>
         </div>
       </div>`;
 }
