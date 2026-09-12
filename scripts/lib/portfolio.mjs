@@ -1,8 +1,10 @@
+import {videoTheme} from './video-theme.mjs';
 import {galleryRows} from '../../admin/public/gallery-layout.mjs';
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
 import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 
-const VERSION = '1083';
+const VERSION = '1091';
+const isGalleryVideo = src => /\.(mp4|webm|mov|m4v)(?:[?#]|$)/i.test(src || '');
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
   en: { works: 'Works', lab: 'Lab', about: 'About', portfolio: 'Portfolio', cv: 'CV', photos: 'Images', index: 'Index', allYears: 'All years', allFields: 'All fields', space: 'Space', object: 'Object', screen: 'Screen', year: 'Year', field: 'Field', name: 'Project', back: 'All works', previous: 'Previous work', next: 'Next work', close: 'Close', enlarge: 'Enlarge image', practice: 'Practice', approach: 'Approach', fields: 'Fields', noResults: 'No work matches these filters.', reset: 'Reset filters', note: 'How do familiar objects change\nour experience of space? How do familiar actions\nchange our experience of space?', artist: 'Interactive media artist', type: 'Type', medium: 'Medium', tech: 'Technology', production: 'Production', skip: 'Skip to content' },
@@ -44,8 +46,10 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
   ${catalog === 'works' ? `<script>document.documentElement.classList.add('works-reveal');</script>` : ''}
   <link rel="stylesheet" href="${assets}styles.css?v=${VERSION}" />
   <script src="${assets}script.js?v=${VERSION}" defer${catalog === 'works' ? ` onerror="document.documentElement.classList.remove('works-reveal')"` : ''}></script>
+  ${body.includes('<mux-player') ? '<script src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3.8.0" defer></script>' : ''}
 </head>
 <body class="portfolio ${pageClass}" data-home="${home}" data-section="${active}">
+  ${body.includes('<mux-player') ? videoTheme : ''}
   <a class="skip-link" href="#main">${c.skip}</a>
   <div class="site-frame">
     <header class="site-header archive-site-header">
@@ -96,14 +100,14 @@ function overviewGrid(works, ctx, toolbar = '') {
       : `<article class="overview-project" data-overview-project data-project="${esc(work.slug)}" ${attrs}>
       <a class="project-summary" href="${esc(href)}"><div><span class="project-number">${projectNumber}</span><h2>${esc(title)}</h2></div><div class="project-summary-bottom"><p>${esc(pick(work, 'meta_tech', ctx.lang) || '')}</p>${work.year ? `<p class="lab-date">${esc(work.year)}${work.month ? '.' + String(work.month).padStart(2, '0') : ''}</p>` : ''}</div></a>
     </article>`;
-    const images = media.map((src, i) => `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}>${ctx.section === 'lab' ? '' : `<span class="image-reference">${projectNumber}.${i + 1}</span>`}<a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><img src="${esc(src)}" alt="${esc(title)} — ${i + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`).join('');
+    const images = media.map((src, i) => `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}>${ctx.section === 'lab' ? '' : `<span class="image-reference">${projectNumber}.${i + 1}</span>`}<a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}">${isGalleryVideo(src) ? `<video src="${esc(src)}" autoplay muted loop playsinline preload="metadata" aria-label="${esc(title)} — ${i + 1}"></video>` : `<img src="${esc(src)}" alt="${esc(title)} — ${i + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" />`}</a></figure>`).join('');
     const video = ctx.section === 'lab' && work.video && !work.mux?.playback_id ? `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}><a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}"><video src="${esc(resolveMediaPath(work.video, ctx.assets))}" autoplay muted loop playsinline preload="metadata" aria-label="${esc(title)}"></video></a></figure>` : '';
     return { project, images: video + images };
   });
   if (ctx.section === 'works') {
     const templates = works.map((work, index) => {
-      const { title, metadata, description, gallery } = projectContent(work, ctx);
-      return `<template data-project-detail="${esc(work.slug)}"><button type="button" class="inline-all-works" data-all-works>← All Works</button><article class="inline-work" aria-labelledby="works-project-title">${gallery}<div class="inline-project-information"><header class="inline-project-heading"><p class="eyebrow">Work ${number(index + 1)}</p><h2 id="works-project-title">${esc(title)}</h2></header>${metadata ? `<div class="project-facts">${metadata}</div>` : ''}${description ? `<div class="prose post-des">${description}</div>` : ''}</div></article></template>`;
+      const { title, metadata, description, gallery, process } = projectContent(work, ctx);
+      return `<template data-project-detail="${esc(work.slug)}"><button type="button" class="inline-all-works" data-all-works>← All Works</button><article class="inline-work" aria-labelledby="works-project-title">${gallery}<div class="inline-project-information"><header class="inline-project-heading"><p class="eyebrow">Work ${number(index + 1)}</p><h2 id="works-project-title">${esc(title)}</h2></header>${metadata ? `<div class="project-facts">${metadata}</div>` : ''}${description ? `<div class="prose post-des">${description}</div>` : ''}</div>${process}</article></template>`;
     }).join('');
     return `<div class="works-layout"><nav class="works-index" aria-label="${ctx.lang === 'ko' ? '작품 목록' : 'Project index'}"><div class="works-index-controls"><button type="button" class="works-all" data-all-works hidden>All Works</button><button type="button" class="works-filter-toggle" aria-expanded="false" aria-controls="works-filter-panel">Filter +</button></div><div id="works-filter-panel" hidden>${toolbar}</div><div class="works-filter-tags" aria-label="${ctx.lang === 'ko' ? '선택한 필터' : 'Active filters'}" hidden></div><ol>${entries.map((entry) => entry.project).join('\n')}</ol></nav><div class="works-stage"><div class="overview-grid works-image-grid">${entries.map((entry) => entry.images).join('\n')}</div><section class="works-project-panel" tabindex="-1" aria-labelledby="works-project-title" hidden></section></div>${templates}</div>`;
   }
@@ -192,19 +196,30 @@ export function teachingMaterialsPage(materials, site, lang) {
   return shell(ctx, site, { active: 'cv', title, body:body + reader, pageClass: 'page-teaching-materials' });
 }
 
+// Detail-only editorial sections; preserve authored copy and omit empty sections.
+function detailDescription(work, ctx) {
+  const source = richText(pick(work, 'description', ctx.lang));
+  const parts = source.split(/<(?:p|h[2-4])[^>]*>\s*(?:<strong>)?\s*(?:담당|주요 업무|Role|Responsibilities)\s*(?:<\/strong>)?\s*<\/(?:p|h[2-4])>/i);
+  const section = (label, body) => body?.trim() ? `<section class="detail-copy-section"><h3>${label}</h3><div>${body}</div></section>` : '';
+  return section(ctx.lang === 'ko' ? '소개' : 'Introduction', parts[0])
+    + section(ctx.lang === 'ko' ? '주요 업무' : 'Responsibilities', richText(pick(work, 'responsibilities', ctx.lang)) || parts.slice(1).join(''));
+}
+
 function projectContent(work, ctx) {
   const { c, lang } = ctx;
   const title = pick(work, 'title', lang);
-  const media = projectImages(work, ctx);
+  const processEntries = ctx.section === 'works' && Array.isArray(work.process) ? work.process : [];
+  const processSources = new Set(processEntries.flatMap(entry => entry.images || []).map(src => resolveMediaPath(src, ctx.assets)));
+  const media = projectImages(work, ctx).filter(src => !processSources.has(src));
   const year = work.meta_year || work.year;
-  const video = (work.mux?.playback_id && /^[a-zA-Z0-9]+$/.test(work.mux.playback_id) ? `<div class="post-video"><div class="post-video-frame"><iframe src="https://player.mux.com/${work.mux.playback_id}" title="${esc(title)}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div></div>` : '') || vimeoEmbedHtml(work.vimeo_url, title) || (work.video ? `<div class="post-video"><video ${ctx.section === 'lab' ? 'autoplay muted loop' : 'controls'} playsinline preload="metadata" aria-label="${esc(title)}" src="${esc(resolveMediaPath(work.video, ctx.assets))}"></video></div>` : '');
-  const figure = (src, position) => `<figure class="project-image"><a href="${esc(src)}" data-viewer="${esc(src)}" data-viewer-title="${esc(title)} — ${number(position + 1)}" aria-label="${esc(title)} ${position + 1} — ${c.enlarge}"><img src="${esc(src)}" alt="${esc(title)} — ${position + 1}" class="project-detail-image" ${position === 0 && !video ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`;
+  const background = /^#[0-9a-f]{6}$/i.test(work.detail_background || '') ? work.detail_background : '#dddddd';
+  const video = (work.mux?.playback_id && /^[a-zA-Z0-9]+$/.test(work.mux.playback_id) ? `<div class="post-video"><div class="post-video-frame"><mux-player theme="portfolio-video-theme" playback-id="${work.mux.playback_id}" metadata-video-title="${esc(title)}" stream-type="on-demand" preload="metadata" accent-color="${background}" primary-color="${background}"></mux-player></div></div>` : '') || vimeoEmbedHtml(work.vimeo_url, title, background) || (work.video ? `<div class="post-video"><video ${ctx.section === 'lab' ? 'autoplay muted loop' : 'controls'} playsinline preload="metadata" aria-label="${esc(title)}" src="${esc(resolveMediaPath(work.video, ctx.assets))}"></video></div>` : '');
+  const figure = (src, position) => isGalleryVideo(src) ? `<figure class="project-image gallery-video"><video src="${esc(src)}" autoplay muted loop playsinline preload="metadata" aria-label="${esc(title)} — ${position + 1}"></video></figure>` : `<figure class="project-image"><a href="${esc(src)}" data-viewer="${esc(src)}" data-viewer-title="${esc(title)} — ${number(position + 1)}" aria-label="${esc(title)} ${position + 1} — ${c.enlarge}"><img src="${esc(src)}" alt="${esc(title)} — ${position + 1}" class="project-detail-image" ${position === 0 && !video ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`;
   const metadata = [
     [['year', year], ...(ctx.section === 'lab' ? [] : [['type', pick(work, 'meta_type', lang)]])],
     [['tech', pick(work, 'meta_tech', lang)], ['production', pick(work, 'meta_production', lang)]],
   ].map((entries) => entries.filter(([, value]) => value)).filter((entries) => entries.length)
     .map((entries) => `<dl class="work-meta">${entries.map(([label, value]) => `<div><dt>${c[label]}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>`).join('');
-  const background = /^#[0-9a-f]{6}$/i.test(work.detail_background || '') ? work.detail_background : '#dddddd';
   const columns = [1, 2, 3].includes(Number(work.detail_columns)) ? Number(work.detail_columns) : 1;
   const documents = ctx.section === 'lab' ? [] : (work.documents || []).filter(item => /^\/3dowonWebpage\/assets\/documents\/[a-zA-Z0-9-]+\.pdf$/.test(item.file || ''));
   const documentLinks = documents.length ? `<div class="project-documents">${documents.map((item, i) => `<a href="${esc(resolveMediaPath(item.file, ctx.assets))}" target="_blank" rel="noopener">${lang === 'ko' ? '보도자료' : 'Press Release'}${documents.length > 1 ? ` ${i + 1}` : ''} ↗</a>`).join('')}</div>` : '';
@@ -212,14 +227,18 @@ function projectContent(work, ctx) {
   const assigned = new Set(rows.flat());
   media.filter(src => !assigned.has(src)).forEach(src => rows.unshift([src]));
   const groupedMedia = rows.map(row => `<div class="detail-image-row" style="--row-columns:${row.length}">${row.map(src => figure(src, media.indexOf(src))).join('')}</div>`).join('');
-  return { title, metadata, description: richText(pick(work, 'description', lang)) + documentLinks, gallery: `<div class="feature-gallery" style="--detail-paper:${background};--detail-columns:${ctx.section === 'works' ? 1 : columns}">${video}${ctx.section === 'works' ? groupedMedia : media.map(figure).join('')}</div>` };
+  const process = processEntries.length ? `<div class="detail-process">${processEntries.map((entry, i) => {
+    const images = (entry.images || []).map(src => resolveMediaPath(src, ctx.assets));
+    return `<section class="detail-process-row${images.length ? '' : ' is-text-only'}"><div class="detail-process-media" style="--detail-paper:${background}">${images.map(figure).join('')}</div><div class="detail-process-copy prose post-des">${i === 0 ? `<h3 class="detail-section-label">Process</h3>` : ''}<h4><span>${number(i + 1)}</span> ${esc(pick(entry, 'title', lang))}</h4>${richText(pick(entry, 'description', lang))}</div></section>`;
+  }).join('')}</div>` : '';
+  return { title, metadata, process, description: (ctx.section === 'works' ? detailDescription(work, ctx) : richText(pick(work, 'description', lang))) + documentLinks, gallery:  `<div class="feature-gallery" style="--detail-paper:${background};--detail-columns:${ctx.section === 'works' ? 1 : columns}">${video}${ctx.section === 'works' ? groupedMedia : media.map(figure).join('')}</div>` };
 }
 
 export function workPage(work, works, site, lang, section = 'works') {
   const directory = section === 'lab' ? 'lab' : 'work';
   const ctx = context(lang, `${directory}/${work.slug}.html`, section);
   const { c } = ctx;
-  const { title, metadata, description, gallery } = projectContent(work, ctx);
+  const { title, metadata, description, gallery, process } = projectContent(work, ctx);
   const index = works.findIndex((item) => item.slug === work.slug);
   const mediaArrow = (offset) => {
     const target = works[index + offset];
@@ -240,6 +259,7 @@ export function workPage(work, works, site, lang, section = 'works') {
       ${description ? `<div class="prose post-des">${description}</div>` : ''}
     </div>
     ${detailGallery}
+    ${process}
   </article>${section === 'lab' ? '' : `<nav class="project-pagination" aria-label="${c[section]}">${adjacent(-1, c.previous)}${adjacent(1, c.next)}</nav>`}`;
   return shell(ctx, site, { active: section, title, body, toolbar, pageClass: `page-work page-archive-work${section === 'lab' ? ' page-study' : ''}` });
 }

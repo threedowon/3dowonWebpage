@@ -7,10 +7,12 @@
   <meta name="description" content="빛, 공간, 일상의 사물을 연결하는 인터랙티브 설치와 미디어 실험." />
   <title>Aspect Ratio — 3Dowon</title>
   
-  <link rel="stylesheet" href="../../styles.css?v=1083" />
-  <script src="../../script.js?v=1083" defer></script>
+  <link rel="stylesheet" href="../../styles.css?v=1091" />
+  <script src="../../script.js?v=1091" defer></script>
+  
 </head>
 <body class="portfolio page-work page-archive-work" data-home="../" data-section="works">
+  
   <a class="skip-link" href="#main">본문으로 이동</a>
   <div class="site-frame">
     <header class="site-header archive-site-header">
@@ -26,7 +28,7 @@
     <header class="feature-heading"><h1 class="post-title" id="page-title">Aspect Ratio</h1></header>
     <div class="project-information">
       <div class="project-facts"><dl class="work-meta"><div><dt>연도</dt><dd>2024</dd></div><div><dt>유형</dt><dd>설치, 인터랙티브</dd></div></dl><dl class="work-meta"><div><dt>기술</dt><dd>Unreal</dd></div><div><dt>제작</dt><dd>개인</dd></div></dl></div>
-      <div class="prose post-des"><p>빛과 소리가 공명하는 설치 작품입니다. 관객의 움직임에 반응하여 실시간으로 변화하는 사운드스케이프와 빛의 패턴이 생성됩니다.</p>
+      <div class="prose post-des"><section class="detail-copy-section"><h3>소개</h3><div><p>빛과 소리가 공명하는 설치 작품입니다. 관객의 움직임에 반응하여 실시간으로 변화하는 사운드스케이프와 빛의 패턴이 생성됩니다.</p>
             <p>이 작업은 피아노라는 익숙한 악기가 놓인 방을 재해석하는 데서 출발했다. 건반을 두드리지 않아도 소리가 발생하고, 사람이 다가가는 것만으로도 공간 전체가 하나의 악기처럼 반응하기 시작한다. 관객은 연주자가 아니라 공간 그 자체를 몸으로 연주하는 존재가 된다.</p>
             <p>공간에는 총 12개의 적외선 근접 센서와 6채널 공간음향 시스템이 설치되어 있으며, 각 센서는 Arduino 기반 마이크로컨트롤러를 통해 실시간으로 데이터를 수집한다. 수집된 거리·속도 데이터는 시리얼 통신을 거쳐 Unreal Engine으로 전달되고, 이는 다시 프로젝션 매핑된 빛의 패턴과 다채널 사운드의 볼륨·패닝 값을 동시에 제어하는 데 사용된다.</p>
             <p>기술적으로 가장 까다로웠던 부분은 지연 시간(latency)을 최소화하는 것이었다. 관객의 움직임과 빛·소리의 반응 사이에 조금이라도 어긋남이 느껴지면, 공간이 자신에게 반응한다는 몰입감이 순식간에 깨져버린다. 이를 위해 센서 폴링 주기를 20ms 이하로 조정하고, 언리얼 엔진 내부에서는 별도의 스레드로 오디오·비주얼 파이프라인을 분리해 프레임 드랍이 발생하더라도 사운드 반응만큼은 끊기지 않도록 설계했다.</p>
@@ -34,13 +36,14 @@
             <p>공간음향 디자인에서는 단순히 소리가 나는 위치를 재현하는 것을 넘어, 관객의 이동 경로에 따라 잔향(reverb)의 길이와 밀도가 달라지도록 설계했다. 방의 중심에 가까워질수록 소리는 더 넓게 퍼지고 길게 울리며, 벽 쪽으로 이동할수록 소리는 좁고 건조해진다. 이는 실제 피아노가 놓인 방의 음향 특성을 참고해 디지털 환경에서 재구성한 것이다.</p>
             <p>빛의 패턴은 크게 세 가지 상태를 오간다: 정적인 상태에서는 은은한 호흡하는 듯한 밝기 변화만이 존재하고, 한 명의 관객이 감지되면 그 사람을 중심으로 동심원 형태의 파동이 퍼져나가며, 여러 명이 동시에 감지될 경우에는 각자의 파동이 서로 간섭하며 예측 불가능한 무늬를 만들어낸다. 이 간섭 패턴은 사전에 정해진 애니메이션이 아니라 실시간 연산을 통해 매 순간 다르게 생성된다.</p>
             <p>이 작업을 준비하며 가장 많이 고민했던 질문은 '기술이 보이지 않게 만드는 방법'이었다. 센서와 프로젝터, 스피커는 물리적으로 공간 곳곳에 존재하지만, 관객이 그 장치들의 존재를 의식하는 순간 작품이 주는 경험은 설명 가능한 메커니즘으로 축소되어 버린다. 그래서 모든 하드웨어는 벽과 천장에 최대한 은닉했고, 배선 또한 바닥 마감재 아래로 매립해 관객의 시선에서 완전히 사라지도록 했다.</p>
-            <p>결과적으로 이 작품은 하나의 완성된 결과물이라기보다, 관객이 머무는 시간 동안 계속해서 다시 쓰이는 악보에 가깝다. 같은 공간이지만 누가, 몇 명이, 어떤 속도로 움직이는가에 따라 전혀 다른 소리와 빛의 조합이 생성되며, 이는 향후 다른 공간에서의 변형 설치로도 확장할 계획이다.</p></div>
+            <p>결과적으로 이 작품은 하나의 완성된 결과물이라기보다, 관객이 머무는 시간 동안 계속해서 다시 쓰이는 악보에 가깝다. 같은 공간이지만 누가, 몇 명이, 어떤 속도로 움직이는가에 따라 전혀 다른 소리와 빛의 조합이 생성되며, 이는 향후 다른 공간에서의 변형 설치로도 확장할 계획이다.</p></div></section></div>
     </div>
     <div class="feature-gallery" style="--detail-paper:#dddddd;--detail-columns:1"><div class="post-video reveal">
         <div class="post-video-frame">
-          <iframe src="https://player.vimeo.com/video/1208184865?title=0&amp;byline=0&amp;portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="eager" title="Aspect Ratio"></iframe>
+          <iframe src="https://player.vimeo.com/video/1208184865?title=0&amp;byline=0&amp;portrait=0&amp;color=dddddd" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="eager" title="Aspect Ratio"></iframe>
         </div>
       </div><div class="detail-image-row" style="--row-columns:1"><figure class="project-image"><a href="../../assets/uploads/echo-chamber-1789062875318-752057.jpg" data-viewer="../../assets/uploads/echo-chamber-1789062875318-752057.jpg" data-viewer-title="Aspect Ratio — 01" aria-label="Aspect Ratio 1 — 크게 보기"><img src="../../assets/uploads/echo-chamber-1789062875318-752057.jpg" alt="Aspect Ratio — 1" class="project-detail-image" loading="lazy" decoding="async" /></a></figure></div></div>
+    
   </article><nav class="project-pagination" aria-label="작업"><a href="soft-machine.html"><span>이전 작업 ↖</span><strong>50/50 VISION</strong></a><a href="layered-city.html"><span>다음 작업 ↗</span><strong>At the moment</strong></a></nav></div>
     </main>
     <footer class="site-footer"><a class="footer-wordmark" href="../index.html">3Dowon</a><div class="footer-contact"><p>문의</p><a href="mailto:3dowon@gmail.com">E. &nbsp;3dowon@gmail.com</a></div><div class="footer-links"><a href="https://instagram.com/3dowon" target="_blank" rel="noopener">Instagram<span aria-hidden="true"> ↗</span></a><a href="https://www.youtube.com/@threeDowon" target="_blank" rel="noopener">YouTube<span aria-hidden="true"> ↗</span></a><a href="https://github.com/threedowon" target="_blank" rel="noopener">GitHub<span aria-hidden="true"> ↗</span></a><a href="https://blog.naver.com/qkryewon" target="_blank" rel="noopener">Naver Blog<span aria-hidden="true"> ↗</span></a></div><a class="back-to-top" href="#main">맨 위로 ↑</a><span class="footer-copyright">© 2026 3Dowon</span><span class="footer-practice">인터랙티브 미디어 아티스트</span></footer>

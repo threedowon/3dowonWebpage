@@ -7,10 +7,12 @@
   <meta name="description" content="How do familiar objects change our experience of space? How do familiar actions change our experience of space?" />
   <title>Aspect Ratio — 3Dowon</title>
   
-  <link rel="stylesheet" href="../styles.css?v=1083" />
-  <script src="../script.js?v=1083" defer></script>
+  <link rel="stylesheet" href="../styles.css?v=1091" />
+  <script src="../script.js?v=1091" defer></script>
+  
 </head>
 <body class="portfolio page-work page-archive-work" data-home="../" data-section="works">
+  
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="site-frame">
     <header class="site-header archive-site-header">
@@ -26,7 +28,7 @@
     <header class="feature-heading"><h1 class="post-title" id="page-title">Aspect Ratio</h1></header>
     <div class="project-information">
       <div class="project-facts"><dl class="work-meta"><div><dt>Year</dt><dd>2024</dd></div><div><dt>Type</dt><dd>Installation, Interactive</dd></div></dl><dl class="work-meta"><div><dt>Technology</dt><dd>Unreal</dd></div><div><dt>Production</dt><dd>Solo</dd></div></dl></div>
-      <div class="prose post-des"><p>An installation where light and sound resonate together. Responding to the audience's movement, a soundscape and pattern of light shift in real time.</p>
+      <div class="prose post-des"><section class="detail-copy-section"><h3>Introduction</h3><div><p>An installation where light and sound resonate together. Responding to the audience's movement, a soundscape and pattern of light shift in real time.</p>
             <p>The work began as a reinterpretation of a room containing a familiar instrument: a piano. Sound emerges without anyone touching a key, and the moment a person simply approaches, the entire space begins to respond as though it were itself an instrument. The audience is no longer a performer but becomes a body that plays the space itself.</p>
             <p>The room contains twelve infrared proximity sensors and a six-channel spatial audio system. Each sensor collects data in real time through an Arduino-based microcontroller. The resulting distance and velocity data is transmitted via serial communication to Unreal Engine, which simultaneously drives the projection-mapped light patterns and the volume and panning of the multichannel sound.</p>
             <p>The most technically demanding part of the project was minimizing latency. Even a slight mismatch between the audience's movement and the light or sound response is enough to instantly break the sense that the space is truly responding to them. To address this, the sensor polling interval was tuned to under 20ms, and inside Unreal Engine the audio and visual pipelines were separated onto distinct threads so that the sound response would never stutter even if a frame was dropped.</p>
@@ -34,13 +36,14 @@
             <p>In the spatial audio design, the goal went beyond simply reproducing the location of a sound — the length and density of the reverb were designed to change according to the audience's path through the room. Near the center of the room, sound spreads wider and lingers longer; closer to the walls, it becomes narrower and drier. This was built by referencing the acoustic characteristics of an actual room containing a piano and reconstructing them within a digital environment.</p>
             <p>The light patterns move between three broad states: in a static state, only a faint, breathing-like change in brightness exists; once a single visitor is detected, concentric waves ripple outward centered on that person; and when multiple visitors are detected simultaneously, their individual waves interfere with one another to create unpredictable patterns. This interference pattern is not a pre-made animation but is generated differently in real time at every moment.</p>
             <p>The question I returned to most while preparing this work was how to make the technology invisible. Sensors, projectors, and speakers physically exist throughout the space, but the instant a visitor becomes aware of these devices, the experience the work offers collapses into an explainable mechanism. For that reason, all hardware was concealed as much as possible within the walls and ceiling, and the wiring was embedded beneath the floor finish so it would disappear entirely from view.</p>
-            <p>In the end, this piece is less a finished, singular result than a score that keeps being rewritten for as long as an audience remains in the space. The same room produces an entirely different combination of sound and light depending on who is moving, how many people, and at what speed — and I plan to extend this into variant installations in other spaces in the future.</p></div>
+            <p>In the end, this piece is less a finished, singular result than a score that keeps being rewritten for as long as an audience remains in the space. The same room produces an entirely different combination of sound and light depending on who is moving, how many people, and at what speed — and I plan to extend this into variant installations in other spaces in the future.</p></div></section></div>
     </div>
     <div class="feature-gallery" style="--detail-paper:#dddddd;--detail-columns:1"><div class="post-video reveal">
         <div class="post-video-frame">
-          <iframe src="https://player.vimeo.com/video/1208184865?title=0&amp;byline=0&amp;portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="eager" title="Aspect Ratio"></iframe>
+          <iframe src="https://player.vimeo.com/video/1208184865?title=0&amp;byline=0&amp;portrait=0&amp;color=dddddd" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="eager" title="Aspect Ratio"></iframe>
         </div>
       </div><div class="detail-image-row" style="--row-columns:1"><figure class="project-image"><a href="../assets/uploads/echo-chamber-1789062875318-752057.jpg" data-viewer="../assets/uploads/echo-chamber-1789062875318-752057.jpg" data-viewer-title="Aspect Ratio — 01" aria-label="Aspect Ratio 1 — Enlarge image"><img src="../assets/uploads/echo-chamber-1789062875318-752057.jpg" alt="Aspect Ratio — 1" class="project-detail-image" loading="lazy" decoding="async" /></a></figure></div></div>
+    
   </article><nav class="project-pagination" aria-label="Works"><a href="soft-machine.html"><span>Previous work ↖</span><strong>50/50 VISION</strong></a><a href="layered-city.html"><span>Next work ↗</span><strong>At the moment</strong></a></nav></div>
     </main>
     <footer class="site-footer"><a class="footer-wordmark" href="../index.html">3Dowon</a><div class="footer-contact"><p>Enquiries</p><a href="mailto:3dowon@gmail.com">E. &nbsp;3dowon@gmail.com</a></div><div class="footer-links"><a href="https://instagram.com/3dowon" target="_blank" rel="noopener">Instagram<span aria-hidden="true"> ↗</span></a><a href="https://www.youtube.com/@threeDowon" target="_blank" rel="noopener">YouTube<span aria-hidden="true"> ↗</span></a><a href="https://github.com/threedowon" target="_blank" rel="noopener">GitHub<span aria-hidden="true"> ↗</span></a><a href="https://blog.naver.com/qkryewon" target="_blank" rel="noopener">Naver Blog<span aria-hidden="true"> ↗</span></a></div><a class="back-to-top" href="#main">Back to top ↑</a><span class="footer-copyright">© 2026 3Dowon</span><span class="footer-practice">Interactive media artist</span></footer>

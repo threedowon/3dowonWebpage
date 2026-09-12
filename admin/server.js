@@ -169,6 +169,12 @@ async function convertViaSips(buffer) {
 
 async function saveImage(buffer, slugPrefix = '') {
   fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+  if (/^GIF8[79]a$/.test(buffer.subarray(0,6).toString())) {
+    await sharp(buffer, {animated:true}).metadata();
+    const filename=`${slugPrefix || 'image'}-${randomUUID()}.gif`;
+    fs.writeFileSync(path.join(UPLOADS_DIR,filename),buffer);
+    return filename;
+  }
   let filename;
   do {
     filename = `${slugPrefix ? `${slugPrefix}-` : ''}${Date.now()}-${Math.round(Math.random() * 1e6)}.jpg`;
@@ -274,16 +280,16 @@ app.put('/api/tech-options', (req, res) => {
   res.json(normalized);
 });
 
+function adminWork(work) {
+  const result={...work};
+  for(const key of ['description','description_en','responsibilities','responsibilities_en']) result[key]=descriptionHtmlToPlainText(work[key]);
+  result.process=(work.process||[]).map(entry=>({...entry,description:descriptionHtmlToPlainText(entry.description),description_en:descriptionHtmlToPlainText(entry.description_en)}));
+  return result;
+}
 app.get('/api/works', (req, res) => {
   const works = listWorkSlugs().map(loadWork);
   works.sort(compareWorkDates);
-  res.json(
-    works.map((w) => ({
-      ...w,
-      description: descriptionHtmlToPlainText(w.description),
-      description_en: descriptionHtmlToPlainText(w.description_en),
-    }))
-  );
+  res.json(works.map(adminWork));
 });
 
 app.post('/api/works', (req, res) => {
@@ -350,6 +356,21 @@ app.put('/api/works/:slug', (req, res) => {
     work.meta_tech = work.tech.join(', ');
     work.meta_tech_en = work.meta_tech;
   }
+  for (const key of ['responsibilities','responsibilities_en','company']) {
+    if(req.body[key] === undefined) continue;
+    if(typeof req.body[key] !== 'string' || req.body[key].length > 50000) return res.status(400).json({error:'입력 내용을 확인해주세요.'});
+    work[key] = key === 'company' ? req.body[key].trim() : plainTextToDescriptionHtml(req.body[key]);
+  }
+  if(req.body.process !== undefined) {
+    const entries=req.body.process;
+    if(!Array.isArray(entries)||entries.length>50) return res.status(400).json({error:'제작 과정은 최대 50개까지 추가할 수 있어요.'});
+    const used=new Set();
+    for(const entry of entries){
+      if(!entry || ['title','title_en','description','description_en'].some(key=>typeof entry[key]!=='string'||entry[key].length>50000) || !Array.isArray(entry.images) || entry.images.some(src=>!(work.gallery||[]).includes(src)||used.has(src))) return res.status(400).json({error:'과정의 미디어가 삭제되었거나 중복 선택됐어요. 선택 내용을 확인해주세요.'});
+      for(const src of entry.images){if(used.has(src))return res.status(400).json({error:'같은 미디어를 중복 선택할 수 없어요.'});used.add(src);}
+    }
+    work.process=entries.filter(entry=>entry.title.trim()||entry.title_en.trim()||entry.description.trim()||entry.description_en.trim()||entry.images.length).map(entry=>({title:entry.title.trim(),title_en:entry.title_en.trim(),description:plainTextToDescriptionHtml(entry.description),description_en:plainTextToDescriptionHtml(entry.description_en),images:entry.images}));
+  }
   const editable = ['title', 'production', 'vimeo_url'];
   for (const key of editable) {
     if (req.body[key] !== undefined) work[key] = req.body[key];
@@ -362,9 +383,10 @@ app.put('/api/works/:slug', (req, res) => {
   work.meta_year = String(work.year);
   work.meta_production = work.production;
   work.meta_production_en = PRODUCTION_EN[work.production] || work.production;
+  if(work.production === '회사' && work.company){work.meta_production += `. ${work.company}`;work.meta_production_en += `. ${work.company}`;}
   saveJson(`content/works/${req.params.slug}.json`, work);
   build();
-  res.json(work);
+  res.json(adminWork(work));
 });
 
 app.delete('/api/works/:slug', (req, res) => {
@@ -393,15 +415,23 @@ app.post('/api/works/:slug/thumbnail', upload.single('image'), asyncHandler(asyn
   res.json(work);
 }));
 
-app.post('/api/works/:slug/gallery', upload.array('images', 20), asyncHandler(async (req, res) => {
-  const work = loadWork(req.params.slug);
-  for (const file of req.files || []) {
-    const filename = await saveImage(file.buffer, req.params.slug);
-    work.gallery.push(publicUploadPath(filename));
-  }
+const galleryUpload = multer({storage:multer.memoryStorage(),limits:{fileSize:150*1024*1024,files:20}}).array('images',20);
+const receiveGallery = (req,res,next) => galleryUpload(req,res,error=>error?res.status(400).json({error:'한 번에 20개, 파일당 150MB까지 올릴 수 있어요.'}):next());
+app.post('/api/works/:slug/gallery', receiveGallery, asyncHandler(async (req, res) => {
+  if(!listWorkSlugs().includes(req.params.slug))return res.status(404).json({error:'작업을 찾을 수 없어요.'});
+  if(!req.files?.length || req.files.some(file=>!/^image\//.test(file.mimetype) && !/^video\//.test(file.mimetype) && !/\.(mp4|mov|webm|m4v)$/i.test(file.originalname)))return res.status(400).json({error:'이미지 또는 영상 파일을 선택해주세요.'});
+  const added=[];
+  try {
+    for (const file of req.files) {
+      const isVideo=/^video\//.test(file.mimetype)||/\.(mp4|mov|webm|m4v)$/i.test(file.originalname);
+      const filename=isVideo?await saveLabVideo(file.buffer,UPLOADS_DIR):await saveImage(file.buffer,req.params.slug);
+      added.push(publicUploadPath(filename));
+    }
+  } catch(error) { added.forEach(removeUploadedFile);throw error; }
+  const work=loadWork(req.params.slug);
+  work.gallery ||= []; work.gallery.push(...added);
   saveJson(`content/works/${req.params.slug}.json`, work);
-  build();
-  res.json(work);
+  build();res.json(work);
 }));
 
 app.put('/api/works/:slug/gallery/visibility', (req, res) => {
@@ -447,6 +477,7 @@ app.put('/api/works/:slug/gallery/order', (req, res) => {
 app.delete('/api/works/:slug/gallery/:index', (req, res) => {
   const work = loadWork(req.params.slug);
   const [removed] = work.gallery.splice(Number(req.params.index), 1);
+  for(const entry of work.process || []) entry.images=(entry.images||[]).filter(src=>src!==removed);
   saveJson(`content/works/${req.params.slug}.json`, work);
   removeUploadedFile(removed);
   build();
