@@ -144,7 +144,7 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:1px solid var(
 .inline-project-heading h2{font-size:var(--type-body);line-height:1.4;overflow-wrap:anywhere}
 .inline-all-works{display:none;font-size:var(--type-ui);margin:0 var(--cell-inset) 16px}
 /* The title and metadata determine when the side column has enough room. */
-.works-project-panel{--inline-information-width:400px}
+.works-project-panel{--inline-information-width:300px}
 .has-side-information .inline-work{grid-template-columns:minmax(0,1fr) var(--inline-information-width);grid-template-areas:"gallery information"}
 .has-side-information .inline-project-information{position:sticky;top:var(--inline-info-top);margin-top:max(32px,calc(var(--detail-stage-height) / 2 - 120px));max-width:none;max-height:calc(100dvh - var(--inline-info-top) - 24px);overflow-y:auto;padding:0 var(--cell-inset)}
 .has-side-information .inline-project-information{display:flex;flex-direction:column;overflow:visible}
@@ -360,7 +360,7 @@ figcaption{display:flex;justify-content:space-between;gap:12px;padding-top:8px;f
  .inline-work .inline-project-information,.work-article .project-information{display:contents}
  .inline-project-heading{grid-area:heading;margin:0;padding-inline:var(--cell-inset)}
  .inline-work .project-facts,.work-article .project-facts{grid-area:facts;margin:0;padding-inline:var(--cell-inset)}
- .inline-work .post-des,.work-article .post-des{grid-area:description;padding:0 var(--cell-inset);max-height:none;overflow:visible}
+ .inline-work>.inline-project-information>.post-des,.work-article>.project-information>.post-des{grid-area:description;padding:0 var(--cell-inset);max-height:none;overflow:visible}
  .page-work .site-header{position:relative;left:auto;margin-inline:var(--header-start) var(--page-edge);min-height:var(--header-height);pointer-events:auto}
  .page-work .page-toolbar{position:static;width:auto;margin-inline:var(--page-frame-inset);padding-block:16px}
  .page-work .detail-toolbar{flex-direction:row;justify-content:space-between}
@@ -452,7 +452,7 @@ figcaption{display:flex;justify-content:space-between;gap:12px;padding-top:8px;f
 
 .project-documents{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-top:24px}.project-documents a{font-size:12px;text-decoration:none}.project-documents a:hover{text-decoration:underline}
 
-.detail-image-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(var(--row-columns,1),minmax(0,1fr));gap:24px;align-items:start;min-width:0}.detail-image-row>.project-image{min-width:0;margin:0;display:grid;place-items:start center}.detail-image-row[style*="columns:2"] img,.detail-image-row[style*="columns:3"] img{width:100%}@media(max-width:760px){.detail-image-row{gap:12px}}
+.detail-image-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(var(--row-columns,1),minmax(0,1fr));gap:24px;column-gap:6px;align-items:start;min-width:0}.detail-image-row>.project-image{min-width:0;margin:0;display:grid;place-items:start center}.detail-image-row[style*="columns:2"] img,.detail-image-row[style*="columns:3"] img{width:100%}@media(max-width:760px){.detail-image-row{gap:12px;column-gap:4px}}
 
 .detail-image-row .gallery-video video{display:block;width:100%;height:auto;max-height:90vh;object-fit:contain}.detail-image-row[style*="columns:1"] .gallery-video video{width:85%;margin-inline:auto}
 
@@ -468,33 +468,33 @@ figcaption{display:flex;justify-content:space-between;gap:12px;padding-top:8px;f
 .post-video-frame mux-player::part(center play button):hover{background:transparent;box-shadow:none}
 .post-video-frame mux-player::part(center play button):focus-visible{outline:1px solid var(--detail-paper,#ddd);outline-offset:4px}
 
-.works-project-panel .feature-gallery,.page-work:not(.page-study) .feature-gallery{row-gap:72px}
+.works-project-panel .feature-gallery,.page-work:not(.page-study) .feature-gallery{row-gap:200px}
 @media(max-width:900px){.works-project-panel .feature-gallery,.page-work:not(.page-study) .feature-gallery{row-gap:36px}}
 
 /* Works detail editorial copy. Other page layouts retain their existing rules. */
-.detail-copy-section{padding-top:20px;border-top:1px solid #d4d4d4}
+.detail-copy-section{padding-top:0;border:0}
 .detail-copy-section+.detail-copy-section{margin-top:32px}
 .detail-copy-section>h3,.detail-process-copy>.detail-section-label{font-size:var(--type-ui);font-weight:400;line-height:1.7;color:var(--muted);margin:0 0 12px}
 .detail-copy-section>div>:first-child{margin-top:0}
 .detail-process{grid-column:1/-1;min-width:0}
 .detail-process-row{display:grid;grid-template-columns:minmax(0,1fr) var(--inline-information-width,400px);align-items:stretch}
-.detail-process-media{min-width:0;background:var(--detail-paper,#ddd);padding:48px 24px;display:grid;gap:72px;align-content:start}
+.detail-process-media{min-width:0;background:var(--detail-paper,#ddd);padding:48px 24px;display:grid;gap:200px;align-content:start}
 .detail-process-media .project-image{margin:0;min-width:0}
-.detail-process-media img,.detail-process-media video{display:block;width:100%;height:auto;max-height:90vh;object-fit:contain;margin:auto}
+.detail-process-media img,.detail-process-media video{display:block;width:100%;height:auto;aspect-ratio:auto;max-height:90vh;object-fit:contain;margin:auto}
 .detail-process-media img[data-orientation="landscape"]{width:85%}
 .detail-process-copy{min-width:0;padding:48px var(--cell-inset) 24px}
 .detail-process-copy>.detail-section-label{margin:0 0 20px}
 .detail-process-row.is-text-only .detail-process-copy{padding-top:16px}
-.detail-copy-section p+p,.detail-process-copy p+p{margin-top:12px}
+.detail-copy-section p+p,.detail-process-copy p+p{margin-top:10px}
 .detail-copy-section>div>:last-child,.detail-process-copy>:last-child{margin-bottom:0}
-.detail-process-copy h4{font-size:inherit;font-weight:400;line-height:inherit;margin:0 0 12px;padding-top:20px;border-top:1px solid #d4d4d4}
+.detail-process-copy h4{font-size:inherit;font-weight:400;line-height:inherit;margin:0 0 12px;padding-top:0;border:0}
 .detail-process-copy h4 span{color:var(--muted);margin-right:8px}
 .detail-process-row.is-text-only .detail-process-media{padding-block:0}
 .page-work:not(.page-study) .detail-process{grid-column:2/4}
 .page-work:not(.page-study) .detail-process-row{grid-template-columns:minmax(0,2.4fr) minmax(0,1fr)}
 @media(min-width:901px){
-.has-side-information .inline-work:has(.detail-process)>.inline-project-information{position:static;margin-top:48px;max-height:none}
-.has-side-information .inline-work:has(.detail-process)>.inline-project-information>.post-des{overflow:visible}
+.has-side-information .inline-work>.inline-project-information{position:fixed;top:max(var(--inline-start-top),var(--inline-info-top));right:var(--inline-fixed-right);width:var(--inline-information-width);margin:0;height:calc(100dvh - max(var(--inline-start-top),var(--inline-info-top)) - 24px);max-height:none;background:var(--paper);z-index:3}
+.has-side-information .inline-work>.inline-project-information>.post-des{min-height:0;overflow-y:auto;scrollbar-width:thin;padding-right:8px}
 }
 @media(max-width:900px){
 .detail-process,.page-work:not(.page-study) .detail-process{grid-column:1/-1;grid-row:auto}
@@ -503,8 +503,8 @@ figcaption{display:flex;justify-content:space-between;gap:12px;padding-top:8px;f
 .detail-process-media img[data-orientation="landscape"]{width:100%}
 .detail-process-copy{padding:24px var(--cell-inset) 20px}
 .detail-process-row.is-text-only .detail-process-copy{padding-top:12px}
-.detail-copy-section{padding-top:16px}
-.detail-process-copy h4{padding-top:16px}
+.detail-copy-section{padding-top:0}
+.detail-process-copy h4{padding-top:0}
 .detail-copy-section p+p,.detail-process-copy p+p{margin-top:10px}
 .detail-process-row.is-text-only .detail-process-media{display:none}
 .detail-copy-section+.detail-copy-section{margin-top:24px}
@@ -513,6 +513,59 @@ figcaption{display:flex;justify-content:space-between;gap:12px;padding-top:8px;f
 .works-project-panel:not(.has-side-information) .detail-process-row{grid-template-columns:minmax(0,1fr)}
 .works-project-panel:not(.has-side-information) .detail-process-row.is-text-only .detail-process-media{display:none}
 
-.detail-process-media{grid-template-columns:repeat(var(--process-columns,1),minmax(0,1fr));column-gap:24px}
+.detail-process-media{grid-template-columns:repeat(var(--process-columns,1),minmax(0,1fr));column-gap:6px}
 .detail-process-media[style*="--process-columns:2"] img,.detail-process-media[style*="--process-columns:3"] img{width:100%}
-@media(max-width:900px){.detail-process-media{column-gap:12px}}
+@media(max-width:900px){.detail-process-media{column-gap:4px}}
+
+/* Keep authored line breaks in Lab detail descriptions. */
+.page-study .project-information>.post-des{white-space:pre-line}
+
+.page-study .post-video>video[data-orientation="landscape"]{width:85%}
+
+/* Continue the Works media background through the gap above the footer rule. */
+@media(min-width:901px){
+ .has-side-information .inline-work:not(:has(.detail-process))>.feature-gallery{position:relative;align-self:stretch}
+ .has-side-information .detail-process-row:last-child>.detail-process-media{position:relative}
+ .has-side-information .inline-work:not(:has(.detail-process))>.feature-gallery::after,
+ .has-side-information .detail-process-row:last-child>.detail-process-media::after{content:"";position:absolute;left:0;right:0;top:100%;height:64px;background:var(--detail-paper,#ddd);pointer-events:none}
+}
+
+/* Fill the entire opening grid row even when its text is taller than its media. */
+@media(min-width:901px){
+ .has-side-information .inline-work>.feature-gallery,
+ .page-work:not(.page-study) .work-article>.feature-gallery{align-self:stretch}
+}
+
+.detail-process-media .project-image>a{display:block;width:100%}
+
+/* Compact copy rhythm, with space instead of rules between Works sections. */
+.works-project-panel .post-des,.page-work:not(.page-study) .post-des{line-height:1.5}
+.detail-copy-section p,.detail-process-copy p{margin-bottom:0}
+.detail-copy-section>h3,.detail-process-copy>.detail-section-label{line-height:1.5}
+
+@media(min-width:901px){
+.page-work:not(.page-study) .work-article{grid-template-columns:minmax(0,1fr) minmax(0,2.4fr) 300px}
+.page-work:not(.page-study) .project-information{position:fixed;right:var(--page-frame-inset);width:300px;margin-top:0;height:calc(50dvh - 24px)}
+.page-work:not(.page-study) .detail-process-row{grid-template-columns:minmax(0,1fr) 300px}
+}
+
+/* One caption below each Process media group. */
+.detail-process-media{row-gap:6px}
+.detail-process-images{grid-column:1/-1;min-width:0;display:grid;grid-template-columns:repeat(var(--process-columns,1),minmax(0,1fr));column-gap:6px;row-gap:200px;align-items:start}
+.detail-process-caption{grid-column:1/-1;margin:0;text-align:center;font-size:var(--type-ui);font-weight:400;line-height:1.5;color:#666;overflow-wrap:anywhere}
+@media(max-width:900px){.detail-process-images{column-gap:4px;row-gap:36px}}
+
+@media(min-width:901px){
+.has-side-information .inline-work>.inline-project-information{height:max(0px,calc(100dvh - max(var(--inline-start-top),var(--inline-info-top)) - 24px));min-height:0;overflow:hidden}
+.page-work:not(.page-study) .project-information{height:max(0px,calc(100dvh - var(--detail-info-top) - 24px));min-height:0;overflow:hidden}
+}
+
+.works-detail-hover{position:fixed;z-index:15;display:flex;align-items:center;justify-content:center;pointer-events:none;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:32px}
+.works-detail-hover img{display:block;width:auto;height:auto;aspect-ratio:auto;max-width:76%;max-height:80%;object-fit:contain;box-shadow:0 8px 32px rgba(0,0,0,.12)}
+@media(max-width:900px){.works-detail-hover{display:none}}
+
+/* Keep the reading panel anchored while respecting the footer boundary. */
+@media(min-width:901px){
+.has-side-information .inline-work>.inline-project-information{transform:none;height:max(0px,calc(100dvh - max(var(--inline-start-top),var(--inline-info-top)) - 24px - var(--works-footer-overlap,0px)))}
+.page-work:not(.page-study) .project-information{transform:none;height:max(0px,calc(100dvh - var(--detail-info-top) - 24px - var(--works-footer-overlap,0px)))}
+}

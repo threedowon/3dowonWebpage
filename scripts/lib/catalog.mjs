@@ -1,3 +1,4 @@
+import { compareWorkDates } from './work-date.mjs';
 export function pick(obj, field, lang) {
   if (lang === 'en' && obj[`${field}_en`] != null) return obj[`${field}_en`];
   return obj[field];
@@ -57,7 +58,7 @@ export function normalizeLabItems(lab) {
       meta_medium: fields[field][0],
       meta_medium_en: fields[field][1],
     });
-  }).filter((item) => item.thumbnail || item.video || item.mux?.playback_id);
+  }).filter((item) => item.thumbnail || item.video || item.mux?.playback_id).sort(compareWorkDates);
 }
 
 export function workFormY(work) {

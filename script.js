@@ -35,8 +35,43 @@ function initProjectHover(catalog, projects, plates, refreshImages) {
   let scrollQuietAfter = 0;
   let pointerPosition;
   const supportsHover = (event) => event.pointerType === 'mouse' || event.pointerType === 'pen';
+  const detailPanel = catalog.querySelector('.works-project-panel');
+  const preview = document.createElement('div');
+  preview.className = 'works-detail-hover';
+  preview.hidden = true;
+  preview.setAttribute('aria-hidden', 'true');
+  const previewImage = document.createElement('img');
+  previewImage.alt = '';
+  preview.append(previewImage);
+  document.body.append(preview);
+  let previewSlug = '';
+  const hideDetailPreview = () => { previewSlug = ''; preview.hidden = true; };
+  const showDetailPreview = slug => {
+    if (slug === catalog.dataset.openProject) { hideDetailPreview(); return; }
+    if (!window.matchMedia('(min-width:901px) and (hover:hover)').matches) return;
+    if (previewSlug === slug) return;
+    hideDetailPreview();
+    const template = [...catalog.querySelectorAll('template[data-project-detail]')].find(item => item.dataset.projectDetail === slug);
+    const image = template?.content.querySelector('.feature-gallery img, .detail-process-media img');
+    const src = image?.getAttribute('src');
+    if (!src || !detailPanel) return;
+    const rect = detailPanel.getBoundingClientRect();
+    const headerBottom = document.querySelector('.site-header')?.getBoundingClientRect().bottom || 0;
+    const footerTop = document.querySelector('.site-footer')?.getBoundingClientRect().top ?? window.innerHeight;
+    const top = Math.max(0, rect.top, headerBottom);
+    const bottom = Math.min(window.innerHeight, footerTop);
+    if (bottom <= top) return;
+    Object.assign(preview.style, {left:`${rect.left}px`, top:`${top}px`, width:`${rect.width}px`, height:`${bottom-top}px`});
+    previewSlug = slug;
+    previewImage.onload = () => { if (previewSlug === slug) preview.hidden = false; };
+    previewImage.onerror = hideDetailPreview;
+    previewImage.src = src;
+    if (previewImage.complete && previewImage.naturalWidth) preview.hidden = false;
+  };
+
   const showProject = (slug = '') => {
-    if (slug && catalog.dataset.openProject) return;
+    if (slug && catalog.dataset.openProject) { showDetailPreview(slug); return; }
+    hideDetailPreview();
     if (activeProject === slug) return;
     if (imageGrid) {
       if (slug) {
@@ -89,6 +124,8 @@ function initProjectHover(catalog, projects, plates, refreshImages) {
   window.addEventListener('pointerdown', (event) => {
     if (event.button === 1) suspend();
   }, { passive: true });
+  window.addEventListener('resize', clear);
+  index.addEventListener('click', clear);
   window.addEventListener('blur', clear);
   return clear;
 }
@@ -111,6 +148,9 @@ function initWorksProjectView(catalog, projects, clearProjectHover, refreshCatal
     const information = panel.querySelector('.inline-project-information');
     if (!information) return;
     const informationWidth = parseFloat(getComputedStyle(panel).getPropertyValue('--inline-information-width'));
+    const panelRect = panel.getBoundingClientRect();
+    panel.style.setProperty('--inline-start-top', `${panelRect.top + window.scrollY + 48}px`);
+    panel.style.setProperty('--inline-fixed-right', `${window.innerWidth - panelRect.right}px`);
     // Long metadata wraps within the fixed information column, without moving it.
     const minimumGalleryWidth = 320;
     panel.classList.toggle('has-side-information', window.matchMedia('(min-width:901px)').matches && panel.clientWidth >= informationWidth + minimumGalleryWidth);
@@ -353,6 +393,7 @@ function initImageRatios() {
     const applyRatio = () => {
       if (!video.videoWidth || !video.videoHeight) return;
       const portrait = video.videoHeight > video.videoWidth;
+      video.dataset.orientation = video.videoWidth > video.videoHeight ? 'landscape' : 'portrait';
       const plate = video.closest('[data-plate]');
       if (plate) plate.dataset.orientation = portrait ? 'portrait' : 'landscape';
       const preview = video.closest('.overview-image-link');
@@ -614,3 +655,23 @@ if (!restoreLegacyRoute()) {
   syncLanguageLinks();
 }
 window.addEventListener('hashchange', () => { if (!restoreLegacyRoute()) syncLanguageLinks(); });
+
+
+function initWorksFooterCollision() {
+  if (!document.body.matches('.page-works,.page-work:not(.page-study)')) return;
+  const footer = document.querySelector('.site-footer');
+  if (!footer) return;
+  let frame = 0;
+  const update = () => {
+    frame = 0;
+    // Both fixed reading panels end 24px above the viewport bottom.
+    const overlap = Math.max(0, window.innerHeight - 24 - footer.getBoundingClientRect().top + 16);
+    document.documentElement.style.setProperty('--works-footer-overlap', `${overlap}px`);
+  };
+  const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+  window.addEventListener('scroll', schedule, {passive:true});
+  window.addEventListener('resize', schedule);
+  new ResizeObserver(schedule).observe(document.body);
+  update();
+}
+initWorksFooterCollision();

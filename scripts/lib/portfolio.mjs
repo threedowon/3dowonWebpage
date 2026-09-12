@@ -3,7 +3,7 @@ import {galleryRows} from '../../admin/public/gallery-layout.mjs';
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
 import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 
-const VERSION = '1091';
+const VERSION = '1109';
 const isGalleryVideo = src => /\.(mp4|webm|mov|m4v)(?:[?#]|$)/i.test(src || '');
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
@@ -211,7 +211,9 @@ function projectContent(work, ctx) {
   const processEntries = ctx.section === 'works' && Array.isArray(work.process) ? work.process : [];
   const processSources = new Set(processEntries.flatMap(entry => entry.images || []).map(src => resolveMediaPath(src, ctx.assets)));
   const media = projectImages(work, ctx).filter(src => !processSources.has(src));
-  const year = work.meta_year || work.year;
+  const yearValue = work.meta_year || work.year;
+  const month = Number(work.month);
+  const year = yearValue && Number.isInteger(month) && month >= 1 && month <= 12 ? `${yearValue}.${number(month)}` : yearValue;
   const background = /^#[0-9a-f]{6}$/i.test(work.detail_background || '') ? work.detail_background : '#dddddd';
   const video = (work.mux?.playback_id && /^[a-zA-Z0-9]+$/.test(work.mux.playback_id) ? `<div class="post-video"><div class="post-video-frame"><mux-player theme="portfolio-video-theme" playback-id="${work.mux.playback_id}" metadata-video-title="${esc(title)}" stream-type="on-demand" preload="metadata" accent-color="${background}" primary-color="${background}"></mux-player></div></div>` : '') || vimeoEmbedHtml(work.vimeo_url, title, background) || (work.video ? `<div class="post-video"><video ${ctx.section === 'lab' ? 'autoplay muted loop' : 'controls'} playsinline preload="metadata" aria-label="${esc(title)}" src="${esc(resolveMediaPath(work.video, ctx.assets))}"></video></div>` : '');
   const figure = (src, position) => isGalleryVideo(src) ? `<figure class="project-image gallery-video"><video src="${esc(src)}" autoplay muted loop playsinline preload="metadata" aria-label="${esc(title)} — ${position + 1}"></video></figure>` : `<figure class="project-image"><a href="${esc(src)}" data-viewer="${esc(src)}" data-viewer-title="${esc(title)} — ${number(position + 1)}" aria-label="${esc(title)} ${position + 1} — ${c.enlarge}"><img src="${esc(src)}" alt="${esc(title)} — ${position + 1}" class="project-detail-image" ${position === 0 && !video ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`;
@@ -219,7 +221,7 @@ function projectContent(work, ctx) {
     [['year', year], ...(ctx.section === 'lab' ? [] : [['type', pick(work, 'meta_type', lang)]])],
     [['tech', pick(work, 'meta_tech', lang)], ['production', pick(work, 'meta_production', lang)]],
   ].map((entries) => entries.filter(([, value]) => value)).filter((entries) => entries.length)
-    .map((entries) => `<dl class="work-meta">${entries.map(([label, value]) => `<div><dt>${c[label]}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>`).join('');
+    .map((entries) => `<dl class="work-meta">${entries.map(([label, value]) => `<div><dt>${label === 'year' ? (lang === 'ko' ? '날짜' : 'Date') : c[label]}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>`).join('');
   const columns = [1, 2, 3].includes(Number(work.detail_columns)) ? Number(work.detail_columns) : 1;
   const documents = ctx.section === 'lab' ? [] : (work.documents || []).filter(item => /^\/3dowonWebpage\/assets\/documents\/[a-zA-Z0-9-]+\.pdf$/.test(item.file || ''));
   const documentLinks = documents.length ? `<div class="project-documents">${documents.map((item, i) => `<a href="${esc(resolveMediaPath(item.file, ctx.assets))}" target="_blank" rel="noopener">${lang === 'ko' ? '보도자료' : 'Press Release'}${documents.length > 1 ? ` ${i + 1}` : ''} ↗</a>`).join('')}</div>` : '';
@@ -227,9 +229,10 @@ function projectContent(work, ctx) {
   const assigned = new Set(rows.flat());
   media.filter(src => !assigned.has(src)).forEach(src => rows.unshift([src]));
   const groupedMedia = rows.map(row => `<div class="detail-image-row" style="--row-columns:${row.length}">${row.map(src => figure(src, media.indexOf(src))).join('')}</div>`).join('');
-  const process = processEntries.length ? `<div class="detail-process">${processEntries.map((entry, i) => {
-    const images = (entry.images || []).map(src => resolveMediaPath(src, ctx.assets));
-    return `<section class="detail-process-row${images.length ? '' : ' is-text-only'}"><div class="detail-process-media" style="--detail-paper:${background};--process-columns:${[1,2,3].includes(Number(entry.columns))?Number(entry.columns):1}">${images.map(figure).join('')}</div><div class="detail-process-copy prose post-des">${i === 0 ? `<h3 class="detail-section-label">Process</h3>` : ''}<h4><span>${number(i + 1)}</span> ${esc(pick(entry, 'title', lang))}</h4>${richText(pick(entry, 'description', lang))}</div></section>`;
+  const processMediaEntries = processEntries.filter(entry => entry.images?.length);
+  const process = processMediaEntries.length ? `<div class="detail-process">${processMediaEntries.map(entry => {
+    const images = entry.images.map(src => resolveMediaPath(src, ctx.assets));
+    return `<section class="detail-process-row"><div class="detail-process-media" style="--detail-paper:${background};--process-columns:${[1,2,3].includes(Number(entry.columns))?Number(entry.columns):1}"><div class="detail-process-images">${images.map(figure).join('')}</div>${pick(entry, 'title', lang)?.trim() ? `<p class="detail-process-caption">${esc(pick(entry, 'title', lang))}</p>` : ''}</div></section>`;
   }).join('')}</div>` : '';
   return { title, metadata, process, description: (ctx.section === 'works' ? detailDescription(work, ctx) : richText(pick(work, 'description', lang))) + documentLinks, gallery:  `<div class="feature-gallery" style="--detail-paper:${background};--detail-columns:${ctx.section === 'works' ? 1 : columns}">${video}${ctx.section === 'works' ? groupedMedia : media.map(figure).join('')}</div>` };
 }

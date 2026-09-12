@@ -1,7 +1,7 @@
 function createProcessEditor(form, work) {
   const host = document.createElement('section');
   host.className = 'work-process-editor';
-  host.innerHTML = '<h4>Process · 제작 과정</h4><p class="field-help">제목과 설명은 오른쪽에, 추가한 미디어는 왼쪽 회색 영역에 표시됩니다. 각 과정에 파일을 직접 여러 개 올릴 수 있고, 파일 없이 글만 작성해도 됩니다. 영상은 무음 자동 반복 재생됩니다. 변경 사항은 프로젝트 저장 버튼으로 저장됩니다.</p><div class="process-entry-list"></div><button type="button" class="process-add">+ 과정 추가</button>';
+  host.innerHTML = '<h4>Process · 제작 과정</h4><p class="field-help">제목과 설명은 오른쪽에, 추가한 미디어는 왼쪽 회색 영역에 표시됩니다. 각 과정에 파일을 직접 여러 개 올릴 수 있고, 파일 없이 글만 작성해도 됩니다. 영상은 무음 자동 반복 재생됩니다. 변경 사항은 입력을 마치면 자동 저장됩니다.</p><div class="process-entry-list"></div><button type="button" class="process-add">+ 과정 추가</button>';
   form.querySelector('[name="responsibilities"]').closest('.field-row').after(host);
   form.querySelector('[name="production"]').closest('label').after(form.querySelector('[name="company"]').closest('label'));
   let entries = [];
@@ -11,7 +11,7 @@ function createProcessEditor(form, work) {
     const list = host.querySelector('.process-entry-list'); list.replaceChildren();
     entries.forEach((entry, index) => {
       const row = document.createElement('fieldset'); row.className = 'process-entry';
-      row.innerHTML = `<legend>Process ${index+1}</legend><div class="process-actions"><button type="button" data-move="-1" ${index===0?'disabled':''}>↑ 위로</button><button type="button" data-move="1" ${index===entries.length-1?'disabled':''}>↓ 아래로</button><button type="button" class="danger" data-remove>과정 삭제</button></div><div class="field-row"><label>제목<input data-field="title" value="${escapeAttr(entry.title||'')}" /></label><label>제목 (EN)<input data-field="title_en" value="${escapeAttr(entry.title_en||'')}" /></label></div><label>내용<textarea data-field="description" rows="4">${escapeHtml(entry.description||'')}</textarea></label><label>내용 (EN)<textarea data-field="description_en" rows="4">${escapeHtml(entry.description_en||'')}</textarea></label><label>한 줄에 표시할 개수<select class="process-columns">${[1,2,3].map(n=>`<option value="${n}" ${Number(entry.columns||1)===n?'selected':''}>${n}개</option>`).join('')}</select></label><div class="process-media-options"></div><label>이 과정에 이미지·GIF·영상 추가<input class="process-upload" type="file" accept="image/*,video/*,.mp4,.mov,.webm,.m4v" multiple /></label><p class="field-help">한 번에 최대 20개, 파일당 150MB. 파일 순서대로 배치되며 마지막 줄은 남은 개수만 표시됩니다.</p><p class="process-upload-status" role="status"></p>`;
+      row.innerHTML = `<legend>Process ${index+1}</legend><div class="process-actions"><button type="button" data-move="-1" ${index===0?'disabled':''}>↑ 위로</button><button type="button" data-move="1" ${index===entries.length-1?'disabled':''}>↓ 아래로</button><button type="button" class="danger" data-remove>과정 삭제</button></div><div class="field-row"><label>제목<input data-field="title" value="${escapeAttr(entry.title||'')}" /></label><label>제목 (EN · 저장 시 자동 번역)<input placeholder="한글 제목을 저장하면 자동 번역됩니다." data-field="title_en" value="${escapeAttr(entry.title_en||'')}" /></label></div><label>내용<textarea data-field="description" rows="4">${escapeHtml(entry.description||'')}</textarea></label><label>내용 (EN · 저장 시 자동 번역)<textarea data-field="description_en" rows="4" placeholder="한글 내용을 저장하면 자동 번역됩니다.">${escapeHtml(entry.description_en||'')}</textarea></label><label>한 줄에 표시할 개수<select class="process-columns">${[1,2,3].map(n=>`<option value="${n}" ${Number(entry.columns||1)===n?'selected':''}>${n}개</option>`).join('')}</select></label><div class="process-media-options"></div><label>이 과정에 이미지·GIF·영상 추가<input class="process-upload" type="file" accept="image/*,video/*,.mp4,.mov,.webm,.m4v" multiple /></label><p class="field-help">한 번에 최대 20개, 파일당 150MB. 파일 순서대로 배치되며 마지막 줄은 남은 개수만 표시됩니다.</p><p class="process-upload-status" role="status"></p>`;
       row.querySelectorAll('[data-field]').forEach(input => input.oninput = () => {entry[input.dataset.field]=input.value;dirty();});
       row.querySelector('[data-remove]').onclick = () => {entries.splice(index,1);dirty();render();};
       row.querySelectorAll('[data-move]').forEach(button => button.onclick = () => {const next=index+Number(button.dataset.move);[entries[index],entries[next]]=[entries[next],entries[index]];dirty();render();});
@@ -41,6 +41,19 @@ function createProcessEditor(form, work) {
     });
   };
   const editor={get busy(){return uploading;},get:()=>structuredClone(entries),set:value=>{entries=structuredClone(value||[]).map(entry=>({...entry,images:entry.images||[],columns:entry.columns||1}));render();}};
+  editor.translationReceiver = () => {
+    const before = entries.map(entry => ({entry, title_en:entry.title_en || '', description_en:entry.description_en || ''}));
+    return translated => before.forEach((saved, index) => {
+      const currentIndex = entries.indexOf(saved.entry);
+      if (currentIndex < 0 || !translated?.[index]) return;
+      for (const key of ['title_en', 'description_en']) {
+        if ((saved.entry[key] || '') !== saved[key]) continue;
+        saved.entry[key] = translated[index][key] || '';
+        const input = host.querySelectorAll('.process-entry')[currentIndex]?.querySelector(`[data-field="${key}"]`);
+        if (input && input.value !== saved.entry[key]) input.value = saved.entry[key];
+      }
+    });
+  };
   host.querySelector('.process-add').onclick=()=>{entries.push({title:'',title_en:'',description:'',description_en:'',images:[]});dirty();render();};
   editor.set(work.process);form.processEditor=editor;
 }
@@ -124,15 +137,12 @@ function selectOptions(options, value) {
 // ── Tabs ──
 const openWorkSlugs = new Set();
 const dirtyWorks = new Set();
+const workAutosaves = new Map();
 let activeAdminTab = 'works';
 
 document.querySelectorAll('.admin-tab').forEach((tab) => {
   tab.addEventListener('click', () => {
     const nextTab = tab.dataset.tab;
-    if (nextTab !== activeAdminTab && dirtyWorks.size > 0) {
-      if (!confirm('저장하지 않은 변경이 있어요. 탭을 바꿀까요?')) return;
-      dirtyWorks.clear();
-    }
     document.querySelectorAll('.admin-tab').forEach((t) => t.classList.remove('active'));
     document.querySelectorAll('.admin-panel').forEach((p) => p.classList.remove('active'));
     tab.classList.add('active');
@@ -190,6 +200,7 @@ function applyWorkForm(form, draft) {
 
 function markWorkDirty(slug) {
   dirtyWorks.add(slug);
+  workAutosaves.get(slug)?.schedule();
 }
 
 function previewPath(work) {
@@ -378,6 +389,10 @@ function appendGalleryItem(galleryGrid, work, src, index) {
 
 // ── Works ──
 async function loadWorks() {
+  await Promise.all([...workAutosaves.values()].map(save => save.flush()));
+  if (dirtyWorks.size) return;
+  workAutosaves.forEach(save => save.dispose());
+  workAutosaves.clear();
   const drafts = new Map();
   document.querySelectorAll('.work-card').forEach((card) => {
     const slug = card.dataset.slug;
@@ -415,10 +430,10 @@ function renderWorkCard(work) {
         </div>
         <label>유형<div class="chk-group">${checkboxGroup('types', [...new Set([...TYPE_OPTIONS,work.type,...(work.tags||[])].filter(Boolean))], [work.type,...(work.tags||[])])}</div></label>
         <label>제작<select name="production">${selectOptions(PRODUCTION_OPTIONS, work.production)}</select></label>
-        <fieldset class="tech-field"><legend>기술 (복수 선택)</legend><div class="chk-group work-tech-options">${techCheckboxes(work.tech || [])}</div><p class="field-help">선택을 바꾸고 저장하면 상세페이지의 기술 정보에도 반영됩니다. 항목은 위의 ‘기술 선택 목록 편집’에서 수정할 수 있어요.</p></fieldset>
+        <fieldset class="tech-field"><legend>기술 (복수 선택)</legend><div class="chk-group work-tech-options">${techCheckboxes(work.tech || [])}</div><p class="field-help">선택을 바꾸면 자동 저장되어 상세페이지의 기술 정보에도 반영됩니다. 항목은 위의 ‘기술 선택 목록 편집’에서 수정할 수 있어요.</p></fieldset>
         <p class="field-help">저장 시 한글 소개·주요 업무·Process 제목과 내용을 영어로 자동 번역합니다. 직접 수정한 영어는 유지합니다. DeepL 키는 Lab 상단에서 공통으로 설정합니다.</p><label>소개 (엔터로 줄바꿈)<textarea name="description" rows="4">${escapeHtml(work.description)}</textarea></label>
-        <label>소개 (EN)<textarea name="description_en" rows="4">${escapeHtml(work.description_en)}</textarea></label>
-        <div class="field-row"><label>주요 업무<textarea name="responsibilities" rows="4">${escapeHtml(work.responsibilities||'')}</textarea></label><label>주요 업무 (EN)<textarea name="responsibilities_en" rows="4">${escapeHtml(work.responsibilities_en||'')}</textarea></label></div>
+        <label>소개 (EN · 저장 시 자동 번역)<textarea name="description_en" rows="4" placeholder="한글 소개를 작성하고 저장하면 자동으로 채워집니다.">${escapeHtml(work.description_en)}</textarea></label>
+        <div class="field-row"><label>주요 업무<textarea name="responsibilities" rows="4">${escapeHtml(work.responsibilities||'')}</textarea></label><label>주요 업무 (EN · 저장 시 자동 번역)<textarea name="responsibilities_en" rows="4" placeholder="한글 주요 업무를 작성하고 저장하면 자동으로 채워집니다.">${escapeHtml(work.responsibilities_en||'')}</textarea></label></div>
         <label>회사명 (회사 작업일 때)<input name="company" placeholder="d'strict" value="${escapeAttr(work.company||'')}" /></label>
         <label>외부 영상 링크 · Vimeo<input name="vimeo_url" value="${escapeAttr(work.vimeo_url)}" /></label>
         <div class="field-row"><label>상세 이미지 배경색<input type="color" name="detail_background" value="${/^#[0-9a-f]{6}$/i.test(work.detail_background || '') ? work.detail_background : '#dddddd'}" /></label><button type="button" class="reset-detail-background">기본 회색으로</button></div>
@@ -440,7 +455,7 @@ function renderWorkCard(work) {
   (work.gallery || []).forEach((src, i) => appendGalleryItem(galleryGrid, work, src, i));
   decorateGalleryRows(galleryGrid, work);
   const layoutTools=document.createElement('div'); layoutTools.className='gallery-layout-tools';
-  layoutTools.innerHTML='<span>같은 줄 번호는 나란히 배치됩니다. 한 줄에 최대 3장 · 작은 번호부터 표시 · 배치 적용 또는 맨 아래 저장을 누르면 반영됩니다.</span><button type="button" class="primary">배치 적용</button>';
+  layoutTools.innerHTML='<span>같은 줄 번호는 나란히 배치됩니다. 한 줄에 최대 3장 · 작은 번호부터 표시 · 배치 적용을 누르면 반영됩니다.</span><button type="button" class="primary">배치 적용</button>';
   galleryGrid.before(layoutTools);
   layoutTools.querySelector('button').onclick=()=>{
     const rows=new Map();
@@ -455,11 +470,6 @@ function renderWorkCard(work) {
   };
 
   card.querySelector('.work-card-head').addEventListener('click', () => {
-    const willClose = card.classList.contains('open');
-    if (willClose && dirtyWorks.has(work.slug)) {
-      if (!confirm('저장하지 않은 변경이 있어요. 닫을까요?')) return;
-      dirtyWorks.delete(work.slug);
-    }
     card.classList.toggle('open');
     card.querySelector('.work-card-head').setAttribute('aria-expanded', String(card.classList.contains('open')));
     if (card.classList.contains('open')) openWorkSlugs.add(work.slug);
@@ -477,8 +487,17 @@ function renderWorkCard(work) {
   videoLink.addEventListener('change', () => markWorkDirty(work.slug));
   videoSection.append(card.querySelector('.project-video-tools'), videoLink.closest('label'));
   const actions = editForm.querySelector('[type="submit"]').parentElement;
-  actions.className = 'work-actions';
-  actions.querySelector('[type="submit"]').setAttribute('form', editForm.id);
+  const heading = document.createElement('div');
+  heading.className = 'work-heading-row';
+  const head = card.querySelector('.work-card-head');
+  head.before(heading);
+  heading.append(head, actions.querySelector('.delete-work'));
+  actions.remove();
+  const saveStatus = document.createElement('p');
+  saveStatus.className = 'work-save-status';
+  saveStatus.setAttribute('role', 'status');
+  saveStatus.textContent = '변경 사항은 자동 저장됩니다.';
+  editForm.prepend(saveStatus);
   const documentsSection = document.createElement('section');
   documentsSection.className = 'work-documents';
   documentsSection.innerHTML = `<h4>PDF 첨부</h4><p class="field-help">첨부하면 상세 설명 맨 아래에 보도자료 링크가 표시됩니다. 파일당 50MB, 한 번에 6개까지 올릴 수 있어요. 첨부와 제거는 바로 저장됩니다.</p><div class="work-document-list"></div><label>PDF 파일 추가<input type="file" accept="application/pdf,.pdf" multiple /></label><p role="status"></p>`;
@@ -517,7 +536,7 @@ function renderWorkCard(work) {
     finally { pdfInput.disabled = false; pdfInput.value = ''; }
   };
   renderDocuments();
-  card.querySelector('.work-card-body').append(videoSection, documentsSection, actions);
+  card.querySelector('.work-card-body').append(videoSection, documentsSection);
   card.querySelector('.reset-detail-background').addEventListener('click', () => {
     editForm.detail_background.value = '#dddddd';
     markWorkDirty(work.slug);
@@ -525,56 +544,75 @@ function renderWorkCard(work) {
   editForm.addEventListener('input', () => markWorkDirty(work.slug));
   editForm.addEventListener('change', () => markWorkDirty(work.slug));
 
-  editForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const saveButton = card.querySelector('.work-actions [type="submit"]');
-    saveButton.disabled = true;
-    try {
-    if(editForm.processEditor.busy) throw new Error('Process 파일 업로드가 끝난 뒤 저장해주세요.');
-    if(rowNumberDrafts.has(work.slug) && !(await layoutTools.querySelector('button').onclick())) {
-      throw new Error(card.querySelector('.gallery-status').textContent || '이미지 배치를 먼저 확인해주세요.');
+  let timer, saving = null, disposed = false;
+  const showStatus = (message, failed = false) => {
+    saveStatus.textContent = message;
+    saveStatus.classList.toggle('is-error', failed);
+    if (failed) {
+      const retry = document.createElement('button');
+      retry.type = 'button'; retry.textContent = '다시 시도';
+      retry.onclick = () => autosave.flush();
+      saveStatus.append(' ', retry);
     }
-    const fd = new FormData(e.target);
-    const processBeforeSave=JSON.stringify(editForm.processEditor.get());
-    saveButton.textContent='저장·번역 중…';
-    const updated = await api(`/api/works/${work.slug}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        title: fd.get('title'),
-        year: fd.get('year'),
-        types: fd.getAll('types'),
-        production: fd.get('production'),
-        company: fd.get('company'),
-        responsibilities: fd.get('responsibilities'),
-        responsibilities_en: fd.get('responsibilities_en'),
-        process: editForm.processEditor.get(),
-        ...(JSON.stringify(fd.getAll('tech').slice().sort()) !== JSON.stringify((work.tech || []).slice().sort()) ? {tech:fd.getAll('tech')} : {}),
-        description: fd.get('description'),
-        description_en: fd.get('description_en'),
-        vimeo_url: fd.get('vimeo_url'),
-        detail_background: fd.get('detail_background'),
-        detail_columns: work.detail_rows ? 1 : Number(fd.get('detail_columns')),
-      }),
-    });
-    const editedDuringSave=JSON.stringify(editForm.processEditor.get())!==processBeforeSave || [...fd.entries()].some(([key,value])=>typeof value==='string' && !['tech','types'].includes(key) && new FormData(editForm).get(key)!==value);
-    if(!editedDuringSave)dirtyWorks.delete(work.slug);
-    openWorkSlugs.add(work.slug);
-    card.classList.add('open');
-    for(const key of ['description_en','responsibilities_en']){if(editForm.elements.namedItem(key).value===fd.get(key))editForm.elements.namedItem(key).value=updated[key]||'';}
-    if(JSON.stringify(editForm.processEditor.get())===processBeforeSave)editForm.processEditor.set(updated.process);
-    Object.assign(work, updated);
-    updateWorkCardHead(card, updated);
-    filterWorks();
-    alert(updated.translationWarning || '저장했어요.');
-    } catch (error) { alert(error.message); }
-    finally { saveButton.disabled = false;saveButton.textContent='저장'; }
-  });
+  };
+  const autosave = {
+    schedule() {
+      if (disposed) return;
+      clearTimeout(timer);
+      showStatus(saving ? '저장 중 · 추가 변경 대기…' : '자동 저장 대기…');
+      timer = setTimeout(() => autosave.flush(), 1200);
+    },
+    async flush() {
+      clearTimeout(timer);
+      if (disposed) return;
+      if (saving) { await saving; return dirtyWorks.has(work.slug) ? autosave.flush() : undefined; }
+      if (!dirtyWorks.has(work.slug)) return;
+      if (editForm.processEditor.busy) { autosave.schedule(); return; }
+      if (!editForm.checkValidity()) { showStatus('연도 / 월 등 필수 입력을 확인해주세요.'); return; }
+      const draft = captureWorkForm(editForm);
+      const snapshot = JSON.stringify(draft);
+      const receiveTranslations = editForm.processEditor.translationReceiver();
+      showStatus('자동 저장·번역 중…');
+      saving = (async () => {
+        try {
+          const updated = await api(`/api/works/${work.slug}`, {
+            method: 'PUT', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({...draft, detail_columns: work.detail_rows ? 1 : Number(draft.detail_columns)}),
+          });
+          const changed = JSON.stringify(captureWorkForm(editForm)) !== snapshot;
+          for (const key of ['description_en', 'responsibilities_en']) {
+            if (editForm.elements.namedItem(key).value === draft[key]) editForm.elements.namedItem(key).value = updated[key] || '';
+          }
+          receiveTranslations(updated.process);
+          Object.assign(work, updated);
+          updateWorkCardHead(card, updated);
+          if (!changed) dirtyWorks.delete(work.slug);
+          showStatus(updated.translationWarning || (changed ? '추가 변경 자동 저장 대기…' : '자동 저장 완료'));
+          if (changed) autosave.schedule();
+        } catch (error) {
+          clearTimeout(timer);
+          showStatus('자동 저장 실패: ' + error.message, true);
+        }
+      })();
+      await saving;
+      saving = null;
+    },
+    dispose() { disposed = true; clearTimeout(timer); },
+    async settle() { clearTimeout(timer); if (saving) await saving; clearTimeout(timer); },
+  };
+  workAutosaves.set(work.slug, autosave);
+  editForm.addEventListener('submit', e => { e.preventDefault(); autosave.flush(); });
 
-  card.querySelector('.delete-work').addEventListener('click', async () => {
+  card.querySelector('.delete-work').addEventListener('click', async (e) => {
     if (!confirm(`"${work.title}"을(를) 삭제할까요?`)) return;
-    await api(`/api/works/${work.slug}`, { method: 'DELETE' });
-    loadWorks();
+    const button = e.currentTarget;
+    button.disabled = true;
+    await autosave.settle();
+    try {
+      await api(`/api/works/${work.slug}`, { method: 'DELETE' });
+      autosave.dispose(); workAutosaves.delete(work.slug); dirtyWorks.delete(work.slug);
+      openWorkSlugs.delete(work.slug); card.remove();
+    } catch (error) { showStatus(error.message, true); button.disabled = false; }
   });
 
   card.querySelector('.gallery-input').addEventListener('change', async (e) => {
@@ -773,8 +811,7 @@ async function loadLab() {
     card.className = 'lab-card thumb-row';
     card.innerHTML = `
       ${item.video ? `<video src="${escapeAttr(imgUrl(item.video))}" muted autoplay loop playsinline style="width:100px;height:100px;object-fit:cover" aria-label="영상 미리보기"></video>` : `<img src="${escapeAttr(imgUrl(item.image))}" alt="" />`}
-      <input value="${escapeAttr(item.caption)}" class="lab-caption" aria-label="제목 (한글)" placeholder="제목 (한글)" />
-      <input value="${escapeAttr(item.caption_en || '')}" class="lab-caption" aria-label="제목 (영문)" placeholder="제목 (영문)" />
+      <input value="${escapeAttr(item.caption_en || item.caption || '')}" class="lab-caption" aria-label="제목 (영문)" placeholder="제목 (영문)" />
       <button type="button" class="danger">삭제</button>
       <label>날짜 (연·월)<input class="lab-date" value="${escapeAttr(item.year ? `${item.year}${item.month ? '.' + String(item.month).padStart(2,'0') : ''}` : '')}" placeholder="2026.03" /></label>
       <label>파일 교체<input class="lab-replace" type="file" accept="image/*,video/*,.mp4,.mov,.webm,.m4v" /></label>
@@ -784,7 +821,8 @@ async function loadLab() {
     `;
     const download=document.createElement('a');download.textContent='파일 다운로드';download.href='/api/mux/local-download?target='+encodeURIComponent('lab:'+i)+'&src='+encodeURIComponent(item.video||item.image||'');card.append(download);
 
-    const [img, captionInput, captionEnInput, removeBtn] = card.children;
+    const captionInput = card.querySelector('.lab-caption');
+    const removeBtn = card.querySelector('button.danger');
     let saving = false;
     const saveCaptions = async () => {
       if (saving) return;
@@ -795,7 +833,7 @@ async function loadLab() {
       try { const result = await api(`/api/lab/items/${i}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ caption:captionInput.value, caption_en:captionEnInput.value, date:card.querySelector('.lab-date').value.trim(), description:card.querySelector('.lab-description').value, description_en:card.querySelector('.lab-description-en').value }),
+        body: JSON.stringify({ caption:captionInput.value, caption_en:captionInput.value, date:card.querySelector('.lab-date').value.trim(), description:card.querySelector('.lab-description').value, description_en:card.querySelector('.lab-description-en').value }),
       });
       card.querySelector('.lab-description-en').value = result.items[i]?.description_en || '';
       card.querySelector('.lab-status').textContent = result.translationWarning || '저장되었습니다.';
@@ -803,7 +841,6 @@ async function loadLab() {
       finally { saving = false; controls.forEach(control => control.disabled = false); }
     };
     captionInput.addEventListener('change', saveCaptions);
-    captionEnInput.addEventListener('change', saveCaptions);
     card.querySelector('.lab-date').addEventListener('change',saveCaptions);
     card.querySelector('.lab-description').addEventListener('change',saveCaptions);
     card.querySelector('.lab-description-en').addEventListener('change',saveCaptions);
@@ -836,7 +873,7 @@ document.getElementById('newLabForm').addEventListener('submit', async (e) => {
   if (file.size > 150 * 1024 * 1024) return alert('파일은 150MB 이하로 올려주세요.');
   const fd = new FormData();
   fd.append('image', file);
-  fd.append('caption', e.target.caption.value);
+  fd.append('caption', e.target.caption_en.value);
   fd.append('caption_en', e.target.caption_en.value);
   fd.append('date', e.target.date.value.trim());
   fd.append('description', e.target.description.value);

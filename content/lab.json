@@ -26,70 +26,49 @@
       "description_en": "PCG is easy, yet somehow tricky."
     },
     {
-      "caption": "피지컬 컴퓨팅 회로 실험",
+      "caption": "gyro with Unreal Engine",
       "caption_en": "Physical computing circuit experiment",
       "video": "/3dowonWebpage/assets/uploads/lab-83bcff30-50dc-4033-8254-eb8971c4cccf.mp4",
       "year": 2024,
-      "month": 7
+      "month": 7,
+      "description": "1. ESP32랑 mpu6050 연결 후 로컬 와이파이에 연결 완료!\n2. Udp로 언리얼에 데이터 보내기\n\n* 데이터를 받으면 회전할 때 부드럽게 값 조절하기\n* usb연결이 아닌 전력 연결하는 방법 고민하기",
+      "description_en": "1. Connected the ESP32 to the MPU6050 and successfully connected to the local Wi-Fi network!\n2. Sending data to Unreal via UDP\n\n* When data is received, adjust the values smoothly during rotation\n* Figure out how to connect the power supply without using a USB connection"
     },
     {
-      "caption": "프로젝션 캘리브레이션",
+      "caption": "gyro with Unreal Engine",
       "caption_en": "Projection calibration",
       "video": "/3dowonWebpage/assets/uploads/lab-f1780175-9e8b-4dde-9876-4d609f07c5e4.mp4",
       "year": 2024,
-      "month": 8
+      "month": 8,
+      "description": "데이터 다듬는 중",
+      "description_en": "Cleaning up the data"
     },
     {
-      "caption": "이전 작업 아카이브 정리",
+      "caption": "Chaos Physics",
       "caption_en": "Archiving previous work",
       "video": "/3dowonWebpage/assets/uploads/lab-f7033837-8f2f-4e5a-a181-cd178fbd9cb7.mp4",
       "year": 2024,
-      "month": 8
+      "month": 8,
+      "description": "",
+      "description_en": ""
     },
     {
-      "image": "https://picsum.photos/seed/lab-touch/600/750",
-      "caption": "터치 반응 속도 테스트",
-      "caption_en": "Touch response speed test"
+      "caption": "Hand Gesture to point light",
+      "caption_en": "Touch response speed test",
+      "video": "/3dowonWebpage/assets/uploads/lab-49fff422-9631-42cd-9f0c-47a1a62d549b.mp4",
+      "year": 2024,
+      "month": 11,
+      "description": "정확히 접었냐 폈냐의 기준점이 애매하다.",
+      "description_en": "It's unclear exactly what constitutes \"folded\" or \"unfolded.\""
     },
     {
-      "image": "https://picsum.photos/seed/lab-plant/600/750",
-      "caption": "식물 신호 센서 실험",
-      "caption_en": "Plant signal sensor experiment"
-    },
-    {
-      "image": "https://picsum.photos/seed/lab-water/600/750",
-      "caption": "물 표면 투사 테스트",
-      "caption_en": "Water surface projection test"
-    },
-    {
-      "image": "https://picsum.photos/seed/lab-light/600/750",
-      "caption": "DMX 조명 시퀀스 테스트",
-      "caption_en": "DMX lighting sequence test"
-    },
-    {
-      "image": "https://picsum.photos/seed/lab-audio/600/750",
-      "caption": "오디오 반응 매핑 실험",
-      "caption_en": "Audio-reactive mapping experiment"
-    },
-    {
-      "image": "https://picsum.photos/seed/lab-map/600/750",
-      "caption": "프로젝션 맵핑 스케치",
-      "caption_en": "Projection mapping sketch"
-    },
-    {
-      "image": "https://picsum.photos/seed/lab-servo/600/750",
-      "caption": "서보 모터 프로토타입",
-      "caption_en": "Servo motor prototype"
-    },
-    {
-      "image": "https://picsum.photos/seed/lab-shader/600/750",
-      "caption": "실시간 셰이더 실험",
-      "caption_en": "Real-time shader experiment"
-    },
-    {
-      "image": "https://picsum.photos/seed/lab-field/600/750",
-      "caption": "현장 설치 시뮬레이션",
-      "caption_en": "On-site installation simulation"
+      "caption": "Unreal Engine - Web",
+      "caption_en": "Plant signal sensor experiment",
+      "video": "/3dowonWebpage/assets/uploads/lab-0edd64bc-173b-46bc-8a82-ecddf7cbe588.mp4",
+      "year": 2025,
+      "month": 2,
+      "description": "",
+      "description_en": ""
     }
   ]
 }

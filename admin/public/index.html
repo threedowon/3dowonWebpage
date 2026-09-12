@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>3Dowon — Admin</title>
-<link rel="stylesheet" href="admin.css?v=15" />
+<link rel="stylesheet" href="admin.css?v=16" />
 </head>
 <body>
   <header class="admin-header">
@@ -100,8 +100,7 @@
 
       <details class="settings-fold"><summary>새 Lab 추가</summary><form id="newLabForm" class="admin-form">
         <label>날짜 (연·월)<input name="date" placeholder="2026.03" pattern="[0-9]{4}([.\-](0?[1-9]|1[0-2]))?" /></label>
-        <label>캡션<input name="caption" required /></label>
-        <label>캡션 (EN)<input name="caption_en" /></label>
+        <label>제목 (영문)<input name="caption_en" required /></label>
         <label>내용<textarea name="description" rows="3"></textarea></label>
         <label>내용 (EN)<textarea name="description_en" rows="3"></textarea></label>
         <input type="file" id="labImageInput" accept="image/*,video/*,.mp4,.mov,.webm,.m4v" required />
@@ -129,7 +128,7 @@
     </section>
   </main>
 
-  <script src="admin.js?v=30"></script>
+  <script src="admin.js?v=33"></script>
   <script src="portfolio.js?v=1"></script>
   <script src="materials.js?v=1"></script>
 <script src="mux.js?v=3"></script>

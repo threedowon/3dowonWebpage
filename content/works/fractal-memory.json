@@ -49,21 +49,38 @@
       "description_en": "<p>Using 3D assets from the design team, I assembled the media-wall environment and used Timeline to connect day and night. Shaders added movement to the lily pads and distance fog, while a separate projection shader created an underwater feeling in the ball-pit area.</p>",
       "images": [
         "/3dowonWebpage/assets/uploads/fractal-memory-1789062838195-783049.jpg"
-      ]
+      ],
+      "columns": 1
     },
     {
       "title": "그림을 캐릭터로 연결하기",
       "title_en": "From drawing to character",
       "description": "<p>웹캠으로 촬영한 스케치를 HTTP 기반 웹 서버에 저장하고, FTP를 통해 실행 PC로 전달하도록 구성했습니다. QR 마커가 포함된 스케치 이미지는 OpenCV로 처리해 캐릭터의 UV 텍스처로 변환했습니다.</p>",
       "description_en": "<p>Sketches captured by a webcam were stored on a web server over HTTP and transferred to the playback PC via FTP. OpenCV processed the sketches containing QR markers and converted them into textures for the characters’ UV layouts.</p>",
-      "images": []
+      "images": [
+        "/3dowonWebpage/assets/uploads/arte-process-sample-fb43897d-e175-49eb-b811-4b0b20089d85.jpg",
+        "/3dowonWebpage/assets/uploads/arte-process-sample-4f7168f9-c701-4e0b-8cc3-9efe820197ce.jpg"
+      ],
+      "columns": 2
     },
     {
       "title": "출력 환경에 맞춘 조정",
       "title_en": "Adapting to the output setup",
       "description": "<p>초기에는 8K 이상의 출력을 고려해 Unreal Engine과 nDisplay를 테스트했습니다. 이후 출력 해상도 조건이 바뀌면서 Unity 기반 구성으로 전환했습니다. Immersive Display PRO를 활용한 블렌딩·매핑도 테스트하며 현장 출력 조건에 맞춰 구성을 조정했습니다.</p>",
       "description_en": "<p>The initial output plan exceeded 8K, so I tested Unreal Engine with nDisplay. When the resolution requirements changed, the project moved to a Unity-based setup. I also tested blending and mapping with Immersive Display PRO to adapt the output to the installation.</p>",
-      "images": []
+      "images": [
+        "/3dowonWebpage/assets/uploads/arte-process-sample-6424445c-2e23-4f75-8b56-efd33631e6fa.jpg",
+        "/3dowonWebpage/assets/uploads/arte-process-sample-fbdb8885-6f98-4e3b-a6a6-9fe1b81ab9ad.jpg",
+        "/3dowonWebpage/assets/uploads/arte-process-sample-c7670dc1-70cf-437e-a6a1-d45c9d9ee22d.jpg"
+      ],
+      "columns": 3
     }
+  ],
+  "process_media": [
+    "/3dowonWebpage/assets/uploads/arte-process-sample-fb43897d-e175-49eb-b811-4b0b20089d85.jpg",
+    "/3dowonWebpage/assets/uploads/arte-process-sample-4f7168f9-c701-4e0b-8cc3-9efe820197ce.jpg",
+    "/3dowonWebpage/assets/uploads/arte-process-sample-6424445c-2e23-4f75-8b56-efd33631e6fa.jpg",
+    "/3dowonWebpage/assets/uploads/arte-process-sample-fbdb8885-6f98-4e3b-a6a6-9fe1b81ab9ad.jpg",
+    "/3dowonWebpage/assets/uploads/arte-process-sample-c7670dc1-70cf-437e-a6a1-d45c9d9ee22d.jpg"
   ]
 }
