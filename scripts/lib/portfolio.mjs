@@ -3,7 +3,7 @@ import {galleryRows} from '../../admin/public/gallery-layout.mjs';
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
 import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 
-const VERSION = '1110-lab-motion';
+const VERSION = '1111-lab-fallback';
 const isGalleryVideo = src => /\.(mp4|webm|mov|m4v)(?:[?#]|$)/i.test(src || '');
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
@@ -36,8 +36,9 @@ function socials(site) {
 function labMotion(src, title, work, ctx) {
   const preview = Object.entries(work.lab_previews || {}).find(([source]) => resolveMediaPath(source, ctx.assets) === src)?.[1];
   const poster = preview ? resolveMediaPath(preview.src, ctx.assets) : '';
+  const fallback = preview?.loop ? resolveMediaPath(preview.loop, ctx.assets) : '';
   const ratio = preview ? preview.width / preview.height : 16 / 9;
-  return `<span class="lab-motion" data-lab-motion data-playback="loading" data-orientation="${ratio > 1 ? 'landscape' : 'portrait'}" style="--lab-motion-ratio:${ratio}"><video src="${esc(src)}"${poster ? ` poster="${esc(poster)}"` : ''} autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture aria-label="${esc(title)}"></video><span class="lab-motion-preview" aria-hidden="true">${poster ? `<img src="${esc(poster)}" alt="" decoding="async" />` : ''}</span></span>`;
+  return `<span class="lab-motion" data-lab-motion data-playback="loading" data-orientation="${ratio > 1 ? 'landscape' : 'portrait'}" style="--lab-motion-ratio:${ratio}"><video src="${esc(src)}"${poster ? ` poster="${esc(poster)}"` : ''} autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture aria-label="${esc(title)}"></video>${fallback ? `<img class="lab-motion-fallback" data-src="${esc(fallback)}" alt="${esc(title)}" decoding="async" />` : ''}<span class="lab-motion-preview" aria-hidden="true">${poster ? `<img src="${esc(poster)}" alt="" decoding="async" />` : ''}</span></span>`;
 }
 
 function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', catalog = '' }) {
@@ -52,7 +53,7 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
   <title>${esc(title)} — 3Dowon</title>
   ${catalog === 'works' ? `<script>document.documentElement.classList.add('works-reveal');</script>` : ''}
   <link rel="stylesheet" href="${assets}styles.css?v=${VERSION}" />
-  <script src="${assets}script.js?v=${VERSION}" defer${catalog === 'works' ? ` onerror="document.documentElement.classList.remove('works-reveal')"` : ''}></script>${ctx.section === 'lab' ? `\n  <script type="module" src="${assets}assets/lab-motion.mjs?v=${VERSION}"></script>` : ''}
+  <script src="${assets}script.js?v=${VERSION}" defer${catalog === 'works' ? ` onerror="document.documentElement.classList.remove('works-reveal')"` : ''}></script>${ctx.section === 'lab' ? `\n  <script src="${assets}assets/lab-motion.js?v=${VERSION}" defer></script>` : ''}
   ${body.includes('<mux-player') ? '<script src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3.8.0" defer></script>' : ''}
 </head>
 <body class="portfolio ${pageClass}" data-home="${home}" data-section="${active}">

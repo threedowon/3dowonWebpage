@@ -17,6 +17,9 @@ const teachingMaterials = loadJson('content/teaching-materials.json');
 const lab = loadJson('content/lab.json');
 const studies = normalizeLabItems(lab);
 await prepareLabPreviews(studies);
+// A classic deferred script also runs when the exported site is opened via file://.
+const labMotion = fs.readFileSync('assets/lab-motion.mjs', 'utf8').replace(/^export /gm, '');
+fs.writeFileSync('assets/lab-motion.js', `// Generated from lab-motion.mjs by scripts/build.mjs.\n(() => {\n${labMotion}\n})();\n`);
 const works = loadWorks().map(normalizeWork);
 const workPaths = [];
 

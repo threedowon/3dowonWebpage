@@ -29,7 +29,22 @@ export async function prepareLabPreviews(studies, root = process.cwd()) {
           { timeout: 60000, windowsHide: true, maxBuffer: 2 * 1024 * 1024 });
         }
         const { width, height } = await sharp(output).metadata();
-        previews.set(src, { src: `${relative}.poster.jpg`, width, height });
+        // Animated image fallback does not depend on the browser's video autoplay permission.
+        const loop = `${input}.loop.webp`;
+        const cachedLoop = await fs.stat(loop).catch(() => null);
+        if (!cachedLoop?.size || cachedLoop.mtimeMs < source.mtimeMs) {
+          const temporaryLoop = `${input}.loop.tmp.webp`;
+          try {
+            await run(ffmpeg, ['-y', '-i', input, '-an', '-vf',
+              "fps=12,scale=w='min(640,iw)':h='min(640,ih)':force_original_aspect_ratio=decrease",
+              '-c:v', 'libwebp_anim', '-lossless', '0', '-quality', '65', '-compression_level', '4', '-loop', '0', temporaryLoop],
+            { timeout: 300000, windowsHide: true, maxBuffer: 2 * 1024 * 1024 });
+            await fs.rename(temporaryLoop, loop);
+          } finally {
+            await fs.rm(temporaryLoop, { force: true });
+          }
+        }
+        previews.set(src, { src: `${relative}.poster.jpg`, loop: `${relative}.loop.webp`, width, height });
       }
       study.lab_previews[src] = previews.get(src);
     }
