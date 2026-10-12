@@ -210,8 +210,16 @@ function detailDescription(work, ctx) {
   const source = richText(pick(work, 'description', ctx.lang));
   const parts = source.split(/<(?:p|h[2-4])[^>]*>\s*(?:<strong>)?\s*(?:담당|주요 업무|Role|Responsibilities)\s*(?:<\/strong>)?\s*<\/(?:p|h[2-4])>/i);
   const section = (label, body) => body?.trim() ? `<section class="detail-copy-section"><h3>${label}</h3><div>${body}</div></section>` : '';
+  const responsibilities = Array.isArray(work.responsibility_items)
+    ? work.responsibility_items.map(item => {
+      const title = pick(item, 'title', ctx.lang) || '';
+      const description = pick(item, 'description', ctx.lang) || '';
+      if (!title.trim() && !description.trim()) return '';
+      return `<section class="detail-responsibility">${title.trim() ? `<h4>${esc(title)}</h4>` : ''}${description.split(/\r?\n/).filter(line => line.trim()).map(line => `<p>${esc(line)}</p>`).join('')}</section>`;
+    }).join('')
+    : richText(pick(work, 'responsibilities', ctx.lang)) || parts.slice(1).join('');
   return section(ctx.lang === 'ko' ? '소개' : 'Introduction', parts[0])
-    + section(ctx.lang === 'ko' ? '주요 업무' : 'Responsibilities', richText(pick(work, 'responsibilities', ctx.lang)) || parts.slice(1).join(''));
+    + section(ctx.lang === 'ko' ? '주요 업무' : 'Responsibilities', responsibilities);
 }
 
 function projectContent(work, ctx) {

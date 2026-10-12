@@ -1,3 +1,49 @@
+function createResponsibilitiesEditor(form, work) {
+  const legacy = form.querySelector('[name="responsibilities"]').closest('.field-row');
+  legacy.style.display = 'none';
+  const host = document.createElement('section');
+  host.className = 'work-responsibilities-editor';
+  host.innerHTML = '<h4>주요 업무</h4><p class="field-help">주요 업무를 항목별로 추가하고 제목과 내용을 나누어 작성하세요. 입력을 마치면 자동 저장됩니다.</p><div class="responsibility-list"></div><button type="button" class="responsibility-add">+ 주요 업무 추가</button>';
+  legacy.before(host);
+  let entries = [];
+  const dirty = () => markWorkDirty(work.slug);
+  const render = () => {
+    const list = host.querySelector('.responsibility-list'); list.replaceChildren();
+    entries.forEach((entry,index) => {
+      const row = document.createElement('fieldset'); row.className = 'process-entry';
+      row.innerHTML = `<legend>주요 업무 ${index+1}</legend><div class="process-actions"><button type="button" data-move="-1" ${index===0?'disabled':''}>↑ 위로</button><button type="button" data-move="1" ${index===entries.length-1?'disabled':''}>↓ 아래로</button><button type="button" class="danger" data-remove>업무 삭제</button></div><div class="field-row"><label>제목<input data-field="title" value="${escapeAttr(entry.title)}" /></label><label>제목 (EN · 자동 번역)<input data-field="title_en" value="${escapeAttr(entry.title_en)}" /></label></div><label>내용<textarea data-field="description" rows="4">${escapeHtml(entry.description)}</textarea></label><label>내용 (EN · 자동 번역)<textarea data-field="description_en" rows="4">${escapeHtml(entry.description_en)}</textarea></label>`;
+      row.querySelectorAll('[data-field]').forEach(input => input.oninput = () => { entry[input.dataset.field] = input.value; dirty(); });
+      row.querySelector('[data-remove]').onclick = () => { entries.splice(index,1); render(); dirty(); };
+      row.querySelectorAll('[data-move]').forEach(button => button.onclick = () => { const next = index+Number(button.dataset.move); [entries[index],entries[next]]=[entries[next],entries[index]]; render(); dirty(); });
+      list.append(row);
+    });
+    host.querySelector('.responsibility-add').disabled = entries.length >= 50;
+  };
+  const editor = {
+    get: () => structuredClone(entries),
+    set: items => { entries = structuredClone(items || []); render(); },
+    translationReceiver: () => {
+      const saved = structuredClone(entries);
+      return translated => {
+        for (const before of saved) {
+          const current = entries.find(item => item.id === before.id), result = translated?.find(item => item.id === before.id);
+          if (!current || !result) continue;
+          for (const key of ['title_en','description_en']) {
+            const source = key.replace('_en','');
+            if (current[key] !== before[key] || current[source] !== before[source]) continue;
+            current[key] = result[key] || '';
+            const input = host.querySelectorAll('fieldset')[entries.indexOf(current)]?.querySelector(`[data-field="${key}"]`);
+            if (input) input.value = current[key];
+          }
+        }
+      };
+    },
+  };
+  host.querySelector('.responsibility-add').onclick = () => { entries.push({id:crypto.randomUUID(),title:'',title_en:'',description:'',description_en:''}); render(); dirty(); host.querySelector('fieldset:last-child input').focus(); };
+  editor.set(Array.isArray(work.responsibility_items) ? work.responsibility_items : (work.responsibilities || work.responsibilities_en) ? [{id:crypto.randomUUID(),title:'',title_en:'',description:work.responsibilities || '',description_en:work.responsibilities_en || ''}] : []);
+  form.responsibilitiesEditor = editor;
+}
+
 function createProcessEditor(form, work) {
   const host = document.createElement('section');
   host.className = 'work-process-editor';
@@ -168,6 +214,7 @@ function captureWorkForm(form) {
     company: fd.get('company'),
     responsibilities: fd.get('responsibilities'),
     responsibilities_en: fd.get('responsibilities_en'),
+    responsibility_items: form.responsibilitiesEditor?.get(),
     process: form.processEditor?.get(),
     tech: fd.getAll('tech'),
     description: fd.get('description'),
@@ -185,6 +232,7 @@ function applyWorkForm(form, draft) {
   form.production.value = draft.production ?? '';
   for(const key of ['company','responsibilities','responsibilities_en']) form.elements.namedItem(key).value=draft[key]??'';
   form.processEditor?.set(draft.process);
+  form.responsibilitiesEditor?.set(draft.responsibility_items);
   form.description.value = draft.description ?? '';
   form.description_en.value = draft.description_en ?? '';
   form.vimeo_url.value = draft.vimeo_url ?? '';
@@ -478,6 +526,7 @@ function renderWorkCard(work) {
 
   const editForm = card.querySelector('.edit-form');
   editForm.id = `work-editor-${work.slug}`;
+  createResponsibilitiesEditor(editForm, work);
   createProcessEditor(editForm, work);
   const videoSection = document.createElement('section');
   videoSection.className = 'work-video-section';
@@ -572,6 +621,7 @@ function renderWorkCard(work) {
       const draft = captureWorkForm(editForm);
       const snapshot = JSON.stringify(draft);
       const receiveTranslations = editForm.processEditor.translationReceiver();
+      const receiveResponsibilities = editForm.responsibilitiesEditor.translationReceiver();
       showStatus('자동 저장·번역 중…');
       saving = (async () => {
         try {
@@ -584,6 +634,7 @@ function renderWorkCard(work) {
             if (editForm.elements.namedItem(key).value === draft[key]) editForm.elements.namedItem(key).value = updated[key] || '';
           }
           receiveTranslations(updated.process);
+          receiveResponsibilities(updated.responsibility_items);
           Object.assign(work, updated);
           updateWorkCardHead(card, updated);
           if (!changed) dirtyWorks.delete(work.slug);
