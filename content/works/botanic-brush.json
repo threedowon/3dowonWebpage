@@ -4,24 +4,29 @@
   "year": 2024,
   "type": "인터랙티브",
   "tags": [
-    "인터랙티브"
+    "인터랙티브",
+    "웹"
   ],
-  "tech": [],
+  "tech": [
+    "Unreal Engine",
+    "JavaScript",
+    "Node.js"
+  ],
   "production": "개인",
   "thumbnail": "/3dowonWebpage/assets/uploads/botanic-brush-1789064054703-510479.jpg",
-  "grid_type_label": "인터랙티브",
-  "index_type_label": "인터랙티브",
+  "grid_type_label": "인터랙티브, 웹",
+  "index_type_label": "인터랙티브, 웹",
   "preview_bg": "/3dowonWebpage/assets/uploads/botanic-brush-1789064054703-510479.jpg",
   "hero_image": "/3dowonWebpage/assets/uploads/botanic-brush-1789064054703-510479.jpg",
   "meta_year": "2024",
-  "meta_type": "인터랙티브",
-  "meta_medium": "인터랙티브",
-  "meta_tech": "",
-  "meta_tech_en": "",
+  "meta_type": "인터랙티브, 웹",
+  "meta_medium": "인터랙티브, 웹",
+  "meta_tech": "Unreal Engine, JavaScript, Node.js",
+  "meta_tech_en": "Unreal Engine, JavaScript, Node.js",
   "meta_production": "개인",
   "meta_production_en": "Solo",
-  "description": "",
-  "description_en": "",
+  "description": "<p>웹에서 그림을 그리면, 그 그림 그대로 꽃이 피어나는 인터랙티브 아트입니다.</p>\n            <p>웹 기반 드로잉 인터페이스와 Unreal Engine의 실시간 시뮬레이션 시스템이 연계되어,</p>\n            <p>사용자의 그림이 꽃으로 표현됩니다.</p>",
+  "description_en": "<p>This is an interactive art piece where flowers bloom exactly as you draw them on the web.</p>\n            <p>The web-based drawing interface is integrated with Unreal Engine’s real-time simulation system,</p>\n            <p>the user’s drawing is rendered as a flower.</p>",
   "vimeo_url": "",
   "gallery": [
     "/3dowonWebpage/assets/uploads/botanic-brush-1789064060148-435730.jpg",
@@ -30,8 +35,16 @@
     "/3dowonWebpage/assets/uploads/botanic-brush-1789064067400-887483.jpg",
     "/3dowonWebpage/assets/uploads/botanic-brush-1789064069320-929913.jpg"
   ],
-  "grid_type_label_en": "Interactive",
-  "index_type_label_en": "Interactive",
-  "meta_type_en": "Interactive",
-  "meta_medium_en": "Interactive"
+  "grid_type_label_en": "Interactive, Web",
+  "index_type_label_en": "Interactive, Web",
+  "meta_type_en": "Interactive, Web",
+  "meta_medium_en": "Interactive, Web",
+  "month": null,
+  "detail_background": "#dddddd",
+  "detail_columns": 1,
+  "responsibilities": "<p>HTML, CSS , JavaScript 기반 웹 프론트엔드 구성</p>",
+  "responsibilities_en": "<p>HTML, CSS, and JavaScript-Based Web Front-End Development</p>",
+  "company": "",
+  "process": [],
+  "works_translation_pending": false
 }
