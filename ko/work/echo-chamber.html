@@ -9,10 +9,36 @@
   
   <link rel="stylesheet" href="../../styles.css?v=1111-lab-fallback" />
   <script src="../../script.js?v=1111-lab-fallback" defer></script>
-  
+  <script src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3.8.0" defer></script>
 </head>
 <body class="portfolio page-work page-archive-work" data-home="../" data-section="works">
-  
+  <template id="portfolio-video-theme">
+<style>
+:host{display:block;width:100%;height:100%;--media-primary-color:var(--detail-paper,#ddd);--media-icon-color:var(--media-primary-color);--media-control-background:transparent;--media-control-hover-background:transparent;--media-control-padding:8px;--media-control-height:18px;--media-button-icon-width:18px;--media-button-icon-height:18px;--media-range-track-height:4px;--media-range-bar-color:var(--media-accent-color,var(--media-primary-color));--media-range-thumb-background:var(--media-primary-color);--media-range-thumb-width:8px;--media-range-thumb-height:8px;--media-time-range-buffered-color:#777;--media-range-track-background:#444;--media-menu-background:rgba(20,20,20,.96);--media-menu-color:#fff;--media-preview-time-background:#fff;--media-preview-time-color:#111;--media-preview-time-border-radius:3px;--media-font-family:Arial,sans-serif}
+media-controller{width:100%;height:100%;background:#000}
+media-control-bar{display:flex;align-items:center;width:100%;box-sizing:border-box;padding:6px 8px;gap:1px;background:linear-gradient(transparent,rgba(0,0,0,.65));}
+media-time-range{flex:1;min-width:30px;--media-range-padding:0 5px;--media-preview-thumbnail-max-width:140px}
+media-rendition-menu{--media-menu-flex-direction:column;position:absolute;right:40px;bottom:44px;min-width:130px;max-height:220px;overflow:auto;border-radius:4px}
+.volume{display:flex;align-items:center}.volume media-volume-range{width:0;max-width:64px;overflow:hidden;transition:width .15s}.volume:hover media-volume-range,.volume:focus-within media-volume-range{width:64px}
+media-playback-rate-button{min-width:34px;font-size:11px}
+media-preview-thumbnail{display:block}
+@media(max-width:480px){media-control-bar{padding:4px;gap:0;--media-control-padding:7px}.volume:hover media-volume-range,.volume:focus-within media-volume-range{width:44px}}
+</style>
+<media-controller defaultstreamtype="on-demand" keyboardforwardseekoffset="5" keyboardbackwardseekoffset="5">
+<slot name="media" slot="media"></slot><slot name="poster" slot="poster"></slot>
+<media-loading-indicator slot="centered-chrome"></media-loading-indicator>
+<media-error-dialog slot="dialog"></media-error-dialog>
+<media-control-bar>
+<media-play-button part="bottom play button"></media-play-button>
+<media-time-range part="bottom time range"><media-preview-thumbnail slot="preview"></media-preview-thumbnail><media-preview-time-display slot="preview"></media-preview-time-display></media-time-range>
+<div class="volume"><media-mute-button part="bottom mute button"></media-mute-button><media-volume-range part="bottom volume range"></media-volume-range></div>
+<media-rendition-menu-button part="bottom rendition button"><svg slot="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m9.5 2-.6 2.4-1.8 1-2.4-.7-2.5 4.3 1.8 1.7v2.1L2.2 15l2.5 4.3 2.4-.7 1.8 1 .6 2.4h5l.6-2.4 1.8-1 2.4.7 2.5-4.3-1.8-2.2v-2.1l1.8-1.7-2.5-4.3-2.4.7-1.8-1-.6-2.4h-5ZM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"/></svg></media-rendition-menu-button>
+<media-rendition-menu anchor="auto" hidden part="bottom rendition menu"></media-rendition-menu>
+<media-playback-rate-button rates="0.5 0.75 1 1.25 1.5 2" part="bottom playback-rate button"></media-playback-rate-button>
+<media-fullscreen-button part="bottom fullscreen button"></media-fullscreen-button>
+</media-control-bar>
+</media-controller>
+</template>
   <a class="skip-link" href="#main">본문으로 이동</a>
   <div class="site-frame">
     <header class="site-header archive-site-header">
@@ -39,11 +65,7 @@
             <p>이 작업을 준비하며 가장 많이 고민했던 질문은 '기술이 보이지 않게 만드는 방법'이었다. 센서와 프로젝터, 스피커는 물리적으로 공간 곳곳에 존재하지만, 관객이 그 장치들의 존재를 의식하는 순간 작품이 주는 경험은 설명 가능한 메커니즘으로 축소되어 버린다. 그래서 모든 하드웨어는 벽과 천장에 최대한 은닉했고, 배선 또한 바닥 마감재 아래로 매립해 관객의 시선에서 완전히 사라지도록 했다.</p>
             <p>결과적으로 이 작품은 하나의 완성된 결과물이라기보다, 관객이 머무는 시간 동안 계속해서 다시 쓰이는 악보에 가깝다. 같은 공간이지만 누가, 몇 명이, 어떤 속도로 움직이는가에 따라 전혀 다른 소리와 빛의 조합이 생성되며, 이는 향후 다른 공간에서의 변형 설치로도 확장할 계획이다.</p></div></section></div>
     </div>
-    <div class="feature-gallery" style="--detail-paper:#dddddd;--detail-columns:1"><div class="post-video reveal">
-        <div class="post-video-frame">
-          <iframe src="https://player.vimeo.com/video/1208184865?title=0&amp;byline=0&amp;portrait=0&amp;color=dddddd" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="eager" title="Aspect Ratio"></iframe>
-        </div>
-      </div><div class="detail-image-row" style="--row-columns:1"><figure class="project-image"><a href="../../assets/uploads/echo-chamber-1789062875318-752057.jpg" data-viewer="../../assets/uploads/echo-chamber-1789062875318-752057.jpg" data-viewer-title="Aspect Ratio — 01" aria-label="Aspect Ratio 1 — 크게 보기"><img src="../../assets/uploads/echo-chamber-1789062875318-752057.jpg" alt="Aspect Ratio — 1" class="project-detail-image" loading="lazy" decoding="async" /></a></figure></div><div class="detail-image-row" style="--row-columns:1"><figure class="project-image"><a href="../../assets/uploads/echo-chamber-1789232476307-956978.jpg" data-viewer="../../assets/uploads/echo-chamber-1789232476307-956978.jpg" data-viewer-title="Aspect Ratio — 02" aria-label="Aspect Ratio 2 — 크게 보기"><img src="../../assets/uploads/echo-chamber-1789232476307-956978.jpg" alt="Aspect Ratio — 2" class="project-detail-image" loading="lazy" decoding="async" /></a></figure></div><div class="detail-image-row" style="--row-columns:1"><figure class="project-image"><a href="../../assets/uploads/echo-chamber-1789232476650-959393.jpg" data-viewer="../../assets/uploads/echo-chamber-1789232476650-959393.jpg" data-viewer-title="Aspect Ratio — 03" aria-label="Aspect Ratio 3 — 크게 보기"><img src="../../assets/uploads/echo-chamber-1789232476650-959393.jpg" alt="Aspect Ratio — 3" class="project-detail-image" loading="lazy" decoding="async" /></a></figure></div><div class="detail-image-row" style="--row-columns:1"><figure class="project-image"><a href="../../assets/uploads/echo-chamber-1789232476791-58746.jpg" data-viewer="../../assets/uploads/echo-chamber-1789232476791-58746.jpg" data-viewer-title="Aspect Ratio — 04" aria-label="Aspect Ratio 4 — 크게 보기"><img src="../../assets/uploads/echo-chamber-1789232476791-58746.jpg" alt="Aspect Ratio — 4" class="project-detail-image" loading="lazy" decoding="async" /></a></figure></div><div class="detail-image-row" style="--row-columns:1"><figure class="project-image"><a href="../../assets/uploads/echo-chamber-1789232477052-29156.jpg" data-viewer="../../assets/uploads/echo-chamber-1789232477052-29156.jpg" data-viewer-title="Aspect Ratio — 05" aria-label="Aspect Ratio 5 — 크게 보기"><img src="../../assets/uploads/echo-chamber-1789232477052-29156.jpg" alt="Aspect Ratio — 5" class="project-detail-image" loading="lazy" decoding="async" /></a></figure></div><div class="detail-image-row" style="--row-columns:1"><figure class="project-image"><a href="../../assets/uploads/echo-chamber-1789232477144-619631.jpg" data-viewer="../../assets/uploads/echo-chamber-1789232477144-619631.jpg" data-viewer-title="Aspect Ratio — 06" aria-label="Aspect Ratio 6 — 크게 보기"><img src="../../assets/uploads/echo-chamber-1789232477144-619631.jpg" alt="Aspect Ratio — 6" class="project-detail-image" loading="lazy" decoding="async" /></a></figure></div><div class="detail-image-row" style="--row-columns:1"><figure class="project-image"><a href="../../assets/uploads/echo-chamber-1789232477418-742110.jpg" data-viewer="../../assets/uploads/echo-chamber-1789232477418-742110.jpg" data-viewer-title="Aspect Ratio — 07" aria-label="Aspect Ratio 7 — 크게 보기"><img src="../../assets/uploads/echo-chamber-1789232477418-742110.jpg" alt="Aspect Ratio — 7" class="project-detail-image" loading="lazy" decoding="async" /></a></figure></div><div class="detail-image-row" style="--row-columns:1"><figure class="project-image"><a href="../../assets/uploads/echo-chamber-1789232477523-970579.jpg" data-viewer="../../assets/uploads/echo-chamber-1789232477523-970579.jpg" data-viewer-title="Aspect Ratio — 08" aria-label="Aspect Ratio 8 — 크게 보기"><img src="../../assets/uploads/echo-chamber-1789232477523-970579.jpg" alt="Aspect Ratio — 8" class="project-detail-image" loading="lazy" decoding="async" /></a></figure></div><div class="detail-image-row" style="--row-columns:1"><figure class="project-image"><a href="../../assets/uploads/echo-chamber-1789232477757-675342.jpg" data-viewer="../../assets/uploads/echo-chamber-1789232477757-675342.jpg" data-viewer-title="Aspect Ratio — 09" aria-label="Aspect Ratio 9 — 크게 보기"><img src="../../assets/uploads/echo-chamber-1789232477757-675342.jpg" alt="Aspect Ratio — 9" class="project-detail-image" loading="lazy" decoding="async" /></a></figure></div></div>
+    <div class="feature-gallery" style="--detail-paper:#dddddd;--detail-columns:1"><div class="post-video"><div class="post-video-frame"><mux-player theme="portfolio-video-theme" playback-id="XkUy6gYEoPVCm00L01R011iMh7MAjamhxs02gas6RDd02r8s" metadata-video-title="Aspect Ratio" stream-type="on-demand" preload="metadata" accent-color="#dddddd" primary-color="#dddddd"></mux-player></div></div><div class="detail-image-row" style="--row-columns:1"><figure class="project-image"><a href="../../assets/uploads/echo-chamber-1789062875318-752057.jpg" data-viewer="../../assets/uploads/echo-chamber-1789062875318-752057.jpg" data-viewer-title="Aspect Ratio — 01" aria-label="Aspect Ratio 1 — 크게 보기"><img src="../../assets/uploads/echo-chamber-1789062875318-752057.jpg" alt="Aspect Ratio — 1" class="project-detail-image" loading="lazy" decoding="async" /></a></figure></div></div>
     
   </article><nav class="project-pagination" aria-label="작업"><a href="soft-machine.html"><span>이전 작업 ↖</span><strong>50/50 VISION</strong></a><a href="layered-city.html"><span>다음 작업 ↗</span><strong>At the moment</strong></a></nav></div>
     </main>

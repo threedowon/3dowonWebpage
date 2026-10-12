@@ -5,15 +5,7 @@
   "meta_medium": "설치, 인터랙티브",
   "meta_tech": "Unreal",
   "gallery": [
-    "/3dowonWebpage/assets/uploads/echo-chamber-1789062875318-752057.jpg",
-    "/3dowonWebpage/assets/uploads/echo-chamber-1789232476307-956978.jpg",
-    "/3dowonWebpage/assets/uploads/echo-chamber-1789232476650-959393.jpg",
-    "/3dowonWebpage/assets/uploads/echo-chamber-1789232476791-58746.jpg",
-    "/3dowonWebpage/assets/uploads/echo-chamber-1789232477052-29156.jpg",
-    "/3dowonWebpage/assets/uploads/echo-chamber-1789232477144-619631.jpg",
-    "/3dowonWebpage/assets/uploads/echo-chamber-1789232477418-742110.jpg",
-    "/3dowonWebpage/assets/uploads/echo-chamber-1789232477523-970579.jpg",
-    "/3dowonWebpage/assets/uploads/echo-chamber-1789232477757-675342.jpg"
+    "/3dowonWebpage/assets/uploads/echo-chamber-1789062875318-752057.jpg"
   ],
   "meta_production": "개인",
   "meta_type": "설치, 인터랙티브",
@@ -48,5 +40,11 @@
   "responsibilities_en": "",
   "company": "",
   "process": [],
-  "works_translation_pending": false
+  "works_translation_pending": false,
+  "mux": {
+    "upload_id": "OQYT9aBqMv86uDihlQGNEWiHb01UwHEIKmexoWWg3p00U",
+    "asset_id": "l02zIl9jnbS8V8VTWeKHLNPgTZ5Bel9KuZuIhUwix01cM",
+    "playback_id": "XkUy6gYEoPVCm00L01R011iMh7MAjamhxs02gas6RDd02r8s",
+    "aspect_ratio": "16:9"
+  }
 }

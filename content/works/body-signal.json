@@ -36,5 +36,11 @@
   "description_en": "<p>A performance work that converts a performer's biometric signals into visual and auditory elements in real time. Changes in heartbeat and breath expand into light and sound.</p>\n            <p>Role</p>\n            <p>Developed an ESP32 bio-sensor interface</p>\n            <p>Built real-time audio visualization in Max/MSP</p>\n            <p>Collaborated on performance direction and rehearsals</p>",
   "vimeo_url": "",
   "month": null,
-  "detail_background": "#000000"
+  "detail_background": "#000000",
+  "mux": {
+    "upload_id": "Rl9g00FQuhSl4uRozhZzCRaj6lbKIYcessjYyBcnDY3w",
+    "asset_id": "CJtQNlBopVbJfcqOjM3HYAjtu3DGF4JaVBfWT5J9INM",
+    "playback_id": "DDZ9Y56v14702p00MSOeoRG1qqKKXExNILRaVCmxQGWFw",
+    "aspect_ratio": "16:9"
+  }
 }

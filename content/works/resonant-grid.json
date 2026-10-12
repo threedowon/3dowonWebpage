@@ -34,5 +34,11 @@
   "meta_tech_en": "Unreal",
   "meta_production_en": "Solo",
   "description_en": "<p>An interactive media installation for a brand launch event. Grid-shaped lighting and sensor input combine so the space responds to audience participation.</p>\n            <p>Role</p>\n            <p>Developed an Arduino-based sensor and lighting control system</p>\n            <p>Programmed the DMX lighting sequence</p>\n            <p>Handled on-site installation and interaction testing</p>",
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "mux": {
+    "upload_id": "cae3AThc00ih4G005OaPylNqXrCqPuKZg102qzbUaURqIc",
+    "asset_id": "GnsSexYWJ029759qKP87EiejEh6WdppuRp008k5S2Biqw",
+    "playback_id": "zdZ92z02X3CMMLrdijIEdOFvweI00Mt01GQw7K9gOhup00Q",
+    "aspect_ratio": "16:9"
+  }
 }

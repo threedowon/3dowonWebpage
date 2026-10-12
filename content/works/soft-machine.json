@@ -33,5 +33,11 @@
   "meta_tech_en": "Unreal",
   "meta_production_en": "Solo",
   "description_en": "<p>An interactive exhibition exploring the boundary between machine and organism.</p>",
-  "vimeo_url": ""
+  "vimeo_url": "",
+  "mux": {
+    "upload_id": "gaL013aI00vA7IBpmD00aLwiET7K01Q7CmIiLTe5LVGEu5s",
+    "asset_id": "poSrn2QZRh00fL102hG33oXIeTENLQedI5bnpyTVEt1as",
+    "playback_id": "02Ehqmd8uV9Ua5KVtkSaNUIvVbjigImKcb01caR7d2ITU",
+    "aspect_ratio": "16:9"
+  }
 }
