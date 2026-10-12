@@ -1,2 +1,9 @@
 node_modules/
 /Video/
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+.wrangler/
+admin/cloudflare/dist/

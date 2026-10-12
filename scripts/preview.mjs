@@ -15,4 +15,5 @@ app.use((req, res, next) => {
 });
 app.use('/3dowonWebpage', express.static(root));
 app.use(express.static(root));
-app.listen(4173, '127.0.0.1', () => console.log('Portfolio preview: http://127.0.0.1:4173'));
+const host = process.env.PREVIEW_HOST || '127.0.0.1';
+app.listen(4173, host, () => console.log(`Portfolio preview: http://${host}:4173`));

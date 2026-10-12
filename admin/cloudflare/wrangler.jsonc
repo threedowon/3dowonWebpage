@@ -1,0 +1,22 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "3dowon-admin",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": false,
+  "preview_urls": false,
+  "assets": { "directory": "./dist", "binding": "ASSETS", "run_worker_first": true },
+  "build": { "command": "node build.mjs" },
+  "vars": {
+    "ADMIN_ORIGIN": "https://admin.3dowon.com",
+    "GITHUB_REPOSITORY": "threedowon/3dowonWebpage",
+    "ALLOWED_GITHUB_ID": "183227787",
+    "PUBLISH_BRANCH": "main",
+    "DRAFT_BRANCH": "admin-drafts",
+    "GITHUB_CLIENT_ID": "REPLACE_WITH_GITHUB_APP_CLIENT_ID"
+  },
+  "d1_databases": [{ "binding": "DB", "database_name": "3dowon-admin", "database_id": "REPLACE_WITH_D1_DATABASE_ID", "migrations_dir": "." }],
+  "triggers": { "crons": ["15 19 * * *"] },
+  "routes": [{ "pattern": "admin.3dowon.com", "custom_domain": true }]
+}

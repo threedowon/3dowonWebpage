@@ -64,8 +64,9 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
       <a class="wordmark" href="${home}index.html" aria-label="3Dowon ${lang === 'ko' ? '홈' : 'Home'}">3Dowon</a>
       <p class="header-note">${esc(c.note).replace(/\n/g, '<br />')}</p>
       <nav class="site-nav" aria-label="${lang === 'ko' ? '주 메뉴' : 'Main navigation'}">
-        ${['works', 'lab', 'about', 'portfolio', 'cv'].map((key) => `<a href="${home}${key}.html"${active === key ? ' aria-current="page"' : ''}>${c[key]}</a>`).join('')}
+        ${['works', 'lab', 'about', 'portfolio', 'cv'].map((key) => `<a href="${home}${key}.html"${active === key ? ' aria-current="page"' : ''}>${COPY.en[key]}</a>`).join('')}
       </nav>
+      <nav class="language-nav" aria-label="${lang === 'ko' ? '언어' : 'Language'}"><a href="${assets}${lang === 'en' ? 'ko/' : ''}${relPath}" hreflang="${lang === 'en' ? 'ko' : 'en'}" data-language="${lang === 'en' ? 'ko' : 'en'}" aria-label="${lang === 'en' ? 'EN — Switch to Korean' : 'KR — 영어로 전환'}">${lang === 'en' ? 'EN' : 'KR'}</a></nav>
     </header>
     <main id="main" tabindex="-1"${catalog ? ` data-catalog="${catalog}"` : ''}>
       <div class="page-toolbar"${toolbar ? '' : ' aria-hidden="true"'}>${toolbar}</div>

@@ -33,7 +33,7 @@ export function createMuxClient({directory = path.join(os.homedir(), '.3dowon-ad
 export function muxUploadSettings(origin, title) {
   return {cors_origin:origin,timeout:86400,new_asset_settings:{playback_policies:['public'],video_quality:'basic',max_resolution_tier:'2160p',meta:{title:String(title).slice(0,512)}}};
 }
-export function installMuxRoutes(app, {loadJson,saveJson,listWorkSlugs,loadWork,build,root,client=createMuxClient(),stateDirectory=path.join(os.homedir(),'.3dowon-admin')}) {
+export function installMuxRoutes(app, {loadJson,saveJson,listWorkSlugs,loadWork,build,root,origin='',client=createMuxClient(),stateDirectory=path.join(os.homedir(),'.3dowon-admin')}) {
   // Upload URLs and credentials never enter the public content directory.
   const jobFile=path.join(stateDirectory,`mux-uploads-${Buffer.from(root).toString('hex')}.json`);
   const jobs=()=>{try{return JSON.parse(fs.readFileSync(jobFile,'utf8'));}catch{return [];}};
@@ -42,7 +42,9 @@ export function installMuxRoutes(app, {loadJson,saveJson,listWorkSlugs,loadWork,
   app.use('/api/mux',(req,res,next)=>{
     res.set('Cache-Control','no-store');
     const host=req.get('host');
-    if (!/^(localhost|127\.0\.0\.1):\d+$/.test(host||'') || (req.get('origin') && req.get('origin')!==`http://${host}`)) return res.status(403).json({error:'로컬 Admin에서만 사용할 수 있어요.'});
+    const expected=origin || `http://${host}`;
+    const allowedHost=origin ? host===new URL(origin).host : /^(localhost|127\.0\.0\.1):\d+$/.test(host||'');
+    if (!allowedHost || (req.get('origin') && req.get('origin')!==expected)) return res.status(403).json({error:'등록된 관리자 페이지에서만 사용할 수 있어요.'});
     next();
   });
   app.get('/api/mux/settings',wrap(async(req,res)=>res.json(client.status())));
@@ -57,7 +59,7 @@ export function installMuxRoutes(app, {loadJson,saveJson,listWorkSlugs,loadWork,
     const title=String(req.body.title||'Video');
     const target=req.body.target;
     if (target && !targets().some(t=>t.key===target)) throw new Error('프로젝트를 찾지 못했어요.');
-    const upload=await client.call('uploads','POST',muxUploadSettings(`http://${req.get('host')}`,title));
+    const upload=await client.call('uploads','POST',muxUploadSettings(origin || `http://${req.get('host')}`,title));
     saveJobs([{id:upload.id,title,target,created:new Date().toISOString()},...jobs()]);
     res.json({id:upload.id,url:upload.url});
   }));

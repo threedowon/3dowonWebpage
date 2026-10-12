@@ -1,0 +1,7 @@
+**
+!package.json
+!package-lock.json
+!admin/
+!admin/**
+admin/hosting/.env
+admin/hosting/.env.*

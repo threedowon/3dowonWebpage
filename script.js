@@ -28,6 +28,48 @@ function syncLanguageLinks() {
 
 function initProjectHover(catalog, projects, plates, refreshImages) {
   if (catalog.dataset.catalog !== 'works') return () => {};
+  // Read the same background value used by each generated detail gallery.
+  const projectColors = Object.fromEntries(
+    [...catalog.querySelectorAll('template[data-project-detail]')].map(template => [
+      template.dataset.projectDetail,
+      template.content.querySelector('.feature-gallery')?.style.getPropertyValue('--detail-paper').trim() || '#dddddd',
+    ])
+  );
+  const colorNodes = [...projects, ...plates];
+  colorNodes.forEach(node => {
+    const candidate = projectColors[node.dataset.project] || '#dddddd';
+    const color = /^#[0-9a-f]{6}$/i.test(candidate) ? candidate : '#dddddd';
+    const channels = color.slice(1).match(/../g).map(hex => {
+      const value = parseInt(hex, 16) / 255;
+      return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    });
+    const luminance = channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+    // Use white on dark backgrounds; retain dark text where it stays readable.
+    const darkLuminance = ((67 / 255 + 0.055) / 1.055) ** 2.4;
+    const darkContrast = (luminance + 0.05) / (darkLuminance + 0.05);
+    const whiteContrast = 1.05 / (luminance + 0.05);
+    const ink = darkContrast >= 4.5 ? '#434343' : whiteContrast >= 4.5 ? '#ffffff' : '#000000';
+    node.style.setProperty('--project-accent', color);
+    node.style.setProperty('--project-accent-ink', ink);
+  });
+  let pointerProject = '', focusProject = '';
+  const updateAccent = () => {
+    const slug = pointerProject || focusProject;
+    colorNodes.forEach(node => node.classList.toggle('is-accent-active', Boolean(slug) && node.dataset.project === slug));
+  };
+  const projectAt = target => target?.closest?.('.works-index-item, .works-image-grid [data-plate]')?.dataset.project || '';
+  catalog.addEventListener('pointerover', event => {
+    if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
+    pointerProject = projectAt(event.target); updateAccent();
+  });
+  catalog.addEventListener('pointerout', event => {
+    pointerProject = catalog.contains(event.relatedTarget) ? projectAt(event.relatedTarget) : ''; updateAccent();
+  });
+  catalog.addEventListener('focusin', event => { focusProject = projectAt(event.target); updateAccent(); });
+  catalog.addEventListener('focusout', event => {
+    focusProject = catalog.contains(event.relatedTarget) ? projectAt(event.relatedTarget) : ''; updateAccent();
+  });
+  window.addEventListener('blur', () => { pointerProject = ''; focusProject = ''; updateAccent(); });
   const imageGrid = catalog.querySelector('.works-image-grid');
   const index = catalog.querySelector('.works-index');
   let activeProject = '';

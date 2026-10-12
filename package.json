@@ -6,7 +6,11 @@
     "extract": "node scripts/extract-content.mjs",
     "build": "node scripts/build.mjs",
     "preview": "node scripts/preview.mjs",
-    "admin": "node admin/server.js"
+    "admin": "node admin/server.js",
+    "admin:password": "node admin/hash-password.mjs",
+    "test:admin": "node --test admin/*.test.mjs admin/cloudflare/*.test.mjs",
+    "admin:online:build": "node admin/cloudflare/build.mjs",
+    "admin:online:deploy": "wrangler deploy --config admin/cloudflare/wrangler.jsonc"
   },
   "dependencies": {
     "express": "^4.19.2",
