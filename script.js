@@ -589,6 +589,7 @@ function initMediaViewer() {
   let slides = [];
   let current = 0;
   let scrollFrame = 0;
+  let scrollbarHideTimer;
   const updateGallery = () => {
     if (!slides.length || !dialog.open) return;
     const trackHeight = galleryScrollbar.clientHeight;
@@ -633,7 +634,11 @@ function initMediaViewer() {
   previous.addEventListener('click', () => goToImage(current - 1));
   next.addEventListener('click', () => goToImage(current + 1));
   media.addEventListener('scroll', () => {
-    if (scrollFrame || !slides.length) return;
+    if (!slides.length || !dialog.open) return;
+    galleryScrollbar.classList.add('is-scrolling');
+    clearTimeout(scrollbarHideTimer);
+    scrollbarHideTimer = setTimeout(() => galleryScrollbar.classList.remove('is-scrolling'), 700);
+    if (scrollFrame) return;
     scrollFrame = requestAnimationFrame(() => { scrollFrame = 0; updateGallery(); });
   }, { passive: true });
   new ResizeObserver(() => {
@@ -789,6 +794,8 @@ function initMediaViewer() {
     dialog.close();
   });
   dialog.addEventListener('close', () => {
+    clearTimeout(scrollbarHideTimer);
+    galleryScrollbar.classList.remove('is-scrolling');
     media.querySelector('video')?.pause();
     slides = [];
     controls.hidden = true;
