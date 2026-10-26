@@ -7,6 +7,7 @@ const mobile = window.matchMedia('(max-width:700px)');
 const works = menu?.querySelector('.works-menu');
 const worksTrigger = works?.querySelector('.works-trigger');
 const submenu = works?.querySelector('.works-submenu');
+const footer = document.querySelector('[data-footer]');
 let suppressFocusOpen = false;
 function setWorksOpen(open) {
   if (!submenu) return;
@@ -114,7 +115,11 @@ if (toggle && panel && dialog) {
     if (mobile.matches && !event.defaultPrevented && event.target.closest('a')) closeMenu();
   });
   document.addEventListener('works:filtered',() => {
-    if (dialog.open) closeMenu(); else setWorksOpen(false);
+    if (dialog.open) closeMenu();
+    else {
+      const params = new URLSearchParams(location.search);
+      setWorksOpen(!mobile.matches && (Boolean(params.get('type')) || params.get('menu') === 'all'));
+    }
     syncFilterControls();
   });
   mobile.addEventListener('change',syncLayout);
@@ -124,3 +129,37 @@ if (toggle && panel && dialog) {
 }
 window.addEventListener('popstate',syncFilterControls);
 syncFilterControls();
+if (!mobile.matches && document.body.classList.contains('page-archive')) {
+  const params = new URLSearchParams(location.search);
+  if (params.get('type') || params.get('menu') === 'all') setWorksOpen(true);
+}
+if (footer) {
+  const trigger = footer.querySelector('.footer-toggle');
+  const card = footer.querySelector('.footer-card-dialog');
+  let closeTimer;
+  const finishClose = () => {
+    clearTimeout(closeTimer);
+    card.close();
+    card.classList.remove('is-closing');
+    trigger.setAttribute('aria-expanded','false');
+  };
+  const closeCard = () => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { finishClose(); return; }
+    if (card.classList.contains('is-closing')) return;
+    card.classList.add('is-closing');
+    closeTimer = setTimeout(finishClose,220);
+  };
+  trigger.addEventListener('click',() => {
+    clearTimeout(closeTimer);
+    card.classList.remove('is-closing');
+    card.showModal();
+    trigger.setAttribute('aria-expanded','true');
+  });
+  card.querySelectorAll('button').forEach(button => button.addEventListener('click',closeCard));
+  card.addEventListener('cancel',event => { event.preventDefault(); closeCard(); });
+  card.addEventListener('click',event => {
+    const bounds = card.getBoundingClientRect();
+    if (event.target === card && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) closeCard();
+  });
+  card.addEventListener('close',() => { clearTimeout(closeTimer); card.classList.remove('is-closing'); trigger.setAttribute('aria-expanded','false'); });
+}

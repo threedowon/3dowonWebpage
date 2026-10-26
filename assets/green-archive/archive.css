@@ -40,7 +40,7 @@ body{font-optical-sizing:auto}.work-card h2{letter-spacing:.01em;font-weight:700
 .archive-layout.page-archive .work-card .work-caption h2{display:inline;margin:0;font:inherit;font-weight:700}
 .archive-layout.page-archive .work-card .work-caption span{display:inline;font:inherit;font-weight:400}
 .archive-layout.page-archive .work-image{border:1px solid var(--line)}
-.archive-results{margin:0 0 24px;font-size:14px}
+.archive-results{display:none!important}
 .archive-empty{padding:56px 0;font-size:16px}
 .archive-empty a{display:inline-block;margin-top:20px;text-decoration:underline;text-underline-offset:4px}
 @media(max-width:1000px){.archive-layout.page-archive{--works-columns:2;--works-column-gap:32px}}

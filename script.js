@@ -698,6 +698,7 @@ function initMediaViewer() {
           element.muted = true;
           element.loop = true;
           element.autoplay = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+          element.setAttribute('autoplay','');
           element.setAttribute('aria-label', title.textContent);
           const poster = link.querySelector('video')?.poster;
           if (poster) element.poster = poster;
@@ -726,6 +727,7 @@ function initMediaViewer() {
       pausedLabVideos.forEach(video => video.pause());
     }
     dialog.showModal();
+    if (isLabPreview && isVideo && !matchMedia('(prefers-reduced-motion: reduce)').matches) element.play().catch(() => {});
     media.scrollTop = 0;
     document.documentElement.classList.add('viewer-open');
     if (gallery) {
