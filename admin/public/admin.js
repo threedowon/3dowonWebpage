@@ -184,6 +184,7 @@ function selectOptions(options, value) {
 const openWorkSlugs = new Set();
 const dirtyWorks = new Set();
 const workAutosaves = new Map();
+const workCoverSaves = new Map();
 let activeAdminTab = 'works';
 
 document.querySelectorAll('.admin-tab').forEach((tab) => {
@@ -198,7 +199,7 @@ document.querySelectorAll('.admin-tab').forEach((tab) => {
 });
 
 window.addEventListener('beforeunload', (e) => {
-  if (dirtyWorks.size > 0 || techOptionsDirty || typeOptionsDirty || rowNumberDrafts.size > 0) {
+  if (dirtyWorks.size > 0 || workCoverSaves.size > 0 || techOptionsDirty || typeOptionsDirty || rowNumberDrafts.size > 0) {
     e.preventDefault();
     e.returnValue = '';
   }
@@ -252,7 +253,8 @@ function markWorkDirty(slug) {
 }
 
 function previewPath(work) {
-  return work.gallery?.[0] || (work.mux?.playback_id ? 'https://image.mux.com/'+work.mux.playback_id+'/thumbnail.jpg' : '');
+  return [work.cover_image, work.thumbnail, work.hero_image, ...(work.gallery || [])].find(src => src && !isGalleryVideo(src))
+    || (work.mux?.playback_id ? 'https://image.mux.com/'+work.mux.playback_id+'/thumbnail.jpg' : '') || work.gallery?.[0] || '';
 }
 function updateWorkCardHead(card, work) {
   card.querySelector('.work-title').textContent = work.title;
@@ -262,6 +264,79 @@ function updateWorkCardHead(card, work) {
     preview.innerHTML = '<img src="' + escapeAttr(imgUrl(previewPath(work))) + '" alt="" loading="lazy" />';
     if(isGalleryVideo(previewPath(work))) preview.innerHTML='<video src="'+escapeAttr(imgUrl(previewPath(work)))+'" muted autoplay loop playsinline preload="metadata"></video>';
   } else preview.textContent = '이미지 없음';
+}
+
+function createWorkCoverEditor(card, work) {
+  const section = document.createElement('section');
+  section.className = 'work-cover-editor';
+  section.setAttribute('aria-labelledby', `cover-title-${work.slug}`);
+  section.innerHTML = `<h4 id="cover-title-${escapeAttr(work.slug)}">대표 이미지</h4><p class="field-help">Works 목록과 Related Projects에 표시할 이미지입니다. 선택하면 바로 저장됩니다.</p><div class="work-cover-layout"><div class="work-cover-preview"></div><div class="work-cover-options"><details class="work-cover-picker"><summary>등록된 이미지에서 선택</summary><div class="work-cover-choices"></div></details><label>새 대표 이미지 업로드<input class="work-cover-upload" type="file" accept="image/*" /></label><p class="field-help">목록에서는 2:3 비율로 가운데를 맞춰 표시합니다.</p></div></div><p class="work-cover-status" role="status"></p>`;
+  card.querySelector('.work-card-body').prepend(section);
+  const status = section.querySelector('.work-cover-status');
+  const input = section.querySelector('.work-cover-upload');
+  let busy = false;
+  function refresh() {
+    const selected = [work.cover_image, work.thumbnail, work.hero_image, ...(work.gallery || [])].find(src => src && !isGalleryVideo(src));
+    const preview = section.querySelector('.work-cover-preview');
+    preview.replaceChildren();
+    if (selected) {
+      const image = document.createElement('img');
+      image.src = imgUrl(selected); image.alt = `${work.title} 대표 이미지`; image.loading = 'lazy';
+      preview.append(image);
+    } else preview.textContent = '대표 이미지 없음';
+    const choices = section.querySelector('.work-cover-choices');
+    choices.replaceChildren();
+    const candidates = [...new Set([work.thumbnail, work.hero_image, work.preview_bg, ...(work.gallery || []), ...(work.process_media || []), ...(work.process || []).flatMap(entry => entry.images || []), work.cover_image].filter(src => src && !isGalleryVideo(src)))];
+    candidates.forEach((src, index) => {
+      const button = document.createElement('button');
+      button.type = 'button'; button.className = 'work-cover-choice'; button.disabled = busy;
+      button.setAttribute('aria-pressed', String(src === selected));
+      button.setAttribute('aria-label', `이미지 ${index + 1} 대표로 선택`);
+      const image = document.createElement('img'); image.src = imgUrl(src); image.alt = ''; image.loading = 'lazy';
+      const label = document.createElement('span'); label.textContent = src === selected ? '현재 대표' : `이미지 ${index + 1}`;
+      button.append(image, label);
+      button.addEventListener('click', () => {
+        if (src === selected || busy) return;
+        save({method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({src})});
+      });
+      choices.append(button);
+    });
+    if (!candidates.length) choices.textContent = '등록된 이미지가 없어요. 아래에서 새 이미지를 올려주세요.';
+    input.disabled = busy;
+  }
+  async function save(options) {
+    if (busy) return;
+    const restoreFocus = section.querySelector('.work-cover-choices').contains(document.activeElement);
+    busy = true;
+    status.classList.remove('is-error');
+    status.textContent = options.method === 'POST' ? '대표 이미지를 업로드하고 있어요…' : '대표 이미지를 저장하고 있어요…';
+    section.querySelectorAll('button,input').forEach(control => { control.disabled = true; });
+    const request = (async () => {
+      try {
+        const updated = await api(`/api/works/${work.slug}/cover`, options);
+        work.cover_image = updated.cover_image;
+        updateWorkCardHead(card, work);
+        status.textContent = '대표 이미지를 저장했어요.';
+      } catch (error) {
+        status.textContent = '저장하지 못했어요: ' + error.message;
+        status.classList.add('is-error');
+      } finally {
+        busy = false; input.value = ''; refresh();
+        if (restoreFocus) section.querySelector('[aria-pressed="true"]')?.focus({preventScroll:true});
+        workCoverSaves.delete(work.slug);
+      }
+    })();
+    workCoverSaves.set(work.slug, request);
+    return request;
+  }
+  input.addEventListener('change', () => {
+    const file = input.files[0];
+    if (!file) return;
+    const data = new FormData(); data.append('image', file);
+    save({method:'POST', body:data});
+  });
+  card.coverEditor = {refresh};
+  refresh();
 }
 function filterWorks() {
   const query = document.getElementById('workSearch').value.trim().toLocaleLowerCase();
@@ -321,6 +396,7 @@ function refreshGalleryGrid(galleryGrid, work, gallery) {
   gallery.forEach((src, i) => appendGalleryItem(galleryGrid, work, src, i));
   decorateGalleryRows(galleryGrid, work);
   updateWorkCardHead(galleryGrid.closest('.work-card'), work);
+  galleryGrid.closest('.work-card').coverEditor?.refresh();
 }
 function decorateGalleryRows(grid, work) {
   // Keep tiles in place while numbers are edited; applying is the only regroup action.
@@ -437,6 +513,7 @@ function appendGalleryItem(galleryGrid, work, src, index) {
 
 // ── Works ──
 async function loadWorks() {
+  await Promise.all([...workCoverSaves.values()]);
   await Promise.all([...workAutosaves.values()].map(save => save.flush()));
   if (dirtyWorks.size) return;
   workAutosaves.forEach(save => save.dispose());
@@ -499,6 +576,7 @@ function renderWorkCard(work) {
   `;
 
   updateWorkCardHead(card, work);
+  createWorkCoverEditor(card, work);
   const galleryGrid = card.querySelector('.gallery-grid');
   (work.gallery || []).forEach((src, i) => appendGalleryItem(galleryGrid, work, src, i));
   decorateGalleryRows(galleryGrid, work);
@@ -637,6 +715,7 @@ function renderWorkCard(work) {
           receiveResponsibilities(updated.responsibility_items);
           Object.assign(work, updated);
           updateWorkCardHead(card, updated);
+          card.coverEditor.refresh();
           if (!changed) dirtyWorks.delete(work.slug);
           showStatus(updated.translationWarning || (changed ? '추가 변경 자동 저장 대기…' : '자동 저장 완료'));
           if (changed) autosave.schedule();
@@ -658,6 +737,7 @@ function renderWorkCard(work) {
     if (!confirm(`"${work.title}"을(를) 삭제할까요?`)) return;
     const button = e.currentTarget;
     button.disabled = true;
+    await workCoverSaves.get(work.slug);
     await autosave.settle();
     try {
       await api(`/api/works/${work.slug}`, { method: 'DELETE' });

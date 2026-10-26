@@ -1,0 +1,8 @@
+.portfolio:not(.page-lab):not(.page-study){--paper:#fff;--ink:#15591f;--muted:#15591f;--line:#15591f99;--light-line:#15591f40}
+.portfolio .wordmark .brand-logo{display:block;width:48px;height:48px;aspect-ratio:1;object-fit:contain;border-radius:50%}
+.quiet-site .site-header{min-height:66px}
+.portfolio .site-nav{background:var(--paper)}
+
+.portfolio{--sans:InterVariable,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-family:var(--sans)}
+
+.portfolio{font-variation-settings:normal;font-optical-sizing:auto}

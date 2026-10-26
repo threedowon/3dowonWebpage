@@ -8,7 +8,7 @@ app.use((req,res,next) => { res.setHeader('Cache-Control','no-store'); next(); }
 // Serve only the public portfolio, including its GitHub Pages base path.
 app.use((req, res, next) => {
   const pathname = req.path.replace(/^\/3dowonWebpage(?=\/)/, '');
-  if (!/^\/(?:$|[^/]+\.html$|(?:ko|work|lab|assets|Video)\/|(?:styles\.css|script\.js|pdf-reader\.mjs)$)/.test(pathname)) {
+  if (!/^\/(?:$|[^/]+\.html$|(?:ko|work|lab|assets|Video)\/|(?:styles\.css|selected\.css|script\.js|pdf-reader\.mjs)$)/.test(pathname)) {
     return res.sendStatus(404);
   }
   next();

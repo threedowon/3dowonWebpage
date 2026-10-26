@@ -21,7 +21,7 @@ export function loadWorks() {
 export function writeOutput(relPath, html) {
   const full = path.join(ROOT, relPath);
   fs.mkdirSync(path.dirname(full), { recursive: true });
-  fs.writeFileSync(full, html, 'utf8');
+  fs.writeFileSync(full, html.replace(/[ \t]+$/gm, ''), 'utf8');
 }
 
 export function cleanOrphanWorkPages(slugs, workDirRel = 'work') {

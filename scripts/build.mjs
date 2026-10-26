@@ -1,5 +1,6 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import fs from 'node:fs';
+import { greenArchivePage } from './lib/green-archive.mjs';
 
 fs.mkdirSync('assets/pdfjs', {recursive:true});
 for (const file of ['pdf.mjs', 'pdf.worker.mjs']) fs.copyFileSync(`node_modules/pdfjs-dist/legacy/build/${file}`, `assets/pdfjs/${file}`);
@@ -10,6 +11,7 @@ import { prepareLabPreviews } from './lib/lab-previews.mjs';
 import { catalogPage, labPage, aboutPage, portfolioPage, cvPage, workPage, teachingMaterialsPage } from './lib/portfolio.mjs';
 
 const site = loadJson('content/site.json');
+site.selected_projects = loadJson('content/selected-projects.json');
 const portfolio = loadJson('content/portfolio.json');
 const about = loadJson('content/about.json');
 const cv = loadJson('content/cv.json');
@@ -25,9 +27,10 @@ const workPaths = [];
 
 for (const lang of ['en', 'ko']) {
   const prefix = lang === 'ko' ? 'ko/' : '';
-  for (const page of ['index.html', 'works.html', 'works-img.html', 'list.html']) {
+  writeOutput(`${prefix}index.html`, greenArchivePage(works, site, lang));
+  for (const page of ['works.html', 'works-img.html', 'list.html']) {
     // Keep legacy entry URLs opening the same image archive.
-    writeOutput(`${prefix}${page}`, catalogPage(works, site, lang, page));
+    writeOutput(`${prefix}${page}`, greenArchivePage(works, site, lang, page));
   }
   writeOutput(`${prefix}lab.html`, labPage(studies, site, lang));
   writeOutput(`${prefix}about.html`, aboutPage(about, site, lang));

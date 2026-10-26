@@ -6,40 +6,68 @@
   <meta name="theme-color" content="#ffffff" />
   <meta name="description" content="빛, 공간, 일상의 사물을 연결하는 인터랙티브 설치와 미디어 실험." />
   <title>Dear Actor — 3Dowon</title>
-  
+
   <link rel="stylesheet" href="../../styles.css?v=1111-lab-fallback" />
+  <link rel="stylesheet" href="../../selected.css?v=reference-rows-1" />
+  <link rel="stylesheet" href="../../assets/green-archive/brand.css?v=1" />
+  <link rel="stylesheet" href="../../assets/green-archive/sidebar.css?v=6" />
+  <link rel="stylesheet" href="../../assets/green-archive/menu.css?v=5" />
+  <link rel="stylesheet" href="../../assets/green-archive/layout.css?v=4" />
+  <link rel="stylesheet" href="../../assets/green-archive/detail.css?v=2" /><script src="../../assets/green-archive/detail.js?v=2" defer></script>
+  <script src="../../assets/green-archive/menu.js?v=1" defer></script>
   <script src="../../script.js?v=1111-lab-fallback" defer></script>
-  
+  <script src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3.8.0" defer></script>
 </head>
-<body class="portfolio page-work page-archive-work" data-home="../" data-section="works">
-  
+<body class="portfolio archive-layout page-work page-archive-work quiet-site" data-home="../" data-section="works">
+  <template id="portfolio-video-theme">
+<style>
+:host{display:block;width:100%;height:100%;--media-primary-color:var(--detail-paper,#ddd);--media-icon-color:var(--media-primary-color);--media-control-background:transparent;--media-control-hover-background:transparent;--media-control-padding:8px;--media-control-height:18px;--media-button-icon-width:18px;--media-button-icon-height:18px;--media-range-track-height:4px;--media-range-bar-color:var(--media-accent-color,var(--media-primary-color));--media-range-thumb-background:var(--media-primary-color);--media-range-thumb-width:8px;--media-range-thumb-height:8px;--media-time-range-buffered-color:#777;--media-range-track-background:#444;--media-menu-background:rgba(20,20,20,.96);--media-menu-color:#fff;--media-preview-time-background:#fff;--media-preview-time-color:#111;--media-preview-time-border-radius:3px;--media-font-family:Arial,sans-serif}
+media-controller{width:100%;height:100%;background:#000}
+media-control-bar{display:flex;align-items:center;width:100%;box-sizing:border-box;padding:6px 8px;gap:1px;background:linear-gradient(transparent,rgba(0,0,0,.65));}
+media-time-range{flex:1;min-width:30px;--media-range-padding:0 5px;--media-preview-thumbnail-max-width:140px}
+media-rendition-menu{--media-menu-flex-direction:column;position:absolute;right:40px;bottom:44px;min-width:130px;max-height:220px;overflow:auto;border-radius:4px}
+.volume{display:flex;align-items:center}.volume media-volume-range{width:0;max-width:64px;overflow:hidden;transition:width .15s}.volume:hover media-volume-range,.volume:focus-within media-volume-range{width:64px}
+media-playback-rate-button{min-width:34px;font-size:11px}
+media-preview-thumbnail{display:block}
+@media(max-width:480px){media-control-bar{padding:4px;gap:0;--media-control-padding:7px}.volume:hover media-volume-range,.volume:focus-within media-volume-range{width:44px}}
+</style>
+<media-controller defaultstreamtype="on-demand" keyboardforwardseekoffset="5" keyboardbackwardseekoffset="5">
+<slot name="media" slot="media"></slot><slot name="poster" slot="poster"></slot>
+<media-loading-indicator slot="centered-chrome"></media-loading-indicator>
+<media-error-dialog slot="dialog"></media-error-dialog>
+<media-control-bar>
+<media-play-button part="bottom play button"></media-play-button>
+<media-time-range part="bottom time range"><media-preview-thumbnail slot="preview"></media-preview-thumbnail><media-preview-time-display slot="preview"></media-preview-time-display></media-time-range>
+<div class="volume"><media-mute-button part="bottom mute button"></media-mute-button><media-volume-range part="bottom volume range"></media-volume-range></div>
+<media-rendition-menu-button part="bottom rendition button"><svg slot="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m9.5 2-.6 2.4-1.8 1-2.4-.7-2.5 4.3 1.8 1.7v2.1L2.2 15l2.5 4.3 2.4-.7 1.8 1 .6 2.4h5l.6-2.4 1.8-1 2.4.7 2.5-4.3-1.8-2.2v-2.1l1.8-1.7-2.5-4.3-2.4.7-1.8-1-.6-2.4h-5ZM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"/></svg></media-rendition-menu-button>
+<media-rendition-menu anchor="auto" hidden part="bottom rendition menu"></media-rendition-menu>
+<media-playback-rate-button rates="0.5 0.75 1 1.25 1.5 2" part="bottom playback-rate button"></media-playback-rate-button>
+<media-fullscreen-button part="bottom fullscreen button"></media-fullscreen-button>
+</media-control-bar>
+</media-controller>
+</template>
   <a class="skip-link" href="#main">본문으로 이동</a>
+  <aside class="persistent-identity" aria-label="3Dowon"><a class="logo" href="../index.html" aria-label="3Dowon Home"><img src="../../assets/green-archive/3dowon.png" alt="3Dowon" width="82" height="82" /></a><div class="identity-note"><span>3Dowon / Interactive media artist</span><span>How do familiar objects change our experience of space?</span><span>How do familiar actions change our experience of space?</span></div><div class="site-menu"><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu-panel" hidden><span>Menu</span><span class="menu-toggle-icon" aria-hidden="true"></span></button><div class="menu-panel" id="site-menu-panel"><nav class="menu-links" aria-label="주 메뉴"><a href="../about.html">About</a><a href="../works.html" aria-current="page">Works</a><a href="../lab.html">Lab</a><a href="../portfolio.html">Portfolio</a><a href="../cv.html">CV</a></nav><a class="menu-language" href="../../work/sonic-veil.html" hreflang="en" data-language="en" aria-label="Switch to English">EN</a></div></div></aside>
   <div class="site-frame">
-    <header class="site-header archive-site-header">
-      <a class="wordmark" href="../index.html" aria-label="3Dowon 홈">3Dowon</a>
-      <p class="header-note">빛, 공간, 일상의 사물을 연결하는<br />인터랙티브 설치와 미디어 실험.</p>
-      <nav class="site-nav" aria-label="주 메뉴">
-        <a href="../works.html" aria-current="page">Works</a><a href="../lab.html">Lab</a><a href="../about.html">About</a><a href="../portfolio.html">Portfolio</a><a href="../cv.html">CV</a>
-      </nav>
-      <nav class="language-nav" aria-label="언어"><a href="../../work/sonic-veil.html" hreflang="en" data-language="en" aria-label="KR — 영어로 전환">KR</a></nav>
-    </header>
+    <header class="site-header archive-site-header" aria-hidden="true"></header>
     <main id="main" tabindex="-1">
+
       <div class="page-toolbar"><nav class="detail-toolbar" aria-label="작업"><a class="archive-back" href="../works.html">← 작업 목록</a><span class="eyebrow">Work 12</span></nav></div>
       <div class="page-content"><article class="editorial-article work-article" aria-labelledby="page-title">
-    <header class="feature-heading"><h1 class="post-title" id="page-title">Dear Actor</h1></header>
+    <section class="detail-gallery" aria-label="작품 미디어"><div class="detail-media-grid" tabindex="0"><div class="post-video"><div class="post-video-frame"><mux-player theme="portfolio-video-theme" playback-id="sO3FmoLiFyRWHejyjhvAw2O8chK7r00iWOahfRC4WYXU" metadata-video-title="Dear Actor" stream-type="on-demand" preload="metadata" accent-color="#dddddd" primary-color="#dddddd"></mux-player></div></div><figure class="project-image"><a href="../../assets/uploads/sonic-veil-1789062891939-45230.jpg" data-viewer="../../assets/uploads/sonic-veil-1789062891939-45230.jpg" data-viewer-title="Dear Actor — 01" aria-label="Dear Actor 1 — 크게 보기"><img src="../../assets/uploads/sonic-veil-1789062891939-45230.jpg" alt="Dear Actor — 1" class="project-detail-image" loading="lazy" decoding="async" /></a></figure><figure class="project-image"><a href="../../assets/uploads/sonic-veil-1789062894456-326788.jpg" data-viewer="../../assets/uploads/sonic-veil-1789062894456-326788.jpg" data-viewer-title="Dear Actor — 02" aria-label="Dear Actor 2 — 크게 보기"><img src="../../assets/uploads/sonic-veil-1789062894456-326788.jpg" alt="Dear Actor — 2" class="project-detail-image" loading="lazy" decoding="async" /></a></figure><figure class="project-image"><a href="../../assets/uploads/sonic-veil-1789062902701-580359.jpg" data-viewer="../../assets/uploads/sonic-veil-1789062902701-580359.jpg" data-viewer-title="Dear Actor — 03" aria-label="Dear Actor 3 — 크게 보기"><img src="../../assets/uploads/sonic-veil-1789062902701-580359.jpg" alt="Dear Actor — 3" class="project-detail-image" loading="lazy" decoding="async" /></a></figure></div><nav class="detail-controls" aria-label="미디어 탐색" hidden><button type="button" data-prev aria-label="이전 이미지">←</button><span role="status" aria-live="polite"></span><button type="button" data-next aria-label="다음 이미지">→</button></nav></section>
     <div class="project-information">
+      <header class="feature-heading"><h1 class="post-title" id="page-title">Dear Actor</h1></header>
       <div class="project-facts"><dl class="work-meta"><div><dt>날짜</dt><dd>2024</dd></div><div><dt>유형</dt><dd>인터랙티브</dd></div></dl><dl class="work-meta"><div><dt>기술</dt><dd>Unreal</dd></div><div><dt>제작</dt><dd>개인</dd></div></dl></div>
-      <div class="prose post-des"><section class="detail-copy-section"><h3>소개</h3><div><p>공간음향과 프로젝션을 결합한 설치 작업이다. 관객의 위치에 따라 소리의 밀도와 빛의 결이 달라지는 경험을 설계했다.</p>
-            </div></section><section class="detail-copy-section"><h3>주요 업무</h3><div>
+      <div class="prose post-des"><details class="detail-disclosure" open><summary>소개</summary><div class="detail-disclosure-copy"><p>공간음향과 프로젝션을 결합한 설치 작업이다. 관객의 위치에 따라 소리의 밀도와 빛의 결이 달라지는 경험을 설계했다.</p>
+            </div></details><details class="detail-disclosure"><summary>주요 업무</summary><div class="detail-disclosure-copy">
             <p>Max/MSP 공간음향 패치 개발</p>
             <p>TouchDesigner 비주얼 연동</p>
-            <p>설치·시연 환경 세팅</p></div></section></div>
+            <p>설치·시연 환경 세팅</p></div></details></div>
     </div>
-    <div class="feature-gallery" style="--detail-paper:#dddddd;--detail-columns:1"><div class="detail-image-row" style="--row-columns:1"><figure class="project-image"><a href="../../assets/uploads/sonic-veil-1789062891939-45230.jpg" data-viewer="../../assets/uploads/sonic-veil-1789062891939-45230.jpg" data-viewer-title="Dear Actor — 01" aria-label="Dear Actor 1 — 크게 보기"><img src="../../assets/uploads/sonic-veil-1789062891939-45230.jpg" alt="Dear Actor — 1" class="project-detail-image" fetchpriority="high" decoding="async" /></a></figure></div><div class="detail-image-row" style="--row-columns:1"><figure class="project-image"><a href="../../assets/uploads/sonic-veil-1789062894456-326788.jpg" data-viewer="../../assets/uploads/sonic-veil-1789062894456-326788.jpg" data-viewer-title="Dear Actor — 02" aria-label="Dear Actor 2 — 크게 보기"><img src="../../assets/uploads/sonic-veil-1789062894456-326788.jpg" alt="Dear Actor — 2" class="project-detail-image" loading="lazy" decoding="async" /></a></figure></div><div class="detail-image-row" style="--row-columns:1"><figure class="project-image"><a href="../../assets/uploads/sonic-veil-1789062902701-580359.jpg" data-viewer="../../assets/uploads/sonic-veil-1789062902701-580359.jpg" data-viewer-title="Dear Actor — 03" aria-label="Dear Actor 3 — 크게 보기"><img src="../../assets/uploads/sonic-veil-1789062902701-580359.jpg" alt="Dear Actor — 3" class="project-detail-image" loading="lazy" decoding="async" /></a></figure></div></div>
-    
-  </article><nav class="project-pagination" aria-label="작업"><a href="botanic-brush.html"><span>이전 작업 ↖</span><strong>Botanic Brush</strong></a><a href="flipflip.html"><span>다음 작업 ↗</span><strong>FlipFlop</strong></a></nav></div>
+
+  </article><nav class="project-pagination" aria-label="작업"><a href="botanic-brush.html"><span>이전 작업 ↖</span><strong>Botanic Brush</strong></a><a href="flipflip.html"><span>다음 작업 ↗</span><strong>FlipFlop</strong></a></nav><section class="related-projects" aria-labelledby="related-title"><h2 id="related-title">관련 작업 / Related Projects</h2><div class="related-grid"><a class="related-card" href="echo-chamber.html"><div class="related-image"><img src="../../assets/uploads/echo-chamber-1789062772220-920829.jpg" alt="Aspect Ratio" loading="lazy" decoding="async" /></div><h3>Aspect Ratio</h3><p>설치, 인터랙티브<span>2024</span></p></a><a class="related-card" href="layered-city.html"><div class="related-image"><img src="../../assets/uploads/layered-city-1789062795567-345217.jpg" alt="At the moment" loading="lazy" decoding="async" /></div><h3>At the moment</h3><p>인터랙티브<span>2024</span></p></a><a class="related-card" href="botanic-brush.html"><div class="related-image"><img src="../../assets/uploads/botanic-brush-1789064054703-510479.jpg" alt="Botanic Brush" loading="lazy" decoding="async" /></div><h3>Botanic Brush</h3><p>인터랙티브, 웹<span>2024</span></p></a><a class="related-card" href="flipflip.html"><div class="related-image"><img src="../../assets/uploads/flipflip-1789151860506-710081.jpg" alt="FlipFlop" loading="lazy" decoding="async" /></div><h3>FlipFlop</h3><p>인터랙티브<span>2024</span></p></a></div></section></div>
     </main>
-    <footer class="site-footer"><a class="footer-wordmark" href="../index.html">3Dowon</a><div class="footer-contact"><p>문의</p><a href="mailto:3dowon@gmail.com">E. &nbsp;3dowon@gmail.com</a></div><div class="footer-links"><a href="https://instagram.com/3dowon" target="_blank" rel="noopener">Instagram<span aria-hidden="true"> ↗</span></a><a href="https://www.youtube.com/@threeDowon" target="_blank" rel="noopener">YouTube<span aria-hidden="true"> ↗</span></a><a href="https://github.com/threedowon" target="_blank" rel="noopener">GitHub<span aria-hidden="true"> ↗</span></a><a href="https://blog.naver.com/qkryewon" target="_blank" rel="noopener">Naver Blog<span aria-hidden="true"> ↗</span></a></div><a class="back-to-top" href="#main">맨 위로 ↑</a><span class="footer-copyright">© 2026 3Dowon</span><span class="footer-practice">인터랙티브 미디어 아티스트</span></footer>
+    <footer class="site-footer"><div><a class="footer-wordmark" href="../index.html">3Dowon</a><p>인터랙티브 미디어 아티스트</p><a class="footer-email" href="mailto:3dowon@gmail.com">3dowon@gmail.com</a></div><div class="footer-links"><a href="https://instagram.com/3dowon" target="_blank" rel="noopener">Instagram ↗</a><a href="https://www.youtube.com/@threeDowon" target="_blank" rel="noopener">YouTube ↗</a><a href="https://github.com/threedowon" target="_blank" rel="noopener">GitHub ↗</a><a href="https://blog.naver.com/qkryewon" target="_blank" rel="noopener">Naver Blog ↗</a></div><div class="footer-end"><a href="#main">맨 위로 ↑</a><p>© 2026 3Dowon</p></div></footer>
   </div>
   <dialog class="media-dialog" id="media-dialog" aria-labelledby="viewer-title"><header><h2 id="viewer-title"></h2><a id="viewer-work" hidden>작업 보기 ↗</a><button type="button" data-close-viewer>닫기 ×</button></header><div id="viewer-media"></div></dialog>
 </body>

@@ -1,0 +1,24 @@
+/* The desktop menu follows the logo and introduction in the left rail. */
+.site-menu{display:flex;flex-direction:column;flex:1;min-height:max-content;width:var(--identity-size);margin-top:28px;font-size:14px;line-height:1.5;letter-spacing:0;text-transform:none}
+.site-menu .menu-toggle{display:none}
+.site-menu .menu-panel{display:flex;flex-direction:column;flex:1;min-height:max-content;width:100%}
+.site-menu .menu-links{display:flex;flex-direction:column;align-items:flex-start;gap:0}
+.site-menu a{display:block;flex:none;white-space:nowrap;color:inherit;font-weight:400}
+.site-menu .menu-links a{padding:3px 0;line-height:21px}
+.site-menu [aria-current="page"]{font-weight:700}
+.site-menu [aria-current="page"],.site-menu a:hover{text-decoration:underline;text-underline-offset:3px}
+.site-menu .menu-language{align-self:flex-start;margin-top:auto;padding-top:28px;line-height:21px}
+@media(max-width:700px){
+ .site-menu{grid-column:1/-1;width:100%;min-height:0;margin:0}
+ .site-menu .menu-toggle:not([hidden]){display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;min-height:48px;padding:12px 0;border:0;border-block:1px solid var(--line);border-radius:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
+ .site-menu .menu-toggle:hover{text-decoration:none}
+ .site-menu .menu-toggle-icon{position:relative;display:block;flex:none;width:14px;height:14px}
+ .site-menu .menu-toggle-icon::before,.site-menu .menu-toggle-icon::after{content:"";position:absolute;inset:6px 0 auto;height:1px;background:currentColor}
+ .site-menu .menu-toggle-icon::after{transform:rotate(90deg)}
+ .site-menu .menu-toggle[aria-expanded="true"] .menu-toggle-icon::after{display:none}
+ .site-menu .menu-panel{flex:none;min-height:0;height:auto;padding:12px 0 16px;border-bottom:1px solid var(--line)}
+ .site-menu .menu-panel[hidden]{display:none}
+ .site-menu .menu-links{align-items:stretch}
+ .site-menu .menu-links a{display:flex;align-items:center;min-height:44px;padding:8px 0}
+ .site-menu .menu-language{display:flex;align-items:center;min-height:44px;margin-top:12px;padding:8px 0}
+}

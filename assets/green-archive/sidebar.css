@@ -1,0 +1,15 @@
+.identity,.persistent-identity{--identity-size:82px;position:fixed;left:30px;top:32px;display:flex;flex-direction:column;align-items:flex-start;width:calc(var(--identity-size) + 12px);height:calc(100dvh - 64px);overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;z-index:35;color:inherit;font:14px/1.66667 InterVariable,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;letter-spacing:-.02em;word-spacing:0}
+.identity .logo,.persistent-identity>a{display:block;flex:none;width:var(--identity-size)}
+.identity .logo img,.portfolio .persistent-identity img{display:block;width:var(--identity-size);height:var(--identity-size);aspect-ratio:1;object-fit:contain;border-radius:50%}
+/* Match Utrecht's 14px type, -0.02em tracking and 1.66667 line spacing.
+   Center all three vertical line boxes on the logo at every desktop width. */
+.vertical-note,.identity-note{display:flex;flex:none;justify-content:center;gap:0;width:var(--identity-size);margin:40px 0 0;align-items:flex-start}
+.vertical-note span,.identity-note span{display:block;flex:none;writing-mode:vertical-rl;white-space:nowrap}
+@media(min-width:701px) and (max-width:1000px){
+ .identity,.persistent-identity{--identity-size:70px;left:20px}
+}
+@media(max-width:700px){
+ .identity,.persistent-identity{--identity-size:60px;position:static;display:grid;grid-template-columns:var(--identity-size) minmax(0,1fr);align-items:start;gap:24px 16px;width:calc(100% - 40px);height:auto;margin:20px 20px 0;overflow:visible}
+ .vertical-note,.identity-note{display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:0;width:auto;min-width:0;min-height:var(--identity-size);margin:0;font-size:11px;line-height:12px}
+ .vertical-note span,.identity-note span{writing-mode:horizontal-tb;white-space:normal;overflow-wrap:anywhere;text-wrap:balance}
+}

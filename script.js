@@ -1,8 +1,15 @@
 // Shared interactions for the static portfolio. Page content and navigation also work without JavaScript.
 function restoreLegacyRoute() {
   const home = document.body.dataset.home || '';
+  if (document.body.classList.contains('page-selected')) {
+    const project = new URLSearchParams(location.search).get('project');
+    if (project && /^[a-z0-9-]+$/.test(project) && document.querySelector(`a[href="work/${project}.html"]`)) {
+      location.replace(`${home}work/${project}.html`);
+      return true;
+    }
+  }
   const hash = location.hash.slice(1);
-  const isCatalog = document.body.classList.contains('page-works');
+  const isCatalog = document.body.classList.contains('page-works') || document.body.classList.contains('page-selected');
   if (isCatalog && ['about', 'cv', 'lab'].includes(hash)) {
     location.replace(`${home}${hash}.html`);
     return true;
@@ -718,3 +725,33 @@ function initWorksFooterCollision() {
   update();
 }
 initWorksFooterCollision();
+
+// Selected archive previews keep real project URLs available without JavaScript.
+function initSpecimens() {
+  const links = [...document.querySelectorAll('[data-specimen]')];
+  const panels = [...document.querySelectorAll('.specimen')];
+  if (!links.length) return;
+  const show = link => {
+    links.forEach(item => item === link ? item.setAttribute('aria-current', 'true') : item.removeAttribute('aria-current'));
+    panels.forEach(panel => { panel.hidden = panel.id !== link.getAttribute('aria-controls'); });
+    panels.find(panel => !panel.hidden)?.querySelectorAll('img').forEach(img => { img.loading = 'eager'; });
+  };
+  links.forEach(link => {
+    link.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') show(link); });
+    link.addEventListener('focus', () => show(link));
+    link.addEventListener('click', event => {
+      if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault(); show(link);
+    });
+  });
+  document.querySelectorAll('[data-specimen-image]').forEach(button => button.addEventListener('click', () => {
+    const panel = button.closest('.specimen');
+    const main = panel.querySelector('.specimen-image img');
+    const source = button.querySelector('img');
+    if (!main || !source) return;
+    main.src = source.getAttribute('src'); main.alt = source.alt;
+    main.removeAttribute('srcset');
+    panel.querySelectorAll('[data-specimen-image]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+  }));
+}
+initSpecimens();

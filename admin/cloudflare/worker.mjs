@@ -4,7 +4,7 @@ import { contentRequest } from './content.mjs';
 import { muxRequest } from './mux.mjs';
 import { fail, json, stateStore } from './common.mjs';
 
-const loginHTML = `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>3DOWON · 관리자 로그인</title><link rel="stylesheet" href="/login.css"></head><body><main><p class="brand">3DOWON <span>STUDIO</span></p><h1>관리자 로그인</h1><p class="intro">GitHub 계정으로 로그인하고<br>작업과 소식을 관리하세요.</p><a href="/auth/github" style="display:block;text-align:center;background:#465c32;color:white;padding:14px;border-radius:7px;text-decoration:none">GitHub로 로그인</a><p class="intro" style="margin:24px 0 0">등록된 관리자 계정만 접근할 수 있습니다.</p></main></body></html>`;
+const loginHTML = `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>3Dowon · 관리자 로그인</title><link rel="stylesheet" href="/login.css"></head><body><main><p class="brand">3Dowon <span>STUDIO</span></p><h1>관리자 로그인</h1><p class="intro">GitHub 계정으로 로그인하고<br>작업과 소식을 관리하세요.</p><a href="/auth/github" style="display:block;text-align:center;background:#465c32;color:white;padding:14px;border-radius:7px;text-decoration:none">GitHub로 로그인</a><p class="intro" style="margin:24px 0 0">등록된 관리자 계정만 접근할 수 있습니다.</p></main></body></html>`;
 
 export async function handle(request, env, outbound = fetch) {
   validateConfig(env);

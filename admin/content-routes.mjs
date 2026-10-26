@@ -242,12 +242,45 @@ app.delete('/api/works/:slug', (req, res) => {
   if (!fs.existsSync(file)) return res.status(404).json({ error: 'not found' });
   const work = loadWork(req.params.slug);
   fs.unlinkSync(file); // remove the JSON first so the reference check below doesn't see its own entries
-  [work.thumbnail, work.preview_bg, work.hero_image, ...(work.gallery || []),...(work.process_media || []),...(work.process || []).flatMap(entry=>entry.images||[])].forEach(removeUploadedFile);
+  [work.cover_image, work.thumbnail, work.preview_bg, work.hero_image, ...(work.gallery || []),...(work.process_media || []),...(work.process || []).flatMap(entry=>entry.images||[])].forEach(removeUploadedFile);
   build();
   res.json({ ok: true });
 });
 
-// 썸네일 / 인덱스 미리보기 / 상세 히어로 이미지는 항상 같은 사진을 쓴다.
+// The archive cover is independent of the authored detail gallery and its order.
+app.put('/api/works/:slug/cover', (req, res) => {
+  if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({error:'작업을 찾을 수 없어요.'});
+  const work = loadWork(req.params.slug);
+  const { src } = req.body;
+  const candidates = [work.cover_image, work.thumbnail, work.preview_bg, work.hero_image, ...(work.gallery || []), ...(work.process_media || []), ...(work.process || []).flatMap(entry => entry.images || [])];
+  if (typeof src !== 'string' || !src || !candidates.includes(src) || /\.(mp4|webm|mov|m4v)(?:[?#]|$)/i.test(src)) {
+    return res.status(400).json({error:'이 작업에 등록된 이미지 중에서 선택해주세요.'});
+  }
+  work.cover_image = src;
+  saveJson(`content/works/${work.slug}.json`, work);
+  build();
+  res.json({cover_image:work.cover_image});
+});
+
+app.post('/api/works/:slug/cover', upload.single('image'), asyncHandler(async (req, res) => {
+  if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({error:'작업을 찾을 수 없어요.'});
+  if (!req.file || !/^image\//i.test(req.file.mimetype)) return res.status(400).json({error:'대표 이미지로 사용할 사진을 선택해주세요.'});
+  const filename = await saveImage(req.file.buffer, req.params.slug);
+  const src = publicUploadPath(filename);
+  if (!listWorkSlugs().includes(req.params.slug)) {
+    removeUploadedFile(src);
+    return res.status(404).json({error:'업로드 중 작업이 삭제되었어요.'});
+  }
+  const work = loadWork(req.params.slug);
+  const previous = work.cover_image;
+  work.cover_image = src;
+  saveJson(`content/works/${work.slug}.json`, work);
+  if (previous && previous !== src) removeUploadedFile(previous);
+  build();
+  res.json({cover_image:work.cover_image});
+}));
+
+// Legacy thumbnail upload retained for older admin clients.
 app.post('/api/works/:slug/thumbnail', upload.single('image'), asyncHandler(async (req, res) => {
   const work = loadWork(req.params.slug);
   if (!req.file) return res.status(400).json({ error: '이미지 파일이 필요해요.' });

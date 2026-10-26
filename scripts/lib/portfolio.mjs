@@ -1,3 +1,4 @@
+import { siteSidebar, siteFooter } from './navigation.mjs';
 import {videoTheme} from './video-theme.mjs';
 import {galleryRows} from '../../admin/public/gallery-layout.mjs';
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
@@ -29,7 +30,7 @@ function image(src, alt, ctx, { lazy = true, className = '' } = {}) {
 }
 
 function socials(site) {
-  return [['Instagram', site.instagram], ['YouTube', site.youtube], ['GitHub', site.github], ['Naver Blog', site.naver_blog]]
+  return [['GitHub', site.github], ['Naver Blog', site.naver_blog]]
     .filter(([, href]) => href).map(([label, href]) => `<a href="${esc(href)}"${href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${label}<span aria-hidden="true"> ↗</span></a>`).join('');
 }
 
@@ -43,6 +44,9 @@ function labMotion(src, title, work, ctx) {
 
 function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', catalog = '' }) {
   const { c, home, assets, relPath, lang } = ctx;
+  const isDetail = pageClass.includes('page-work');
+  // Non-detail pages share one visible heading and its accessible label.
+  if (!isDetail) body = body.replace(/<h1 id="page-title" class="visually-hidden">[\s\S]*?<\/h1>/, '');
   return `<!DOCTYPE html>
 <html lang="${lang}">
 <head>
@@ -53,26 +57,28 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
   <title>${esc(title)} — 3Dowon</title>
   ${catalog === 'works' ? `<script>document.documentElement.classList.add('works-reveal');</script>` : ''}
   <link rel="stylesheet" href="${assets}styles.css?v=${VERSION}" />
+  <link rel="stylesheet" href="${assets}selected.css?v=reference-rows-1" />
+  <link rel="stylesheet" href="${assets}assets/green-archive/brand.css?v=1" />
+  <link rel="stylesheet" href="${assets}assets/green-archive/sidebar.css?v=6" />
+  <link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=5" />
+  <link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=4" />
+  ${pageClass.includes('page-work') && ctx.section === 'works' ? `<link rel="stylesheet" href="${assets}assets/green-archive/detail.css?v=2" /><script src="${assets}assets/green-archive/detail.js?v=2" defer></script>` : ''}
+  <script src="${assets}assets/green-archive/menu.js?v=1" defer></script>
   <script src="${assets}script.js?v=${VERSION}" defer${catalog === 'works' ? ` onerror="document.documentElement.classList.remove('works-reveal')"` : ''}></script>${ctx.section === 'lab' ? `\n  <script src="${assets}assets/lab-motion.js?v=${VERSION}" defer></script>` : ''}
   ${body.includes('<mux-player') ? '<script src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3.8.0" defer></script>' : ''}
 </head>
-<body class="portfolio ${pageClass}" data-home="${home}" data-section="${active}">
+<body class="portfolio archive-layout ${pageClass}${active === 'works' ? ' quiet-site' : ''}" data-home="${home}" data-section="${active}">
   ${body.includes('<mux-player') ? videoTheme : ''}
   <a class="skip-link" href="#main">${c.skip}</a>
+  ${siteSidebar({home,assets,lang,active,languageHref:`${assets}${lang === 'en' ? 'ko/' : ''}${relPath}`})}
   <div class="site-frame">
-    <header class="site-header archive-site-header">
-      <a class="wordmark" href="${home}index.html" aria-label="3Dowon ${lang === 'ko' ? '홈' : 'Home'}">3Dowon</a>
-      <p class="header-note">${esc(c.note).replace(/\n/g, '<br />')}</p>
-      <nav class="site-nav" aria-label="${lang === 'ko' ? '주 메뉴' : 'Main navigation'}">
-        ${['works', 'lab', 'about', 'portfolio', 'cv'].map((key) => `<a href="${home}${key}.html"${active === key ? ' aria-current="page"' : ''}>${COPY.en[key]}</a>`).join('')}
-      </nav>
-      <nav class="language-nav" aria-label="${lang === 'ko' ? '언어' : 'Language'}"><a href="${assets}${lang === 'en' ? 'ko/' : ''}${relPath}" hreflang="${lang === 'en' ? 'ko' : 'en'}" data-language="${lang === 'en' ? 'ko' : 'en'}" aria-label="${lang === 'en' ? 'EN — Switch to Korean' : 'KR — 영어로 전환'}">${lang === 'en' ? 'EN' : 'KR'}</a></nav>
-    </header>
+    <header class="site-header archive-site-header" aria-hidden="true"></header>
     <main id="main" tabindex="-1"${catalog ? ` data-catalog="${catalog}"` : ''}>
+      ${isDetail ? '' : `<div class="page-heading"><h1 id="page-title">${esc(title)}</h1></div>`}
       <div class="page-toolbar"${toolbar ? '' : ' aria-hidden="true"'}>${toolbar}</div>
       <div class="page-content">${body}</div>
     </main>
-    <footer class="site-footer"><a class="footer-wordmark" href="${home}index.html">3Dowon</a><div class="footer-contact"><p>${lang === 'ko' ? '문의' : 'Enquiries'}</p><a href="mailto:${esc(site.email)}">E. &nbsp;${esc(site.email)}</a></div><div class="footer-links">${socials(site)}</div><a class="back-to-top" href="#main">${lang === 'ko' ? '맨 위로' : 'Back to top'} ↑</a><span class="footer-copyright">© ${new Date().getFullYear()} 3Dowon</span><span class="footer-practice">${c.artist}</span></footer>
+    ${siteFooter({home, site, lang})}
   </div>
   <dialog class="media-dialog" id="media-dialog" aria-labelledby="viewer-title"><header><h2 id="viewer-title"></h2><a id="viewer-work" hidden>${lang === 'ko' ? '작업 보기' : 'View work'} ↗</a><button type="button" data-close-viewer>${c.close} ×</button></header><div id="viewer-media"></div></dialog>
 </body>
@@ -126,6 +132,18 @@ function overviewGrid(works, ctx, toolbar = '') {
 export function catalogPage(works, site, lang, relPath = 'works.html', section = 'works') {
   const ctx = context(lang, relPath, section);
   const { c } = ctx;
+  if (section === 'works') {
+    const selected = (site.selected_projects || []).map(slug => works.find(work => work.slug === slug)).filter(Boolean);
+    const cards = selected.map((work, index) => {
+      const title = pick(work, 'title', lang);
+      const photos = overviewImages(work, ctx).filter(src => !isGalleryVideo(src)).slice(0, 3);
+      const facts = [[c.type, pick(work, 'meta_type', lang)], [c.tech, pick(work, 'meta_tech', lang) || (work.tech || []).join(', ')], [c.production, pick(work, 'meta_production', lang)], [c.year, work.year]].filter(([, value]) => value);
+      return `<article class="reference-row"><a class="reference-title" href="work/${esc(work.slug)}.html"><h2>${esc(title)}</h2><span>${esc(work.year)}</span></a><dl class="reference-facts">${facts.map(([label,value]) => `<div><dt>${esc(label)}:</dt><dd>${esc(value)}</dd></div>`).join('')}</dl><div class="reference-photos">${photos.map((src,i) => `<a href="work/${esc(work.slug)}.html" aria-label="${esc(title)} — ${number(i+1)}">${image(src, title, ctx, {lazy:index > 2})}</a>`).join('')}</div></article>`;
+    }).join('');
+    const archive = works.map(work => `<a href="work/${esc(work.slug)}.html"><span>${esc(pick(work, 'title', lang))}</span><span>${esc(work.year)}</span></a>`).join('');
+    const body = `<section class="reference-index" aria-labelledby="page-title"><h1 id="page-title" class="visually-hidden">${lang === 'ko' ? '선택한 작업' : 'Selected works'}</h1>${cards}<details class="reference-archive"><summary>${lang === 'ko' ? '모든 작업' : 'ALL WORKS'} <span>+</span></summary><div>${archive}</div></details></section>`;
+    return shell(ctx, site, {active:section, title:c.works, body, pageClass:'page-selected'});
+  }
   const years = [...new Set(works.map((work) => work.year).filter(Boolean))].sort((a, b) => b - a);
   const photoCount = works.reduce((count, work) => count + overviewImages(work, ctx).length, 0);
   const countLabel = section === 'lab' ? (lang === 'ko' ? '개 실험' : ' studies') : (lang === 'ko' ? '개 작업' : ' works');
@@ -196,7 +214,7 @@ export function teachingMaterialsPage(materials, site, lang) {
   const { c } = ctx;
   const title = lang === 'ko' ? '강의 자료' : 'Teaching Materials';
   const items = materials.items || [];
-  const body = `<article class="teaching-materials"><a class="archive-back" href="cv.html">← CV</a><h1>${title}</h1><p class="teaching-intro">${lang === 'ko' ? 'XR실감형 영상 콘텐츠 편집 및 제작 · 한강미디어고등학교' : 'XR Immersive Video Content Editing and Production · Hangang Media High School'}<br>2024.07–2024.08</p>${items.length ? `<div class="teaching-grid">${items.map((item, index) => {
+  const body = `<article class="teaching-materials"><a class="archive-back" href="cv.html">← CV</a><p class="teaching-intro">${lang === 'ko' ? 'XR실감형 영상 콘텐츠 편집 및 제작 · 한강미디어고등학교' : 'XR Immersive Video Content Editing and Production · Hangang Media High School'}<br>2024.07–2024.08</p>${items.length ? `<div class="teaching-grid">${items.map((item, index) => {
     const href = resolveMediaPath(item.file, ctx.assets);
     const label = pick(item, 'title', lang) || item.title || `PDF ${index + 1}`;
     return `<section class="teaching-card" data-pdf="${esc(href)}" data-pdf-title="${esc(label)}"><iframe class="pdf-preview" src="${esc(href)}#page=1&view=FitH&toolbar=0&navpanes=0" data-src="${esc(href)}#page=1&view=FitH&toolbar=0&navpanes=0" title="${esc(label)}" loading="lazy"></iframe><button class="pdf-mobile-preview" data-open-pdf aria-label="${esc(label)}"><canvas aria-hidden="true"></canvas><span>${lang === 'ko' ? '자료 열기' : 'Open slides'} →</span></button><h2><button data-open-pdf><span>${number(index + 1)}</span> ${esc(label)}</button></h2><a href="${esc(href)}" target="_blank" rel="noopener" data-open-pdf>${lang === 'ko' ? 'PDF 보기' : 'View PDF'} ↗</a></section>`;
@@ -209,7 +227,7 @@ export function teachingMaterialsPage(materials, site, lang) {
 function detailDescription(work, ctx) {
   const source = richText(pick(work, 'description', ctx.lang));
   const parts = source.split(/<(?:p|h[2-4])[^>]*>\s*(?:<strong>)?\s*(?:담당|주요 업무|Role|Responsibilities)\s*(?:<\/strong>)?\s*<\/(?:p|h[2-4])>/i);
-  const section = (label, body) => body?.trim() ? `<section class="detail-copy-section"><h3>${label}</h3><div>${body}</div></section>` : '';
+  const section = (label, body, open = false) => body?.trim() ? `<details class="detail-disclosure"${open ? ' open' : ''}><summary>${label}</summary><div class="detail-disclosure-copy">${body}</div></details>` : '';
   const responsibilities = Array.isArray(work.responsibility_items)
     ? work.responsibility_items.map(item => {
       const title = pick(item, 'title', ctx.lang) || '';
@@ -218,7 +236,7 @@ function detailDescription(work, ctx) {
       return `<section class="detail-responsibility">${title.trim() ? `<h4>${esc(title)}</h4>` : ''}${description.split(/\r?\n/).filter(line => line.trim()).map(line => `<p>${esc(line)}</p>`).join('')}</section>`;
     }).join('')
     : richText(pick(work, 'responsibilities', ctx.lang)) || parts.slice(1).join('');
-  return section(ctx.lang === 'ko' ? '소개' : 'Introduction', parts[0])
+  return section(ctx.lang === 'ko' ? '소개' : 'Introduction', parts[0], true)
     + section(ctx.lang === 'ko' ? '주요 업무' : 'Responsibilities', responsibilities);
 }
 
@@ -251,14 +269,24 @@ function projectContent(work, ctx) {
     const images = entry.images.map(src => resolveMediaPath(src, ctx.assets));
     return `<section class="detail-process-row"><div class="detail-process-media" style="--detail-paper:${background};--process-columns:${[1,2,3].includes(Number(entry.columns))?Number(entry.columns):1}"><div class="detail-process-images">${images.map(figure).join('')}</div>${pick(entry, 'title', lang)?.trim() ? `<p class="detail-process-caption">${esc(pick(entry, 'title', lang))}</p>` : ''}</div></section>`;
   }).join('')}</div>` : '';
-  return { title, metadata, process, description: (ctx.section === 'works' ? detailDescription(work, ctx) : richText(pick(work, 'description', lang))) + documentLinks, gallery:  `<div class="feature-gallery" style="--detail-paper:${background};--detail-columns:${ctx.section === 'works' ? 1 : columns}">${video}${ctx.section === 'works' ? groupedMedia : media.map(figure).join('')}</div>` };
+  // A flat media grid keeps the full images visible in the two-column detail layout.
+  const detailFigures = rows.flat().map(src => figure(src, media.indexOf(src))).join('');
+  const detailProcess = processMediaEntries.map(entry => entry.images.map((src, i) => {
+    const caption = pick(entry, 'title', lang)?.trim();
+    return figure(resolveMediaPath(src, ctx.assets), i).replace('</figure>', `${caption ? `<figcaption>${esc(caption)}</figcaption>` : ''}</figure>`);
+  }).join('')).join('');
+  const fallback = !video && !detailFigures && !detailProcess && (work.hero_image || work.thumbnail)
+    ? figure(resolveMediaPath(work.hero_image || work.thumbnail, ctx.assets), 0) : '';
+  const detailMedia = video + detailFigures + detailProcess + fallback;
+  const detailGallery = `<section class="detail-gallery" aria-label="${lang === 'ko' ? '작품 미디어' : 'Project media'}"><div class="detail-media-grid" tabindex="0">${detailMedia || `<p class="detail-media-empty">${lang === 'ko' ? '등록된 이미지가 없습니다.' : 'No images available.'}</p>`}</div><nav class="detail-controls" aria-label="${lang === 'ko' ? '미디어 탐색' : 'Media navigation'}" hidden><button type="button" data-prev aria-label="${lang === 'ko' ? '이전 이미지' : 'Previous image'}">←</button><span role="status" aria-live="polite"></span><button type="button" data-next aria-label="${lang === 'ko' ? '다음 이미지' : 'Next image'}">→</button></nav></section>`;
+  return { title, metadata, process, detailGallery, description: (ctx.section === 'works' ? detailDescription(work, ctx) : richText(pick(work, 'description', lang))) + documentLinks, gallery:  `<div class="feature-gallery" style="--detail-paper:${background};--detail-columns:${ctx.section === 'works' ? 1 : columns}">${video}${ctx.section === 'works' ? groupedMedia : media.map(figure).join('')}</div>` };
 }
 
 export function workPage(work, works, site, lang, section = 'works') {
   const directory = section === 'lab' ? 'lab' : 'work';
   const ctx = context(lang, `${directory}/${work.slug}.html`, section);
   const { c } = ctx;
-  const { title, metadata, description, gallery, process } = projectContent(work, ctx);
+  const { title, metadata, description, gallery, detailGallery: workGallery } = projectContent(work, ctx);
   const index = works.findIndex((item) => item.slug === work.slug);
   const mediaArrow = (offset) => {
     const target = works[index + offset];
@@ -266,21 +294,29 @@ export function workPage(work, works, site, lang, section = 'works') {
     const label = offset < 0 ? c.previous : c.next;
     return target ? `<a class="study-arrow study-arrow-${direction}" href="${esc(target.slug)}.html" aria-label="${esc(label)}: ${esc(pick(target, 'title', lang))}"></a>` : `<span class="study-arrow study-arrow-${direction}" aria-hidden="true" data-disabled></span>`;
   };
-  const detailGallery = section === 'lab' ? `${gallery.slice(0, -6)}${mediaArrow(-1)}${mediaArrow(1)}</div>` : gallery;
+  const detailGallery = section === 'lab' ? `${gallery.slice(0, -6)}${mediaArrow(-1)}${mediaArrow(1)}</div>` : workGallery;
   const adjacent = (offset, label) => {
     const next = works[index + offset];
     return next ? `<a href="${esc(next.slug)}.html"><span>${label} ${offset < 0 ? '↖' : '↗'}</span><strong>${esc(pick(next, 'title', lang))}</strong></a>` : '<span></span>';
   };
+  const terms = item => new Set(`${item.meta_type_en || item.meta_type || ''},${(item.tags || []).join(',')}`.toLowerCase().split(/[,，]/).map(s => s.trim()).filter(Boolean));
+  const currentTerms = terms(work);
+  const related = section === 'works' ? works.filter(item => item.slug !== work.slug).map(item => ({item, score:[...terms(item)].filter(term => currentTerms.has(term)).length})).sort((a,b) => b.score-a.score || Math.abs(Number(a.item.year)-Number(work.year))-Math.abs(Number(b.item.year)-Number(work.year))).slice(0,4).map(({item}) => {
+    const label = pick(item, 'title', lang);
+    const src = [item.cover_image,item.thumbnail,item.hero_image,...item.gallery].find(src => src && !isGalleryVideo(src));
+    return `<a class="related-card" href="${esc(item.slug)}.html"><div class="related-image">${src ? image(src,label,ctx) : `<span>${esc(label)}</span>`}</div><h3>${esc(label)}</h3><p>${esc(pick(item,'meta_type',lang) || '')}<span>${esc(item.year || '')}</span></p></a>`;
+  }).join('') : '';
+  const relatedSection = related ? `<section class="related-projects" aria-labelledby="related-title"><h2 id="related-title">${lang === 'ko' ? '관련 작업 / Related Projects' : 'Related Projects'}</h2><div class="related-grid">${related}</div></section>` : '';
   const toolbar = `<nav class="detail-toolbar" aria-label="${c[section]}"><a class="archive-back" href="../${section}.html">← ${c.back}</a><span class="eyebrow">${section === 'lab' ? 'Lab' : 'Work'} ${number(index + 1)}</span></nav>`;
   const body = `<article class="editorial-article work-article" aria-labelledby="page-title">
-    <header class="feature-heading"><h1 class="post-title" id="page-title">${esc(title)}</h1></header>
+    ${section === 'lab' ? `<header class="feature-heading"><h1 class="post-title" id="page-title">${esc(title)}</h1></header>` : detailGallery}
     <div class="project-information">
+      ${section === 'works' ? `<header class="feature-heading"><h1 class="post-title" id="page-title">${esc(title)}</h1></header>` : ''}
       ${metadata ? `<div class="project-facts">${metadata}</div>` : ''}
       ${description ? `<div class="prose post-des">${description}</div>` : ''}
     </div>
-    ${detailGallery}
-    ${process}
-  </article>${section === 'lab' ? '' : `<nav class="project-pagination" aria-label="${c[section]}">${adjacent(-1, c.previous)}${adjacent(1, c.next)}</nav>`}`;
+    ${section === 'lab' ? detailGallery : ''}
+  </article>${section === 'lab' ? '' : `<nav class="project-pagination" aria-label="${c[section]}">${adjacent(-1, c.previous)}${adjacent(1, c.next)}</nav>`}${relatedSection}`;
   return shell(ctx, site, { active: section, title, body, toolbar, pageClass: `page-work page-archive-work${section === 'lab' ? ' page-study' : ''}` });
 }
 

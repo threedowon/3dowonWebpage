@@ -1,0 +1,59 @@
+/* Reference layout: one project per ruled row, with three equal image slots. */
+.quiet-site{--paper:#efefef;--ink:#245e25;--muted:#245e25;--line:#245e25;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+.quiet-site .site-frame{padding:0 10px}
+.quiet-site .site-header{position:relative;inset:auto;display:flex;justify-content:space-between;align-items:start;width:100%;height:64px;min-height:0;margin:0;padding:7px 0;background:var(--paper);border:0;border-radius:0;z-index:10}
+.quiet-site .site-header::after,.quiet-site .header-note{display:none}
+.quiet-site .wordmark{font-size:28px;font-weight:400;letter-spacing:-1px;line-height:1.05}
+.quiet-site .site-nav{display:contents}
+.quiet-site .site-nav a{position:fixed;z-index:30;padding:2px;background:var(--paper);font-size:14px;font-weight:400;text-transform:uppercase;line-height:1}
+.quiet-site .site-nav a:nth-child(1){position:absolute;top:8px;right:0;font-size:28px}
+.quiet-site .site-nav a:nth-child(2){position:absolute;left:50%;top:12px;transform:translateX(-50%)}
+.quiet-site .site-nav a:nth-child(3){left:8px;bottom:9px;font-size:24px}
+.quiet-site .site-nav a:nth-child(4){left:50%;bottom:12px;transform:translateX(-50%)}
+.quiet-site .site-nav a:nth-child(5){right:8px;bottom:9px;font-size:24px}
+.quiet-site .language-nav{position:absolute;left:60%;top:12px;margin:0;font-size:11px;transform:translateX(-50%)}
+.quiet-site #main{width:100%;margin:0 0 66px;padding:0;min-height:0}
+.quiet-site .page-toolbar,.quiet-site .site-footer{display:none}
+.quiet-site .page-content{padding:0;margin:0;border:0}
+.quiet-site a:hover{color:var(--ink);opacity:.65}
+.reference-row{display:grid;grid-template-columns:16.8% 25.4% 57.8%;border-top:1px solid var(--ink);min-height:clamp(100px,14.6vw,220px);padding:14px 0 30px;align-items:start}
+.reference-title{display:block;padding-right:12px;font-size:clamp(12px,2.35vw,30px);line-height:1;letter-spacing:-.04em;text-transform:uppercase;overflow-wrap:anywhere}
+.reference-title h2{font:inherit}
+.reference-title>span{display:block}
+.reference-facts{font-size:clamp(7px,1.08vw,13px);line-height:1.12;padding-right:20px}
+.reference-facts>div{display:flex;gap:.3em;align-items:baseline}
+.reference-facts dt{flex-shrink:0}
+.reference-facts dd{overflow-wrap:anywhere}
+.reference-photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;align-items:start}
+.quiet-site .reference-photos img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+.reference-archive{border-top:1px solid var(--ink);font-size:12px}
+.reference-archive summary{display:flex;justify-content:space-between;padding:12px 0;cursor:pointer;list-style:none}
+.reference-archive summary::-webkit-details-marker{display:none}
+.reference-archive>div{display:grid;grid-template-columns:repeat(3,1fr);gap:0 24px;padding-bottom:24px}
+.reference-archive a{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid #245e2540}
+.quiet-site.page-work #main{max-width:900px;margin:20px auto 80px}
+.quiet-site.page-work .work-article{display:flex;flex-direction:column;gap:24px;min-height:0}
+.quiet-site.page-work .feature-heading{position:static;inset:auto;width:100%;padding:0;margin:0;order:0}
+.quiet-site.page-work .post-title{font-size:28px}
+.quiet-site.page-work .feature-gallery{order:1;width:100%;padding:0;background:transparent;gap:16px}
+.quiet-site.page-work .project-information{order:2;position:static;inset:auto;transform:none;width:100%;height:auto;max-height:none;margin:0;padding:24px 0;overflow:visible}
+.quiet-site.page-work .feature-gallery img{width:100%;max-height:none}
+.quiet-site.page-work .post-video-frame{width:100%}
+.quiet-site.page-work .detail-process{order:3;width:100%}
+.quiet-site.page-work .detail-process-row{display:block}
+@media(max-width:600px){
+ .quiet-site .site-frame{padding:0 7px}
+ .quiet-site .site-header{height:47px;padding-top:9px}
+ .quiet-site .wordmark,.quiet-site .site-nav a:nth-child(1){font-size:19px}
+ .quiet-site .site-nav a:nth-child(1){top:9px}
+ .quiet-site .site-nav a:nth-child(2),.quiet-site .site-nav a:nth-child(4){font-size:9px}
+ .quiet-site .site-nav a:nth-child(3),.quiet-site .site-nav a:nth-child(5){font-size:18px}
+ .reference-row{padding:10px 0 17px;min-height:78px}
+ .reference-title{padding-right:5px;font-size:clamp(9px,2.35vw,14px)}
+ .reference-facts{padding-right:7px;font-size:7px}
+ .reference-facts>div{display:block}
+ .reference-facts dt,.reference-facts dd{display:inline}
+ .reference-facts dt{margin-right:2px}
+ .reference-photos{gap:2px}
+ .reference-archive>div{grid-template-columns:1fr 1fr;font-size:10px}
+}

@@ -64,3 +64,18 @@ main{margin-left:224px;padding:42px clamp(24px,4vw,72px) 80px;max-width:1680px}.
 .process-media-tile button{padding:4px 8px;min-height:28px}
 
 .work-heading-row{display:flex;align-items:center;gap:16px}.work-heading-row>.work-card-head{flex:1;min-width:0}.work-heading-row>.delete-work{flex:none}.work-save-status{grid-column:1/-1;margin:0;color:var(--muted);font-size:12px}.work-save-status.is-error{color:#ac3939}.work-save-status button{padding:4px 8px;min-height:28px;font-size:12px}
+/* Archive cover selection stays separate from the detail gallery editor. */
+.work-cover-editor{padding:20px;border:1px solid var(--line);border-radius:8px;background:#f8faf6}
+.work-cover-editor>h4{margin:0 0 8px}.work-cover-editor>.field-help{margin-bottom:16px}
+.work-cover-layout{display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;align-items:start}
+.work-cover-preview{width:120px;aspect-ratio:2/3;display:grid;place-items:center;overflow:hidden;border-radius:5px;background:#e9ede6;color:var(--muted);font-size:12px;text-align:center}
+.work-cover-preview img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.work-cover-options{display:grid;gap:16px;min-width:0}.work-cover-options>.field-help{margin:0}
+.work-cover-picker{border:1px solid var(--line);border-radius:7px;background:white;min-width:0}
+.work-cover-picker>summary{padding:12px 14px;cursor:pointer;font-weight:500}
+.work-cover-choices{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;max-height:360px;overflow:auto;padding:12px;border-top:1px solid var(--line)}
+.work-cover-choice{display:flex;flex-direction:column;gap:6px;min-width:0;padding:5px;border:2px solid transparent;background:#f5f6f2}
+.work-cover-choice img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;object-position:center;border-radius:3px}
+.work-cover-choice span{font-size:11px}.work-cover-choice[aria-pressed=true]{border-color:var(--accent);color:var(--accent);background:var(--soft);font-weight:600}
+.work-cover-status{font-size:12px;color:var(--accent);margin:12px 0 0}.work-cover-status:empty{display:none}.work-cover-status.is-error{color:var(--danger)}
+@media(max-width:760px){.work-cover-editor{padding:16px}.work-cover-layout{grid-template-columns:80px minmax(0,1fr);gap:16px}.work-cover-preview{width:80px}.work-cover-choices{grid-template-columns:repeat(auto-fill,minmax(70px,1fr));max-height:300px}}
