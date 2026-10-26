@@ -578,6 +578,11 @@ function initMediaViewer() {
   controls.setAttribute('aria-label', korean ? '확대 이미지 탐색' : 'Enlarged image navigation');
   controls.innerHTML = `<button type="button" data-viewer-prev aria-label="${korean ? '이전 이미지' : 'Previous image'}">↑</button><span role="status" aria-live="polite"></span><button type="button" data-viewer-next aria-label="${korean ? '다음 이미지' : 'Next image'}">↓</button>`;
   dialog.append(controls);
+  const galleryScrollbar = document.createElement('div');
+  galleryScrollbar.className = 'viewer-scrollbar';
+  galleryScrollbar.setAttribute('aria-hidden', 'true');
+  galleryScrollbar.innerHTML = '<span></span>';
+  dialog.append(galleryScrollbar);
   const previous = controls.querySelector('[data-viewer-prev]');
   const next = controls.querySelector('[data-viewer-next]');
   const status = controls.querySelector('[role=status]');
@@ -586,7 +591,12 @@ function initMediaViewer() {
   let scrollFrame = 0;
   const updateGallery = () => {
     if (!slides.length || !dialog.open) return;
-    current = Math.max(0, Math.min(slides.length - 1, Math.round(media.scrollTop / slides[0].offsetHeight)));
+    const trackHeight = galleryScrollbar.clientHeight;
+    const thumbHeight = Math.min(trackHeight, Math.max(40, trackHeight * media.clientHeight / media.scrollHeight));
+    const progress = media.scrollTop / Math.max(1, media.scrollHeight - media.clientHeight);
+    galleryScrollbar.firstElementChild.style.height = `${thumbHeight}px`;
+    galleryScrollbar.firstElementChild.style.transform = `translateY(${Math.max(0, Math.min(1, progress)) * (trackHeight - thumbHeight)}px)`;
+    current = slides.reduce((nearest, slide, index) => Math.abs(slide.offsetTop - media.scrollTop) < Math.abs(slides[nearest].offsetTop - media.scrollTop) ? index : nearest, 0);
     const count = `${current + 1} / ${slides.length}`;
     if (status.textContent !== count) status.textContent = count;
     previous.disabled = current === 0;
@@ -607,11 +617,13 @@ function initMediaViewer() {
       const width = Number(image.getAttribute('width')) || image.naturalWidth;
       const height = Number(image.getAttribute('height')) || image.naturalHeight;
       if (!width || !height) return null;
-      const scale = Math.min(1, availableWidth / width, media.clientHeight / height);
+      const scale = availableWidth / width;
+      slide.style.height = `${height * scale}px`;
       return { width: width * scale, height: height * scale };
     }).filter(Boolean);
     const width = `${Math.round(sizes.length ? Math.max(...sizes.map(size => size.width)) : availableWidth)}px`;
     const height = `${Math.round(sizes.length ? Math.max(...sizes.map(size => size.height)) : media.clientHeight)}px`;
+    media.style.paddingBottom = '50px';
     if (media.style.getPropertyValue('--viewer-frame-width') === width && media.style.getPropertyValue('--viewer-frame-height') === height) return;
     media.style.setProperty('--viewer-frame-width', width);
     media.style.setProperty('--viewer-frame-height', height);
@@ -767,6 +779,10 @@ function initMediaViewer() {
   });
   closeButton.addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', (event) => {
+    if (slides.length && mobileWorkViewer.matches && event.target.closest('.viewer-slide')) {
+      dialog.close();
+      return;
+    }
     if (slides.length && event.target !== dialog && event.target !== media && !event.target.matches('.viewer-slide')) return;
     if (isLabPreview && event.target.closest('.lab-preview')) return;
     if (event.target.closest('video') || (isLabPreview && event.target.closest('img'))) return;
@@ -778,6 +794,7 @@ function initMediaViewer() {
     controls.hidden = true;
     media.style.removeProperty('--viewer-frame-width');
     media.style.removeProperty('--viewer-frame-height');
+    media.style.removeProperty('padding-bottom');
     media.removeAttribute('tabindex');
     media.replaceChildren();
     dialog.setAttribute('aria-labelledby', 'viewer-title');

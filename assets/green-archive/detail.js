@@ -130,8 +130,13 @@
     });
     const thumbBounds = thumbnails[current].getBoundingClientRect();
     const listBounds = pagination.getBoundingClientRect();
-    if (thumbBounds.top < listBounds.top) pagination.scrollTop += thumbBounds.top - listBounds.top;
-    else if (thumbBounds.bottom > listBounds.bottom) pagination.scrollTop += thumbBounds.bottom - listBounds.bottom;
+    if (matchMedia('(max-width:700px)').matches) {
+      if (thumbBounds.left < listBounds.left) pagination.scrollLeft += thumbBounds.left - listBounds.left;
+      else if (thumbBounds.right > listBounds.right) pagination.scrollLeft += thumbBounds.right - listBounds.right;
+    } else {
+      if (thumbBounds.top < listBounds.top) pagination.scrollTop += thumbBounds.top - listBounds.top;
+      else if (thumbBounds.bottom > listBounds.bottom) pagination.scrollTop += thumbBounds.bottom - listBounds.bottom;
+    }
     items[current].querySelectorAll('img').forEach(img => { img.loading = 'eager'; });
   }
   function go(index, behavior = reducedMotion.matches ? 'instant' : 'smooth') {
