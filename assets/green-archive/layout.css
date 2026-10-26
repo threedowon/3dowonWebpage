@@ -148,7 +148,8 @@ html::-webkit-scrollbar{display:none;width:0;height:0}
 .archive-layout .portfolio-prev{cursor:url('../portfolio-cursor-previous.svg') 15 6,w-resize}
 .archive-layout .portfolio-next{cursor:url('../portfolio-cursor-next.svg') 15 6,e-resize}
 .archive-layout .portfolio-prev:disabled{display:none}
-.archive-layout .portfolio-page-stage:has(.portfolio-prev:disabled) .portfolio-next{width:100%}
+.archive-layout .portfolio-book:has(.portfolio-prev:disabled) .portfolio-next{width:100%}
+@media(max-width:920px){.archive-layout .portfolio-book:has(.portfolio-prev:disabled) .portfolio-next{width:50%}}
 .archive-layout .teaching-materials{padding:0}
 .archive-layout .teaching-intro{margin:var(--space-6) 0 var(--space-8);font-size:var(--type-body);line-height:var(--leading-copy)}
 .archive-layout .teaching-grid{gap:var(--grid-row-gap) var(--layout-gap)}
@@ -258,12 +259,11 @@ html::-webkit-scrollbar{display:none;width:0;height:0}
 @media(max-width:480px){.archive-layout .cv-row{grid-template-columns:minmax(0,1fr);gap:var(--space-2)}}
 @media(max-width:1280px){.archive-layout.page-lab .overview-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:920px){.archive-layout.page-lab .overview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-/* Rotate only the portfolio pages and their page-turn targets on upright phones. */
+/* Rotate the pages while keeping navigation in screen coordinates. */
 @media(max-width:920px) and (orientation:portrait){
  .archive-layout .portfolio-book{container-type:size}
  .archive-layout .portfolio-page-stage{position:absolute;left:50%;top:50%;width:100cqh;height:100cqw;transform:translate(-50%,-50%) rotate(90deg)}
  .archive-layout .portfolio-book .portfolio-slide{object-position:center}
- /* Clockwise rotation maps previous/left to top and next/right to bottom. */
  .archive-layout .portfolio-prev{left:0;right:auto}
  .archive-layout .portfolio-next{left:auto;right:0}
 }

@@ -39,13 +39,13 @@ function initProjectHover(catalog, projects, plates, refreshImages) {
   const projectColors = Object.fromEntries(
     [...catalog.querySelectorAll('template[data-project-detail]')].map(template => [
       template.dataset.projectDetail,
-      template.content.querySelector('.feature-gallery')?.style.getPropertyValue('--detail-paper').trim() || '#dddddd',
+      template.content.querySelector('.feature-gallery')?.style.getPropertyValue('--detail-paper').trim() || '#ffffff',
     ])
   );
   const colorNodes = [...projects, ...plates];
   colorNodes.forEach(node => {
-    const candidate = projectColors[node.dataset.project] || '#dddddd';
-    const color = /^#[0-9a-f]{6}$/i.test(candidate) ? candidate : '#dddddd';
+    const candidate = projectColors[node.dataset.project] || '#ffffff';
+    const color = /^#[0-9a-f]{6}$/i.test(candidate) ? candidate : '#ffffff';
     const channels = color.slice(1).match(/../g).map(hex => {
       const value = parseInt(hex, 16) / 255;
       return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
@@ -677,7 +677,7 @@ function initMediaViewer() {
     controls.hidden = !gallery;
     let selected = 0;
     if (gallery) {
-      dialog.style.setProperty('--detail-paper', getComputedStyle(gallery).getPropertyValue('--detail-paper').trim() || '#dddddd');
+      dialog.style.setProperty('--detail-paper', getComputedStyle(gallery).getPropertyValue('--detail-paper').trim() || '#ffffff');
       const seen = new Set();
       const links = [...gallery.querySelectorAll('[data-viewer]')].filter(item => {
         if (item.dataset.viewerType === 'video' || seen.has(item.dataset.viewer)) return false;
@@ -865,6 +865,9 @@ function initPortfolioBook() {
   const slides = [...book.querySelectorAll('.portfolio-slide')];
   const previous = book.querySelector('.portfolio-prev');
   const next = book.querySelector('.portfolio-next');
+  // Keep the tap targets in screen coordinates while the pages rotate.
+  if (previous) book.append(previous);
+  if (next) book.append(next);
   let index = 0;
   const show = (value) => {
     index = Math.max(0, Math.min(slides.length - 1, value));

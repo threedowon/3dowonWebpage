@@ -36,7 +36,7 @@
   "meta_production_en": "Company. d'strict",
   "description_en": "<p>Live Sketchbook at Arte Kids Park brings visitors’ drawings into a shared digital environment. A character coloured on paper appears on the media wall. My work connected image processing, character movement and spatial visuals to support this experience.</p>",
   "vimeo_url": "",
-  "detail_background": "#dddddd",
+  "detail_background": "#ffffff",
   "month": null,
   "responsibilities": "<p>웹캠으로 촬영한 스케치 이미지의 저장·전송 및 OpenCV 기반 텍스처 변환</p>\n            <p>디자인팀의 3D 에셋을 활용한 레벨 구성과 셰이더 개발</p>\n            <p>캐릭터 이동 경로, 개체 수 테스트 및 낮과 밤의 전환 시스템 개발</p>\n            <p>다중 프로젝터 출력·동기화와 블렌딩·매핑 테스트</p>",
   "responsibilities_en": "<p>Developed webcam image capture, storage and transfer, with OpenCV processing to generate character textures.</p>\n            <p>Built levels and shaders using 3D assets provided by the design team.</p>\n            <p>Developed character paths, population tests and day-to-night transitions.</p>\n            <p>Tested multi-projector output, synchronisation, blending and mapping.</p>",

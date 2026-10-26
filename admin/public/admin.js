@@ -242,7 +242,7 @@ function applyWorkForm(form, draft) {
   form.description.value = draft.description ?? '';
   form.description_en.value = draft.description_en ?? '';
   form.vimeo_url.value = draft.vimeo_url ?? '';
-  form.detail_background.value = draft.detail_background || '#dddddd';
+  form.detail_background.value = draft.detail_background || '#ffffff';
   form.detail_columns.value = draft.detail_columns || '1';
   form.querySelectorAll('input[name="types"]').forEach((input) => {
     input.checked = draft.types.includes(input.value);
@@ -638,7 +638,7 @@ function renderWorkCard(work, works) {
         <div class="field-row"><label>주요 업무<textarea name="responsibilities" rows="4">${escapeHtml(work.responsibilities||'')}</textarea></label><label>주요 업무 (EN · 저장 시 자동 번역)<textarea name="responsibilities_en" rows="4" placeholder="한글 주요 업무를 작성하고 저장하면 자동으로 채워집니다.">${escapeHtml(work.responsibilities_en||'')}</textarea></label></div>
         <label>회사명 (회사 작업일 때)<input name="company" placeholder="d'strict" value="${escapeAttr(work.company||'')}" /></label>
         <label>외부 영상 링크 · Vimeo<input name="vimeo_url" value="${escapeAttr(work.vimeo_url)}" /></label>
-        <div class="field-row"><label>상세 이미지 배경색<input type="color" name="detail_background" value="${/^#[0-9a-f]{6}$/i.test(work.detail_background || '') ? work.detail_background : '#dddddd'}" /></label><button type="button" class="reset-detail-background">기본 회색으로</button></div>
+        <div class="field-row"><label>상세 이미지 배경색<input type="color" name="detail_background" value="${/^#[0-9a-f]{6}$/i.test(work.detail_background || '') ? work.detail_background : '#ffffff'}" /></label><button type="button" class="reset-detail-background">기본 흰색으로</button></div>
         <input type="hidden" name="detail_columns" value="${Number(work.detail_columns || 1)}" />
         <div class="field-row">
           <button type="submit">저장</button>
@@ -743,7 +743,7 @@ function renderWorkCard(work, works) {
   renderDocuments();
   card.querySelector('.work-card-body').append(videoSection, documentsSection);
   card.querySelector('.reset-detail-background').addEventListener('click', () => {
-    editForm.detail_background.value = '#dddddd';
+    editForm.detail_background.value = '#ffffff';
     markWorkDirty(work.slug);
   });
   editForm.addEventListener('input', () => markWorkDirty(work.slug));
