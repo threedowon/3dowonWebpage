@@ -1,4 +1,5 @@
 import { siteNavigation, siteFooter } from './navigation.mjs';
+import { pageLoadingHead } from './page-loading.mjs';
 import {videoTheme} from './video-theme.mjs';
 import {galleryRows} from '../../admin/public/gallery-layout.mjs';
 import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
@@ -6,7 +7,7 @@ import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 import { selectRelatedWorks } from '../../admin/public/related-works.mjs';
 import { workCoverImage } from '../../admin/public/work-images.mjs';
 
-const VERSION = '1113-image-frames';
+const VERSION = '1115-about-image-size';
 const isGalleryVideo = src => /\.(mp4|webm|mov|m4v)(?:[?#]|$)/i.test(src || '');
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
@@ -54,6 +55,7 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  ${pageLoadingHead(assets, lang)}
   <meta name="theme-color" content="#ffffff" />
   <meta name="description" content="${esc(c.note.replace(/\n/g, ' '))}" />
   <title>${esc(title)} — 3Dowon</title>
@@ -61,11 +63,10 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
   <link rel="stylesheet" href="${assets}styles.css?v=${VERSION}" />
   <link rel="stylesheet" href="${assets}selected.css?v=reference-rows-1" />
   <link rel="stylesheet" href="${assets}assets/green-archive/brand.css?v=1" />
-  <link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=22" />
-  <link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=41" />
-  ${pageClass.includes('page-work') && ctx.section === 'works' ? `<link rel="stylesheet" href="${assets}assets/green-archive/detail.css?v=15" /><script src="${assets}assets/green-archive/detail.js?v=5" defer></script>` : ''}
+  <link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=24" />
+  <link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=46" />
+  ${pageClass.includes('page-work') && ctx.section === 'works' ? `<link rel="stylesheet" href="${assets}assets/green-archive/detail.css?v=19" /><script src="${assets}assets/green-archive/detail.js?v=6" defer></script>` : ''}
   <script src="${assets}assets/green-archive/menu.js?v=13" defer></script>
-  ${pageClass === 'page-lab' ? `<script src="${assets}assets/green-archive/lab-captions.js?v=1" defer></script>` : ''}
   <script src="${assets}script.js?v=${VERSION}" defer${catalog === 'works' ? ` onerror="document.documentElement.classList.remove('works-reveal')"` : ''}></script>${ctx.section === 'lab' ? `\n  <script src="${assets}assets/lab-motion.js?v=${VERSION}" defer></script>` : ''}
   ${body.includes('<mux-player') ? '<script src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3.8.0" defer></script>' : ''}
 </head>
@@ -108,17 +109,22 @@ function overviewGrid(works, ctx, toolbar = '') {
     const media = overviewImages(work, ctx);
     const href = `${ctx.directory}/${work.slug}.html`;
     const openLabel = ctx.section === 'lab'
-      ? (ctx.lang === 'ko' ? '실험 보기' : 'View study')
+      ? (ctx.lang === 'ko' ? '크게 보기' : 'Enlarge preview')
       : (ctx.lang === 'ko' ? '작업 보기' : 'View project');
     const attrs = `data-year="${esc(work.year || '')}" data-field="${field}"`;
+    const mediaLink = (src, content) => `<a class="overview-image-link" href="${esc(ctx.section === 'lab' ? src : href)}"${ctx.section === 'lab' ? ` data-viewer="${esc(src)}" data-viewer-type="${isGalleryVideo(src) ? 'video' : 'image'}" data-viewer-title="${esc(title)}" aria-haspopup="dialog" aria-controls="media-dialog"` : ''} aria-label="${esc(title)} · ${openLabel}">${content}</a>`;
     const project = ctx.section === 'works'
       ? `<li class="works-index-item" data-overview-project data-project="${esc(work.slug)}" ${attrs}><a class="works-index-link" href="${esc(href)}"><span class="works-index-number">${projectNumber}</span><h2 class="works-index-title">${esc(title)}</h2><span class="works-index-year">${esc(work.meta_year || work.year || '')}</span></a></li>`
       : `<article class="overview-project" data-overview-project data-project="${esc(work.slug)}" ${attrs}>
-      <a class="project-summary" href="${esc(href)}" tabindex="-1"><div><span class="project-number">${projectNumber}</span><h2>${esc(title)}</h2></div><div class="project-summary-bottom"><p>${esc(pick(work, 'meta_tech', ctx.lang) || '')}</p>${work.year ? `<p class="lab-date">${esc(work.year)}${work.month ? '.' + String(work.month).padStart(2, '0') : ''}</p>` : ''}</div><span class="lab-open-label">${openLabel} ↗</span></a>
+      <div class="project-summary"><div><span class="project-number">${projectNumber}</span><h2>${esc(title)}</h2></div><div class="project-summary-bottom"><p>${esc(pick(work, 'meta_tech', ctx.lang) || '')}</p>${work.year ? `<p class="lab-date">${esc(work.year)}${work.month ? '.' + String(work.month).padStart(2, '0') : ''}</p>` : ''}</div></div>
     </article>`;
-    const images = media.map((src, i) => `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}>${ctx.section === 'lab' ? '' : `<span class="image-reference">${projectNumber}.${i + 1}</span>`}<a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}">${isGalleryVideo(src) ? (ctx.section === 'lab' ? labMotion(src, title, work, ctx) : `<video src="${esc(src)}" autoplay muted loop playsinline preload="metadata" aria-label="${esc(title)} — ${i + 1}"></video>`) : `<img src="${esc(src)}" alt="${esc(title)} — ${i + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" />`}</a></figure>`).join('');
-    const video = ctx.section === 'lab' && work.video && !work.mux?.playback_id ? `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}><a class="overview-image-link" href="${esc(href)}" aria-label="${esc(title)} · ${openLabel}">${labMotion(resolveMediaPath(work.video, ctx.assets), title, work, ctx)}</a></figure>` : '';
-    return { project, images: video + images };
+    const images = media.map((src, i) => `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}>${ctx.section === 'lab' ? '' : `<span class="image-reference">${projectNumber}.${i + 1}</span>`}${mediaLink(src, isGalleryVideo(src) ? (ctx.section === 'lab' ? labMotion(src, title, work, ctx) : `<video src="${esc(src)}" autoplay muted loop playsinline preload="metadata" aria-label="${esc(title)} — ${i + 1}"></video>`) : `<img src="${esc(src)}" alt="${esc(title)} — ${i + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" />`)}</figure>`).join('');
+    const videoSrc = resolveMediaPath(work.video, ctx.assets);
+    const video = ctx.section === 'lab' && work.video && !work.mux?.playback_id ? `<figure class="overview-image" data-plate data-project="${esc(work.slug)}" ${attrs}>${mediaLink(videoSrc, labMotion(videoSrc, title, work, ctx))}</figure>` : '';
+    const description = String(pick(work, 'description', ctx.lang) || '').trim();
+    const previewMeta = [pick(work, 'meta_tech', ctx.lang) || (work.tech || []).join(', '), work.year].filter(Boolean);
+    const preview = ctx.section === 'lab' ? `<template data-lab-preview><figcaption class="lab-preview-caption"><h2>${esc(title)}</h2>${description ? `<p class="lab-preview-description">${esc(description)}</p>` : ''}${previewMeta.length ? `<p class="lab-preview-meta">${previewMeta.map(esc).join(' · ')}</p>` : ''}</figcaption></template>` : '';
+    return { project, images: video + images, preview };
   });
   if (ctx.section === 'works') {
     const templates = works.map((work, index) => {
@@ -127,7 +133,7 @@ function overviewGrid(works, ctx, toolbar = '') {
     }).join('');
     return `<div class="works-layout"><nav class="works-index" aria-label="${ctx.lang === 'ko' ? '작품 목록' : 'Project index'}"><div class="works-index-controls"><button type="button" class="works-all" data-all-works hidden>All Works</button><button type="button" class="works-filter-toggle" aria-expanded="false" aria-controls="works-filter-panel">Filter +</button></div><div id="works-filter-panel" hidden>${toolbar}</div><div class="works-filter-tags" aria-label="${ctx.lang === 'ko' ? '선택한 필터' : 'Active filters'}" hidden></div><ol>${entries.map((entry) => entry.project).join('\n')}</ol></nav><div class="works-stage"><div class="overview-grid works-image-grid">${entries.map((entry) => entry.images).join('\n')}</div><section class="works-project-panel" tabindex="-1" aria-labelledby="works-project-title" hidden></section></div>${templates}</div>`;
   }
-  return `<div class="overview-grid">${entries.map((entry) => `<div class="lab-entry">${entry.images}${entry.project}</div>`).join('\n')}</div>`;
+  return `<div class="overview-grid">${entries.map((entry) => `<div class="lab-entry">${entry.images}${entry.project}${entry.preview}</div>`).join('\n')}</div>`;
 }
 
 export function catalogPage(works, site, lang, relPath = 'works.html', section = 'works') {
@@ -167,15 +173,19 @@ export function labPage(studies, site, lang) {
 export function aboutPage(about, site, lang) {
   const ctx = context(lang, 'about.html');
   const { c } = ctx;
-  const paras = paragraphs(pick(about, 'body', lang));
-  const fields = lang === 'ko' ? ['인터랙티브 설치', '피지컬 컴퓨팅', '실시간 그래픽', '센서 기술'] : ['Interactive installation', 'Physical computing', 'Real-time graphics', 'Sensor technology'];
+  const information = (contentLang) => {
+    const paras = paragraphs(pick(about, 'body', contentLang));
+    const fields = contentLang === 'ko' ? ['인터랙티브 설치', '피지컬 컴퓨팅', '실시간 그래픽', '센서 기술'] : ['Interactive installation', 'Physical computing', 'Real-time graphics', 'Sensor technology'];
+    return `<div class="prose about-prose">${paras.map((para) => `<p>${esc(para)}</p>`).join('')}</div>
+      <section class="about-fields"><h2 class="visually-hidden">${COPY[contentLang].fields}</h2><ul>${fields.map((field) => `<li>${field}</li>`).join('')}</ul></section>
+      <address class="about-contact">${socials(site)}</address>`;
+  };
   const body = `<article class="editorial-article about-article">
     <figure class="about-image">${image(about.image, pick(about, 'name', lang), ctx, { lazy: false })}</figure>
     <section class="about-information" tabindex="0" aria-labelledby="page-title">
       <h1 id="page-title" class="visually-hidden">${esc(pick(about, 'name', lang))}</h1>
-      <div class="prose about-prose">${paras.map((para) => `<p>${esc(para)}</p>`).join('')}</div>
-      <section class="about-fields"><h2 class="visually-hidden">${c.fields}</h2><ul>${fields.map((field) => `<li>${field}</li>`).join('')}</ul></section>
-      <address class="about-contact">${socials(site)}</address>
+      ${information(lang)}
+      ${lang === 'ko' ? `<div class="about-size-reference" lang="en" aria-hidden="true" inert>${information('en')}</div>` : ''}
     </section>
   </article>`;
   return shell(ctx, site, { active: 'about', title: c.about, body, pageClass: 'page-about' });

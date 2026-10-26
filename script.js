@@ -433,8 +433,12 @@ function initImageRatios() {
   const aboutArticle = document.querySelector('.about-article');
   if (aboutText && aboutArticle && !aboutArticle.dataset.heightObserved) {
     aboutArticle.dataset.heightObserved = 'true';
-    const syncHeight = () => aboutArticle.style.setProperty('--about-text-height', `${aboutText.getBoundingClientRect().height}px`);
-    new ResizeObserver(syncHeight).observe(aboutText);
+    const sizeReference = aboutArticle.querySelector('.about-size-reference') || aboutText;
+    const syncHeight = () => {
+      const height = sizeReference.getBoundingClientRect().height;
+      if (height > 0) aboutArticle.style.setProperty('--about-text-height', `${height}px`);
+    };
+    new ResizeObserver(syncHeight).observe(sizeReference);
     syncHeight();
   }
   document.querySelectorAll('.portfolio img').forEach(trackImageRatio);
@@ -561,6 +565,8 @@ function initMediaViewer() {
   const media = document.getElementById('viewer-media');
   const workLink = document.getElementById('viewer-work');
   const closeButton = dialog.querySelector('[data-close-viewer]');
+  const isLabPreview = document.body.classList.contains('page-lab');
+  let pausedLabVideos = [];
   const korean = document.documentElement.lang === 'ko';
   const controls = document.createElement('nav');
   controls.className = 'viewer-gallery-controls';
@@ -688,11 +694,39 @@ function initMediaViewer() {
         element.controls = true;
         element.playsInline = true;
         element.preload = 'metadata';
+        if (isLabPreview) {
+          element.muted = true;
+          element.loop = true;
+          element.autoplay = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+          element.setAttribute('aria-label', title.textContent);
+          const poster = link.querySelector('video')?.poster;
+          if (poster) element.poster = poster;
+        }
       } else element.alt = title.textContent;
-      media.replaceChildren(element);
+      const caption = isLabPreview && link.closest('.lab-entry')?.querySelector('[data-lab-preview]');
+      if (caption) {
+        const preview = document.createElement('figure');
+        preview.className = 'lab-preview';
+        preview.append(element, caption.content.cloneNode(true));
+        preview.querySelector('h2').id = 'lab-preview-title';
+        dialog.setAttribute('aria-labelledby', 'lab-preview-title');
+        const fitPreview = () => {
+          const width = element.videoWidth || element.naturalWidth;
+          const height = element.videoHeight || element.naturalHeight;
+          if (width && height) preview.style.setProperty('--lab-preview-ratio', width / height);
+        };
+        element.addEventListener(isVideo ? 'loadedmetadata' : 'load', fitPreview, { once: true });
+        fitPreview();
+        media.replaceChildren(preview);
+      } else media.replaceChildren(element);
       if (!isVideo) trackImageRatio(element);
     }
+    if (isLabPreview) {
+      pausedLabVideos = [...document.querySelectorAll('.lab-entry video')].filter(video => !video.paused);
+      pausedLabVideos.forEach(video => video.pause());
+    }
     dialog.showModal();
+    media.scrollTop = 0;
     document.documentElement.classList.add('viewer-open');
     if (gallery) {
       current = selected;
@@ -727,7 +761,8 @@ function initMediaViewer() {
   closeButton.addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', (event) => {
     if (slides.length && event.target !== dialog && event.target !== media && !event.target.matches('.viewer-slide')) return;
-    if (event.target.closest('video')) return;
+    if (isLabPreview && event.target.closest('.lab-preview')) return;
+    if (event.target.closest('video') || (isLabPreview && event.target.closest('img'))) return;
     dialog.close();
   });
   dialog.addEventListener('close', () => {
@@ -738,6 +773,9 @@ function initMediaViewer() {
     media.style.removeProperty('--viewer-frame-height');
     media.removeAttribute('tabindex');
     media.replaceChildren();
+    dialog.setAttribute('aria-labelledby', 'viewer-title');
+    pausedLabVideos.forEach(video => { if (video.isConnected) video.play().catch(() => {}); });
+    pausedLabVideos = [];
     document.documentElement.classList.remove('viewer-open');
     opener?.focus({ preventScroll: true });
     const entry = viewerEntry;

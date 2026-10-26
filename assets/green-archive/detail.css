@@ -68,6 +68,11 @@
  .archive-layout.quiet-site.page-work .related-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
 @media(max-width:700px){
+ /* Match Teket's 25px side gutters and 3:4 frame directly below our 48px menu. */
+ .archive-layout.quiet-site.page-work{--layout-top:48px}
+ .archive-layout.quiet-site.page-work .work-article{width:calc(100vw - 50px);margin-left:calc(25px - var(--layout-left))}
+ .archive-layout.quiet-site.page-work .detail-media-grid{height:auto;aspect-ratio:3/4;gap:0}
+ .archive-layout.quiet-site.page-work .detail-media-grid img{object-fit:contain}
  .archive-layout.quiet-site.page-work .related-grid{gap:32px 16px}
  .archive-layout.page-work .related-card h3{margin-top:8px}
 }
@@ -76,7 +81,8 @@
 .media-dialog-gallery::backdrop{background:rgb(255 255 255 / .95)}
 .media-dialog-gallery header{position:absolute;inset:16px 20px auto auto;z-index:2;width:auto;height:auto;overflow:visible;clip-path:none}
 .media-dialog-gallery #viewer-title{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-.media-dialog-gallery [data-close-viewer]{position:relative;display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;background:rgb(255 255 255 / .9);color:#15591f;font-size:0;cursor:pointer}
+.media-dialog-gallery [data-close-viewer]{position:relative;display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;outline:none;background:rgb(255 255 255 / .9);color:#15591f;font-size:0;cursor:pointer}
+.media-dialog-gallery [data-close-viewer]:focus-visible{background:#e9e9e6}
 .media-dialog-gallery [data-close-viewer]::before,.media-dialog-gallery [data-close-viewer]::after{content:"";position:absolute;top:50%;left:50%;width:16px;height:1.5px;background:currentColor;transform:translate(-50%,-50%) rotate(45deg)}
 .media-dialog-gallery [data-close-viewer]::after{transform:translate(-50%,-50%) rotate(-45deg)}
 .media-dialog-gallery #viewer-media{position:relative;display:block;width:100%;height:100dvh;padding-bottom:max(0px,calc(100dvh - var(--viewer-frame-height,100dvh)));overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scroll-snap-type:y proximity;scrollbar-width:thin;scrollbar-color:#15591f66 transparent;outline-offset:-3px}

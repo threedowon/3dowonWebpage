@@ -6,6 +6,7 @@
   const controls = gallery.querySelector('.detail-controls');
   if (!items.length) return;
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const mobile = matchMedia('(max-width:700px)');
   const status = controls.querySelector('[role=status]');
   const pagination = controls.querySelector('.detail-pagination');
   const korean = document.documentElement.lang === 'ko';
@@ -39,6 +40,10 @@
   let trackWidth = 0;
 
   function fitGallery() {
+    if (mobile.matches) {
+      track.style.removeProperty('--detail-media-height');
+      return;
+    }
     const images = items.filter(item => item.querySelector('img'));
     const heights = (images.length ? images : items).map(item => {
       const image = item.querySelector('img');

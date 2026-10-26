@@ -22,7 +22,7 @@
       grid.append(card);
     }
     status.hidden = !type && !year && (!sort || sort === 'selected');
-    status.textContent = ko ? `${visible}개 작업` : `${visible} ${visible === 1 ? 'work' : 'works'}`;
+    status.textContent = `${visible} ${visible === 1 ? 'work' : 'works'}`;
     empty.hidden = visible !== 0;
     document.dispatchEvent(new Event('works:filtered'));
   };

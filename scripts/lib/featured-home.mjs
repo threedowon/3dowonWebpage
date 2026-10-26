@@ -1,6 +1,7 @@
 import {escapeHtml as esc} from './html.mjs';
 import {pick,resolveMediaPath} from './catalog.mjs';
 import {siteNavigation} from './navigation.mjs';
+import {pageLoadingHead} from './page-loading.mjs';
 import {workCoverImage} from '../../admin/public/work-images.mjs';
 import {featuredMedia,selectFeaturedWorks} from '../../admin/public/featured-projects.mjs';
 
@@ -20,7 +21,7 @@ export function featuredHomePage(works,site,lang,selection) {
       </a>
     </article>`;
   }).join('');
-  return `<!doctype html><html id="top" lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#101510"><meta name="description" content="3Dowon — Interactive Media Artist. ${ko ? '영상으로 만나는 대표 프로젝트.' : 'Selected interactive projects in motion.'}"><title>3Dowon — Interactive Media Artist</title><link rel="icon" href="${assets}assets/green-archive/3dowon.png"><link rel="stylesheet" href="${assets}assets/green-archive/archive.css?v=9"><link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=22"><link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=41"><link rel="stylesheet" href="${assets}assets/green-archive/home.css?v=6"><script src="${assets}assets/green-archive/menu.js?v=13" defer></script><script src="${assets}assets/green-archive/home.js?v=2" defer></script></head>
+  return `<!doctype html><html id="top" lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">${pageLoadingHead(assets, lang)}<meta name="theme-color" content="#101510"><meta name="description" content="3Dowon — Interactive Media Artist. ${ko ? '영상으로 만나는 대표 프로젝트.' : 'Selected interactive projects in motion.'}"><title>3Dowon — Interactive Media Artist</title><link rel="icon" href="${assets}assets/green-archive/3dowon.png"><link rel="stylesheet" href="${assets}assets/green-archive/archive.css?v=11"><link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=24"><link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=46"><link rel="stylesheet" href="${assets}assets/green-archive/home.css?v=6"><script src="${assets}assets/green-archive/menu.js?v=13" defer></script><script src="${assets}assets/green-archive/home.js?v=2" defer></script></head>
     <body class="archive-layout page-home"><a class="skip" href="#main">${ko ? '본문으로 이동' : 'Skip to content'}</a><header>${siteNavigation({site,lang,active:'home',languageHref:(ko ? '../' : 'ko/')+'index.html'})}</header>
     <main id="main" class="featured-home" tabindex="0" aria-label="${ko ? '대표 프로젝트' : 'Selected projects'}" aria-roledescription="carousel"><h1 class="page-title-hidden">3Dowon — Interactive Media Artist</h1>${slides || `<a class="featured-empty" href="works.html">${ko ? '전체 작품 보기' : 'View all works'} ↗</a>`}
       <nav class="featured-pagination" aria-label="${ko ? '대표 프로젝트 선택' : 'Choose a featured project'}">${selected.map((work,index) => `<button type="button" class="featured-dot" data-featured-dot="${index}" aria-label="${ko ? `${index+1}번 프로젝트` : `Project ${index+1}`}: ${esc(pick(work,'title',lang))}" aria-current="${index === 0 ? 'true' : 'false'}"></button>`).join('')}</nav><span class="page-title-hidden" data-featured-status aria-live="polite" aria-atomic="true"></span>

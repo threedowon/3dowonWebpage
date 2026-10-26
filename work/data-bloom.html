@@ -3,26 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preload" href="../assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+html.page-loading body{visibility:hidden}
+html.page-loading::before{content:'';position:fixed;inset:0;z-index:2147483000;background:#fff}
+html.page-loading::after{content:'';position:fixed;left:50%;top:50%;z-index:2147483001;width:24px;height:24px;margin:-12px;border:1.5px solid #15591f26;border-top-color:#15591f;border-radius:50%;box-sizing:border-box;opacity:0;animation:page-loader-spin .8s linear infinite,page-loader-show 0s .15s forwards}
+html.page-loaded body{animation:page-content-in .16s ease-out}
+@keyframes page-loader-spin{to{transform:rotate(360deg)}}
+@keyframes page-loader-show{to{opacity:1}}
+@keyframes page-content-in{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){html.page-loaded body{animation:none}html.page-loading::after{animation:page-loader-show 0s .15s forwards}}
+</style>
+<script>(()=>{const root=document.documentElement;root.classList.add('page-loading');root.setAttribute('aria-busy','true');let timer;const finish=()=>{clearTimeout(timer);if(!root.classList.contains('page-loading'))return;root.classList.remove('page-loading');root.classList.add('page-loaded');root.removeAttribute('aria-busy');};timer=setTimeout(finish,3000);document.addEventListener('site:ready',finish,{once:true});window.addEventListener('pageshow',event=>{if(event.persisted)finish();});})();</script>
+<script src="../assets/green-archive/page-loading.js?v=1" defer></script>
   <meta name="theme-color" content="#ffffff" />
   <meta name="description" content="How do familiar objects change our experience of space? How do familiar actions change our experience of space?" />
   <title>The Forest — 3Dowon</title>
 
-  <link rel="stylesheet" href="../styles.css?v=1113-image-frames" />
+  <link rel="stylesheet" href="../styles.css?v=1115-about-image-size" />
   <link rel="stylesheet" href="../selected.css?v=reference-rows-1" />
   <link rel="stylesheet" href="../assets/green-archive/brand.css?v=1" />
-  <link rel="stylesheet" href="../assets/green-archive/menu.css?v=22" />
-  <link rel="stylesheet" href="../assets/green-archive/layout.css?v=41" />
-  <link rel="stylesheet" href="../assets/green-archive/detail.css?v=15" /><script src="../assets/green-archive/detail.js?v=5" defer></script>
+  <link rel="stylesheet" href="../assets/green-archive/menu.css?v=24" />
+  <link rel="stylesheet" href="../assets/green-archive/layout.css?v=46" />
+  <link rel="stylesheet" href="../assets/green-archive/detail.css?v=19" /><script src="../assets/green-archive/detail.js?v=6" defer></script>
   <script src="../assets/green-archive/menu.js?v=13" defer></script>
-
-  <script src="../script.js?v=1113-image-frames" defer></script>
+  <script src="../script.js?v=1115-about-image-size" defer></script>
 
 </head>
 <body class="portfolio archive-layout page-work page-archive-work quiet-site" data-home="../" data-section="works">
 
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="site-frame">
-    <header class="site-header archive-site-header"><div class="site-menu"><a class="desktop-wordmark menu-wordmark" href="../index.html">3Dowon</a><div class="mobile-menu-bar"><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu-panel" aria-haspopup="dialog" hidden><span class="menu-toggle-icon" aria-hidden="true"></span><span class="menu-toggle-label">Menu</span></button><a class="menu-wordmark" href="../index.html">3Dowon</a><a class="mobile-menu-language" href="../ko/work/data-bloom.html" hreflang="ko" data-language="ko" aria-label="한국어로 전환">KR</a></div><dialog class="mobile-menu-dialog" aria-label="Main navigation"></dialog><div class="menu-panel" id="site-menu-panel"><div class="menu-panel-header"><a class="menu-wordmark" href="../index.html">3Dowon</a><button class="menu-close" type="button" aria-label="Close menu"><span aria-hidden="true"></span></button></div><nav class="menu-links" aria-label="Main navigation"><a href="../about.html">About</a><div class="works-menu"><a class="works-trigger is-current" href="../works.html" aria-expanded="false" aria-controls="works-submenu">Works</a><button type="button" class="works-submenu-toggle" aria-label="Work categories" aria-expanded="false" aria-controls="works-submenu"><span aria-hidden="true"></span></button><div class="works-submenu" id="works-submenu" hidden><div class="works-categories"><a data-work-filter href="../works.html">All</a><a data-work-filter href="../works.html?type=%EC%9D%B8%ED%84%B0%EB%9E%99%ED%8B%B0%EB%B8%8C">Interactive</a><a data-work-filter href="../works.html?type=%EC%84%A4%EC%B9%98">Installation</a><a data-work-filter href="../works.html?type=%EC%98%81%EC%83%81">Video</a><a data-work-filter href="../works.html?type=%EC%A0%84%EC%8B%9C">Exhibition</a><a data-work-filter href="../works.html?type=%ED%8D%BC%ED%8F%AC%EB%A8%BC%EC%8A%A4">Performance</a><a data-work-filter href="../works.html?type=VR%2FAR">VR/AR</a><a data-work-filter href="../works.html?type=%EC%9B%B9">Web</a></div></div></div><a href="../lab.html">Lab</a><a href="../portfolio.html">Portfolio</a><a href="../cv.html">CV</a></nav><a class="menu-language" href="../ko/work/data-bloom.html" hreflang="ko" data-language="ko" aria-label="한국어로 전환">KR</a></div></div></header>
+    <header class="site-header archive-site-header"><div class="site-menu"><a class="desktop-wordmark menu-wordmark" href="../index.html">3Dowon</a><div class="mobile-menu-bar"><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu-panel" aria-haspopup="dialog" hidden><span class="menu-toggle-icon" aria-hidden="true"></span><span class="menu-toggle-label">Menu</span></button><a class="menu-wordmark" href="../index.html">3Dowon</a><a class="mobile-menu-language" href="../ko/work/data-bloom.html" hreflang="ko" data-language="ko" aria-label="한국어로 전환">KR</a></div><dialog class="mobile-menu-dialog" aria-label="Main navigation"></dialog><div class="menu-panel" id="site-menu-panel"><div class="menu-panel-header"><a class="menu-wordmark" href="../index.html">3Dowon</a><button class="menu-close" type="button" aria-label="Close menu"><span aria-hidden="true"></span></button></div><nav class="menu-links" aria-label="Main navigation"><a href="../about.html">About</a><div class="works-menu"><a class="works-trigger is-current" href="../works.html" aria-expanded="false" aria-controls="works-submenu">Works</a><button type="button" class="works-submenu-toggle" lang="en" aria-label="Work categories" aria-expanded="false" aria-controls="works-submenu"><span aria-hidden="true"></span></button><div class="works-submenu" id="works-submenu" lang="en" hidden><div class="works-categories"><a data-work-filter href="../works.html">All</a><a data-work-filter href="../works.html?type=%EC%9D%B8%ED%84%B0%EB%9E%99%ED%8B%B0%EB%B8%8C">Interactive</a><a data-work-filter href="../works.html?type=%EC%84%A4%EC%B9%98">Installation</a><a data-work-filter href="../works.html?type=%EC%98%81%EC%83%81">Video</a><a data-work-filter href="../works.html?type=%EC%A0%84%EC%8B%9C">Exhibition</a><a data-work-filter href="../works.html?type=%ED%8D%BC%ED%8F%AC%EB%A8%BC%EC%8A%A4">Performance</a><a data-work-filter href="../works.html?type=VR%2FAR">VR/AR</a><a data-work-filter href="../works.html?type=%EC%9B%B9">Web</a></div></div></div><a href="../lab.html">Lab</a><a href="../portfolio.html">Portfolio</a><a href="../cv.html">CV</a></nav><a class="menu-language" href="../ko/work/data-bloom.html" hreflang="ko" data-language="ko" aria-label="한국어로 전환">KR</a></div></div></header>
     <main id="main" tabindex="-1">
 
 
@@ -36,8 +48,8 @@
 
   </article><section class="related-projects" aria-labelledby="related-title"><h2 id="related-title">You might also like</h2><div class="related-grid"><a class="related-card" href="soft-machine.html"><div class="related-image"><img src="../assets/uploads/soft-machine-1789062688480-833271.jpg" alt="50/50 VISION" loading="lazy" decoding="async" /></div><h3>50/50 VISION</h3><p>Video<span>2024</span></p></a><a class="related-card" href="neural-garden.html"><div class="related-image"><img src="../assets/uploads/neural-garden-1789062236803-607487.jpg" alt="Aura of Heart" loading="lazy" decoding="async" /></div><h3>Aura of Heart</h3><p>Video<span>2024</span></p></a><a class="related-card" href="ambient-loop.html"><div class="related-image"><img src="../assets/uploads/ambient-loop-1789062207794-632080.jpg" alt="Inside the Summer" loading="lazy" decoding="async" /></div><h3>Inside the Summer</h3><p>Video<span>2024</span></p></a><a class="related-card" href="digital-tides.html"><div class="related-image"><img src="../assets/uploads/digital-tides-1789062169199-687988.jpg" alt="Motion Blur" loading="lazy" decoding="async" /></div><h3>Motion Blur</h3><p>Video<span>2024</span></p></a></div></section></div>
     </main>
-    <footer class="site-footer">
-    <div class="footer-about"><div class="footer-profile"><a class="footer-logo" href="../index.html" aria-label="3Dowon home"><img src="../assets/green-archive/3dowon.png" alt="3Dowon" width="64" height="64" loading="lazy" decoding="async"></a><div class="footer-identity"><p class="footer-wordmark">3Dowon</p><p class="footer-role">Interactive Media Artist</p><a class="footer-email" href="mailto:3dowon@gmail.com">3dowon@gmail.com</a></div></div></div>
+    <footer class="site-footer" lang="en">
+    <div class="footer-about"><div class="footer-profile"><a class="footer-logo" href="../index.html" aria-label="3Dowon home"><img src="../assets/green-archive/3dowon.png" alt="3Dowon" width="64" height="64" loading="lazy" decoding="async"></a><div class="footer-identity"><p class="footer-wordmark">3Dowon</p><p class="footer-role">Interactive Media Artist</p></div></div></div>
     <div class="footer-practice"><p class="footer-note"><span>How do familiar objects change our experience of space?</span><span>How do familiar actions change our experience of space?</span></p></div>
     <div class="footer-meta"><div class="footer-updated">Last updated · <time datetime="2026-10-27">2026.10.27</time></div><div class="footer-rights">© 2026 3Dowon. All rights reserved.</div></div>
   </footer>
