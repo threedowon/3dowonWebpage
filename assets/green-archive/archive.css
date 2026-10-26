@@ -37,8 +37,8 @@ body{font-optical-sizing:auto}.work-card h2{letter-spacing:.01em;font-weight:700
 .archive-layout.page-archive{--works-columns:3;--works-column-gap:6vw;--works-row-gap:var(--grid-row-gap);--works-caption-gap:var(--image-caption-gap)}
 .archive-layout.page-archive .work-grid{grid-template-columns:repeat(var(--works-columns),minmax(0,1fr));gap:var(--works-row-gap) var(--works-column-gap)}
 .archive-layout.page-archive .work-card .work-caption{margin-top:var(--works-caption-gap);font-size:var(--type-body);line-height:var(--leading-ui);min-height:0}
-.archive-layout.page-archive .work-card .work-caption h2{display:block;margin:0;font-size:var(--type-project-title);line-height:var(--leading-ui);font-weight:700}
-.archive-layout.page-archive .work-card .work-caption p{display:block;margin:var(--space-1) 0 0;font-size:var(--type-meta);line-height:var(--leading-ui);letter-spacing:0}
+.archive-layout.page-archive .work-card .work-caption h2{display:inline;margin:0;font:inherit;font-weight:700}
+.archive-layout.page-archive .work-card .work-caption span{display:inline;font:inherit;font-weight:400}
 .archive-layout.page-archive .work-image{border:1px solid var(--line)}
 .archive-results{margin:0 0 24px;font-size:14px}
 .archive-empty{padding:56px 0;font-size:16px}

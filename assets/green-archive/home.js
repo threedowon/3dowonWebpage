@@ -3,7 +3,6 @@
   if (!home) return;
   const slides = [...home.querySelectorAll('.featured-slide')];
   if (!slides.length) return;
-  const ko = document.documentElement.lang === 'ko';
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const playback = home.querySelector('.featured-playback');
   const dots = [...home.querySelectorAll('[data-featured-dot]')];
@@ -11,8 +10,8 @@
   let current = 0, paused = reduced.matches, version = 0, muxReady;
   const mediaHost = () => slides[current].querySelector('.featured-media');
   function playbackLabel() {
-    playback.textContent = paused ? (ko ? '영상 재생 ▷' : 'Play video ▷') : (ko ? '일시정지 Ⅱ' : 'Pause Ⅱ');
-    playback.setAttribute('aria-label',paused ? (ko ? '배경 영상 재생' : 'Play background video') : (ko ? '배경 영상 일시정지' : 'Pause background video'));
+    playback.textContent = paused ? 'Play video ▷' : 'Pause Ⅱ';
+    playback.setAttribute('aria-label',paused ? 'Play background video' : 'Pause background video');
   }
   function removePlayer(slide) {
     const host = slide.querySelector('.featured-media');

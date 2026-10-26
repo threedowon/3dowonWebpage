@@ -6,14 +6,12 @@ const dialog = menu?.querySelector('.mobile-menu-dialog');
 const mobile = window.matchMedia('(max-width:700px)');
 const works = menu?.querySelector('.works-menu');
 const worksTrigger = works?.querySelector('.works-trigger');
-const worksDisclosure = works?.querySelector('.works-submenu-toggle');
 const submenu = works?.querySelector('.works-submenu');
 let suppressFocusOpen = false;
 function setWorksOpen(open) {
   if (!submenu) return;
   submenu.hidden = !open;
   worksTrigger.setAttribute('aria-expanded',String(open));
-  worksDisclosure?.setAttribute('aria-expanded',String(open));
   menu.classList.toggle('works-open',open);
 }
 function syncFilterControls() {
@@ -25,7 +23,7 @@ function syncFilterControls() {
       (!params.get('year') || target.searchParams.has('type'));
     link.toggleAttribute('data-active',current);
   });
-  document.querySelectorAll('[data-language]').forEach(link => {
+  menu?.querySelectorAll('[data-language]').forEach(link => {
     const base = link.getAttribute('href').split(/[?#]/)[0];
     link.href = `${base}${location.search}${location.hash}`;
   });
@@ -43,7 +41,6 @@ if (worksTrigger && submenu) {
   works.addEventListener('focusout',event => {
     if (!mobile.matches && !works.contains(event.relatedTarget)) setWorksOpen(false);
   });
-  worksDisclosure?.addEventListener('click',() => setWorksOpen(submenu.hidden));
   worksTrigger.addEventListener('click',event => {
     if (!mobile.matches) return;
     event.preventDefault(); setWorksOpen(submenu.hidden);

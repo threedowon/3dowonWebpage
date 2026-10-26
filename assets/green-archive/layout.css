@@ -223,6 +223,7 @@ html::-webkit-scrollbar{display:block;width:8px}
  .archive-layout.page-study{--lab-motion-height:60svh}
  .archive-layout.page-study .feature-gallery img,.archive-layout.page-study .feature-gallery video{max-height:60svh}
  .archive-layout .site-footer,.archive-layout.quiet-site .site-footer{grid-template-columns:minmax(0,1fr)}
+ .archive-layout .site-footer .footer-meta{align-items:center;text-align:center}
 }
 @media(max-width:480px){.archive-layout .cv-row{grid-template-columns:minmax(0,1fr);gap:var(--space-2)}}
 @media(max-width:991px){.archive-layout.page-lab .overview-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
