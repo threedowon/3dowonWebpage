@@ -1,7 +1,7 @@
 const labels = {
-  '인터랙티브':'Interactive', '설치':'Installation', '영상':'Video',
-  '전시':'Exhibition', '퍼포먼스':'Performance', 'VR/AR':'VR/AR',
-  '프로젝션':'Projection', '웹':'Web', '모바일':'Mobile',
+  '인터랙티브':'Interactive', '피지컬 컴퓨팅':'Physical Computing', '웹':'Web',
+  '영상':'Video', '전시':'Exhibition', 'VR/AR':'VR/AR',
+  '프로젝션':'Projection', '모바일':'Mobile',
 };
 const canonical = value => value === 'VR' || value === 'AR' ? 'VR/AR' : value;
 
@@ -21,7 +21,9 @@ export function buildWorkFilters(works) {
       if (key && en[index] && !translations.has(key)) translations.set(key,en[index]);
     });
   }
-  const present = new Set(works.flatMap(workFilterTypes));
+  const hidden = new Set(['설치','퍼포먼스','Installation','Performance']);
+  const present = new Set(works.flatMap(workFilterTypes).filter(value => !hidden.has(value)));
+  present.add('피지컬 컴퓨팅');
   const ordered = [...Object.keys(labels).filter(value => present.has(value)),
     ...[...present].filter(value => !Object.hasOwn(labels,value)).sort()];
   return {

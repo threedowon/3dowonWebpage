@@ -76,7 +76,7 @@
 }
 @media(max-width:700px){
  /* Equal spacing above the gallery and before the information below it. */
- .archive-layout.quiet-site.page-work{--detail-mobile-gap:var(--space-6);--layout-top:calc(48px + var(--detail-mobile-gap))}
+ .archive-layout.quiet-site.page-work{--detail-mobile-gap:var(--mobile-content-gap,18px);--layout-top:40px}
  .archive-layout.quiet-site.page-work .work-article{width:calc(100vw - 50px);margin-left:calc(25px - var(--layout-left));gap:var(--detail-mobile-gap)}
  .archive-layout.quiet-site.page-work .detail-media-grid{height:auto;aspect-ratio:3/4;gap:0}
  .archive-layout.quiet-site.page-work .detail-gallery.has-thumbnails{grid-template-columns:minmax(0,1fr) 44px;gap:10px}

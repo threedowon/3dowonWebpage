@@ -136,31 +136,66 @@ if (!mobile.matches && document.body.classList.contains('page-archive')) {
 }
 if (footer) {
   const trigger = footer.querySelector('.footer-toggle');
-  const card = footer.querySelector('.footer-card-dialog');
-  let closeTimer;
-  const finishClose = () => {
-    clearTimeout(closeTimer);
-    card.close();
-    card.classList.remove('is-closing');
-    trigger.setAttribute('aria-expanded','false');
+  const wrap = footer.querySelector('.footer-question-wrap');
+  const inline = footer.querySelector('.footer-question-inline');
+  const sheet = footer.querySelector('.footer-question-sheet');
+  const hover = matchMedia('(min-width:701px) and (hover:hover)');
+  let gestureStart = null;
+  const closeSheet = () => { if (sheet.open) sheet.close(); gestureStart = null; };
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const questionText = inline.querySelector('p');
+  let questionAnimation;
+  const animateQuestions = () => {
+    questionAnimation?.cancel();
+    questionAnimation = null;
+    inline.classList.remove('is-moving');
+    if (inline.hidden || !hover.matches || reducedMotion.matches) return;
+    const distance = Math.ceil(questionText.getBoundingClientRect().width - inline.clientWidth);
+    if (distance <= 1) return;
+    inline.scrollLeft = 0;
+    inline.classList.add('is-moving');
+    const travel = distance / 28 * 1000;
+    const duration = travel * 2 + 4000;
+    questionAnimation = questionText.animate([
+      {transform:'translateX(0)',offset:0},
+      {transform:'translateX(0)',offset:2000 / duration},
+      {transform:`translateX(-${distance}px)`,offset:(2000 + travel) / duration},
+      {transform:`translateX(-${distance}px)`,offset:(4000 + travel) / duration},
+      {transform:'translateX(0)',offset:1},
+    ], {duration,iterations:Infinity,easing:'linear'});
   };
-  const closeCard = () => {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { finishClose(); return; }
-    if (card.classList.contains('is-closing')) return;
-    card.classList.add('is-closing');
-    closeTimer = setTimeout(finishClose,220);
+  const setInline = open => {
+    inline.hidden = !open;
+    trigger.setAttribute('aria-expanded',String(open));
+    animateQuestions();
   };
-  trigger.addEventListener('click',() => {
-    clearTimeout(closeTimer);
-    card.classList.remove('is-closing');
-    card.showModal();
-    trigger.setAttribute('aria-expanded','true');
+  new ResizeObserver(animateQuestions).observe(inline);
+  document.fonts?.ready.then(animateQuestions);
+  reducedMotion.addEventListener('change', animateQuestions);
+  wrap.addEventListener('pointerenter', () => { if (hover.matches) setInline(true); });
+  wrap.addEventListener('pointerleave', () => { if (hover.matches) setInline(false); });
+  trigger.addEventListener('focus', () => { if (hover.matches) setInline(true); });
+  wrap.addEventListener('focusout', event => { if (!wrap.contains(event.relatedTarget)) setInline(false); });
+  trigger.addEventListener('click', () => {
+    if (hover.matches) { setInline(true); return; }
+    sheet.showModal(); trigger.setAttribute('aria-expanded','true');
   });
-  card.querySelectorAll('button').forEach(button => button.addEventListener('click',closeCard));
-  card.addEventListener('cancel',event => { event.preventDefault(); closeCard(); });
-  card.addEventListener('click',event => {
-    const bounds = card.getBoundingClientRect();
-    if (event.target === card && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) closeCard();
+  sheet.querySelector('button').addEventListener('click', closeSheet);
+  // Dismiss on gestures without blocking the user's scrolling or swiping.
+  document.addEventListener('pointerdown', event => {
+    if (sheet.open) gestureStart = {x:event.clientX,y:event.clientY};
+  }, {capture:true,passive:true});
+  document.addEventListener('pointermove', event => {
+    if (sheet.open && gestureStart && Math.hypot(event.clientX-gestureStart.x,event.clientY-gestureStart.y)>8) closeSheet();
+  }, {capture:true,passive:true});
+  document.addEventListener('touchmove', closeSheet, {capture:true,passive:true});
+  document.addEventListener('wheel', closeSheet, {capture:true,passive:true});
+  document.addEventListener('scroll', closeSheet, {capture:true,passive:true});
+  sheet.addEventListener('click', event => {
+    const r=sheet.getBoundingClientRect();
+    if(event.target===sheet && (event.clientY<r.top || event.clientX<r.left || event.clientX>r.right)) sheet.close();
   });
-  card.addEventListener('close',() => { clearTimeout(closeTimer); card.classList.remove('is-closing'); trigger.setAttribute('aria-expanded','false'); });
+  sheet.addEventListener('close', () => { gestureStart = null; trigger.setAttribute('aria-expanded','false'); });
+  document.addEventListener('keydown', event => { if(event.key==='Escape') setInline(false); });
+  hover.addEventListener('change', () => { setInline(false); if(sheet.open) sheet.close(); });
 }

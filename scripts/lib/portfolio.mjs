@@ -63,10 +63,10 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
   <link rel="stylesheet" href="${assets}styles.css?v=${VERSION}" />
   <link rel="stylesheet" href="${assets}selected.css?v=reference-rows-1" />
   <link rel="stylesheet" href="${assets}assets/green-archive/brand.css?v=1" />
-  <link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=33" />
-  <link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=69" />
-  ${pageClass.includes('page-work') && ctx.section === 'works' ? `<link rel="stylesheet" href="${assets}assets/green-archive/detail.css?v=30" /><script src="${assets}assets/green-archive/detail.js?v=17" defer></script>` : ''}
-  <script src="${assets}assets/green-archive/menu.js?v=23" defer></script>
+  <link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=36" />
+  <link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=82" />
+  ${pageClass.includes('page-work') && ctx.section === 'works' ? `<link rel="stylesheet" href="${assets}assets/green-archive/detail.css?v=33" /><script src="${assets}assets/green-archive/detail.js?v=17" defer></script>` : ''}
+  <script src="${assets}assets/green-archive/menu.js?v=26" defer></script>
   <script src="${assets}script.js?v=${VERSION}" defer${catalog === 'works' ? ` onerror="document.documentElement.classList.remove('works-reveal')"` : ''}></script>${ctx.section === 'lab' ? `\n  <script src="${assets}assets/lab-motion.js?v=${VERSION}" defer></script>` : ''}
   ${body.includes('<mux-player') ? '<script src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3.8.0" defer></script>' : ''}
 </head>
@@ -196,7 +196,7 @@ export function portfolioPage(site, lang, portfolio = { images: [] }) {
   const pages = portfolio.images || [];
   return shell(ctx, site, {
     active: 'portfolio', title: ctx.c.portfolio, pageClass: 'page-portfolio',
-    body: `<h1 id="page-title" class="visually-hidden">${ctx.c.portfolio}</h1><section class="portfolio-book" aria-label="Portfolio" tabindex="0"><div class="portfolio-page-stage">${pages.map((src, i) => `<img class="portfolio-slide" src="${esc(resolveMediaPath(src, ctx.assets))}" alt="Portfolio ${i + 1}" ${i ? 'hidden loading="lazy"' : 'fetchpriority="high"'} decoding="async" />`).join('')}${pages.length > 1 ? `<button class="portfolio-prev" aria-label="${lang === 'ko' ? '이전 페이지' : 'Previous page'}"></button><button class="portfolio-next" aria-label="${lang === 'ko' ? '다음 페이지' : 'Next page'}"></button>` : ''}</div><span class="visually-hidden portfolio-status" role="status"></span></section>`,
+    body: `<h1 id="page-title" class="visually-hidden">${ctx.c.portfolio}</h1><section class="portfolio-book" aria-label="Portfolio" tabindex="0"><div class="portfolio-page-stage">${pages.map((src, i) => `<img class="portfolio-slide" src="${esc(resolveMediaPath(src, ctx.assets))}" alt="Portfolio ${i + 1}" ${i ? 'hidden loading="lazy"' : 'fetchpriority="high"'} decoding="async" />`).join('')}${pages.length > 1 ? `<button class="portfolio-prev" disabled aria-label="${lang === 'ko' ? '이전 페이지' : 'Previous page'}"></button><button class="portfolio-next" aria-label="${lang === 'ko' ? '다음 페이지' : 'Next page'}"></button>` : ''}</div><span class="visually-hidden portfolio-status" role="status"></span></section>`,
   });
 }
 
@@ -212,7 +212,7 @@ export function cvPage(cv, site, lang) {
     const secondary = parts.slice(leadCount).join(', ');
     return `<div class="cv-entry-primary">${primary}</div>${secondary ? `<div class="cv-entry-secondary">${secondary}</div>` : ''}${entry.teaching_materials ? `<a class="teaching-link" href="teaching-materials.html">${lang === 'ko' ? '강의 자료' : 'Teaching Materials'} ↗</a>` : ''}`;
   };
-  const sections = cv.sections.map((section) => `<section class="cv-section${['Experience', 'Experiences', 'Professional Experience'].includes(section.title) ? ' cv-experiences' : ''}"><h2>${esc(lang === 'ko' ? titles[section.title] || section.title : section.title)}</h2><dl>${section.entries.map((entry) => `<div class="cv-row"><dt>${esc(entry.year)}</dt><dd>${entryContent(entry, section)}</dd></div>`).join('')}</dl></section>`);
+  const sections = cv.sections.map((section) => `<section class="cv-section cv-aligned-dates"><h2>${esc(lang === 'ko' ? titles[section.title] || section.title : section.title)}</h2><dl>${section.entries.map((entry) => `<div class="cv-row"><dt>${esc(entry.year)}</dt><dd>${entryContent(entry, section)}</dd></div>`).join('')}</dl></section>`);
   const body = `<article class="editorial-article cv-article" aria-labelledby="page-title">
     <h1 id="page-title" class="visually-hidden">CV</h1>
     <div class="cv-sections">${sections.join('')}</div>

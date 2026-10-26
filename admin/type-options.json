@@ -1,19 +1,19 @@
 [
   {
-    "name": "게임",
-    "en": "Game"
+    "name": "인터랙티브",
+    "en": "Interactive"
   },
   {
-    "name": "설치",
-    "en": "Installation"
+    "name": "피지컬 컴퓨팅",
+    "en": "Physical Computing"
+  },
+  {
+    "name": "웹",
+    "en": "Web"
   },
   {
     "name": "영상",
     "en": "Video"
-  },
-  {
-    "name": "퍼포먼스",
-    "en": "Performance"
   },
   {
     "name": "전시",
@@ -24,15 +24,11 @@
     "en": "VR"
   },
   {
-    "name": "인터랙티브",
-    "en": "Interactive"
-  },
-  {
     "name": "AR",
     "en": "AR"
   },
   {
-    "name": "웹",
-    "en": "Web"
+    "name": "게임",
+    "en": "Game"
   }
 ]

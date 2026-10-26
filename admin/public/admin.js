@@ -137,7 +137,7 @@ function moveRow(rows, from, to) {
 }
 // 사이트 필터에서는 유형(설치~전시·VR/AR)과 태그(인터랙티브/프로젝션)가 한 목록으로 합쳐져 보이므로
 // admin에서도 이 7개를 하나의 다중선택으로 다룬다.
-let TYPE_OPTIONS = ['설치', '영상', '퍼포먼스', '전시', 'VR/AR', '인터랙티브', '프로젝션', '모바일'];
+let TYPE_OPTIONS = ['인터랙티브', '피지컬 컴퓨팅', '웹', '영상', '전시', 'VR/AR', '프로젝션', '모바일'];
 const workDateLabel = work => work.month ? `${work.year}.${String(work.month).padStart(2, '0')}` : String(work.year || '');
 let techOptions = [];
 let techOptionsDirty = false;

@@ -20,6 +20,7 @@ const TYPE_EN = {
   '전시': 'Exhibition',
   'VR/AR': 'VR/AR',
   '인터랙티브': 'Interactive',
+  '피지컬 컴퓨팅': 'Physical Computing',
   '프로젝션': 'Projection',
 };
 const PRODUCTION_EN = { '개인': 'Solo', '공동': 'Collaborative', '회사': 'Company' };
@@ -171,7 +172,7 @@ app.post('/api/works', (req, res) => {
     vimeo_url: '',
     gallery: [],
   };
-  applySelectedTypes(work, types && types.length ? types : ['설치']);
+  applySelectedTypes(work, types && types.length ? types : ['인터랙티브']);
   saveJson(`content/works/${slug}.json`, work);
   build();
   res.json(work);

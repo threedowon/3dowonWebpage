@@ -13,17 +13,23 @@ test('available filters follow actual works and preserve custom bilingual types'
     {type:'영상',year:2026}, {type:'설치',year:2024},
   ]);
   assert.deepEqual(filters.years,['2026','2024']);
-  assert.deepEqual(filters.types.map(type=>type.value),['설치','영상','키네틱']);
+  assert.deepEqual(filters.types.map(type=>type.value),['피지컬 컴퓨팅','영상','키네틱']);
   assert.equal(filters.types.at(-1).en,'Kinetic');
 });
-test('submenu routes work from detail pages in either language without brand imagery or social links',()=>{
+test('submenu routes work from detail pages in either language',()=>{
   const site={work_filters:buildWorkFilters([{type:'VR/AR',year:2026}])};
   for(const lang of ['en','ko']){
     const html=siteNavigation({site,home:'../',lang,active:'works',languageHref:'../../works.html'});
-    assert.match(html,/href="\.\.\/works.html">All/);
+    assert.match(html,/href="\.\.\/works.html\?menu=all">All/);
     assert.match(html,/<a class="works-trigger is-current" href="\.\.\/works.html"[^>]*>Works<\/a>/);
     assert.match(html,/href="\.\.\/works.html\?type=VR%2FAR"/);
     assert.match(html,/aria-controls="works-submenu"/);
-    assert.doesNotMatch(html,/<img|identity-note|menu-socials|mailto:|works-filter-details|<form/);
+    assert.doesNotMatch(html,/<img|identity-note|mailto:|works-filter-details|<form/);
   }
+});
+
+test('new category remains available while retired filters stay out of the menu',()=>{
+  const types=buildWorkFilters([{type:'퍼포먼스',tags:['설치','웹','인터랙티브','영상','전시','VR']}]).types;
+  assert.deepEqual(types.map(t=>t.en),['Interactive','Physical Computing','Web','Video','Exhibition','VR/AR']);
+  assert(workFilterTypes({type:'피지컬 컴퓨팅'}).includes('피지컬 컴퓨팅'));
 });
