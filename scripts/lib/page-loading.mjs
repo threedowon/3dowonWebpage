@@ -13,6 +13,6 @@ html.page-loaded body{animation:page-content-in .16s ease-out}
 @keyframes page-content-in{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){html.page-loaded body{animation:none}html.page-loading::after{animation:page-loader-show 0s .15s forwards}}
 </style>
-<script>(()=>{const root=document.documentElement;root.classList.add('page-loading');root.setAttribute('aria-busy','true');let timer;const finish=()=>{clearTimeout(timer);if(!root.classList.contains('page-loading'))return;root.classList.remove('page-loading');root.classList.add('page-loaded');root.removeAttribute('aria-busy');};timer=setTimeout(finish,3000);document.addEventListener('site:ready',finish,{once:true});window.addEventListener('pageshow',event=>{if(event.persisted)finish();});})();</script>
+<script>(()=>{const root=document.documentElement;root.classList.add('page-loading');root.setAttribute('aria-busy','true');let timer;const finish=()=>{clearTimeout(timer);if(!root.classList.contains('page-loading'))return;root.classList.remove('page-loading');root.classList.add('page-loaded');root.removeAttribute('aria-busy');};timer=setTimeout(finish,3000);document.addEventListener('site:ready',finish,{once:true});window.addEventListener('beforeunload',()=>root.classList.add('page-navigating'));window.addEventListener('pageshow',event=>{root.classList.remove('page-navigating');if(event.persisted)finish();});})();</script>
 <script src="${esc(assets)}assets/green-archive/page-loading.js?v=1" defer></script>`;
 }

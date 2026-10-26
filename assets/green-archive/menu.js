@@ -11,6 +11,8 @@ const footer = document.querySelector('[data-footer]');
 let suppressFocusOpen = false;
 function setWorksOpen(open) {
   if (!submenu) return;
+  // The desktop Works archive keeps its filter navigation visible, including All.
+  open = open || (!mobile.matches && document.body.classList.contains('page-archive'));
   submenu.hidden = !open;
   worksTrigger.setAttribute('aria-expanded',String(open));
   menu.classList.toggle('works-open',open);
@@ -130,8 +132,7 @@ if (toggle && panel && dialog) {
 window.addEventListener('popstate',syncFilterControls);
 syncFilterControls();
 if (!mobile.matches && document.body.classList.contains('page-archive')) {
-  const params = new URLSearchParams(location.search);
-  if (params.get('type') || params.get('menu') === 'all') setWorksOpen(true);
+  setWorksOpen(true);
 }
 if (footer) {
   const trigger = footer.querySelector('.footer-toggle');

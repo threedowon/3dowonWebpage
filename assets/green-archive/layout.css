@@ -121,18 +121,24 @@ html::-webkit-scrollbar{display:none;width:0;height:0}
 .archive-layout .about-fields,.archive-layout .about-contact{margin-top:var(--space-6);font-size:var(--type-body);line-height:var(--leading-ui)}
 .archive-layout .about-contact{gap:var(--space-2);padding:0}
 .archive-layout .about-fields li+li{margin-top:var(--space-1)}
-.archive-layout .cv-article{width:100%;max-width:none;margin:0;padding:0}
-/* Text-only CV follows the site's simple labels and compact project captions. */
-.archive-layout .cv-sections{gap:var(--layout-section)}
-.archive-layout .cv-section{display:grid;grid-template-columns:minmax(140px,calc((100% - 3 * var(--layout-gap))/4)) minmax(0,1fr);gap:var(--layout-gap);align-items:start}
-.archive-layout .cv-section h2{display:block;margin:0;padding:0;border:0;font-size:14px;font-weight:700;line-height:1.5;letter-spacing:0;text-transform:none}
-.archive-layout .cv-section dl{display:grid;gap:var(--space-6);min-width:0;margin:0}
-.archive-layout .cv-row{grid-template-columns:136px minmax(0,1fr);gap:var(--layout-gap);padding:0;font-size:14px;line-height:1.5}
-.archive-layout .cv-row dt{min-width:0;margin:0;font-weight:400}
-.archive-layout .cv-row dd{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin:0}
-.archive-layout .cv-entry-primary{font-weight:700}
-.archive-layout .cv-entry-secondary{font-size:14px;line-height:1.5}
-.archive-layout .cv-row .teaching-link{margin-top:4px;font-size:14px;line-height:1.5}
+.archive-layout .cv-article{width:100%;max-width:860px;margin:0 auto;padding:0}
+/* One reading column: section label, then continuous year / entry lines. */
+.archive-layout .cv-sections{gap:40px}
+.archive-layout .cv-section{display:block}
+.archive-layout .cv-section h2{display:block;margin:0 0 14px;padding:0;border:0;font-size:14px;font-weight:700;line-height:1.8;letter-spacing:0;text-transform:none}
+.archive-layout .cv-section dl{display:grid;gap:8px;min-width:0;margin:0}
+.archive-layout .cv-row{display:block;padding:0;font-size:14px;line-height:1.9;overflow-wrap:break-word}
+.archive-layout .cv-row dt{display:inline;min-width:0;margin:0;font-weight:400;color:inherit}
+.archive-layout .cv-row dt::after{content:' | ';white-space:pre}
+.archive-layout .cv-row dd{display:inline;margin:0;word-break:normal;overflow-wrap:break-word}
+.archive-layout .cv-experiences .cv-row{display:grid;grid-template-columns:16ch minmax(0,1fr);gap:8px}
+.archive-layout .cv-experiences .cv-row dt{display:flex;justify-content:space-between;gap:8px}
+.archive-layout .cv-experiences .cv-row dt::after{content:'|'}
+.archive-layout .cv-experiences .cv-row dd{display:block}
+.archive-layout .cv-entry-primary{display:inline;font-weight:400}
+.archive-layout .cv-entry-secondary{display:inline;font-size:inherit;line-height:inherit}
+.archive-layout .cv-entry-secondary::before{content:', '}
+.archive-layout .cv-row .teaching-link{display:block;width:fit-content;margin-top:2px;font-size:13px;line-height:1.8}
 .archive-layout .cv-row a:focus-visible{outline:2px solid currentColor;outline-offset:3px}
 .archive-layout .portfolio-book{margin:0;width:100%;height:max(320px,calc(100dvh - var(--layout-top) - var(--footer-gap) - var(--space-16)))}
 .archive-layout .portfolio-page-stage{position:relative;width:100%;height:100%}
@@ -144,6 +150,10 @@ html::-webkit-scrollbar{display:none;width:0;height:0}
 .archive-layout .teaching-grid{gap:var(--grid-row-gap) var(--layout-gap)}
 .archive-layout .teaching-card{font-size:var(--type-body);line-height:var(--leading-ui)}
 .archive-layout .teaching-card h2{margin:var(--image-caption-gap) 0 var(--space-2);font-size:var(--type-body);line-height:var(--leading-ui)}
+@media(max-width:900px){
+ .archive-layout .pdf-mobile-preview span,
+ .archive-layout .pdf-reader [data-pdf-zoom]{display:none}
+}
 
 /* Work details use detail.css; Lab keeps its viewport-sized media. */
 .archive-layout.quiet-site.page-work .project-pagination{font-size:14px;margin:24px 0 0;padding:16px 0 0}
@@ -175,7 +185,7 @@ html::-webkit-scrollbar{display:none;width:0;height:0}
 }
 .archive-layout .footer-card-dialog[open]{display:grid;gap:32px;animation:footer-card-enter .3s cubic-bezier(.2,.7,.2,1) both}
 .archive-layout .footer-card-dialog.is-closing{animation:footer-card-exit .2s ease-in both;pointer-events:none}
-.archive-layout .footer-card-dialog::backdrop{background:#102b171c}
+.archive-layout .footer-card-dialog::backdrop{background:transparent}
 .archive-layout .footer-card-dialog p{margin:0}
 .archive-layout .footer-card-profile{display:flex;align-items:center;gap:20px;padding-right:16px;min-width:0}
 .archive-layout .footer-card-dialog .footer-logo{display:block;flex:none;width:64px;color:inherit}
@@ -190,15 +200,17 @@ html::-webkit-scrollbar{display:none;width:0;height:0}
 @media(min-width:701px) and (max-width:1000px){.archive-layout .site-footer{--footer-edge:20px}}
 @media(max-width:700px){
  .archive-layout .site-footer{--footer-edge:12px;text-align:center}
- .archive-layout .footer-card-dialog{inset:auto 12px max(12px,env(safe-area-inset-bottom)) 12px;width:auto;max-height:calc(100dvh - 24px);padding:28px 24px}
- .archive-layout .footer-card-dialog[open]{gap:28px}
- .archive-layout .footer-card-profile{gap:16px}
- .archive-layout .footer-card-profile h2{font-size:26px}
- .archive-layout .footer-card-meta{gap:6px}
- .archive-layout .footer-card-practice{font-size:clamp(9px,2.55vw,12px)}
+ .archive-layout .footer-card-dialog{inset:auto 12px max(12px,env(safe-area-inset-bottom)) auto;width:min(480px,calc(100vw - 24px));height:auto;aspect-ratio:9/5;max-height:calc(100dvh - 24px);box-sizing:border-box;padding:16px 20px}
+ .archive-layout .footer-card-dialog[open]{grid-template-rows:auto 1fr auto;gap:10px}
+ .archive-layout .footer-card-profile{gap:14px}
+ .archive-layout .footer-card-dialog .footer-logo,.archive-layout .footer-logo img{width:48px;height:48px}
+ .archive-layout .footer-card-profile h2{font-size:24px}
+ .archive-layout .footer-card-profile .footer-card-role{margin-top:4px;font-size:11px}
+ .archive-layout .footer-card-meta{gap:2px;padding-top:8px;font-size:9px;line-height:1.4}
+ .archive-layout .footer-card-practice{align-content:center;gap:4px;font-size:clamp(9px,2.55vw,12px);line-height:1.4}
  .archive-layout .footer-copyright{font-size:10px}
 }
-@media(max-width:360px){.archive-layout .footer-card-dialog{padding:24px 20px}.archive-layout .footer-card-profile{gap:12px}.archive-layout .footer-card-dialog .footer-logo,.archive-layout .footer-logo img{width:52px;height:52px}.archive-layout .footer-card-profile .footer-card-role{font-size:11px}}
+@media(max-width:360px){.archive-layout .footer-card-dialog{padding:12px 16px}.archive-layout .footer-card-dialog[open]{gap:6px}.archive-layout .footer-card-profile{gap:12px}.archive-layout .footer-card-dialog .footer-logo,.archive-layout .footer-logo img{width:40px;height:40px}.archive-layout .footer-card-profile h2{font-size:22px}.archive-layout .footer-card-profile .footer-card-role{font-size:10px}}
 @keyframes footer-card-enter{from{opacity:0;transform:translateY(calc(100% + 24px))}to{opacity:1;transform:translateY(0)}}
 @keyframes footer-card-exit{to{opacity:0;transform:translateY(calc(100% + 24px))}}
 @media(prefers-reduced-motion:reduce){.archive-layout .footer-card-dialog[open],.archive-layout .footer-card-dialog.is-closing{animation:none}}

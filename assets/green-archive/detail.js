@@ -10,28 +10,60 @@
   const status = controls.querySelector('[role=status]');
   const pagination = controls.querySelector('.detail-pagination');
   const korean = document.documentElement.lang === 'ko';
-  // Leave the center available for the existing enlarged-image viewer.
+  const imageLinks = [...track.querySelectorAll('a[data-viewer]')].map(link => ({link,label:link.getAttribute('aria-label')}));
+  // Keep the hit areas outside the scrolling slides so the cursor never changes mid-transition.
+  const stage = document.createElement('div');
+  stage.className = 'detail-media-stage';
+  track.before(stage);
+  stage.append(track);
   const imageSteps = [];
-  items.forEach((item, index) => {
-    if (!item.querySelector('a[data-viewer]')) return;
+  if (items.length > 1) {
     for (const direction of [-1, 1]) {
-      if (index + direction < 0 || index + direction >= items.length) continue;
       const button = document.createElement('button');
       button.type = 'button';
       button.className = `detail-image-step detail-image-${direction < 0 ? 'prev' : 'next'}`;
       button.setAttribute('aria-label', direction < 0
         ? (korean ? '이전 이미지' : 'Previous image')
         : (korean ? '다음 이미지' : 'Next image'));
-      button.addEventListener('click', () => go(index + direction));
-      item.append(button);
-      imageSteps.push({button, index});
+      button.addEventListener('click', () => go((current + direction + items.length) % items.length));
+      stage.append(button);
+      imageSteps.push({button, direction});
     }
-  });
-  const dots = items.map((item, index) => {
+  }
+  const thumbnails = items.map((item, index) => {
     const button = document.createElement('button');
     button.type = 'button';
+    button.className = 'detail-thumbnail';
     button.setAttribute('aria-label', korean ? `미디어 ${index + 1} / ${items.length} 보기` : `Show media ${index + 1} of ${items.length}`);
+    const sourceImage = item.querySelector('img');
+    const video = item.querySelector('video,mux-player,iframe');
+    const playbackId = item.querySelector('mux-player')?.getAttribute('playback-id');
+    const src = sourceImage?.getAttribute('src') || video?.getAttribute('poster') ||
+      (playbackId ? `https://image.mux.com/${playbackId}/thumbnail.jpg?time=2` : track.querySelector('img')?.getAttribute('src'));
+    if (src) {
+      const preview = document.createElement('img');
+      preview.src = src;
+      preview.alt = '';
+      preview.loading = 'lazy';
+      preview.decoding = 'async';
+      button.append(preview);
+    }
+    if (video || !src) {
+      const label = document.createElement('span');
+      label.className = 'detail-thumbnail-label';
+      label.textContent = video ? '▷' : String(index + 1);
+      label.setAttribute('aria-hidden','true');
+      button.append(label);
+    }
     button.addEventListener('click', () => go(index));
+    button.addEventListener('keydown', event => {
+      const targets = {ArrowUp:index - 1,ArrowDown:index + 1,Home:0,End:items.length - 1};
+      if (!(event.key in targets)) return;
+      event.preventDefault();
+      const target = Math.max(0,Math.min(targets[event.key],items.length - 1));
+      thumbnails[target].focus({preventScroll:true});
+      go(target);
+    });
     pagination.append(button);
     return button;
   });
@@ -44,17 +76,13 @@
       track.style.removeProperty('--detail-media-height');
       return;
     }
-    const images = items.filter(item => item.querySelector('img'));
-    const heights = (images.length ? images : items).map(item => {
-      const image = item.querySelector('img');
-      const video = item.querySelector('video');
-      const width = Number(image?.getAttribute('width')) || image?.naturalWidth || video?.videoWidth;
-      const height = Number(image?.getAttribute('height')) || image?.naturalHeight || video?.videoHeight;
-      const caption = item.querySelector('figcaption')?.getBoundingClientRect().height || 0;
-      if (width && height) return height * Math.min(1, track.clientWidth / width) + caption;
-      return item.matches('.post-video,.gallery-video') ? track.clientWidth * 9 / 16 + caption : 0;
-    });
-    const height = Math.round(Math.min(Math.max(...heights) || track.clientWidth * 4 / 3, innerHeight * .65));
+    // Every work shares the same frame, regardless of its images' aspect ratios.
+    const galleryTop = track.getBoundingClientRect().top + window.scrollY;
+    const menuBottom = document.querySelector('.site-menu')?.getBoundingClientRect().bottom || 0;
+    const outerGap = Math.max(0, galleryTop - menuBottom);
+    document.body.style.setProperty('--detail-outer-gap', `${outerGap}px`);
+    const availableHeight = Math.max(240, innerHeight - galleryTop - outerGap);
+    const height = Math.round(availableHeight);
     track.style.setProperty('--detail-media-height', `${height}px`);
   }
 
@@ -75,11 +103,35 @@
     if (current !== closest) pause(items[current]);
     current = closest;
     status.textContent = `${current + 1} / ${items.length}`;
-    imageSteps.forEach(({button, index}) => { button.tabIndex = index === current ? 0 : -1; });
-    dots.forEach((dot, index) => {
-      if (index === current) dot.setAttribute('aria-current', 'true');
-      else dot.removeAttribute('aria-current');
+    const media = items[current].querySelector('.post-video-frame,video,mux-player,iframe');
+    const mediaBounds = media?.getBoundingClientRect();
+    imageSteps.forEach(({button, direction}) => {
+      button.hidden = Boolean(mediaBounds && direction < 0);
+      // Video gutters all advance; image slides retain their left/right halves.
+      if (mediaBounds && direction > 0 && !mobile.matches) button.style.width = '100%';
+      else button.style.removeProperty('width');
+      if (button.hidden || !mediaBounds || mobile.matches) {
+        button.style.removeProperty('clip-path');
+        return;
+      }
+      // Cut the player out of each fixed arrow area so its controls stay clickable.
+      const bounds = button.getBoundingClientRect();
+      const x1 = Math.max(0, Math.min(bounds.width, mediaBounds.left - bounds.left));
+      const x2 = Math.max(0, Math.min(bounds.width, mediaBounds.right - bounds.left));
+      const y1 = Math.max(0, Math.min(bounds.height, mediaBounds.top - bounds.top));
+      const y2 = Math.max(0, Math.min(bounds.height, mediaBounds.bottom - bounds.top));
+      const outer = `M0 0H${bounds.width}V${bounds.height}H0Z`;
+      const hole = x2 > x1 && y2 > y1 ? `M${x1} ${y1}H${x2}V${y2}H${x1}Z` : '';
+      button.style.clipPath = `path(evenodd, "${outer}${hole}")`;
     });
+    thumbnails.forEach((thumbnail, index) => {
+      if (index === current) thumbnail.setAttribute('aria-current', 'true');
+      else thumbnail.removeAttribute('aria-current');
+    });
+    const thumbBounds = thumbnails[current].getBoundingClientRect();
+    const listBounds = pagination.getBoundingClientRect();
+    if (thumbBounds.top < listBounds.top) pagination.scrollTop += thumbBounds.top - listBounds.top;
+    else if (thumbBounds.bottom > listBounds.bottom) pagination.scrollTop += thumbBounds.bottom - listBounds.bottom;
     items[current].querySelectorAll('img').forEach(img => { img.loading = 'eager'; });
   }
   function go(index, behavior = reducedMotion.matches ? 'instant' : 'smooth') {
@@ -87,7 +139,7 @@
     const offset = target.getBoundingClientRect().left - track.getBoundingClientRect().left;
     track.scrollTo({left: track.scrollLeft + offset, behavior});
   }
-  track.addEventListener('keydown', event => {
+  stage.addEventListener('keydown', event => {
     if (event.target.closest('video,mux-player,iframe')) return;
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
     event.preventDefault();
@@ -99,8 +151,21 @@
     requestAnimationFrame(() => { update(); pending = false; });
   }, {passive:true});
   function resize() {
-    fitGallery();
+    imageLinks.forEach(({link,label}) => {
+      if (mobile.matches) {
+        link.setAttribute('href',link.dataset.viewer);
+        link.removeAttribute('tabindex');
+        if (label) link.setAttribute('aria-label',label);
+      } else {
+        link.removeAttribute('href');
+        link.setAttribute('tabindex','-1');
+        link.removeAttribute('aria-label');
+      }
+    });
     controls.hidden = items.length < 2;
+    gallery.classList.toggle('has-thumbnails', items.length > 1);
+    fitGallery();
+    gallery.style.setProperty('--detail-preview-height', `${track.clientHeight}px`);
     track.tabIndex = items.length > 1 ? 0 : -1;
     if (track.clientWidth !== trackWidth) {
       trackWidth = track.clientWidth;
@@ -109,6 +174,8 @@
     update();
   }
   new ResizeObserver(resize).observe(track);
+  const mediaResize = new ResizeObserver(update);
+  track.querySelectorAll('.post-video-frame,video,mux-player,iframe').forEach(media => mediaResize.observe(media));
   track.querySelectorAll('img').forEach(image => image.addEventListener('load', resize));
   track.querySelectorAll('video').forEach(video => video.addEventListener('loadedmetadata', resize));
   window.addEventListener('resize', resize);

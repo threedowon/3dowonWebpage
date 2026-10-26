@@ -15,7 +15,7 @@
 .works-submenu{--submenu-edge:max(6vw,calc((100vw - 1440px)/2));position:fixed;inset:40px 0 auto;display:flex;align-items:flex-start;flex-wrap:wrap;gap:0 20px;min-height:40px;padding:0 var(--submenu-edge);padding-right:calc(var(--submenu-edge) - (100vw - 100%));background:#fff;color:#15591f;box-shadow:0 1px 0 #15591f33;font-size:16px;line-height:1.2;letter-spacing:-.025em}
 .works-categories{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;flex:1;min-width:0}
 .site-menu .works-categories a{display:flex;align-items:center;min-height:40px;padding:8px 12px;font-weight:600;white-space:nowrap}
-.site-menu .works-submenu a:is(:hover,:focus-visible){background:#f3f2ee;color:#15591f}
+.archive-layout .site-menu :is(a,button):is(:hover,:focus,:active){background:transparent;color:inherit;opacity:1;text-decoration:none}
 .site-menu .works-submenu a[data-active]{font-weight:700}
 @media(min-width:701px) and (max-width:1000px){.site-menu{--menu-edge:20px}.site-menu .menu-links{gap:0}.works-submenu{--submenu-edge:20px}.site-menu .works-categories a{padding-inline:10px}}
 @media(max-width:700px){

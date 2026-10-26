@@ -4,21 +4,18 @@ import { escapeHtml as esc } from './html.mjs';
 import { pick, resolveMediaPath } from './catalog.mjs';
 import { workCoverImage, workHoverImage } from '../../admin/public/work-images.mjs';
 import { workFilterTypes } from './work-filters.mjs';
+import { compareWorkDates } from './work-date.mjs';
 
 export function greenArchivePage(works, site, lang, page = 'index.html') {
   const ko = lang === 'ko', assets = ko ? '../' : '';
-  const selected = site.selected_projects || [];
-  const ordered = [...works].sort((a,b) => {
-    const rank = w => selected.includes(w.slug) ? selected.indexOf(w.slug) : selected.length;
-    return rank(a)-rank(b) || Number(b.year)-Number(a.year);
-  });
+  const ordered = [...works].sort(compareWorkDates);
   const cards = ordered.map((w,i) => {
     const title = pick(w,'title',lang), type = pick(w,'meta_type','en') || '';
     const src = workCoverImage(w), hoverSrc = src && workHoverImage(w);
     const details = [type, w.year].filter(value => value != null && String(value).trim() !== '').map(value => esc(value)).join(' / ');
     return `<article class="work-card" data-title="${esc(title)}" data-year="${esc(w.year)}" data-types="${esc(JSON.stringify(workFilterTypes(w)))}" data-order="${i}" data-search="${esc(`${title} ${type} ${w.year}`.toLowerCase())}"><a href="work/${esc(w.slug)}.html"><div class="work-image">${src ? `<img src="${esc(resolveMediaPath(src,assets))}" alt="${esc(title)}" ${i<3?'fetchpriority="high"':'loading="lazy"'} decoding="async">${hoverSrc ? `<img class="work-hover-image" src="${esc(resolveMediaPath(hoverSrc,assets))}" alt="" aria-hidden="true" loading="lazy" decoding="async">` : ''}` : `<span class="no-image">${esc(title)}</span>`}</div><div class="work-caption"><h2>${esc(title)}</h2>${details ? `<span lang="en"> / ${details}</span>` : ''}</div></a></article>`;
   }).join('');
-  return `<!doctype html><html id="top" lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">${pageLoadingHead(assets, lang)}<meta name="theme-color" content="#15591f"><meta name="description" content="3Dowon — Interactive media, objects and spatial experiences."><title>Works — 3Dowon</title><link rel="icon" href="${assets}assets/green-archive/3dowon.png"><link rel="stylesheet" href="${assets}assets/green-archive/archive.css?v=13"><link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=31"><link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=61"><script src="${assets}assets/green-archive/menu.js?v=22" defer></script><script src="${assets}assets/green-archive/hover.js?v=1" defer></script><script src="${assets}assets/green-archive/filters.js?v=3" defer></script></head>
+  return `<!doctype html><html id="top" lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">${pageLoadingHead(assets, lang)}<meta name="theme-color" content="#15591f"><meta name="description" content="3Dowon — Interactive media, objects and spatial experiences."><title>Works — 3Dowon</title><link rel="icon" href="${assets}assets/green-archive/3dowon.png"><link rel="stylesheet" href="${assets}assets/green-archive/archive.css?v=13"><link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=33"><link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=69"><script src="${assets}assets/green-archive/menu.js?v=23" defer></script><script src="${assets}assets/green-archive/hover.js?v=1" defer></script><script src="${assets}assets/green-archive/filters.js?v=3" defer></script></head>
 <body class="archive-layout page-archive"><a class="skip" href="#main">${ko?'본문으로 이동':'Skip to content'}</a>
 <div class="archive-shell">
 <header class="archive-header">${siteNavigation({site,lang,active:'works',languageHref:(ko?'../':'ko/')+page})}</header>

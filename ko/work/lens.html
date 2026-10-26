@@ -14,20 +14,20 @@ html.page-loaded body{animation:page-content-in .16s ease-out}
 @keyframes page-content-in{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){html.page-loaded body{animation:none}html.page-loading::after{animation:page-loader-show 0s .15s forwards}}
 </style>
-<script>(()=>{const root=document.documentElement;root.classList.add('page-loading');root.setAttribute('aria-busy','true');let timer;const finish=()=>{clearTimeout(timer);if(!root.classList.contains('page-loading'))return;root.classList.remove('page-loading');root.classList.add('page-loaded');root.removeAttribute('aria-busy');};timer=setTimeout(finish,3000);document.addEventListener('site:ready',finish,{once:true});window.addEventListener('pageshow',event=>{if(event.persisted)finish();});})();</script>
+<script>(()=>{const root=document.documentElement;root.classList.add('page-loading');root.setAttribute('aria-busy','true');let timer;const finish=()=>{clearTimeout(timer);if(!root.classList.contains('page-loading'))return;root.classList.remove('page-loading');root.classList.add('page-loaded');root.removeAttribute('aria-busy');};timer=setTimeout(finish,3000);document.addEventListener('site:ready',finish,{once:true});window.addEventListener('beforeunload',()=>root.classList.add('page-navigating'));window.addEventListener('pageshow',event=>{root.classList.remove('page-navigating');if(event.persisted)finish();});})();</script>
 <script src="../../assets/green-archive/page-loading.js?v=1" defer></script>
   <meta name="theme-color" content="#ffffff" />
   <meta name="description" content="빛, 공간, 일상의 사물을 연결하는 인터랙티브 설치와 미디어 실험." />
   <title>lens — 3Dowon</title>
 
-  <link rel="stylesheet" href="../../styles.css?v=1116-lab-mobile-video" />
+  <link rel="stylesheet" href="../../styles.css?v=1117-mobile-work-viewer" />
   <link rel="stylesheet" href="../../selected.css?v=reference-rows-1" />
   <link rel="stylesheet" href="../../assets/green-archive/brand.css?v=1" />
-  <link rel="stylesheet" href="../../assets/green-archive/menu.css?v=31" />
-  <link rel="stylesheet" href="../../assets/green-archive/layout.css?v=61" />
-  <link rel="stylesheet" href="../../assets/green-archive/detail.css?v=22" /><script src="../../assets/green-archive/detail.js?v=6" defer></script>
-  <script src="../../assets/green-archive/menu.js?v=22" defer></script>
-  <script src="../../script.js?v=1116-lab-mobile-video" defer></script>
+  <link rel="stylesheet" href="../../assets/green-archive/menu.css?v=33" />
+  <link rel="stylesheet" href="../../assets/green-archive/layout.css?v=69" />
+  <link rel="stylesheet" href="../../assets/green-archive/detail.css?v=30" /><script src="../../assets/green-archive/detail.js?v=17" defer></script>
+  <script src="../../assets/green-archive/menu.js?v=23" defer></script>
+  <script src="../../script.js?v=1117-mobile-work-viewer" defer></script>
 
 </head>
 <body class="portfolio archive-layout page-work page-archive-work quiet-site" data-home="../" data-section="works">

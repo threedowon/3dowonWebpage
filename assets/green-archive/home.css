@@ -3,6 +3,8 @@ html:has(.page-home){scrollbar-gutter:auto;overflow:hidden}
 .page-home{background:#101510;color:#fff;overflow:hidden}
 .page-home .skip{z-index:100;background:#15591f;color:#fff}
 .page-home .site-menu{background:transparent;color:#fff;transition:background-color .18s ease}
+.page-home .site-menu :is(.menu-wordmark,.menu-links>a,.works-trigger),
+.page-home .site-menu :is(.menu-wordmark,.menu-links>a,.works-trigger):is(:hover,:focus,:active,:visited){color:#fff;opacity:1;text-decoration:none}
 @media(min-width:701px){.page-home .site-menu:is(.works-open,:has(:focus-visible)){background:#15591f}}
 @media(min-width:701px) and (hover:hover){.page-home .site-menu:hover{background:#15591f}}
 .archive-layout.page-home #main{position:relative;width:100%;height:100svh;min-height:360px;margin:0;padding:0;overflow:hidden;touch-action:pan-x pinch-zoom;outline:none}

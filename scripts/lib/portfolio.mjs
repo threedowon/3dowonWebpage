@@ -7,7 +7,7 @@ import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 import { selectRelatedWorks } from '../../admin/public/related-works.mjs';
 import { workCoverImage } from '../../admin/public/work-images.mjs';
 
-const VERSION = '1116-lab-mobile-video';
+const VERSION = '1117-mobile-work-viewer';
 const isGalleryVideo = src => /\.(mp4|webm|mov|m4v)(?:[?#]|$)/i.test(src || '');
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
@@ -63,10 +63,10 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
   <link rel="stylesheet" href="${assets}styles.css?v=${VERSION}" />
   <link rel="stylesheet" href="${assets}selected.css?v=reference-rows-1" />
   <link rel="stylesheet" href="${assets}assets/green-archive/brand.css?v=1" />
-  <link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=31" />
-  <link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=61" />
-  ${pageClass.includes('page-work') && ctx.section === 'works' ? `<link rel="stylesheet" href="${assets}assets/green-archive/detail.css?v=22" /><script src="${assets}assets/green-archive/detail.js?v=6" defer></script>` : ''}
-  <script src="${assets}assets/green-archive/menu.js?v=22" defer></script>
+  <link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=33" />
+  <link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=69" />
+  ${pageClass.includes('page-work') && ctx.section === 'works' ? `<link rel="stylesheet" href="${assets}assets/green-archive/detail.css?v=30" /><script src="${assets}assets/green-archive/detail.js?v=17" defer></script>` : ''}
+  <script src="${assets}assets/green-archive/menu.js?v=23" defer></script>
   <script src="${assets}script.js?v=${VERSION}" defer${catalog === 'works' ? ` onerror="document.documentElement.classList.remove('works-reveal')"` : ''}></script>${ctx.section === 'lab' ? `\n  <script src="${assets}assets/lab-motion.js?v=${VERSION}" defer></script>` : ''}
   ${body.includes('<mux-player') ? '<script src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3.8.0" defer></script>' : ''}
 </head>
@@ -203,7 +203,7 @@ export function portfolioPage(site, lang, portfolio = { images: [] }) {
 export function cvPage(cv, site, lang) {
   const ctx = context(lang, 'cv.html');
   const { c } = ctx;
-  const titles = { Education: '학력', Experience: '경력', 'Professional Experience': '경력', Exhibitions: '전시', Awards: '수상', Training: '교육', Courses: '교육', 'Training & Courses': '교육' };
+  const titles = { Education: '학력', Experience: '경력', Experiences: '경력', 'Professional Experience': '경력', Exhibitions: '전시', Awards: '수상', Training: '교육', Courses: '교육', 'Training & Courses': '교육' };
   const entryContent = (entry, section) => {
     const description = richText(pick(entry, 'description', lang));
     const parts = description.split(/,\s*(?![^<]*>)/);
@@ -212,7 +212,7 @@ export function cvPage(cv, site, lang) {
     const secondary = parts.slice(leadCount).join(', ');
     return `<div class="cv-entry-primary">${primary}</div>${secondary ? `<div class="cv-entry-secondary">${secondary}</div>` : ''}${entry.teaching_materials ? `<a class="teaching-link" href="teaching-materials.html">${lang === 'ko' ? '강의 자료' : 'Teaching Materials'} ↗</a>` : ''}`;
   };
-  const sections = cv.sections.map((section) => `<section class="cv-section"><h2>${esc(lang === 'ko' ? titles[section.title] || section.title : section.title)}</h2><dl>${section.entries.map((entry) => `<div class="cv-row"><dt>${esc(entry.year)}</dt><dd>${entryContent(entry, section)}</dd></div>`).join('')}</dl></section>`);
+  const sections = cv.sections.map((section) => `<section class="cv-section${['Experience', 'Experiences', 'Professional Experience'].includes(section.title) ? ' cv-experiences' : ''}"><h2>${esc(lang === 'ko' ? titles[section.title] || section.title : section.title)}</h2><dl>${section.entries.map((entry) => `<div class="cv-row"><dt>${esc(entry.year)}</dt><dd>${entryContent(entry, section)}</dd></div>`).join('')}</dl></section>`);
   const body = `<article class="editorial-article cv-article" aria-labelledby="page-title">
     <h1 id="page-title" class="visually-hidden">CV</h1>
     <div class="cv-sections">${sections.join('')}</div>
@@ -227,7 +227,8 @@ export function teachingMaterialsPage(materials, site, lang) {
   const items = materials.items || [];
   const body = `<article class="teaching-materials"><a class="archive-back" href="cv.html">← CV</a><p class="teaching-intro">${lang === 'ko' ? 'XR실감형 영상 콘텐츠 편집 및 제작 · 한강미디어고등학교' : 'XR Immersive Video Content Editing and Production · Hangang Media High School'}<br>2024.07–2024.08</p>${items.length ? `<div class="teaching-grid">${items.map((item, index) => {
     const href = resolveMediaPath(item.file, ctx.assets);
-    const label = pick(item, 'title', lang) || item.title || `PDF ${index + 1}`;
+    const rawLabel = pick(item, 'title', lang) || item.title || `PDF ${index + 1}`;
+    const label = rawLabel.replace(/^\d+[._\s]+/, '').replace(/_/g, ' ').trim();
     return `<section class="teaching-card" data-pdf="${esc(href)}" data-pdf-title="${esc(label)}"><iframe class="pdf-preview" src="${esc(href)}#page=1&view=FitH&toolbar=0&navpanes=0" data-src="${esc(href)}#page=1&view=FitH&toolbar=0&navpanes=0" title="${esc(label)}" loading="lazy"></iframe><button class="pdf-mobile-preview" data-open-pdf aria-label="${esc(label)}"><canvas aria-hidden="true"></canvas><span>${lang === 'ko' ? '자료 열기' : 'Open slides'} →</span></button><h2><button data-open-pdf><span>${number(index + 1)}</span> ${esc(label)}</button></h2><a href="${esc(href)}" target="_blank" rel="noopener" data-open-pdf>${lang === 'ko' ? 'PDF 보기' : 'View PDF'} ↗</a></section>`;
   }).join('')}</div>` : `<p class="teaching-empty">${lang === 'ko' ? '강의 자료를 준비 중입니다.' : 'Teaching materials will be available soon.'}</p>`}</article>`;
   const reader = `<dialog class="pdf-reader"><header><span class="pdf-reader-title"></span><button data-pdf-close aria-label="${c.close}">×</button></header><div class="pdf-reader-stage"><div class="pdf-canvas-scroll"><canvas></canvas></div></div><footer><button data-pdf-step="-1" aria-label="${c.previous}">←</button><span class="pdf-page-status" role="status"></span><button data-pdf-step="1" aria-label="${c.next}">→</button><button data-pdf-zoom>${lang === 'ko' ? '확대' : 'Zoom'}</button></footer><p class="pdf-reader-error" role="alert"></p></dialog><script type="module" src="${ctx.assets}pdf-reader.mjs?v=${VERSION}"></script>`;

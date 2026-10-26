@@ -566,6 +566,10 @@ function initMediaViewer() {
   const workLink = document.getElementById('viewer-work');
   const closeButton = dialog.querySelector('[data-close-viewer]');
   const isLabPreview = document.body.classList.contains('page-lab');
+  const mobileWorkViewer = matchMedia('(max-width:700px)');
+  mobileWorkViewer.addEventListener('change', () => {
+    if (!mobileWorkViewer.matches && dialog.open && dialog.classList.contains('media-dialog-gallery')) dialog.close();
+  });
   let pausedLabVideos = [];
   const korean = document.documentElement.lang === 'ko';
   const controls = document.createElement('nav');
@@ -644,6 +648,7 @@ function initMediaViewer() {
     history.replaceState(state, '', location.href);
   }
   const open = (link, restoreEntry = null) => {
+    if (link.closest('.page-work:not(.page-study) .detail-gallery') && !mobileWorkViewer.matches) return;
     opener = link;
     title.textContent = link.dataset.viewerTitle || '';
     workLink.hidden = !link.dataset.viewerWork;
