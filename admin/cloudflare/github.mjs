@@ -15,7 +15,7 @@ export function githubClient(token, request = fetch) {
   };
 }
 
-export const editablePath = path => /^(content\/(?:works\/[a-z0-9]+(?:-[a-z0-9]+)*|about|cv|lab|site|portfolio|teaching-materials)\.json|admin\/(?:tech|type)-options\.json|assets\/(?:uploads|documents)\/[a-zA-Z0-9._-]+)$/.test(path);
+export const editablePath = path => /^(content\/(?:works\/[a-z0-9]+(?:-[a-z0-9]+)*|about|cv|lab|site|portfolio|teaching-materials|featured-projects)\.json|admin\/(?:tech|type)-options\.json|assets\/(?:uploads|documents)\/[a-zA-Z0-9._-]+)$/.test(path);
 
 export class Repository {
   constructor(env, token, request = fetch) {

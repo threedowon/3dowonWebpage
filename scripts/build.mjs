@@ -1,6 +1,8 @@
 import { assertWorkPageHeaders, cleanOrphanWorkPages, loadJson, loadWorks, writeOutput } from './lib/content.mjs';
 import fs from 'node:fs';
 import { greenArchivePage } from './lib/green-archive.mjs';
+import { buildWorkFilters } from './lib/work-filters.mjs';
+import { featuredHomePage } from './lib/featured-home.mjs';
 
 fs.mkdirSync('assets/pdfjs', {recursive:true});
 for (const file of ['pdf.mjs', 'pdf.worker.mjs']) fs.copyFileSync(`node_modules/pdfjs-dist/legacy/build/${file}`, `assets/pdfjs/${file}`);
@@ -8,11 +10,15 @@ for (const folder of ['cmaps','standard_fonts','wasm']) fs.cpSync(`node_modules/
 fs.copyFileSync('node_modules/pdfjs-dist/LICENSE', 'assets/pdfjs/LICENSE');
 import { normalizeWork, normalizeLabItems } from './lib/catalog.mjs';
 import { prepareLabPreviews } from './lib/lab-previews.mjs';
+import { prepareWorkImageSizes } from './lib/image-sizes.mjs';
 import { catalogPage, labPage, aboutPage, portfolioPage, cvPage, workPage, teachingMaterialsPage } from './lib/portfolio.mjs';
 
 const site = loadJson('content/site.json');
+// Every page shares the date this version of the site was generated.
+site.updated_at = new Date().toISOString();
 site.selected_projects = loadJson('content/selected-projects.json');
 const portfolio = loadJson('content/portfolio.json');
+const featured = loadJson('content/featured-projects.json');
 const about = loadJson('content/about.json');
 const cv = loadJson('content/cv.json');
 const teachingMaterials = loadJson('content/teaching-materials.json');
@@ -23,11 +29,13 @@ await prepareLabPreviews(studies);
 const labMotion = fs.readFileSync('assets/lab-motion.mjs', 'utf8').replace(/^export /gm, '');
 fs.writeFileSync('assets/lab-motion.js', `// Generated from lab-motion.mjs by scripts/build.mjs.\n(() => {\n${labMotion}\n})();\n`);
 const works = loadWorks().map(normalizeWork);
+site.work_filters = buildWorkFilters(works);
+await prepareWorkImageSizes(works);
 const workPaths = [];
 
 for (const lang of ['en', 'ko']) {
   const prefix = lang === 'ko' ? 'ko/' : '';
-  writeOutput(`${prefix}index.html`, greenArchivePage(works, site, lang));
+  writeOutput(`${prefix}index.html`, featuredHomePage(works, site, lang, featured));
   for (const page of ['works.html', 'works-img.html', 'list.html']) {
     // Keep legacy entry URLs opening the same image archive.
     writeOutput(`${prefix}${page}`, greenArchivePage(works, site, lang, page));

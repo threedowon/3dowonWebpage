@@ -66,6 +66,23 @@ main{margin-left:224px;padding:42px clamp(24px,4vw,72px) 80px;max-width:1680px}.
 .work-heading-row{display:flex;align-items:center;gap:16px}.work-heading-row>.work-card-head{flex:1;min-width:0}.work-heading-row>.delete-work{flex:none}.work-save-status{grid-column:1/-1;margin:0;color:var(--muted);font-size:12px}.work-save-status.is-error{color:#ac3939}.work-save-status button{padding:4px 8px;min-height:28px;font-size:12px}
 /* Archive cover selection stays separate from the detail gallery editor. */
 .work-cover-editor{padding:20px;border:1px solid var(--line);border-radius:8px;background:#f8faf6}
+.work-related-editor{grid-column:1/-1;padding:20px;border:1px solid var(--line);border-radius:8px;background:#f8faf6}
+.work-related-editor>h4{margin:0 0 8px}.work-related-editor>.field-help{margin:0 0 16px}
+.work-related-slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0 0 16px}
+.work-related-slot{min-width:0}.work-related-slot select{width:100%}
+.work-related-preview{display:grid;place-items:center;aspect-ratio:2/3;max-width:160px;margin-top:12px;background:#e9ede6;border-radius:5px;overflow:hidden;color:var(--muted);font-size:12px}
+.work-related-preview img{width:100%;height:100%;object-fit:cover}
+.work-related-caption{font-size:12px;line-height:1.5;margin:8px 0 0}
+.work-related-status{font-size:12px;color:var(--accent);margin:12px 0 0}.work-related-status:empty{display:none}.work-related-status.is-error{color:var(--danger)}
+@media(max-width:1000px){.work-related-slots{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:500px){.work-related-editor{padding:16px}.work-related-slots{grid-template-columns:minmax(0,1fr)}}
+.work-image-editors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.work-image-slot{min-width:0}.work-image-slot>h5{margin:0 0 12px;font-size:14px}
+.work-image-slot .work-cover-layout{grid-template-columns:90px minmax(0,1fr);gap:16px}
+.work-image-slot .work-cover-preview{width:90px}
+.work-image-size-note{margin:16px 0 0!important}
+.work-hover-auto{justify-self:start}.work-hover-auto[aria-pressed=true]{color:var(--accent);background:var(--soft)}
+@media(max-width:1200px){.work-image-editors{grid-template-columns:minmax(0,1fr)}.work-image-slot+.work-image-slot{border-top:1px solid var(--line);padding-top:20px}}
 .work-cover-editor>h4{margin:0 0 8px}.work-cover-editor>.field-help{margin-bottom:16px}
 .work-cover-layout{display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;align-items:start}
 .work-cover-preview{width:120px;aspect-ratio:2/3;display:grid;place-items:center;overflow:hidden;border-radius:5px;background:#e9ede6;color:var(--muted);font-size:12px;text-align:center}
@@ -79,3 +96,5 @@ main{margin-left:224px;padding:42px clamp(24px,4vw,72px) 80px;max-width:1680px}.
 .work-cover-choice span{font-size:11px}.work-cover-choice[aria-pressed=true]{border-color:var(--accent);color:var(--accent);background:var(--soft);font-weight:600}
 .work-cover-status{font-size:12px;color:var(--accent);margin:12px 0 0}.work-cover-status:empty{display:none}.work-cover-status.is-error{color:var(--danger)}
 @media(max-width:760px){.work-cover-editor{padding:16px}.work-cover-layout{grid-template-columns:80px minmax(0,1fr);gap:16px}.work-cover-preview{width:80px}.work-cover-choices{grid-template-columns:repeat(auto-fill,minmax(70px,1fr));max-height:300px}}
+
+.featured-admin-list{display:grid;gap:16px;margin:24px 0}.featured-admin-row{display:grid;grid-template-columns:140px minmax(0,1fr) auto;align-items:center;gap:20px;padding:16px;border:1px solid #dce0dc;border-radius:8px;background:#fff}.featured-admin-row>img{width:140px;height:90px;object-fit:cover;background:#f2f4ef}.featured-admin-row>label{display:grid;gap:8px;min-width:0}.featured-admin-row select{width:100%;min-width:0}.featured-admin-row-actions,.featured-admin-actions{display:flex;gap:8px;flex-wrap:wrap}.featured-admin-actions{margin-bottom:16px}@media(max-width:760px){.featured-admin-row{grid-template-columns:80px minmax(0,1fr);gap:12px;padding:12px}.featured-admin-row>img{width:80px;height:70px}.featured-admin-row-actions{grid-column:1/-1;justify-content:flex-end}}

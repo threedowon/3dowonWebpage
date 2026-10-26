@@ -1,0 +1,29 @@
+import {escapeHtml as esc} from './html.mjs';
+import {pick,resolveMediaPath} from './catalog.mjs';
+import {siteNavigation} from './navigation.mjs';
+import {workCoverImage} from '../../admin/public/work-images.mjs';
+import {featuredMedia,selectFeaturedWorks} from '../../admin/public/featured-projects.mjs';
+
+export function featuredHomePage(works,site,lang,selection) {
+  const ko = lang === 'ko', assets = ko ? '../' : '';
+  const selected = selectFeaturedWorks(works,selection.projects);
+  const slides = selected.map((work,index) => {
+    const title = pick(work,'title',lang), media = featuredMedia(work);
+    const cover = resolveMediaPath(workCoverImage(work),assets) || (media?.kind === 'mux' ? `https://image.mux.com/${media.src}/thumbnail.jpg?time=2` : '');
+    const type = pick(work,'meta_type',lang) || '';
+    return `<article class="featured-slide${index === 0 ? ' is-active' : ''}" data-slug="${esc(work.slug)}"${index ? ' hidden' : ''}>
+      <a class="featured-project" href="work/${esc(work.slug)}.html" aria-label="${esc(title)} — ${ko ? '작품 보기' : 'View project'}">
+        <div class="featured-media" aria-hidden="true"${media ? ` data-media-kind="${media.kind}" data-media-src="${esc(media.kind === 'video' ? resolveMediaPath(media.src,assets) : media.src)}"` : ''}>
+          ${cover ? `<img class="featured-poster" src="${esc(cover)}" alt="" ${index ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async">` : ''}
+        </div>
+        <div class="featured-caption"><p class="featured-eyebrow">${ko ? '대표 프로젝트' : 'Selected project'} / ${String(index+1).padStart(2,'0')}</p><h2>${esc(title)}</h2><p class="featured-meta">${esc([type,work.year].filter(Boolean).join(' / '))}</p><span class="featured-view">${ko ? '작품 보기' : 'View project'} ↗</span></div>
+      </a>
+    </article>`;
+  }).join('');
+  return `<!doctype html><html id="top" lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#101510"><meta name="description" content="3Dowon — Interactive Media Artist. ${ko ? '영상으로 만나는 대표 프로젝트.' : 'Selected interactive projects in motion.'}"><title>3Dowon — Interactive Media Artist</title><link rel="icon" href="${assets}assets/green-archive/3dowon.png"><link rel="stylesheet" href="${assets}assets/green-archive/archive.css?v=9"><link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=22"><link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=41"><link rel="stylesheet" href="${assets}assets/green-archive/home.css?v=6"><script src="${assets}assets/green-archive/menu.js?v=13" defer></script><script src="${assets}assets/green-archive/home.js?v=2" defer></script></head>
+    <body class="archive-layout page-home"><a class="skip" href="#main">${ko ? '본문으로 이동' : 'Skip to content'}</a><header>${siteNavigation({site,lang,active:'home',languageHref:(ko ? '../' : 'ko/')+'index.html'})}</header>
+    <main id="main" class="featured-home" tabindex="0" aria-label="${ko ? '대표 프로젝트' : 'Selected projects'}" aria-roledescription="carousel"><h1 class="page-title-hidden">3Dowon — Interactive Media Artist</h1>${slides || `<a class="featured-empty" href="works.html">${ko ? '전체 작품 보기' : 'View all works'} ↗</a>`}
+      <nav class="featured-pagination" aria-label="${ko ? '대표 프로젝트 선택' : 'Choose a featured project'}">${selected.map((work,index) => `<button type="button" class="featured-dot" data-featured-dot="${index}" aria-label="${ko ? `${index+1}번 프로젝트` : `Project ${index+1}`}: ${esc(pick(work,'title',lang))}" aria-current="${index === 0 ? 'true' : 'false'}"></button>`).join('')}</nav><span class="page-title-hidden" data-featured-status aria-live="polite" aria-atomic="true"></span>
+      <div class="featured-bottom"><span class="featured-signature">Interactive Media Artist</span><nav class="featured-navigation" aria-label="${ko ? '대표 프로젝트 넘기기' : 'Browse featured projects'}"${selected.length < 2 ? ' hidden' : ''}><button type="button" data-featured-prev aria-label="${ko ? '이전 프로젝트' : 'Previous project'}">↑</button><button type="button" data-featured-next>${ko ? '다음 프로젝트' : 'Next project'} ↓</button></nav><button type="button" class="featured-playback" hidden></button></div>
+    </main></body></html>`;
+}

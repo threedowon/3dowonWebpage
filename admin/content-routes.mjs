@@ -5,6 +5,9 @@ import { randomUUID } from 'node:crypto';
 import { englishTechnology } from './technology.mjs';
 import { uniqueWorkSlug } from './work-slug.mjs';
 import { parseWorkDate, compareWorkDates } from '../scripts/lib/work-date.mjs';
+import { workImageCandidates, workHoverCandidates } from './public/work-images.mjs';
+import { validateRelatedProjects } from './public/related-works.mjs';
+import { selectFeaturedWorks, validateFeaturedProjects } from './public/featured-projects.mjs';
 
 // Shared editing behavior. Storage, uploads and publication are environment adapters.
 export function installContentRoutes(app, services) {
@@ -71,6 +74,18 @@ function descriptionHtmlToPlainText(html) {
 }
 
 // ── Works ──
+
+app.get('/api/featured-projects', (req,res) => {
+  const saved = fs.existsSync(path.join(ROOT,'content','featured-projects.json')) ? loadJson('content/featured-projects.json') : {projects:[]};
+  res.json({projects:selectFeaturedWorks(listWorkSlugs().map(loadWork).sort(compareWorkDates),saved.projects).map(work => work.slug)});
+});
+app.put('/api/featured-projects', (req,res) => {
+  let projects;
+  try { projects = validateFeaturedProjects(req.body.projects,listWorkSlugs()); }
+  catch(error) { return res.status(400).json({error:error.message}); }
+  saveJson('content/featured-projects.json',{projects});
+  build(); res.json({projects});
+});
 
 function technologyOptions() {
   if (fs.existsSync(TECH_OPTIONS_FILE)) return JSON.parse(fs.readFileSync(TECH_OPTIONS_FILE, 'utf8'));
@@ -242,29 +257,46 @@ app.delete('/api/works/:slug', (req, res) => {
   if (!fs.existsSync(file)) return res.status(404).json({ error: 'not found' });
   const work = loadWork(req.params.slug);
   fs.unlinkSync(file); // remove the JSON first so the reference check below doesn't see its own entries
-  [work.cover_image, work.thumbnail, work.preview_bg, work.hero_image, ...(work.gallery || []),...(work.process_media || []),...(work.process || []).flatMap(entry=>entry.images||[])].forEach(removeUploadedFile);
+  [work.cover_image, work.hover_image, work.thumbnail, work.preview_bg, work.hero_image, ...(work.gallery || []),...(work.process_media || []),...(work.process || []).flatMap(entry=>entry.images||[])].forEach(removeUploadedFile);
   build();
   res.json({ ok: true });
 });
 
-// The archive cover is independent of the authored detail gallery and its order.
-app.put('/api/works/:slug/cover', (req, res) => {
+app.put('/api/works/:slug/related', (req, res) => {
+  const slugs = listWorkSlugs();
+  if (!slugs.includes(req.params.slug)) return res.status(404).json({error:'작업을 찾을 수 없어요.'});
+  let selected;
+  try { selected = validateRelatedProjects(req.body.related_projects, req.params.slug, slugs); }
+  catch (error) { return res.status(400).json({error:error.message}); }
+  const work = loadWork(req.params.slug);
+  if (selected.length) work.related_projects = selected;
+  else delete work.related_projects;
+  saveJson(`content/works/${work.slug}.json`, work);
+  build();
+  res.json({related_projects:selected});
+});
+
+// Archive images are independent of the authored detail gallery and its order.
+for (const [slot, field, label] of [['cover', 'cover_image', '대표 이미지'], ['hover', 'hover_image', '서브 이미지']]) {
+app.put(`/api/works/:slug/${slot}`, (req, res) => {
   if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({error:'작업을 찾을 수 없어요.'});
   const work = loadWork(req.params.slug);
   const { src } = req.body;
-  const candidates = [work.cover_image, work.thumbnail, work.preview_bg, work.hero_image, ...(work.gallery || []), ...(work.process_media || []), ...(work.process || []).flatMap(entry => entry.images || [])];
-  if (typeof src !== 'string' || !src || !candidates.includes(src) || /\.(mp4|webm|mov|m4v)(?:[?#]|$)/i.test(src)) {
-    return res.status(400).json({error:'이 작업에 등록된 이미지 중에서 선택해주세요.'});
+  const candidates = slot === 'hover' ? workHoverCandidates(work) : workImageCandidates(work);
+  const automatic = slot === 'hover' && src === '';
+  if (!automatic && (typeof src !== 'string' || !candidates.includes(src))) {
+    return res.status(400).json({error:slot === 'hover' ? '대표 이미지와 다른 등록 이미지를 선택해주세요.' : '이 작업에 등록된 이미지 중에서 선택해주세요.'});
   }
-  work.cover_image = src;
+  if (automatic) delete work[field];
+  else work[field] = src;
   saveJson(`content/works/${work.slug}.json`, work);
   build();
-  res.json({cover_image:work.cover_image});
+  res.json({[field]:work[field] || ''});
 });
 
-app.post('/api/works/:slug/cover', upload.single('image'), asyncHandler(async (req, res) => {
+app.post(`/api/works/:slug/${slot}`, upload.single('image'), asyncHandler(async (req, res) => {
   if (!listWorkSlugs().includes(req.params.slug)) return res.status(404).json({error:'작업을 찾을 수 없어요.'});
-  if (!req.file || !/^image\//i.test(req.file.mimetype)) return res.status(400).json({error:'대표 이미지로 사용할 사진을 선택해주세요.'});
+  if (!req.file || !/^image\//i.test(req.file.mimetype)) return res.status(400).json({error:`${label}로 사용할 사진을 선택해주세요.`});
   const filename = await saveImage(req.file.buffer, req.params.slug);
   const src = publicUploadPath(filename);
   if (!listWorkSlugs().includes(req.params.slug)) {
@@ -272,13 +304,14 @@ app.post('/api/works/:slug/cover', upload.single('image'), asyncHandler(async (r
     return res.status(404).json({error:'업로드 중 작업이 삭제되었어요.'});
   }
   const work = loadWork(req.params.slug);
-  const previous = work.cover_image;
-  work.cover_image = src;
+  const previous = work[field];
+  work[field] = src;
   saveJson(`content/works/${work.slug}.json`, work);
   if (previous && previous !== src) removeUploadedFile(previous);
   build();
-  res.json({cover_image:work.cover_image});
+  res.json({[field]:work[field]});
 }));
+}
 
 // Legacy thumbnail upload retained for older admin clients.
 app.post('/api/works/:slug/thumbnail', upload.single('image'), asyncHandler(async (req, res) => {

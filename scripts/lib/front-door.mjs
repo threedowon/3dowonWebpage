@@ -15,7 +15,7 @@ export function frontDoorPage(site, lang) {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#626d59" />
   <meta name="description" content="${esc(note)}" />
-  <title>3Dowon — ${ko ? '인터랙티브 미디어 아티스트' : 'Interactive media artist'}</title>
+  <title>3Dowon — ${ko ? '인터랙티브 미디어 아티스트' : 'Interactive Media Artist'}</title>
   <link rel="preload" href="${assets}assets/front-door/landscape.webp" as="image" />
   <link rel="stylesheet" href="${assets}assets/front-door/home.css?v=2" />
 </head>

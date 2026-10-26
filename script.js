@@ -560,6 +560,74 @@ function initMediaViewer() {
   const title = document.getElementById('viewer-title');
   const media = document.getElementById('viewer-media');
   const workLink = document.getElementById('viewer-work');
+  const closeButton = dialog.querySelector('[data-close-viewer]');
+  const korean = document.documentElement.lang === 'ko';
+  const controls = document.createElement('nav');
+  controls.className = 'viewer-gallery-controls';
+  controls.hidden = true;
+  controls.setAttribute('aria-label', korean ? '확대 이미지 탐색' : 'Enlarged image navigation');
+  controls.innerHTML = `<button type="button" data-viewer-prev aria-label="${korean ? '이전 이미지' : 'Previous image'}">↑</button><span role="status" aria-live="polite"></span><button type="button" data-viewer-next aria-label="${korean ? '다음 이미지' : 'Next image'}">↓</button>`;
+  dialog.append(controls);
+  const previous = controls.querySelector('[data-viewer-prev]');
+  const next = controls.querySelector('[data-viewer-next]');
+  const status = controls.querySelector('[role=status]');
+  let slides = [];
+  let current = 0;
+  let scrollFrame = 0;
+  const updateGallery = () => {
+    if (!slides.length || !dialog.open) return;
+    current = Math.max(0, Math.min(slides.length - 1, Math.round(media.scrollTop / slides[0].offsetHeight)));
+    const count = `${current + 1} / ${slides.length}`;
+    if (status.textContent !== count) status.textContent = count;
+    previous.disabled = current === 0;
+    next.disabled = current === slides.length - 1;
+    slides.slice(Math.max(0, current - 1), current + 2).forEach(slide => {
+      slide.querySelector('img').loading = 'eager';
+    });
+  };
+  const goToImage = (index, behavior = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth') => {
+    const slide = slides[Math.max(0, Math.min(index, slides.length - 1))];
+    if (slide) media.scrollTo({ top: slide.offsetTop, behavior });
+  };
+  const fitGalleryFrame = () => {
+    if (!slides.length || !dialog.open) return;
+    const availableWidth = Math.max(1, media.clientWidth - (innerWidth > 700 ? 160 : 0));
+    const sizes = slides.map(slide => {
+      const image = slide.querySelector('img');
+      const width = Number(image.getAttribute('width')) || image.naturalWidth;
+      const height = Number(image.getAttribute('height')) || image.naturalHeight;
+      if (!width || !height) return null;
+      const scale = Math.min(1, availableWidth / width, media.clientHeight / height);
+      return { width: width * scale, height: height * scale };
+    }).filter(Boolean);
+    const width = `${Math.round(sizes.length ? Math.max(...sizes.map(size => size.width)) : availableWidth)}px`;
+    const height = `${Math.round(sizes.length ? Math.max(...sizes.map(size => size.height)) : media.clientHeight)}px`;
+    if (media.style.getPropertyValue('--viewer-frame-width') === width && media.style.getPropertyValue('--viewer-frame-height') === height) return;
+    media.style.setProperty('--viewer-frame-width', width);
+    media.style.setProperty('--viewer-frame-height', height);
+    goToImage(current, 'instant');
+    updateGallery();
+  };
+  previous.addEventListener('click', () => goToImage(current - 1));
+  next.addEventListener('click', () => goToImage(current + 1));
+  media.addEventListener('scroll', () => {
+    if (scrollFrame || !slides.length) return;
+    scrollFrame = requestAnimationFrame(() => { scrollFrame = 0; updateGallery(); });
+  }, { passive: true });
+  new ResizeObserver(() => {
+    if (!slides.length || !dialog.open) return;
+    fitGalleryFrame();
+    goToImage(current, 'instant');
+    updateGallery();
+  }).observe(media);
+  dialog.addEventListener('keydown', event => {
+    if (!slides.length) return;
+    const targets = { ArrowUp: current - 1, ArrowLeft: current - 1, PageUp: current - 1,
+      ArrowDown: current + 1, ArrowRight: current + 1, PageDown: current + 1, Home: 0, End: slides.length - 1 };
+    if (!(event.key in targets)) return;
+    event.preventDefault();
+    goToImage(targets[event.key]);
+  });
   let opener;
   let viewerEntry = null;
   const historyKey = '__3dowonViewer';
@@ -576,17 +644,63 @@ function initMediaViewer() {
     if (link.dataset.viewerWork) workLink.href = link.dataset.viewerWork;
     else workLink.removeAttribute('href');
     const isVideo = link.dataset.viewerType === 'video';
-    const element = document.createElement(isVideo ? 'video' : 'img');
-    element.src = link.dataset.viewer;
-    if (isVideo) {
-      element.controls = true;
-      element.playsInline = true;
-      element.preload = 'metadata';
-    } else element.alt = title.textContent;
-    media.replaceChildren(element);
-    if (!isVideo) trackImageRatio(element);
+    const gallery = !isVideo && link.closest('.page-work:not(.page-study) .detail-gallery');
+    dialog.classList.toggle('media-dialog-gallery', Boolean(gallery));
+    controls.hidden = !gallery;
+    let selected = 0;
+    if (gallery) {
+      dialog.style.setProperty('--detail-paper', getComputedStyle(gallery).getPropertyValue('--detail-paper').trim() || '#dddddd');
+      const seen = new Set();
+      const links = [...gallery.querySelectorAll('[data-viewer]')].filter(item => {
+        if (item.dataset.viewerType === 'video' || seen.has(item.dataset.viewer)) return false;
+        seen.add(item.dataset.viewer);
+        return true;
+      });
+      selected = Math.max(0, links.findIndex(item => item.dataset.viewer === link.dataset.viewer));
+      slides = links.map((item, index) => {
+        const slide = document.createElement('figure');
+        slide.className = 'viewer-slide';
+        slide.setAttribute('aria-label', `${index + 1} / ${links.length}`);
+        const image = document.createElement('img');
+        const sourceImage = item.querySelector('img');
+        const width = Number(sourceImage?.getAttribute('width')) || sourceImage?.naturalWidth;
+        const height = Number(sourceImage?.getAttribute('height')) || sourceImage?.naturalHeight;
+        if (width && height) { image.width = width; image.height = height; }
+        image.src = item.dataset.viewer;
+        image.alt = sourceImage?.alt || item.dataset.viewerTitle || '';
+        image.loading = Math.abs(index - selected) <= 1 ? 'eager' : 'lazy';
+        image.decoding = 'async';
+        image.addEventListener('load', fitGalleryFrame);
+        slide.append(image);
+        return slide;
+      });
+      title.textContent = document.getElementById('page-title')?.textContent || title.textContent;
+      media.replaceChildren(...slides);
+      media.tabIndex = 0;
+      previous.hidden = next.hidden = slides.length < 2;
+      gallery.querySelectorAll('video,mux-player').forEach(video => video.pause?.());
+    } else {
+      slides = [];
+      media.removeAttribute('tabindex');
+      const element = document.createElement(isVideo ? 'video' : 'img');
+      element.src = link.dataset.viewer;
+      if (isVideo) {
+        element.controls = true;
+        element.playsInline = true;
+        element.preload = 'metadata';
+      } else element.alt = title.textContent;
+      media.replaceChildren(element);
+      if (!isVideo) trackImageRatio(element);
+    }
     dialog.showModal();
     document.documentElement.classList.add('viewer-open');
+    if (gallery) {
+      current = selected;
+      fitGalleryFrame();
+      goToImage(selected, 'instant');
+      updateGallery();
+      closeButton.focus({ preventScroll: true });
+    }
     viewerEntry = restoreEntry;
     if (!restoreEntry && window.matchMedia('(max-width:900px)').matches) {
       viewerEntry = { id: `${Date.now()}-${Math.random()}`, src: link.dataset.viewer, url: location.href };
@@ -610,13 +724,19 @@ function initMediaViewer() {
     event.preventDefault();
     open(link);
   });
-  dialog.querySelector('[data-close-viewer]').addEventListener('click', () => dialog.close());
+  closeButton.addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', (event) => {
+    if (slides.length && event.target !== dialog && event.target !== media && !event.target.matches('.viewer-slide')) return;
     if (event.target.closest('video')) return;
     dialog.close();
   });
   dialog.addEventListener('close', () => {
     media.querySelector('video')?.pause();
+    slides = [];
+    controls.hidden = true;
+    media.style.removeProperty('--viewer-frame-width');
+    media.style.removeProperty('--viewer-frame-height');
+    media.removeAttribute('tabindex');
     media.replaceChildren();
     document.documentElement.classList.remove('viewer-open');
     opener?.focus({ preventScroll: true });

@@ -161,7 +161,7 @@ function asyncHandler(fn) {
 function isImagePathReferenced(publicPath) {
   for (const slug of listWorkSlugs()) {
     const w = loadWork(slug);
-    if ([w.cover_image, w.thumbnail, w.preview_bg, w.hero_image, ...(w.gallery || []),...(w.process_media || []),...(w.process || []).flatMap(entry=>entry.images||[])].includes(publicPath)) return true;
+    if ([w.cover_image, w.hover_image, w.thumbnail, w.preview_bg, w.hero_image, ...(w.gallery || []),...(w.process_media || []),...(w.process || []).flatMap(entry=>entry.images||[])].includes(publicPath)) return true;
   }
   if (loadJson('content/about.json').image === publicPath) return true;
   if (loadJson('content/portfolio.json').images.includes(publicPath)) return true;

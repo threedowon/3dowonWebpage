@@ -185,6 +185,11 @@ const openWorkSlugs = new Set();
 const dirtyWorks = new Set();
 const workAutosaves = new Map();
 const workCoverSaves = new Map();
+const workRelatedSaves = new Map();
+let workImages;
+const workImagesReady = import('./work-images.mjs?v=1').then(module => { workImages = module; });
+let relatedWorks;
+const relatedWorksReady = import('./related-works.mjs?v=1').then(module => { relatedWorks = module; });
 let activeAdminTab = 'works';
 
 document.querySelectorAll('.admin-tab').forEach((tab) => {
@@ -199,7 +204,7 @@ document.querySelectorAll('.admin-tab').forEach((tab) => {
 });
 
 window.addEventListener('beforeunload', (e) => {
-  if (dirtyWorks.size > 0 || workCoverSaves.size > 0 || techOptionsDirty || typeOptionsDirty || rowNumberDrafts.size > 0) {
+  if (dirtyWorks.size > 0 || workCoverSaves.size > 0 || workRelatedSaves.size > 0 || techOptionsDirty || typeOptionsDirty || rowNumberDrafts.size > 0) {
     e.preventDefault();
     e.returnValue = '';
   }
@@ -253,7 +258,7 @@ function markWorkDirty(slug) {
 }
 
 function previewPath(work) {
-  return [work.cover_image, work.thumbnail, work.hero_image, ...(work.gallery || [])].find(src => src && !isGalleryVideo(src))
+  return workImages.workCoverImage(work)
     || (work.mux?.playback_id ? 'https://image.mux.com/'+work.mux.playback_id+'/thumbnail.jpg' : '') || work.gallery?.[0] || '';
 }
 function updateWorkCardHead(card, work) {
@@ -270,74 +275,144 @@ function createWorkCoverEditor(card, work) {
   const section = document.createElement('section');
   section.className = 'work-cover-editor';
   section.setAttribute('aria-labelledby', `cover-title-${work.slug}`);
-  section.innerHTML = `<h4 id="cover-title-${escapeAttr(work.slug)}">대표 이미지</h4><p class="field-help">Works 목록과 Related Projects에 표시할 이미지입니다. 선택하면 바로 저장됩니다.</p><div class="work-cover-layout"><div class="work-cover-preview"></div><div class="work-cover-options"><details class="work-cover-picker"><summary>등록된 이미지에서 선택</summary><div class="work-cover-choices"></div></details><label>새 대표 이미지 업로드<input class="work-cover-upload" type="file" accept="image/*" /></label><p class="field-help">목록에서는 2:3 비율로 가운데를 맞춰 표시합니다.</p></div></div><p class="work-cover-status" role="status"></p>`;
+  const slots = [['cover', '대표 이미지', '대표'], ['hover', '서브 이미지', '서브']];
+  section.innerHTML = `<h4 id="cover-title-${escapeAttr(work.slug)}">대표 이미지 → 서브 이미지</h4><p class="field-help">Works 이미지에 마우스를 올리면 서브 이미지로 바뀝니다. 선택하지 않으면 다른 등록 이미지가 자동으로 표시됩니다. 선택하면 바로 저장됩니다.</p><div class="work-image-editors">${slots.map(([slot,label]) => `<div class="work-image-slot" data-slot="${slot}"><h5>${label}</h5><div class="work-cover-layout"><div class="work-cover-preview"></div><div class="work-cover-options"><details class="work-cover-picker"><summary>${label} 선택</summary><div class="work-cover-choices"></div></details>${slot === 'hover' ? '<button class="work-hover-auto" type="button">자동 선택 사용</button>' : ''}<label>새 ${label} 업로드<input class="work-cover-upload" type="file" accept="image/*" /></label><p class="field-help">${slot === 'cover' ? '평소 Works 목록과 Related Projects에 표시합니다.' : '다른 이미지가 없으면 대표 이미지를 그대로 표시합니다.'}</p></div></div></div>`).join('')}</div><p class="field-help work-image-size-note">두 이미지 모두 목록에서는 2:3 비율로 가운데를 맞춰 표시합니다.</p><p class="work-cover-status" role="status"></p>`;
   card.querySelector('.work-card-body').prepend(section);
   const status = section.querySelector('.work-cover-status');
-  const input = section.querySelector('.work-cover-upload');
   let busy = false;
   function refresh() {
-    const selected = [work.cover_image, work.thumbnail, work.hero_image, ...(work.gallery || [])].find(src => src && !isGalleryVideo(src));
-    const preview = section.querySelector('.work-cover-preview');
+    for (const [slot,label,shortLabel] of slots) {
+    const panel = section.querySelector(`[data-slot="${slot}"]`);
+    const selected = slot === 'cover' ? workImages.workCoverImage(work) : workImages.workHoverImage(work);
+    const automatic = slot === 'hover' && selected !== work.hover_image;
+    const preview = panel.querySelector('.work-cover-preview');
     preview.replaceChildren();
     if (selected) {
       const image = document.createElement('img');
-      image.src = imgUrl(selected); image.alt = `${work.title} 대표 이미지`; image.loading = 'lazy';
+      image.src = imgUrl(selected); image.alt = `${work.title} ${label}`; image.loading = 'lazy';
       preview.append(image);
-    } else preview.textContent = '대표 이미지 없음';
-    const choices = section.querySelector('.work-cover-choices');
+    } else preview.textContent = slot === 'hover' ? '대표 이미지 유지' : '대표 이미지 없음';
+    const choices = panel.querySelector('.work-cover-choices');
     choices.replaceChildren();
-    const candidates = [...new Set([work.thumbnail, work.hero_image, work.preview_bg, ...(work.gallery || []), ...(work.process_media || []), ...(work.process || []).flatMap(entry => entry.images || []), work.cover_image].filter(src => src && !isGalleryVideo(src)))];
+    const candidates = slot === 'cover' ? workImages.workImageCandidates(work) : workImages.workHoverCandidates(work);
     candidates.forEach((src, index) => {
       const button = document.createElement('button');
       button.type = 'button'; button.className = 'work-cover-choice'; button.disabled = busy;
       button.setAttribute('aria-pressed', String(src === selected));
-      button.setAttribute('aria-label', `이미지 ${index + 1} 대표로 선택`);
+      button.setAttribute('aria-label', `이미지 ${index + 1} ${shortLabel}로 선택`);
       const image = document.createElement('img'); image.src = imgUrl(src); image.alt = ''; image.loading = 'lazy';
-      const label = document.createElement('span'); label.textContent = src === selected ? '현재 대표' : `이미지 ${index + 1}`;
-      button.append(image, label);
+      const caption = document.createElement('span'); caption.textContent = src === selected ? (automatic ? '자동 선택됨' : `현재 ${shortLabel}`) : `이미지 ${index + 1}`;
+      button.append(image, caption);
       button.addEventListener('click', () => {
-        if (src === selected || busy) return;
-        save({method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({src})});
+        if ((src === selected && !automatic) || busy) return;
+        save(slot, {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({src})});
       });
       choices.append(button);
     });
-    if (!candidates.length) choices.textContent = '등록된 이미지가 없어요. 아래에서 새 이미지를 올려주세요.';
-    input.disabled = busy;
+    if (!candidates.length) choices.textContent = slot === 'hover' ? '대표 이미지 외에 다른 이미지가 없어요. 아래에서 서브 이미지를 올릴 수 있습니다.' : '등록된 이미지가 없어요. 아래에서 새 이미지를 올려주세요.';
+    panel.querySelector('.work-cover-upload').disabled = busy;
+    const auto = panel.querySelector('.work-hover-auto');
+    if (auto) {
+      auto.disabled = busy || !work.hover_image;
+      auto.setAttribute('aria-pressed', String(automatic || !work.hover_image));
+      auto.textContent = automatic || !work.hover_image ? '자동 선택 사용 중' : '자동 선택 사용';
+    }
+    }
   }
-  async function save(options) {
+  async function save(slot, options) {
     if (busy) return;
-    const restoreFocus = section.querySelector('.work-cover-choices').contains(document.activeElement);
+    const panel = section.querySelector(`[data-slot="${slot}"]`);
+    const restoreFocus = panel.querySelector('.work-cover-choices').contains(document.activeElement);
+    const label = slot === 'cover' ? '대표 이미지' : '서브 이미지';
     busy = true;
     status.classList.remove('is-error');
-    status.textContent = options.method === 'POST' ? '대표 이미지를 업로드하고 있어요…' : '대표 이미지를 저장하고 있어요…';
+    status.textContent = `${label}를 ${options.method === 'POST' ? '업로드' : '저장'}하고 있어요…`;
     section.querySelectorAll('button,input').forEach(control => { control.disabled = true; });
     const request = (async () => {
       try {
-        const updated = await api(`/api/works/${work.slug}/cover`, options);
-        work.cover_image = updated.cover_image;
+        const updated = await api(`/api/works/${work.slug}/${slot}`, options);
+        work[`${slot}_image`] = updated[`${slot}_image`];
         updateWorkCardHead(card, work);
-        status.textContent = '대표 이미지를 저장했어요.';
+        status.textContent = slot === 'hover' && !work.hover_image ? '서브 이미지를 자동 선택으로 변경했어요.' : `${label}를 저장했어요.`;
       } catch (error) {
         status.textContent = '저장하지 못했어요: ' + error.message;
         status.classList.add('is-error');
       } finally {
-        busy = false; input.value = ''; refresh();
-        if (restoreFocus) section.querySelector('[aria-pressed="true"]')?.focus({preventScroll:true});
+        busy = false; panel.querySelector('.work-cover-upload').value = ''; refresh();
+        if (restoreFocus) panel.querySelector('[aria-pressed="true"]')?.focus({preventScroll:true});
         workCoverSaves.delete(work.slug);
       }
     })();
     workCoverSaves.set(work.slug, request);
     return request;
   }
+  for (const [slot] of slots) {
+  const panel = section.querySelector(`[data-slot="${slot}"]`);
+  const input = panel.querySelector('.work-cover-upload');
   input.addEventListener('change', () => {
     const file = input.files[0];
     if (!file) return;
     const data = new FormData(); data.append('image', file);
-    save({method:'POST', body:data});
+    save(slot, {method:'POST', body:data});
   });
+  panel.querySelector('.work-hover-auto')?.addEventListener('click', () => save(slot, {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({src:''})}));
+  }
   card.coverEditor = {refresh};
   refresh();
 }
+function createWorkRelatedEditor(card, work, works) {
+  const section = document.createElement('section');
+  section.className = 'work-related-editor';
+  section.setAttribute('aria-labelledby', `related-editor-${work.slug}`);
+  const candidates = works.filter(item => item.slug !== work.slug);
+  section.innerHTML = `<h4 id="related-editor-${escapeAttr(work.slug)}">추천 작업 선택</h4><p class="field-help">상세페이지 아래 ‘You might also like’에 표시할 작업을 최대 4개까지 선택하세요. 번호 순서대로 표시되며 바로 저장됩니다. 아무것도 선택하지 않으면 자동 추천됩니다.</p><div class="work-related-slots">${[1,2,3,4].map(number => `<div class="work-related-slot"><label>추천 작업 ${number}<select aria-label="추천 작업 ${number}"><option value="">직접 선택 안 함</option>${candidates.map(item => `<option value="${escapeAttr(item.slug)}">${escapeHtml(item.title)} · ${escapeHtml(workDateLabel(item))}</option>`).join('')}</select></label><div class="work-related-preview"></div><p class="work-related-caption"></p></div>`).join('')}</div><button class="work-related-auto" type="button">자동 추천 사용</button><p class="work-related-status" role="status"></p>`;
+  card.querySelector('.work-cover-editor').after(section);
+  const selects = [...section.querySelectorAll('select')];
+  const status = section.querySelector('.work-related-status');
+  let busy = false;
+  function refresh() {
+    const selected = (work.related_projects || []).filter(slug => candidates.some(item => item.slug === slug)).slice(0,4);
+    const previews = relatedWorks.selectRelatedWorks({...work,related_projects:selected}, works);
+    selects.forEach((select,index) => {
+      select.value = selected[index] || '';
+      select.disabled = busy;
+      [...select.options].forEach(option => { option.disabled = Boolean(option.value && selected.includes(option.value) && option.value !== select.value); });
+      const slot = select.closest('.work-related-slot'), preview = slot.querySelector('.work-related-preview');
+      preview.replaceChildren();
+      const item = previews[index], src = item && previewPath(item);
+      if (src && !isGalleryVideo(src)) {
+        const img = document.createElement('img'); img.src = imgUrl(src); img.alt = ''; img.loading = 'lazy'; preview.append(img);
+      } else preview.textContent = item ? '이미지 없음' : '선택 안 함';
+      slot.querySelector('.work-related-caption').textContent = item ? `${selected.length ? '' : '자동 · '}${item.title}` : '';
+    });
+    const auto = section.querySelector('.work-related-auto');
+    auto.disabled = busy || !selected.length;
+    auto.textContent = selected.length ? '자동 추천으로 되돌리기' : '자동 추천 사용 중';
+  }
+  function save(selected) {
+    if (busy) return;
+    busy = true;
+    status.classList.remove('is-error'); status.textContent = '추천 작업을 저장하고 있어요…';
+    section.querySelectorAll('select,button').forEach(control => { control.disabled = true; });
+    const request = (async () => {
+      try {
+        const result = await api(`/api/works/${work.slug}/related`, {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({related_projects:selected})});
+        work.related_projects = result.related_projects;
+        status.textContent = selected.length ? '추천 작업과 표시 순서를 저장했어요.' : '자동 추천으로 변경했어요.';
+      } catch (error) {
+        status.textContent = '저장하지 못했어요: ' + error.message; status.classList.add('is-error');
+      } finally {
+        busy = false; refresh(); workRelatedSaves.delete(work.slug);
+      }
+    })();
+    workRelatedSaves.set(work.slug, request);
+    return request;
+  }
+  selects.forEach(select => select.addEventListener('change', () => save(selects.map(input => input.value).filter(Boolean))));
+  section.querySelector('.work-related-auto').addEventListener('click', () => save([]));
+  refresh();
+}
+
 function filterWorks() {
   const query = document.getElementById('workSearch').value.trim().toLocaleLowerCase();
   const cards = [...document.querySelectorAll('.work-card')];
@@ -513,7 +588,9 @@ function appendGalleryItem(galleryGrid, work, src, index) {
 
 // ── Works ──
 async function loadWorks() {
+  await Promise.all([workImagesReady, relatedWorksReady]);
   await Promise.all([...workCoverSaves.values()]);
+  await Promise.all([...workRelatedSaves.values()]);
   await Promise.all([...workAutosaves.values()].map(save => save.flush()));
   if (dirtyWorks.size) return;
   workAutosaves.forEach(save => save.dispose());
@@ -531,7 +608,7 @@ async function loadWorks() {
   const list = document.getElementById('worksList');
   list.innerHTML = '';
   works.forEach((work) => {
-    const card = renderWorkCard(work);
+    const card = renderWorkCard(work, works);
     if (openWorkSlugs.has(work.slug)) card.classList.add('open');
     if (drafts.has(work.slug)) applyWorkForm(card.querySelector('.edit-form'), drafts.get(work.slug));
     list.appendChild(card);
@@ -539,7 +616,7 @@ async function loadWorks() {
   filterWorks();
 }
 
-function renderWorkCard(work) {
+function renderWorkCard(work, works) {
   const card = document.createElement('div');
   card.className = 'work-card';
   card.dataset.slug = work.slug;
@@ -577,6 +654,7 @@ function renderWorkCard(work) {
 
   updateWorkCardHead(card, work);
   createWorkCoverEditor(card, work);
+  createWorkRelatedEditor(card, work, works);
   const galleryGrid = card.querySelector('.gallery-grid');
   (work.gallery || []).forEach((src, i) => appendGalleryItem(galleryGrid, work, src, i));
   decorateGalleryRows(galleryGrid, work);
@@ -738,6 +816,7 @@ function renderWorkCard(work) {
     const button = e.currentTarget;
     button.disabled = true;
     await workCoverSaves.get(work.slug);
+    await workRelatedSaves.get(work.slug);
     await autosave.settle();
     try {
       await api(`/api/works/${work.slug}`, { method: 'DELETE' });
@@ -1063,6 +1142,7 @@ document.getElementById('deployBtn').addEventListener('click', async () => {
   status.textContent = '배포 중...';
   status.className = 'deploy-status';
   try {
+    await Promise.all([...workRelatedSaves.values()]);
     const result = await api('/api/deploy', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
