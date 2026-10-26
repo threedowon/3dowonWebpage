@@ -178,7 +178,13 @@ if (footer) {
   wrap.addEventListener('focusout', event => { if (!wrap.contains(event.relatedTarget)) setInline(false); });
   trigger.addEventListener('click', () => {
     if (hover.matches) { setInline(true); return; }
-    sheet.showModal(); trigger.setAttribute('aria-expanded','true');
+    // Keep the bottom row over the footer the user tapped, not the viewport edge.
+    const bounds = footer.getBoundingClientRect();
+    sheet.style.bottom = `${innerHeight - bounds.bottom}px`;
+    sheet.style.maxHeight = `${Math.max(0, bounds.bottom)}px`;
+    sheet.showModal();
+    sheet.querySelector('button').focus({preventScroll:true});
+    trigger.setAttribute('aria-expanded','true');
   });
   sheet.querySelector('button').addEventListener('click', closeSheet);
   // Dismiss on gestures without blocking the user's scrolling or swiping.
@@ -191,6 +197,7 @@ if (footer) {
   document.addEventListener('touchmove', closeSheet, {capture:true,passive:true});
   document.addEventListener('wheel', closeSheet, {capture:true,passive:true});
   document.addEventListener('scroll', closeSheet, {capture:true,passive:true});
+  window.addEventListener('resize', closeSheet, {passive:true});
   sheet.addEventListener('click', event => {
     const r=sheet.getBoundingClientRect();
     if(event.target===sheet && (event.clientY<r.top || event.clientX<r.left || event.clientX>r.right)) sheet.close();

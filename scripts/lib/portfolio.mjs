@@ -63,10 +63,10 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
   <link rel="stylesheet" href="${assets}styles.css?v=${VERSION}" />
   <link rel="stylesheet" href="${assets}selected.css?v=reference-rows-1" />
   <link rel="stylesheet" href="${assets}assets/green-archive/brand.css?v=1" />
-  <link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=36" />
-  <link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=82" />
+  <link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=37" />
+  <link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=89" />
   ${pageClass.includes('page-work') && ctx.section === 'works' ? `<link rel="stylesheet" href="${assets}assets/green-archive/detail.css?v=33" /><script src="${assets}assets/green-archive/detail.js?v=17" defer></script>` : ''}
-  <script src="${assets}assets/green-archive/menu.js?v=26" defer></script>
+  <script src="${assets}assets/green-archive/menu.js?v=27" defer></script>
   <script src="${assets}script.js?v=${VERSION}" defer${catalog === 'works' ? ` onerror="document.documentElement.classList.remove('works-reveal')"` : ''}></script>${ctx.section === 'lab' ? `\n  <script src="${assets}assets/lab-motion.js?v=${VERSION}" defer></script>` : ''}
   ${body.includes('<mux-player') ? '<script src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3.8.0" defer></script>' : ''}
 </head>
