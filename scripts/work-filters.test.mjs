@@ -30,6 +30,6 @@ test('submenu routes work from detail pages in either language',()=>{
 
 test('new category remains available while retired filters stay out of the menu',()=>{
   const types=buildWorkFilters([{type:'퍼포먼스',tags:['설치','웹','인터랙티브','영상','전시','VR']}]).types;
-  assert.deepEqual(types.map(t=>t.en),['Interactive','Physical Computing','Web','Video','Exhibition','VR/AR']);
+  assert.deepEqual(types.map(t=>t.en),['Interactive','Physical Computing','Exhibition','Web','Video','VR/AR']);
   assert(workFilterTypes({type:'피지컬 컴퓨팅'}).includes('피지컬 컴퓨팅'));
 });

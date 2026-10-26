@@ -1,6 +1,6 @@
 const labels = {
-  '인터랙티브':'Interactive', '피지컬 컴퓨팅':'Physical Computing', '웹':'Web',
-  '영상':'Video', '전시':'Exhibition', 'VR/AR':'VR/AR',
+  '인터랙티브':'Interactive', '피지컬 컴퓨팅':'Physical Computing', '전시':'Exhibition',
+  '웹':'Web', '영상':'Video', 'VR/AR':'VR/AR',
   '프로젝션':'Projection', '모바일':'Mobile',
 };
 const canonical = value => value === 'VR' || value === 'AR' ? 'VR/AR' : value;
