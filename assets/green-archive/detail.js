@@ -6,7 +6,7 @@
   const controls = gallery.querySelector('.detail-controls');
   if (!items.length) return;
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  const mobile = matchMedia('(max-width:700px)');
+  const mobile = matchMedia('(max-width:920px)');
   const status = controls.querySelector('[role=status]');
   const pagination = controls.querySelector('.detail-pagination');
   const korean = document.documentElement.lang === 'ko';
@@ -130,7 +130,7 @@
     });
     const thumbBounds = thumbnails[current].getBoundingClientRect();
     const listBounds = pagination.getBoundingClientRect();
-    if (matchMedia('(max-width:700px)').matches) {
+    if (matchMedia('(max-width:920px)').matches) {
       if (thumbBounds.left < listBounds.left) pagination.scrollLeft += thumbBounds.left - listBounds.left;
       else if (thumbBounds.right > listBounds.right) pagination.scrollLeft += thumbBounds.right - listBounds.right;
     } else {

@@ -3,7 +3,7 @@ const menu = document.querySelector('.site-menu');
 const toggle = menu?.querySelector('.menu-toggle');
 const panel = menu?.querySelector('.menu-panel');
 const dialog = menu?.querySelector('.mobile-menu-dialog');
-const mobile = window.matchMedia('(max-width:700px)');
+const mobile = window.matchMedia('(max-width:920px)');
 const works = menu?.querySelector('.works-menu');
 const worksTrigger = works?.querySelector('.works-trigger');
 const submenu = works?.querySelector('.works-submenu');
@@ -139,7 +139,7 @@ if (footer) {
   const wrap = footer.querySelector('.footer-question-wrap');
   const inline = footer.querySelector('.footer-question-inline');
   const sheet = footer.querySelector('.footer-question-sheet');
-  const hover = matchMedia('(min-width:701px) and (hover:hover)');
+  const hover = matchMedia('(min-width:921px) and (hover:hover)');
   let gestureStart = null;
   const closeSheet = () => { if (sheet.open) sheet.close(); gestureStart = null; };
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');

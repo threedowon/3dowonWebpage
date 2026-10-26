@@ -97,7 +97,7 @@ function initProjectHover(catalog, projects, plates, refreshImages) {
   const hideDetailPreview = () => { previewSlug = ''; preview.hidden = true; };
   const showDetailPreview = slug => {
     if (slug === catalog.dataset.openProject) { hideDetailPreview(); return; }
-    if (!window.matchMedia('(min-width:901px) and (hover:hover)').matches) return;
+    if (!window.matchMedia('(min-width:921px) and (hover:hover)').matches) return;
     if (previewSlug === slug) return;
     hideDetailPreview();
     const template = [...catalog.querySelectorAll('template[data-project-detail]')].find(item => item.dataset.projectDetail === slug);
@@ -202,7 +202,7 @@ function initWorksProjectView(catalog, projects, clearProjectHover, refreshCatal
     panel.style.setProperty('--inline-fixed-right', `${window.innerWidth - panelRect.right}px`);
     // Long metadata wraps within the fixed information column, without moving it.
     const minimumGalleryWidth = 320;
-    panel.classList.toggle('has-side-information', window.matchMedia('(min-width:901px)').matches && panel.clientWidth >= informationWidth + minimumGalleryWidth);
+    panel.classList.toggle('has-side-information', window.matchMedia('(min-width:921px)').matches && panel.clientWidth >= informationWidth + minimumGalleryWidth);
   };
   let previousPanelWidth;
   const panelResize = new ResizeObserver(([entry]) => {
@@ -265,7 +265,7 @@ function initWorksProjectView(catalog, projects, clearProjectHover, refreshCatal
       if (firstImage) firstImage.loading = 'eager';
       document.title = `${panel.querySelector('h2').textContent} — ${originalTitle}`;
       if (focus) {
-        const narrow = window.matchMedia('(max-width:900px)').matches;
+        const narrow = window.matchMedia('(max-width:920px)').matches;
         const target = narrow ? panel : layout;
         const headerHeight = document.querySelector('.site-header')?.getBoundingClientRect().height || 0;
         const top = target.getBoundingClientRect().top + window.scrollY - (narrow ? headerHeight + 12 : 48);
@@ -566,7 +566,7 @@ function initMediaViewer() {
   const workLink = document.getElementById('viewer-work');
   const closeButton = dialog.querySelector('[data-close-viewer]');
   const isLabPreview = document.body.classList.contains('page-lab');
-  const mobileWorkViewer = matchMedia('(max-width:700px)');
+  const mobileWorkViewer = matchMedia('(max-width:920px)');
   mobileWorkViewer.addEventListener('change', () => {
     if (!mobileWorkViewer.matches && dialog.open && dialog.classList.contains('media-dialog-gallery')) dialog.close();
   });
@@ -611,7 +611,7 @@ function initMediaViewer() {
   };
   const fitGalleryFrame = () => {
     if (!slides.length || !dialog.open) return;
-    const availableWidth = Math.max(1, media.clientWidth - (innerWidth > 700 ? 160 : 0));
+    const availableWidth = Math.max(1, media.clientWidth - (innerWidth > 920 ? 160 : 0));
     const sizes = slides.map(slide => {
       const image = slide.querySelector('img');
       const width = Number(image.getAttribute('width')) || image.naturalWidth;
@@ -755,7 +755,7 @@ function initMediaViewer() {
       closeButton.focus({ preventScroll: true });
     }
     viewerEntry = restoreEntry;
-    if (!restoreEntry && window.matchMedia('(max-width:900px)').matches) {
+    if (!restoreEntry && window.matchMedia('(max-width:920px)').matches) {
       viewerEntry = { id: `${Date.now()}-${Math.random()}`, src: link.dataset.viewer, url: location.href };
       history.pushState({ ...history.state, [historyKey]: viewerEntry }, '', location.href);
     }

@@ -18,8 +18,8 @@
 .site-menu .works-categories a{display:flex;align-items:center;min-height:40px;padding:8px 12px;font-weight:600;white-space:nowrap}
 .archive-layout .site-menu :is(a,button):is(:hover,:focus,:active){background:transparent;color:inherit;opacity:1;text-decoration:none}
 .site-menu .works-submenu a[data-active]{font-weight:700}
-@media(min-width:701px) and (max-width:1000px){.site-menu{--menu-edge:20px}.site-menu .menu-links{gap:0}.works-submenu{--submenu-edge:20px}.site-menu .works-categories a{padding-inline:10px}}
-@media(max-width:700px){
+@media(min-width:921px) and (max-width:1280px){.site-menu{--menu-edge:20px}.site-menu .menu-links{gap:0}.works-submenu{--submenu-edge:20px}.site-menu .works-categories a{padding-inline:10px}}
+@media(max-width:920px){
  html.mobile-menu-open,html.mobile-menu-open body{overflow:hidden;overscroll-behavior:none}
  html.mobile-menu-open{scrollbar-gutter:auto}
  .site-menu{display:block;height:40px;padding:0;background:transparent;color:var(--ink)}

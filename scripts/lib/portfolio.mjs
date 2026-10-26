@@ -7,7 +7,7 @@ import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 import { selectRelatedWorks } from '../../admin/public/related-works.mjs';
 import { workCoverImage } from '../../admin/public/work-images.mjs';
 
-const VERSION = '1123-gallery-background';
+const VERSION = '1124-responsive-920';
 const isGalleryVideo = src => /\.(mp4|webm|mov|m4v)(?:[?#]|$)/i.test(src || '');
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
@@ -63,10 +63,10 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
   <link rel="stylesheet" href="${assets}styles.css?v=${VERSION}" />
   <link rel="stylesheet" href="${assets}selected.css?v=reference-rows-1" />
   <link rel="stylesheet" href="${assets}assets/green-archive/brand.css?v=1" />
-  <link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=37" />
-  <link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=89" />
-  ${pageClass.includes('page-work') && ctx.section === 'works' ? `<link rel="stylesheet" href="${assets}assets/green-archive/detail.css?v=41" /><script src="${assets}assets/green-archive/detail.js?v=18" defer></script>` : ''}
-  <script src="${assets}assets/green-archive/menu.js?v=27" defer></script>
+  <link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=38" />
+  <link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=94" />
+  ${pageClass.includes('page-work') && ctx.section === 'works' ? `<link rel="stylesheet" href="${assets}assets/green-archive/detail.css?v=44" /><script src="${assets}assets/green-archive/detail.js?v=19" defer></script>` : ''}
+  <script src="${assets}assets/green-archive/menu.js?v=28" defer></script>
   <script src="${assets}script.js?v=${VERSION}" defer${catalog === 'works' ? ` onerror="document.documentElement.classList.remove('works-reveal')"` : ''}></script>${ctx.section === 'lab' ? `\n  <script src="${assets}assets/lab-motion.js?v=${VERSION}" defer></script>` : ''}
   ${body.includes('<mux-player') ? '<script src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3.8.0" defer></script>' : ''}
 </head>
@@ -318,7 +318,7 @@ export function workPage(work, works, site, lang, section = 'works') {
     const details = [pick(item, 'meta_type', 'en'), item.year].filter(value => value != null && String(value).trim() !== '').map(value => esc(value)).join(' / ');
     return `<a class="related-card" href="${esc(item.slug)}.html"><div class="related-image">${src ? image(src,label,ctx) : `<span>${esc(label)}</span>`}</div><div class="related-caption"><h3>${esc(label)}</h3>${details ? `<span lang="en"> / ${details}</span>` : ''}</div></a>`;
   }).join('') : '';
-  const relatedSection = related ? `<section class="related-projects" aria-labelledby="related-title"><h2 id="related-title">${lang === 'ko' ? '이런 작업도 좋아하실 거예요' : 'You might also like'}</h2><div class="related-grid">${related}</div></section>` : '';
+  const relatedSection = related ? `<section class="related-projects" aria-labelledby="related-title"><h2 id="related-title" lang="en">You might also like</h2><div class="related-grid">${related}</div></section>` : '';
   const toolbar = section === 'lab' ? `<nav class="detail-toolbar" aria-label="${c[section]}"><a class="archive-back" href="../${section}.html">← ${c.back}</a><span class="eyebrow">Lab ${number(index + 1)}</span></nav>` : '';
   const body = `<article class="editorial-article work-article" aria-labelledby="page-title">
     ${section === 'lab' ? `<header class="feature-heading"><h1 class="post-title" id="page-title">${esc(title)}</h1></header>` : detailGallery}

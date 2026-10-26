@@ -43,5 +43,5 @@ body{font-optical-sizing:auto}.work-card h2{letter-spacing:.01em;font-weight:700
 .archive-results{display:none!important}
 .archive-empty{padding:56px 0;font-size:16px}
 .archive-empty a{display:inline-block;margin-top:20px;text-decoration:underline;text-underline-offset:4px}
-@media(max-width:1000px){.archive-layout.page-archive{--works-columns:2;--works-column-gap:32px}}
-@media(max-width:700px){.archive-layout.page-archive{--works-column-gap:var(--layout-gap)}}
+@media(max-width:1280px){.archive-layout.page-archive{--works-columns:2;--works-column-gap:32px}}
+@media(max-width:920px){.archive-layout.page-archive{--works-column-gap:var(--layout-gap)}}

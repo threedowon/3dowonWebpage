@@ -4,9 +4,9 @@
 /* Three horizontal lines beside the logo, centered within its height. */
 .vertical-note,.identity-note{display:flex;flex-direction:column;flex:none;gap:0;width:max-content;margin:0;align-items:flex-start;align-self:center}
 .vertical-note span,.identity-note span{display:block;flex:none;writing-mode:horizontal-tb;white-space:nowrap}
-@media(min-width:701px) and (max-width:1000px){
+@media(min-width:921px) and (max-width:1280px){
  .identity,.persistent-identity{column-gap:12px}
 }
-@media(max-width:700px){
+@media(max-width:920px){
  .identity,.persistent-identity{display:none}
 }
