@@ -3,8 +3,9 @@
   "title": "My Own Sun",
   "year": 2026,
   "month": null,
-  "type": "피지컬 컴퓨팅",
+  "type": "인터랙티브",
   "tags": [
+    "인터랙티브",
     "피지컬 컴퓨팅"
   ],
   "tech": [
@@ -13,19 +14,19 @@
   ],
   "production": "개인",
   "thumbnail": "",
-  "grid_type_label": "피지컬 컴퓨팅",
-  "index_type_label": "피지컬 컴퓨팅",
+  "grid_type_label": "인터랙티브, 피지컬 컴퓨팅",
+  "index_type_label": "인터랙티브, 피지컬 컴퓨팅",
   "preview_bg": "",
   "hero_image": "",
   "meta_year": "2026",
-  "meta_type": "피지컬 컴퓨팅",
-  "meta_medium": "피지컬 컴퓨팅",
+  "meta_type": "인터랙티브, 피지컬 컴퓨팅",
+  "meta_medium": "인터랙티브, 피지컬 컴퓨팅",
   "meta_tech": "Unreal Engine, Physical Computing",
   "meta_tech_en": "Unreal Engine, Physical Computing",
   "meta_production": "개인",
   "meta_production_en": "Solo",
-  "description": "",
-  "description_en": "",
+  "description": "<p>늦은 밤 집에 들어오는 것이 일상이 되었습니다.</p>\n            <p>햇빛을 보고 싶어도 볼 수 없는 날들이 계속되었고, 언젠가부터는 내가 만든 햇빛이라도 보고 싶다는 생각을 하게 되었습니다.</p>\n            <p>이 작품은 그 마음에서 시작되었습니다.</p>\n            <p>창문을 열어보세요.</p>\n            <p>시간과 상관없이 햇빛이 들어오고, 열리는 정도에 따라 빛과 그림자가 달라집니다.</p>",
+  "description_en": "<p>Coming home late at night has become a part of my daily routine.</p>\n            <p>Days went by when I couldn’t see the sunlight even if I wanted to, and at some point, I found myself wishing I could at least see some sunlight of my own making.</p>\n            <p>This piece began with that feeling.</p>\n            <p>Open the window.</p>\n            <p>Sunlight streams in regardless of the time of day, and the interplay of light and shadow changes depending on how far you open the window.</p>",
   "vimeo_url": "",
   "gallery": [
     "/3dowonWebpage/assets/uploads/sun-1793106221614-730752.jpg",
@@ -35,10 +36,10 @@
     "/3dowonWebpage/assets/uploads/sun-1793106223349-421715.jpg",
     "/3dowonWebpage/assets/uploads/lab-b6d76303-e788-4ade-ade7-6e0d7db2ed1e.mp4"
   ],
-  "grid_type_label_en": "Physical Computing",
-  "index_type_label_en": "Physical Computing",
-  "meta_type_en": "Physical Computing",
-  "meta_medium_en": "Physical Computing",
+  "grid_type_label_en": "Interactive, Physical Computing",
+  "index_type_label_en": "Interactive, Physical Computing",
+  "meta_type_en": "Interactive, Physical Computing",
+  "meta_medium_en": "Interactive, Physical Computing",
   "detail_background": "#ffffff",
   "detail_columns": 1,
   "responsibilities": "",
@@ -53,5 +54,9 @@
     "playback_id": "GyGxj39Ob95VYFwnGjX8s4L4DRZ02LSgQbowDbZCI9xI",
     "aspect_ratio": "9:16"
   },
-  "detail_rows": []
+  "detail_rows": [],
+  "related_projects": [
+    "soft-machine",
+    "shipping-time"
+  ]
 }
