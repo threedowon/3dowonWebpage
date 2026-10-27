@@ -56,6 +56,7 @@ export async function autoTranslateWorks(work, previous = {}, translate = transl
     if(/[가-힣]/.test(text)&&!manual&&(text!==before?.[key]||!english||previous.works_translation_pending))fields.push({target,key,text});
   };
   add(work,previous,'description');
+  add(work,previous,'lessons');
   if (!Array.isArray(work.responsibility_items)) add(work,previous,'responsibilities');
   (work.responsibility_items || []).forEach(entry => {
     const before = (previous.responsibility_items || []).find(old => old.id === entry.id) || {};

@@ -48,7 +48,7 @@ function createProcessEditor(form, work) {
   const host = document.createElement('section');
   host.className = 'work-process-editor';
   host.innerHTML = '<h4>Process · 제작 과정</h4><p class="field-help">제목과 설명은 오른쪽에, 추가한 미디어는 왼쪽 회색 영역에 표시됩니다. 각 과정에 파일을 직접 여러 개 올릴 수 있고, 파일 없이 글만 작성해도 됩니다. 영상은 무음 자동 반복 재생됩니다. 변경 사항은 입력을 마치면 자동 저장됩니다.</p><div class="process-entry-list"></div><button type="button" class="process-add">+ 과정 추가</button>';
-  form.querySelector('[name="responsibilities"]').closest('.field-row').after(host);
+  form.querySelector('[name="lessons"]').closest('section').after(host);
   form.querySelector('[name="production"]').closest('label').after(form.querySelector('[name="company"]').closest('label'));
   let entries = [];
   let uploading = false;
@@ -220,6 +220,8 @@ function captureWorkForm(form) {
     company: fd.get('company'),
     responsibilities: fd.get('responsibilities'),
     responsibilities_en: fd.get('responsibilities_en'),
+    lessons: fd.get('lessons'),
+    lessons_en: fd.get('lessons_en'),
     responsibility_items: form.responsibilitiesEditor?.get(),
     process: form.processEditor?.get(),
     tech: fd.getAll('tech'),
@@ -236,7 +238,7 @@ function applyWorkForm(form, draft) {
   form.title.value = draft.title ?? '';
   form.year.value = draft.year ?? '';
   form.production.value = draft.production ?? '';
-  for(const key of ['company','responsibilities','responsibilities_en']) form.elements.namedItem(key).value=draft[key]??'';
+  for(const key of ['company','responsibilities','responsibilities_en','lessons','lessons_en']) form.elements.namedItem(key).value=draft[key]??'';
   form.processEditor?.set(draft.process);
   form.responsibilitiesEditor?.set(draft.responsibility_items);
   form.description.value = draft.description ?? '';
@@ -636,6 +638,7 @@ function renderWorkCard(work, works) {
         <p class="field-help">저장 시 한글 소개·주요 업무·Process 제목과 내용을 영어로 자동 번역합니다. 직접 수정한 영어는 유지합니다. DeepL 키는 Lab 상단에서 공통으로 설정합니다.</p><label>소개 (엔터로 줄바꿈)<textarea name="description" rows="4">${escapeHtml(work.description)}</textarea></label>
         <label>소개 (EN · 저장 시 자동 번역)<textarea name="description_en" rows="4" placeholder="한글 소개를 작성하고 저장하면 자동으로 채워집니다.">${escapeHtml(work.description_en)}</textarea></label>
         <div class="field-row"><label>주요 업무<textarea name="responsibilities" rows="4">${escapeHtml(work.responsibilities||'')}</textarea></label><label>주요 업무 (EN · 저장 시 자동 번역)<textarea name="responsibilities_en" rows="4" placeholder="한글 주요 업무를 작성하고 저장하면 자동으로 채워집니다.">${escapeHtml(work.responsibilities_en||'')}</textarea></label></div>
+        <section class="work-lessons-editor"><h4>문제 해결과 배운 점</h4><p class="field-help">겪었던 어려움, 해결 과정, 배운 점을 작성하세요. 입력을 마치면 자동 저장되며 영어도 자동 번역됩니다. 비워두면 홈페이지에 표시되지 않습니다.</p><label>내용<textarea name="lessons" rows="5" placeholder="어떤 어려움이 있었고, 어떻게 해결했으며, 무엇을 배웠나요?">${escapeHtml(work.lessons||'')}</textarea></label><label>내용 (EN · 저장 시 자동 번역)<textarea name="lessons_en" rows="5">${escapeHtml(work.lessons_en||'')}</textarea></label></section>
         <label>회사명 (회사 작업일 때)<input name="company" placeholder="d'strict" value="${escapeAttr(work.company||'')}" /></label>
         <label>외부 영상 링크 · Vimeo<input name="vimeo_url" value="${escapeAttr(work.vimeo_url)}" /></label>
         <div class="field-row"><label>상세 이미지 배경색<input type="color" name="detail_background" value="${/^#[0-9a-f]{6}$/i.test(work.detail_background || '') ? work.detail_background : '#ffffff'}" /></label><button type="button" class="reset-detail-background">기본 흰색으로</button></div>
@@ -786,7 +789,7 @@ function renderWorkCard(work, works) {
             body: JSON.stringify({...draft, detail_columns: work.detail_rows ? 1 : Number(draft.detail_columns)}),
           });
           const changed = JSON.stringify(captureWorkForm(editForm)) !== snapshot;
-          for (const key of ['description_en', 'responsibilities_en']) {
+          for (const key of ['description_en', 'responsibilities_en', 'lessons_en']) {
             if (editForm.elements.namedItem(key).value === draft[key]) editForm.elements.namedItem(key).value = updated[key] || '';
           }
           receiveTranslations(updated.process);

@@ -249,7 +249,8 @@ function detailDescription(work, ctx) {
     }).join('')
     : richText(pick(work, 'responsibilities', ctx.lang)) || parts.slice(1).join('');
   return section(ctx.lang === 'ko' ? '소개' : 'Introduction', parts[0], true)
-    + section(ctx.lang === 'ko' ? '주요 업무' : 'Responsibilities', responsibilities);
+    + section(ctx.lang === 'ko' ? '주요 업무' : 'Responsibilities', responsibilities)
+    + section(ctx.lang === 'ko' ? '문제 해결과 배운 점' : 'Challenges & Lessons Learned', richText(pick(work, 'lessons', ctx.lang)));
 }
 
 function projectContent(work, ctx) {

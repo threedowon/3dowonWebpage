@@ -128,7 +128,7 @@ app.put('/api/tech-options', (req, res) => {
 
 function adminWork(work) {
   const result={...work};
-  for(const key of ['description','description_en','responsibilities','responsibilities_en']) result[key]=descriptionHtmlToPlainText(work[key]);
+  for(const key of ['description','description_en','responsibilities','responsibilities_en','lessons','lessons_en']) result[key]=descriptionHtmlToPlainText(work[key]);
   result.process=(work.process||[]).map(entry=>({...entry,description:descriptionHtmlToPlainText(entry.description),description_en:descriptionHtmlToPlainText(entry.description_en)}));
   return result;
 }
@@ -203,7 +203,7 @@ app.put('/api/works/:slug', asyncHandler(async (req, res) => {
     work.meta_tech = work.tech.join(', ');
     work.meta_tech_en = work.meta_tech;
   }
-  for (const key of ['responsibilities','responsibilities_en','company']) {
+  for (const key of ['responsibilities','responsibilities_en','lessons','lessons_en','company']) {
     if(req.body[key] === undefined) continue;
     if(typeof req.body[key] !== 'string' || req.body[key].length > 50000) return res.status(400).json({error:'입력 내용을 확인해주세요.'});
     work[key] = key === 'company' ? req.body[key].trim() : plainTextToDescriptionHtml(req.body[key]);
@@ -237,15 +237,16 @@ app.put('/api/works/:slug', asyncHandler(async (req, res) => {
   work.meta_production_en = PRODUCTION_EN[work.production] || work.production;
   if(work.production === '회사' && work.company){work.meta_production += `. ${work.company}`;work.meta_production_en += `. ${work.company}`;}
   saveJson(`content/works/${req.params.slug}.json`, work);
-  const snapshot=JSON.stringify([work.description,work.description_en,work.responsibilities,work.responsibilities_en,work.process,work.responsibility_items]);
+  const snapshot=JSON.stringify([work.description,work.description_en,work.responsibilities,work.responsibilities_en,work.lessons,work.lessons_en,work.process,work.responsibility_items]);
   const warning=await autoTranslateWorks(work,previous);
   if(!listWorkSlugs().includes(req.params.slug))return res.status(404).json({error:'번역 중 프로젝트가 삭제되었어요.'});
   const latest=loadWork(req.params.slug);
-  if(JSON.stringify([latest.description,latest.description_en,latest.responsibilities,latest.responsibilities_en,latest.process,latest.responsibility_items])!==snapshot){
+  if(JSON.stringify([latest.description,latest.description_en,latest.responsibilities,latest.responsibilities_en,latest.lessons,latest.lessons_en,latest.process,latest.responsibility_items])!==snapshot){
     build();return res.json({...adminWork(latest),translationWarning:'다른 화면에서 내용이 변경되어 이전 번역을 적용하지 않았어요.'});
   }
   latest.works_translation_pending=work.works_translation_pending;
   latest.description_en=work.description_en;latest.responsibilities_en=work.responsibilities_en;
+  latest.lessons_en=work.lessons_en;
   if (work.responsibility_items) latest.responsibility_items = work.responsibility_items;
   (latest.process||[]).forEach((entry,i)=>{entry.title_en=work.process[i].title_en;entry.description_en=work.process[i].description_en;});
   saveJson(`content/works/${req.params.slug}.json`,latest);
