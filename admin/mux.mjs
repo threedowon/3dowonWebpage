@@ -16,7 +16,20 @@ export function createMuxClient({directory = path.join(os.homedir(), '.3dowon-ad
       method, headers:{Authorization:`Basic ${Buffer.from(`${keys.id}:${keys.secret}`).toString('base64')}`, 'Content-Type':'application/json'},
       ...(body ? {body:JSON.stringify(body)} : {}), signal:AbortSignal.timeout(30000),
     }); } catch { throw new Error('Mux 연결에 실패했어요. 잠시 후 다시 시도해주세요.'); }
-    if (!response.ok) throw new Error(response.status===401 || response.status===403 ? 'Mux 키와 Video 읽기/쓰기 권한을 확인해주세요.' : `Mux 요청 실패 (${response.status}). 다시 시도해주세요.`);
+    if (!response.ok) {
+      let detail = '';
+      try {
+        const payload = await response.json();
+        const error = payload?.error || payload;
+        detail = [error?.type, error?.code, error?.message || error?.error].filter(Boolean).join(': ');
+      } catch {
+        try { detail = (await response.text()).trim(); } catch {}
+      }
+      if (response.status===401 || response.status===403) {
+        throw new Error(`Mux 키와 Video 읽기/쓰기 권한을 확인해주세요.${detail ? ` (${detail})` : ''}`);
+      }
+      throw new Error(`Mux 요청 실패 (${response.status})${detail ? `: ${detail}` : '. 다시 시도해주세요.'}`);
+    }
     return (await response.json()).data;
   }
   return {
