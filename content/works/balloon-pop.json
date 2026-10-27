@@ -20,15 +20,82 @@
   "meta_tech_en": "",
   "meta_production": "개인",
   "meta_production_en": "Solo",
-  "description": "",
-  "description_en": "",
+  "description": "<p>I M Fine에서 진행한 프로젝트입니다.</p>\n            <p>개인 모바일 기기의 자이로스코프 데이터를 활용하여 다트를 던지면, 그 모션을 인식해 대형 디스플레이 속 풍선을 맞혀 터뜨리는 인터렉티브 콘텐츠입니다.</p>",
+  "description_en": "<p>This is a project carried out by I M Fine.</p>\n            <p>It is an interactive experience that uses gyroscope data from personal mobile devices to recognize the motion of a dart throw and hit and pop balloons on a large display.</p>",
   "vimeo_url": "",
   "gallery": [
-    "/3dowonWebpage/assets/uploads/balloon-pop-1789064034497-306794.jpg",
-    "/3dowonWebpage/assets/uploads/balloon-pop-1789064036805-107892.jpg"
+    "/3dowonWebpage/assets/uploads/balloon-pop-1793107857244-864115.jpg",
+    "/3dowonWebpage/assets/uploads/balloon-pop-1793107857266-197093.jpg",
+    "/3dowonWebpage/assets/uploads/balloon-pop-1793107857291-744746.jpg",
+    "/3dowonWebpage/assets/uploads/lab-6e58741b-779b-4939-9831-fa1030bed20b.mp4",
+    "/3dowonWebpage/assets/uploads/lab-dc622c9f-976b-4d26-a15e-08ca409fa192.mp4",
+    "/3dowonWebpage/assets/uploads/lab-79b9b0f0-7b80-4795-b015-a576db07c1d9.mp4",
+    "/3dowonWebpage/assets/uploads/lab-c9f2529f-6df4-420f-9208-6247fea5ecef.mp4"
   ],
   "grid_type_label_en": "Interactive",
   "index_type_label_en": "Interactive",
   "meta_type_en": "Interactive",
-  "meta_medium_en": "Interactive"
+  "meta_medium_en": "Interactive",
+  "detail_rows": [
+    [
+      "/3dowonWebpage/assets/uploads/balloon-pop-1793107726160-220935.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/balloon-pop-1789064036805-107892.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/balloon-pop-1793107726183-683440.jpg"
+    ]
+  ],
+  "detail_columns": 1,
+  "cover_image": "/3dowonWebpage/assets/uploads/balloon-pop-1793107857244-864115.jpg",
+  "hover_image": "/3dowonWebpage/assets/uploads/balloon-pop-1793107857266-197093.jpg",
+  "mux": {
+    "upload_id": "SBaX6OMXEAjyXwTHlhiY15mMQ01CVe2iQ1A1jBjJbH9Q",
+    "asset_id": "LTdynVGYEPmgJ93g01V122uKARKcgDy00W00EwPWmX75gM",
+    "playback_id": "IoOOdHGiBXjxYVh01aAQo2pp8xTMr5gtUdf3fhN7Vndk",
+    "aspect_ratio": "16:9"
+  },
+  "month": null,
+  "detail_background": "#ffffff",
+  "responsibilities": "",
+  "responsibilities_en": "",
+  "company": "I M Fine",
+  "responsibility_items": [
+    {
+      "id": "9345da20-5e82-4010-b686-2939c110c0f7",
+      "title": "풍선 재질감 표현 (Physics R&D)",
+      "title_en": "Rendering the Texture of Balloons (Physics R&amp;D)",
+      "description": "- Unreal Engine의 물리 시스템을 활용하여 풍선의 형태를 유지하면서 눌리고 구부러지는 물성 연구\n- 충돌과 힘의 방향에 따라 풍선의 형태와 움직임이 달라지는 물리 반응 구현",
+      "description_en": "- Conducted research on physical properties using Unreal Engine&#x27;s physics system to depict the characteristics of a balloon that is rigid yet can be compressed and bent\n- Implemented balloon movement that reacts based on the direction of collisions and forces, rather than simply scaling the model"
+    },
+    {
+      "id": "b0587f1c-0361-4a6d-b8ea-46fb3b69ec15",
+      "title": "바람에 흔들리는 풍선 움직임 연출",
+      "title_en": "Creating the Effect of a Balloon Swaying in the Wind",
+      "description": "게임의 재미를 높이기 위해 풍선이 바람에 흔들리듯 위아래로 움직이는 동작 구현",
+      "description_en": "Implemented an animation where the balloon moves up and down, as if swaying in the wind, to enhance the game&#x27;s enjoyment"
+    },
+    {
+      "id": "ece6deed-72bf-49af-9b8f-a6c2a4ef8fa6",
+      "title": "자이로 데이터 기반 과녁, 다트 인터랙션 구현",
+      "title_en": "Implementing Gyro-Based Target and Dart Interaction",
+      "description": "- 모바일 기기의 자이로스코프 데이터를 실시간으로 수신하여 과녁 움직임에 반영하는 시스템 구현\n- 자이로 입력의 변화량이 설정된 임계값을 초과하면 다트가 발사되는 로직 구현\n- 기기 움직임이 게임에 즉각 반영되도록 입력 처리 및 반응 타이밍 조정",
+      "description_en": "- Implemented a system that receives gyroscope data from mobile devices in real time and reflects it in the target&#x27;s movement\n- Implemented logic that launches a dart when the change in gyroscope input exceeds a set threshold\n- Adjusted input processing and response timing so that device movements are immediately reflected in the game"
+    },
+    {
+      "id": "7611e8a1-ed52-4582-a432-d697ba8a3033",
+      "title": "풍선 파괴 및 재생성 구조 설계",
+      "title_en": "Design of a Structure for Balloon Destruction and Regeneration",
+      "description": "- 다트와 풍선의 충돌 감지 및 풍선 파괴 이벤트 구현\n- 파괴된 풍선을 대체할 새 풍선이 화면 하단에서 생성되어 상승하는 구조 설계\n- 플레이가 끊김 없이 반복되도록 풍선의 생성·파괴 상태 관리 로직 구현",
+      "description_en": "- Implemented collision detection between darts and balloons, as well as balloon destruction events\n- Designed a system where new balloons are generated at the bottom of the screen and rise to replace destroyed balloons\n- Implemented logic to manage the creation and destruction of balloons to ensure seamless, continuous gameplay"
+    }
+  ],
+  "process": [],
+  "works_translation_pending": false,
+  "related_projects": [
+    "botanic-brush",
+    "neural-garden",
+    "slow-circuit"
+  ]
 }

@@ -2,26 +2,32 @@
   "slug": "light-archive",
   "title": "3Dowon's Workdesk",
   "year": 2025,
-  "type": "전시",
+  "type": "인터랙티브",
   "tags": [
+    "인터랙티브",
+    "피지컬 컴퓨팅",
     "전시",
-    "인터랙티브"
+    "웹"
   ],
   "tech": [
-    "Unreal",
+    "Unreal Engine",
+    "Physical Computing",
+    "MediaPipe",
+    "JavaScript",
+    "Node.js",
     "Arduino"
   ],
   "production": "개인",
   "thumbnail": "/3dowonWebpage/assets/uploads/light-archive-1783466565780-590609.jpg",
-  "grid_type_label": "전시, 인터랙티브",
-  "index_type_label": "전시, 인터랙티브",
+  "grid_type_label": "인터랙티브, 피지컬 컴퓨팅, 전시, 웹",
+  "index_type_label": "인터랙티브, 피지컬 컴퓨팅, 전시, 웹",
   "preview_bg": "/3dowonWebpage/assets/uploads/light-archive-1783466565780-590609.jpg",
   "hero_image": "/3dowonWebpage/assets/uploads/light-archive-1783466565780-590609.jpg",
   "description": "<p>빛의 기록을 아카이브 형식으로 재구성한 대형 영상 설치입니다.</p>",
   "meta_year": "2025",
-  "meta_type": "전시, 인터랙티브",
-  "meta_medium": "전시, 인터랙티브",
-  "meta_tech": "Unreal, Arduino",
+  "meta_type": "인터랙티브, 피지컬 컴퓨팅, 전시, 웹",
+  "meta_medium": "인터랙티브, 피지컬 컴퓨팅, 전시, 웹",
+  "meta_tech": "Unreal Engine, Physical Computing, MediaPipe, JavaScript, Node.js, Arduino",
   "meta_production": "개인",
   "gallery": [
     "/3dowonWebpage/assets/uploads/light-archive-1789063646317-474316.jpg",
@@ -35,11 +41,25 @@
     "/3dowonWebpage/assets/uploads/light-archive-1789063700851-711482.jpg"
   ],
   "vimeo_url": "",
-  "grid_type_label_en": "Exhibition, Interactive",
-  "index_type_label_en": "Exhibition, Interactive",
-  "meta_type_en": "Exhibition, Interactive",
-  "meta_medium_en": "Exhibition, Interactive",
-  "meta_tech_en": "Unreal, Arduino",
+  "grid_type_label_en": "Interactive, Physical Computing, Exhibition, Web",
+  "index_type_label_en": "Interactive, Physical Computing, Exhibition, Web",
+  "meta_type_en": "Interactive, Physical Computing, Exhibition, Web",
+  "meta_medium_en": "Interactive, Physical Computing, Exhibition, Web",
+  "meta_tech_en": "Unreal Engine, Physical Computing, MediaPipe, JavaScript, Node.js, Arduino",
   "meta_production_en": "Solo",
-  "description_en": "<p>A large-scale video installation reconstructing a record of light in an archival format.</p>"
+  "description_en": "<p>A large-scale video installation reconstructing a record of light in an archival format.</p>",
+  "hover_image": "/3dowonWebpage/assets/uploads/light-archive-1789063662522-394206.jpg",
+  "related_projects": [
+    "sun",
+    "echo-chamber"
+  ],
+  "month": null,
+  "detail_background": "#ffffff",
+  "detail_columns": 1,
+  "responsibilities": "",
+  "responsibilities_en": "",
+  "company": "",
+  "responsibility_items": [],
+  "process": [],
+  "works_translation_pending": false
 }
