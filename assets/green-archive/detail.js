@@ -39,7 +39,7 @@
     const video = item.querySelector('video,mux-player,iframe');
     const playbackId = item.querySelector('mux-player')?.getAttribute('playback-id');
     const src = sourceImage?.getAttribute('src') || video?.getAttribute('poster') ||
-      (playbackId ? `https://image.mux.com/${playbackId}/thumbnail.jpg?time=2` : track.querySelector('img')?.getAttribute('src'));
+      (playbackId ? `https://image.mux.com/${playbackId}/thumbnail.jpg?time=0` : null);
     if (src) {
       const preview = document.createElement('img');
       preview.src = src;
@@ -47,11 +47,26 @@
       preview.loading = 'lazy';
       preview.decoding = 'async';
       button.append(preview);
+    } else if (video?.matches('video')) {
+      const preview = document.createElement('video');
+      preview.muted = true;
+      preview.playsInline = true;
+      preview.preload = 'metadata';
+      preview.setAttribute('aria-hidden', 'true');
+      preview.tabIndex = -1;
+      const source = video.getAttribute('src') || video.querySelector('source')?.getAttribute('src');
+      if (source) {
+        preview.src = source;
+        preview.addEventListener('loadedmetadata', () => {
+          if (Number.isFinite(preview.duration) && preview.duration > 0) preview.currentTime = Math.min(0.1, preview.duration / 2);
+        }, {once:true});
+        button.append(preview);
+      }
     }
     if (video || !src) {
       const label = document.createElement('span');
-      label.className = 'detail-thumbnail-label';
-      label.textContent = video ? '▷' : String(index + 1);
+      label.className = video ? 'detail-thumbnail-label detail-thumbnail-play' : 'detail-thumbnail-label';
+      label.textContent = video ? '▶' : String(index + 1);
       label.setAttribute('aria-hidden','true');
       button.append(label);
     }
