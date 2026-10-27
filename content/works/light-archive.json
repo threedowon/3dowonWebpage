@@ -38,7 +38,10 @@
     "/3dowonWebpage/assets/uploads/light-archive-1789063672565-136469.jpg",
     "/3dowonWebpage/assets/uploads/light-archive-1789063678960-782440.jpg",
     "/3dowonWebpage/assets/uploads/light-archive-1789063697229-575885.jpg",
-    "/3dowonWebpage/assets/uploads/light-archive-1789063700851-711482.jpg"
+    "/3dowonWebpage/assets/uploads/light-archive-1789063700851-711482.jpg",
+    "/3dowonWebpage/assets/uploads/lab-ec4c01bc-4fff-4659-88fc-6ffb76af2b1d.mp4",
+    "/3dowonWebpage/assets/uploads/lab-28005628-da08-4a2b-b1df-c0bc7b9fd929.mp4",
+    "/3dowonWebpage/assets/uploads/lab-be4a7b49-af13-428f-912d-0d41c2eea067.mp4"
   ],
   "vimeo_url": "",
   "grid_type_label_en": "Interactive, Physical Computing, Exhibition, Web",
@@ -48,7 +51,7 @@
   "meta_tech_en": "Unreal Engine, Physical Computing, MediaPipe, JavaScript, Node.js, Arduino",
   "meta_production_en": "Solo",
   "description_en": "<p>A large-scale video installation reconstructing a record of light in an archival format.</p>",
-  "hover_image": "/3dowonWebpage/assets/uploads/light-archive-1789063662522-394206.jpg",
+  "hover_image": "/3dowonWebpage/assets/uploads/light-archive-1793112166304-249984.jpg",
   "related_projects": [
     "sun",
     "echo-chamber"

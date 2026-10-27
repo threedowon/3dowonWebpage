@@ -23,8 +23,8 @@
   "meta_production": "개인",
   "gallery": [
     "/3dowonWebpage/assets/uploads/soft-machine-1789062919288-465917.jpg",
-    "/3dowonWebpage/assets/uploads/soft-machine-1789062921517-446570.jpg",
-    "/3dowonWebpage/assets/uploads/soft-machine-1789062923962-681435.jpg"
+    "/3dowonWebpage/assets/uploads/soft-machine-1789062923962-681435.jpg",
+    "/3dowonWebpage/assets/uploads/soft-machine-1789062921517-446570.jpg"
   ],
   "grid_type_label_en": "Video",
   "index_type_label_en": "Video",
@@ -39,5 +39,19 @@
     "asset_id": "poSrn2QZRh00fL102hG33oXIeTENLQedI5bnpyTVEt1as",
     "playback_id": "02Ehqmd8uV9Ua5KVtkSaNUIvVbjigImKcb01caR7d2ITU",
     "aspect_ratio": "16:9"
-  }
+  },
+  "cover_image": "/3dowonWebpage/assets/uploads/soft-machine-1793111589042-611942.jpg",
+  "hover_image": "/3dowonWebpage/assets/uploads/soft-machine-1793111591596-413391.jpg",
+  "detail_rows": [
+    [
+      "/3dowonWebpage/assets/uploads/soft-machine-1789062919288-465917.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/soft-machine-1789062923962-681435.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/soft-machine-1789062921517-446570.jpg"
+    ]
+  ],
+  "detail_columns": 1
 }
