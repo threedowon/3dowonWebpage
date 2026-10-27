@@ -9,6 +9,9 @@ import { workCoverImage } from '../../admin/public/work-images.mjs';
 
 const VERSION = '1127-white-default-background';
 const isGalleryVideo = src => /\.(mp4|webm|mov|m4v)(?:[?#]|$)/i.test(src || '');
+const productionLabel = (work, lang) => work.production === '회사' && work.company?.trim()
+  ? work.company.trim()
+  : String(pick(work, 'meta_production', lang) || '').replace(/^(?:회사|Company)\s*[.·:]\s*/i, '');
 const COPY = {
   ko: { works: '작업', lab: '실험', about: '소개', portfolio: '포트폴리오', cv: '이력', photos: '사진', index: '목차', allYears: '모든 연도', allFields: '모든 분야', space: '공간', object: '오브젝트', screen: '스크린', year: '연도', field: '분야', name: '작업명', back: '작업 목록', previous: '이전 작업', next: '다음 작업', close: '닫기', enlarge: '크게 보기', practice: '작업', approach: '작업 방식', fields: '작업 분야', noResults: '조건에 맞는 작업이 없습니다.', reset: '필터 초기화', note: '빛, 공간, 일상의 사물을 연결하는\n인터랙티브 설치와 미디어 실험.', artist: '인터랙티브 미디어 아티스트', type: '유형', medium: '매체', tech: '기술', production: '제작', skip: '본문으로 이동' },
   en: { works: 'Works', lab: 'Lab', about: 'About', portfolio: 'Portfolio', cv: 'CV', photos: 'Images', index: 'Index', allYears: 'All years', allFields: 'All fields', space: 'Space', object: 'Object', screen: 'Screen', year: 'Year', field: 'Field', name: 'Project', back: 'All works', previous: 'Previous work', next: 'Next work', close: 'Close', enlarge: 'Enlarge image', practice: 'Practice', approach: 'Approach', fields: 'Fields', noResults: 'No work matches these filters.', reset: 'Reset filters', note: 'How do familiar objects change\nour experience of space? How do familiar actions\nchange our experience of space?', artist: 'Interactive Media Artist', type: 'Type', medium: 'Medium', tech: 'Technology', production: 'Production', skip: 'Skip to content' },
@@ -65,7 +68,7 @@ function shell(ctx, site, { active, title, body, pageClass = '', toolbar = '', c
   <link rel="stylesheet" href="${assets}assets/green-archive/brand.css?v=1" />
   <link rel="stylesheet" href="${assets}assets/green-archive/menu.css?v=38" />
   <link rel="stylesheet" href="${assets}assets/green-archive/layout.css?v=97" />
-  ${pageClass.includes('page-work') && ctx.section === 'works' ? `<link rel="stylesheet" href="${assets}assets/green-archive/detail.css?v=51" /><script src="${assets}assets/green-archive/detail.js?v=20" defer></script>` : ''}
+  ${pageClass.includes('page-work') && ctx.section === 'works' ? `<link rel="stylesheet" href="${assets}assets/green-archive/detail.css?v=52" /><script src="${assets}assets/green-archive/detail.js?v=20" defer></script>` : ''}
   <script src="${assets}assets/green-archive/menu.js?v=28" defer></script>
   <script src="${assets}script.js?v=${VERSION}" defer${catalog === 'works' ? ` onerror="document.documentElement.classList.remove('works-reveal')"` : ''}></script>${ctx.section === 'lab' ? `\n  <script src="${assets}assets/lab-motion.js?v=${VERSION}" defer></script>` : ''}
   ${body.includes('<mux-player') ? '<script src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3.8.0" defer></script>' : ''}
@@ -104,7 +107,7 @@ function overviewGrid(works, ctx, toolbar = '') {
     const title = pick(work, 'title', ctx.lang);
     const projectNumber = number(index + 1);
     const field = work.field || formKey(workFormY(work));
-    const medium = pick(work, 'meta_medium', ctx.lang) || pick(work, 'meta_type', ctx.lang) || ctx.c[field];
+    const medium = pick(work, 'meta_medium', 'en') || pick(work, 'meta_type', 'en') || ctx.c[field];
     const categories = [...new Set(medium.split(/[,，]/).map((value) => value.trim()).filter(Boolean))];
     const media = overviewImages(work, ctx);
     const href = `${ctx.directory}/${work.slug}.html`;
@@ -144,7 +147,7 @@ export function catalogPage(works, site, lang, relPath = 'works.html', section =
     const cards = selected.map((work, index) => {
       const title = pick(work, 'title', lang);
       const photos = overviewImages(work, ctx).filter(src => !isGalleryVideo(src)).slice(0, 3);
-      const facts = [[c.type, pick(work, 'meta_type', lang)], [c.tech, pick(work, 'meta_tech', lang) || (work.tech || []).join(', ')], [c.production, pick(work, 'meta_production', lang)], [c.year, work.year]].filter(([, value]) => value);
+      const facts = [[c.type, pick(work, 'meta_type', 'en')], [c.tech, pick(work, 'meta_tech', lang) || (work.tech || []).join(', ')], [c.production, productionLabel(work, lang)], [c.year, work.year]].filter(([, value]) => value);
       return `<article class="reference-row"><a class="reference-title" href="work/${esc(work.slug)}.html"><h2>${esc(title)}</h2><span>${esc(work.year)}</span></a><dl class="reference-facts">${facts.map(([label,value]) => `<div><dt>${esc(label)}:</dt><dd>${esc(value)}</dd></div>`).join('')}</dl><div class="reference-photos">${photos.map((src,i) => `<a href="work/${esc(work.slug)}.html" aria-label="${esc(title)} — ${number(i+1)}">${image(src, title, ctx, {lazy:index > 2})}</a>`).join('')}</div></article>`;
     }).join('');
     const archive = works.map(work => `<a href="work/${esc(work.slug)}.html"><span>${esc(pick(work, 'title', lang))}</span><span>${esc(work.year)}</span></a>`).join('');
@@ -245,7 +248,7 @@ function detailDescription(work, ctx) {
       const title = pick(item, 'title', ctx.lang) || '';
       const description = pick(item, 'description', ctx.lang) || '';
       if (!title.trim() && !description.trim()) return '';
-      return `<section class="detail-responsibility">${title.trim() ? `<h4>${esc(title)}</h4>` : ''}${description.split(/\r?\n/).filter(line => line.trim()).map(line => `<p>${esc(line)}</p>`).join('')}</section>`;
+      return `<section class="detail-responsibility">${title.trim() ? `<h4>${esc(title)}</h4>` : ''}${description.split(/\r?\n/).filter(line => line.trim()).map(line => /^\s*[-•]\s+/.test(line) ? `<p class="responsibility-bullet">${esc(line.trim())}</p>` : `<p>${esc(line)}</p>`).join('')}</section>`;
     }).join('')
     : richText(pick(work, 'responsibilities', ctx.lang)) || parts.slice(1).join('');
   return section(ctx.lang === 'ko' ? '소개' : 'Introduction', parts[0], true)
@@ -271,8 +274,8 @@ function projectContent(work, ctx) {
   const video = (work.mux?.playback_id && /^[a-zA-Z0-9]+$/.test(work.mux.playback_id) ? `<div class="post-video"><div class="post-video-frame"><mux-player theme="${ctx.section === 'works' ? 'margin-video-theme' : 'portfolio-video-theme'}" playback-id="${work.mux.playback_id}" metadata-video-title="${esc(title)}" stream-type="on-demand" preload="metadata" accent-color="${background}" primary-color="${background}"></mux-player></div></div>` : '') || vimeoEmbedHtml(work.vimeo_url, title, background) || (work.video ? `<div class="post-video">${ctx.section === 'lab' ? labMotion(resolveMediaPath(work.video, ctx.assets), title, work, ctx) : `<video controls playsinline preload="metadata" aria-label="${esc(title)}" src="${esc(resolveMediaPath(work.video, ctx.assets))}"></video>`}</div>` : '');
   const figure = (src, position) => isGalleryVideo(src) ? `<figure class="project-image gallery-video">${ctx.section === 'lab' ? labMotion(src, title, work, ctx) : `<video src="${esc(src)}" autoplay muted loop playsinline preload="metadata" aria-label="${esc(title)} — ${position + 1}"></video>`}</figure>` : `<figure class="project-image"><a href="${esc(src)}" data-viewer="${esc(src)}" data-viewer-title="${esc(title)} — ${number(position + 1)}" aria-label="${esc(title)} ${position + 1} — ${c.enlarge}"><img src="${esc(src)}" alt="${esc(title)} — ${position + 1}" class="project-detail-image"${sizeAttributes(src)} ${position === 0 && !video ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a></figure>`;
   const metadata = [
-    [['year', year], ...(ctx.section === 'lab' ? [] : [['type', pick(work, 'meta_type', lang)]])],
-    [['tech', pick(work, 'meta_tech', lang)], ['production', pick(work, 'meta_production', lang)]],
+    [['year', year], ...(ctx.section === 'lab' ? [] : [['type', pick(work, 'meta_type', 'en')]])],
+    [['tech', pick(work, 'meta_tech', lang)], ['production', productionLabel(work, lang)]],
   ].map((entries) => entries.filter(([, value]) => value)).filter((entries) => entries.length)
     .map((entries) => `<dl class="work-meta">${entries.map(([label, value]) => `<div><dt>${label === 'year' ? (lang === 'ko' ? '날짜' : 'Date') : c[label]}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>`).join('');
   const columns = [1, 2, 3].includes(Number(work.detail_columns)) ? Number(work.detail_columns) : 1;

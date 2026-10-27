@@ -56,10 +56,11 @@
 .detail-disclosure-copy{padding:5px 0 20px calc(10px + var(--space-2));overflow-wrap:anywhere}
 .archive-layout.page-work .detail-disclosure-copy p{margin:0 0 var(--space-4)}
 .archive-layout.page-work .detail-disclosure-copy>:last-child{margin-bottom:0}
-.archive-layout.page-work .detail-disclosure-copy .detail-responsibility+.detail-responsibility{margin-top:28px}
-.archive-layout.page-work .detail-disclosure-copy .detail-responsibility>h4{margin:0 0 10px;line-height:1.5}
-.archive-layout.page-work .detail-disclosure-copy .detail-responsibility>p{margin:0;line-height:1.7}
-.archive-layout.page-work .detail-disclosure-copy .detail-responsibility>p+p{margin-top:6px}
+.archive-layout.page-work .detail-disclosure-copy .detail-responsibility+.detail-responsibility{margin-top:22px}
+.archive-layout.page-work .detail-disclosure-copy .detail-responsibility>h4{margin:0 0 4px;line-height:1.5}
+.archive-layout.page-work .detail-disclosure-copy .detail-responsibility>p{margin:0;line-height:1.6}
+.archive-layout.page-work .detail-disclosure-copy .detail-responsibility>p+p{margin-top:4px}
+.archive-layout.page-work .detail-disclosure-copy .detail-responsibility>.responsibility-bullet{padding-left:.85em;text-indent:-.85em}
 .archive-layout.page-work .detail-disclosure-copy :is(ul,ol){margin:0 0 var(--space-4);padding-left:var(--space-6)}
 .archive-layout.page-work .project-documents{margin:var(--space-6) 0 0}
 .archive-layout.page-work .project-documents a{display:block;padding:var(--space-2) 0}
