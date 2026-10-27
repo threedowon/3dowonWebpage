@@ -27,7 +27,14 @@
   "description": "",
   "description_en": "",
   "vimeo_url": "",
-  "gallery": [],
+  "gallery": [
+    "/3dowonWebpage/assets/uploads/sun-1793106221614-730752.jpg",
+    "/3dowonWebpage/assets/uploads/sun-1793106222082-449545.jpg",
+    "/3dowonWebpage/assets/uploads/sun-1793106222558-82243.jpg",
+    "/3dowonWebpage/assets/uploads/sun-1793106222971-738040.jpg",
+    "/3dowonWebpage/assets/uploads/sun-1793106223349-421715.jpg",
+    "/3dowonWebpage/assets/uploads/lab-b6d76303-e788-4ade-ade7-6e0d7db2ed1e.mp4"
+  ],
   "grid_type_label_en": "Physical Computing",
   "index_type_label_en": "Physical Computing",
   "meta_type_en": "Physical Computing",
@@ -39,5 +46,12 @@
   "company": "",
   "responsibility_items": [],
   "process": [],
-  "works_translation_pending": false
+  "works_translation_pending": false,
+  "mux": {
+    "upload_id": "lej401X6dOudixI600p4aMMRmIld7CwqSRCQp75iRLb6w",
+    "asset_id": "aN8MUZ00uuaVX5GVQq6nFc5ldV029kE96wonSL2eAJqss",
+    "playback_id": "GyGxj39Ob95VYFwnGjX8s4L4DRZ02LSgQbowDbZCI9xI",
+    "aspect_ratio": "9:16"
+  },
+  "detail_rows": []
 }

@@ -19,12 +19,15 @@ export function createMuxClient({directory = path.join(os.homedir(), '.3dowon-ad
     if (!response.ok) {
       let detail = '';
       try {
-        const payload = await response.json();
+        const raw = await response.text();
+        let payload;
+        try { payload = JSON.parse(raw); } catch { payload = {error:{message:raw}}; }
         const error = payload?.error || payload;
-        detail = [error?.type, error?.code, error?.message || error?.error].filter(Boolean).join(': ');
-      } catch {
-        try { detail = (await response.text()).trim(); } catch {}
-      }
+        detail = [error?.type, error?.code, ...(Array.isArray(error?.messages) ? error.messages : []), error?.message || error?.error].filter(value=>typeof value==='string' && value.trim()).join(': ');
+        for (const secret of [keys.id, keys.secret, Buffer.from(`${keys.id}:${keys.secret}`).toString('base64')]) {
+          if (secret) detail = detail.split(secret).join('[redacted]');
+        }
+      } catch {}
       if (response.status===401 || response.status===403) {
         throw new Error(`Mux 키와 Video 읽기/쓰기 권한을 확인해주세요.${detail ? ` (${detail})` : ''}`);
       }

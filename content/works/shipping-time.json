@@ -31,5 +31,11 @@
   "grid_type_label_en": "Interactive",
   "index_type_label_en": "Interactive",
   "meta_type_en": "Interactive",
-  "meta_medium_en": "Interactive"
+  "meta_medium_en": "Interactive",
+  "mux": {
+    "upload_id": "gOj6gKRghOnWZp11qgwSGJz4yI4sbqq3Xog6jx3hph8",
+    "asset_id": "t371028Wqq5kgu36SmBXEsy1290100UnX00gJtN00y00gl23M",
+    "playback_id": "y0125QsXizmHSnsy4MIdDC2NWctgB2sbP4ipQ02NrSUig",
+    "aspect_ratio": "16:9"
+  }
 }

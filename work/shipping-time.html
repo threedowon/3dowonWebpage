@@ -28,10 +28,71 @@ html.page-loaded body{animation:page-content-in .16s ease-out}
   <link rel="stylesheet" href="../assets/green-archive/detail.css?v=49" /><script src="../assets/green-archive/detail.js?v=19" defer></script>
   <script src="../assets/green-archive/menu.js?v=28" defer></script>
   <script src="../script.js?v=1127-white-default-background" defer></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3.8.0" defer></script>
 </head>
 <body class="portfolio archive-layout page-work page-archive-work quiet-site" data-home="../" data-section="works">
-
+  <template id="portfolio-video-theme">
+<style>
+:host{display:block;width:100%;height:100%;--media-tooltip-display:none;--media-primary-color:var(--detail-paper,#fff);--media-icon-color:var(--media-primary-color);--media-control-background:transparent;--media-control-hover-background:transparent;--media-control-padding:8px;--media-control-height:18px;--media-button-icon-width:18px;--media-button-icon-height:18px;--media-range-track-height:4px;--media-range-bar-color:var(--media-accent-color,var(--media-primary-color));--media-range-thumb-background:var(--media-primary-color);--media-range-thumb-width:8px;--media-range-thumb-height:8px;--media-time-range-buffered-color:#777;--media-range-track-background:#444;--media-menu-background:rgba(20,20,20,.96);--media-menu-color:#fff;--media-preview-time-background:#fff;--media-preview-time-color:#111;--media-preview-time-border-radius:3px;--media-font-family:InterVariable,Inter,sans-serif}
+media-controller{width:100%;height:100%;background:#000}
+media-control-bar{display:flex;align-items:center;width:100%;box-sizing:border-box;padding:6px 8px;gap:1px;background:linear-gradient(transparent,rgba(0,0,0,.65));}
+media-time-range{flex:1;min-width:30px;--media-range-padding:0 5px;--media-preview-thumbnail-max-width:140px}
+media-rendition-menu{--media-menu-flex-direction:column;position:absolute;right:40px;bottom:44px;min-width:130px;max-height:220px;overflow:auto;border-radius:4px}
+.volume{display:flex;align-items:center}.volume media-volume-range{width:0;max-width:64px;overflow:hidden;transition:width .15s}.volume:hover media-volume-range,.volume:focus-within media-volume-range{width:64px}
+media-playback-rate-button{min-width:34px;font-size:11px}
+media-preview-thumbnail{display:block}
+@media(max-width:480px){media-control-bar{padding:4px;gap:0;--media-control-padding:7px}.volume:hover media-volume-range,.volume:focus-within media-volume-range{width:44px}}
+</style>
+<media-controller defaultstreamtype="on-demand" keyboardforwardseekoffset="5" keyboardbackwardseekoffset="5">
+<slot name="media" slot="media"></slot><slot name="poster" slot="poster"></slot>
+<media-loading-indicator slot="centered-chrome"></media-loading-indicator>
+<media-error-dialog slot="dialog"></media-error-dialog>
+<media-control-bar>
+<media-play-button part="bottom play button"></media-play-button>
+<media-time-range part="bottom time range"><media-preview-thumbnail slot="preview"></media-preview-thumbnail><media-preview-time-display slot="preview"></media-preview-time-display></media-time-range>
+<div class="volume"><media-mute-button part="bottom mute button"></media-mute-button><media-volume-range part="bottom volume range"></media-volume-range></div>
+<media-rendition-menu-button part="bottom rendition button"><svg slot="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m9.5 2-.6 2.4-1.8 1-2.4-.7-2.5 4.3 1.8 1.7v2.1L2.2 15l2.5 4.3 2.4-.7 1.8 1 .6 2.4h5l.6-2.4 1.8-1 2.4.7 2.5-4.3-1.8-2.2v-2.1l1.8-1.7-2.5-4.3-2.4.7-1.8-1-.6-2.4h-5ZM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"/></svg></media-rendition-menu-button>
+<media-rendition-menu anchor="auto" hidden part="bottom rendition menu"></media-rendition-menu>
+<media-playback-rate-button rates="0.5 0.75 1 1.25 1.5 2" part="bottom playback-rate button"></media-playback-rate-button>
+<media-fullscreen-button part="bottom fullscreen button"></media-fullscreen-button>
+</media-control-bar>
+</media-controller>
+</template>
+<template id="margin-video-theme">
+<style>
+:host{display:block;width:100%;height:100%;--media-tooltip-display:none;--media-primary-color:#fff;--media-icon-color:#fff;--media-control-background:transparent;--media-control-hover-background:transparent;--media-font-family:InterVariable,Inter,sans-serif;--media-font-size:12px;--media-button-icon-width:22px;--media-button-icon-height:22px;--media-control-padding:10px;--media-range-track-height:2px;--media-range-bar-color:#fff;--media-range-thumb-background:#fff;--media-range-thumb-width:8px;--media-range-thumb-height:8px;--media-range-track-background:#555;--media-time-range-buffered-color:#888}
+media-controller{width:100%;height:100%;background:#000}
+.center-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:72px;height:72px;--media-button-icon-width:42px;--media-button-icon-height:42px;--media-control-padding:15px;background:transparent;transition:opacity .2s}
+media-loading-indicator{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
+media-controller:not([mediapaused]) .center-play{opacity:0}
+media-controller:not([mediapaused]):hover .center-play,media-controller:not([mediapaused]) .center-play:focus-visible{opacity:1}
+.controls{display:flex;flex-direction:column;width:100%;box-sizing:border-box;padding:12px 20px 10px;background:#000}
+media-time-range{width:100%;height:22px;--media-range-padding:0}
+media-control-bar{display:flex;align-items:center;width:100%;background:#000;min-height:36px}
+media-time-display{margin-right:auto;--media-control-padding:0;font-family:InterVariable,Inter,sans-serif;font-size:12px;font-variant-numeric:tabular-nums}
+media-fullscreen-button{margin-right:-10px}
+@media(max-width:920px){
+ :host{--media-focus-box-shadow:none;-webkit-tap-highlight-color:transparent}
+ media-play-button,media-mute-button,media-fullscreen-button{outline:none!important;box-shadow:none!important;-webkit-tap-highlight-color:transparent}
+ .controls{padding:8px 14px 6px}.center-play{--media-button-icon-width:36px;--media-button-icon-height:36px}
+}
+@media(prefers-reduced-motion:reduce){.center-play{transition:none}}
+</style>
+<media-controller defaultstreamtype="on-demand" keyboardforwardseekoffset="5" keyboardbackwardseekoffset="5">
+<slot name="media" slot="media"></slot><slot name="poster" slot="poster"></slot>
+<media-play-button class="center-play" slot="centered-chrome" part="center play button"><svg slot="play" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 7 39 24 14 41Z" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linejoin="round"/></svg><svg slot="pause" viewBox="0 0 48 48" aria-hidden="true"><path d="M17 9V39M31 9V39" fill="none" stroke="currentColor" stroke-width="3"/></svg></media-play-button>
+<media-loading-indicator slot="centered-chrome" noautohide></media-loading-indicator>
+<media-error-dialog slot="dialog"></media-error-dialog>
+<div class="controls">
+<media-time-range aria-label="Seek"></media-time-range>
+<media-control-bar>
+<media-time-display showduration></media-time-display>
+<media-mute-button><svg slot="high" viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3ZM16 8q5 4 0 8M19 5q8 7 0 14" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><svg slot="off" viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3ZM17 9l5 6m0-6-5 6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></media-mute-button>
+<media-fullscreen-button><svg slot="enter" viewBox="0 0 24 24"><path d="M3 9V3h6M15 3h6v6M21 15v6h-6M9 21H3v-6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></media-fullscreen-button>
+</media-control-bar>
+</div>
+</media-controller>
+</template>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="site-frame">
     <header class="site-header archive-site-header"><div class="site-menu"><a class="desktop-wordmark menu-wordmark" href="../index.html">3Dowon</a><div class="mobile-menu-bar"><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu-panel" aria-haspopup="dialog" hidden><span class="menu-toggle-icon" aria-hidden="true"></span><span class="menu-toggle-label">Menu</span></button><a class="menu-wordmark" href="../index.html">3Dowon</a><a class="mobile-menu-language" href="../ko/work/shipping-time.html" hreflang="ko" data-language="ko" aria-label="한국어로 전환">KR</a></div><dialog class="mobile-menu-dialog" aria-label="Main navigation"></dialog><div class="menu-panel" id="site-menu-panel"><div class="menu-panel-header"><a class="menu-wordmark" href="../index.html">3Dowon</a><button class="menu-close" type="button" aria-label="Close menu"><span class="menu-toggle-icon" aria-hidden="true"></span></button></div><nav class="menu-links" aria-label="Main navigation"><a href="../about.html">About</a><div class="works-menu"><a class="works-trigger is-current" href="../works.html" aria-expanded="false" aria-controls="works-submenu">Works</a><div class="works-submenu" id="works-submenu" lang="en" hidden><div class="works-categories"><a data-work-filter href="../works.html?menu=all">All</a><a data-work-filter href="../works.html?type=%EC%9D%B8%ED%84%B0%EB%9E%99%ED%8B%B0%EB%B8%8C">Interactive</a><a data-work-filter href="../works.html?type=%ED%94%BC%EC%A7%80%EC%BB%AC%20%EC%BB%B4%ED%93%A8%ED%8C%85">Physical Computing</a><a data-work-filter href="../works.html?type=%EC%A0%84%EC%8B%9C">Exhibition</a><a data-work-filter href="../works.html?type=%EC%9B%B9">Web</a><a data-work-filter href="../works.html?type=%EC%98%81%EC%83%81">Video</a><a data-work-filter href="../works.html?type=VR%2FAR">VR/AR</a></div></div></div><a href="../lab.html">Lab</a><a href="../portfolio.html">Portfolio</a><a href="../cv.html">CV</a></nav><nav class="mobile-menu-socials" aria-label="Social links" lang="en"><a href="https://instagram.com/3dowon" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.youtube.com/@threeDowon" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://github.com/threedowon" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://blog.naver.com/qkryewon" target="_blank" rel="noopener noreferrer">Naver Blog</a></nav></div><a class="menu-language" href="../ko/work/shipping-time.html" hreflang="ko" data-language="ko" aria-label="한국어로 전환">KR</a></div></header>
@@ -39,7 +100,7 @@ html.page-loaded body{animation:page-content-in .16s ease-out}
 
 
       <div class="page-content"><article class="editorial-article work-article" aria-labelledby="page-title">
-    <section class="detail-gallery" style="--detail-paper:#ffffff" aria-label="Project media"><div class="detail-media-grid" tabindex="0"><figure class="project-image"><a href="../assets/uploads/shipping-time-1789065460983-839514.jpg" data-viewer="../assets/uploads/shipping-time-1789065460983-839514.jpg" data-viewer-title="Shipping Time — 01" aria-label="Shipping Time 1 — Enlarge image"><img src="../assets/uploads/shipping-time-1789065460983-839514.jpg" alt="Shipping Time — 1" class="project-detail-image" width="1920" height="1080" fetchpriority="high" decoding="async" /></a></figure><figure class="project-image"><a href="../assets/uploads/shipping-time-1789065464861-256103.jpg" data-viewer="../assets/uploads/shipping-time-1789065464861-256103.jpg" data-viewer-title="Shipping Time — 02" aria-label="Shipping Time 2 — Enlarge image"><img src="../assets/uploads/shipping-time-1789065464861-256103.jpg" alt="Shipping Time — 2" class="project-detail-image" width="1329" height="1661" loading="lazy" decoding="async" /></a></figure><figure class="project-image"><a href="../assets/uploads/shipping-time-1789065466722-520990.jpg" data-viewer="../assets/uploads/shipping-time-1789065466722-520990.jpg" data-viewer-title="Shipping Time — 03" aria-label="Shipping Time 3 — Enlarge image"><img src="../assets/uploads/shipping-time-1789065466722-520990.jpg" alt="Shipping Time — 3" class="project-detail-image" width="1370" height="1712" loading="lazy" decoding="async" /></a></figure></div><nav class="detail-controls" aria-label="Media navigation" hidden><span role="status" aria-live="polite"></span><div class="detail-pagination"></div></nav></section>
+    <section class="detail-gallery" style="--detail-paper:#ffffff" aria-label="Project media"><div class="detail-media-grid" tabindex="0"><div class="post-video"><div class="post-video-frame"><mux-player theme="margin-video-theme" playback-id="y0125QsXizmHSnsy4MIdDC2NWctgB2sbP4ipQ02NrSUig" metadata-video-title="Shipping Time" stream-type="on-demand" preload="metadata" accent-color="#ffffff" primary-color="#ffffff"></mux-player></div></div><figure class="project-image"><a href="../assets/uploads/shipping-time-1789065460983-839514.jpg" data-viewer="../assets/uploads/shipping-time-1789065460983-839514.jpg" data-viewer-title="Shipping Time — 01" aria-label="Shipping Time 1 — Enlarge image"><img src="../assets/uploads/shipping-time-1789065460983-839514.jpg" alt="Shipping Time — 1" class="project-detail-image" width="1920" height="1080" loading="lazy" decoding="async" /></a></figure><figure class="project-image"><a href="../assets/uploads/shipping-time-1789065464861-256103.jpg" data-viewer="../assets/uploads/shipping-time-1789065464861-256103.jpg" data-viewer-title="Shipping Time — 02" aria-label="Shipping Time 2 — Enlarge image"><img src="../assets/uploads/shipping-time-1789065464861-256103.jpg" alt="Shipping Time — 2" class="project-detail-image" width="1329" height="1661" loading="lazy" decoding="async" /></a></figure><figure class="project-image"><a href="../assets/uploads/shipping-time-1789065466722-520990.jpg" data-viewer="../assets/uploads/shipping-time-1789065466722-520990.jpg" data-viewer-title="Shipping Time — 03" aria-label="Shipping Time 3 — Enlarge image"><img src="../assets/uploads/shipping-time-1789065466722-520990.jpg" alt="Shipping Time — 3" class="project-detail-image" width="1370" height="1712" loading="lazy" decoding="async" /></a></figure></div><nav class="detail-controls" aria-label="Media navigation" hidden><span role="status" aria-live="polite"></span><div class="detail-pagination"></div></nav></section>
     <div class="project-information">
       <header class="feature-heading"><h1 class="post-title" id="page-title">Shipping Time</h1></header>
       <div class="project-facts"><dl class="work-meta"><div><dt>Date</dt><dd>2024</dd></div><div><dt>Type</dt><dd>Interactive</dd></div></dl><dl class="work-meta"><div><dt>Production</dt><dd>Solo</dd></div></dl></div>

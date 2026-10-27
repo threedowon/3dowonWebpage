@@ -10,7 +10,17 @@ export async function muxRequest(request, repo, env, state, outbound = fetch) {
     const response = await outbound('https://api.mux.com/video/v1/' + path, {
       method, headers: { Authorization: 'Basic ' + Buffer.from(env.MUX_TOKEN_ID + ':' + env.MUX_TOKEN_SECRET).toString('base64'), 'Content-Type': 'application/json' }, ...(data ? { body: JSON.stringify(data) } : {}), signal: AbortSignal.timeout(30000),
     });
-    if (!response.ok) fail(502, 'Mux 요청에 실패했어요. 연결 권한과 사용량을 확인해주세요.');
+    if (!response.ok) {
+      let detail = '';
+      try {
+        const payload = await response.json();
+        const error = payload?.error || payload;
+        detail = [error?.type, error?.code, error?.message || error?.error].filter(Boolean).join(': ');
+      } catch {
+        try { detail = (await response.text()).trim(); } catch {}
+      }
+      fail(502, `Mux 요청 실패 (${response.status})${detail ? `: ${detail}` : ': 연결 권한과 사용량을 확인해주세요.'}`);
+    }
     return (await response.json()).data;
   };
   if (route === 'settings') {

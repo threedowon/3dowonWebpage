@@ -7,7 +7,7 @@
   "workers_dev": false,
   "preview_urls": false,
   "assets": { "directory": "./dist", "binding": "ASSETS", "run_worker_first": true },
-  "build": { "command": "node build.mjs" },
+  "build": { "command": "node admin/cloudflare/build.mjs" },
   "vars": {
     "ADMIN_ORIGIN": "https://admin.3dowon.com",
     "GITHUB_REPOSITORY": "threedowon/3dowonWebpage",
