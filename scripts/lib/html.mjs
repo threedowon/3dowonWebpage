@@ -1,3 +1,14 @@
+// Decode translation entities as text; callers must still escape before rendering HTML.
+export function decodeTextEntities(value) {
+  const named = {amp:'&',lt:'<',gt:'>',quot:'"',apos:"'",nbsp:'\u00a0'};
+  return String(value ?? '').replace(/&(#x[0-9a-f]+|#\d+|amp|lt|gt|quot|apos|nbsp);/gi, (match, entity) => {
+    if (entity[0] !== '#') return named[entity.toLowerCase()];
+    const hex = entity[1].toLowerCase() === 'x';
+    const code = parseInt(entity.slice(hex ? 2 : 1), hex ? 16 : 10);
+    return code > 0 && code <= 0x10ffff && !(code >= 0xd800 && code <= 0xdfff) ? String.fromCodePoint(code) : match;
+  });
+}
+
 export function escapeHtml(value) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')

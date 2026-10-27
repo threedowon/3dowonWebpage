@@ -2,7 +2,7 @@ import { siteNavigation, siteFooter } from './navigation.mjs';
 import { pageLoadingHead } from './page-loading.mjs';
 import {videoTheme} from './video-theme.mjs';
 import {galleryRows} from '../../admin/public/gallery-layout.mjs';
-import { escapeHtml as esc, vimeoEmbedHtml } from './html.mjs';
+import { escapeHtml as esc, vimeoEmbedHtml, decodeTextEntities } from './html.mjs';
 import { pick, resolveMediaPath, workFormY, formKey } from './catalog.mjs';
 import { selectRelatedWorks } from '../../admin/public/related-works.mjs';
 import { workCoverImage } from '../../admin/public/work-images.mjs';
@@ -245,15 +245,15 @@ function detailDescription(work, ctx) {
   const section = (label, body, open = false) => body?.trim() ? `<details class="detail-disclosure"${open ? ' open' : ''}><summary>${label}</summary><div class="detail-disclosure-copy">${body}</div></details>` : '';
   const responsibilities = Array.isArray(work.responsibility_items)
     ? work.responsibility_items.map(item => {
-      const title = pick(item, 'title', ctx.lang) || '';
-      const description = pick(item, 'description', ctx.lang) || '';
+      const title = decodeTextEntities(pick(item, 'title', ctx.lang));
+      const description = decodeTextEntities(pick(item, 'description', ctx.lang));
       if (!title.trim() && !description.trim()) return '';
       return `<section class="detail-responsibility">${title.trim() ? `<h4>${esc(title)}</h4>` : ''}${description.split(/\r?\n/).filter(line => line.trim()).map(line => /^\s*[-•]\s+/.test(line) ? `<p class="responsibility-bullet">${esc(line.trim())}</p>` : `<p>${esc(line)}</p>`).join('')}</section>`;
     }).join('')
     : richText(pick(work, 'responsibilities', ctx.lang)) || parts.slice(1).join('');
   return section(ctx.lang === 'ko' ? '소개' : 'Introduction', parts[0], true)
     + section(ctx.lang === 'ko' ? '주요 업무' : 'Responsibilities', responsibilities)
-    + section(ctx.lang === 'ko' ? '문제 해결과 배운 점' : 'Challenges & Lessons Learned', richText(pick(work, 'lessons', ctx.lang)));
+    + section(ctx.lang === 'ko' ? '문제 해결과 배운 점' : 'Challenges', richText(pick(work, 'lessons', ctx.lang)));
 }
 
 function projectContent(work, ctx) {

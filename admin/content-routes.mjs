@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { decodeTextEntities } from '../scripts/lib/html.mjs';
 import { validateResponsibilities } from './responsibilities.mjs';
 import { Buffer } from 'node:buffer';
 import { randomUUID } from 'node:crypto';
@@ -128,6 +129,7 @@ app.put('/api/tech-options', (req, res) => {
 
 function adminWork(work) {
   const result={...work};
+  if (Array.isArray(work.responsibility_items)) result.responsibility_items=work.responsibility_items.map(item=>({...item,...Object.fromEntries(['title','title_en','description','description_en'].map(key=>[key,decodeTextEntities(item[key])]))}));
   for(const key of ['description','description_en','responsibilities','responsibilities_en','lessons','lessons_en']) result[key]=descriptionHtmlToPlainText(work[key]);
   result.process=(work.process||[]).map(entry=>({...entry,description:descriptionHtmlToPlainText(entry.description),description_en:descriptionHtmlToPlainText(entry.description_en)}));
   return result;

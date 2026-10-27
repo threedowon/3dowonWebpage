@@ -1,4 +1,5 @@
 import { Buffer } from 'node:buffer';
+import { decodeTextEntities } from '../scripts/lib/html.mjs';
 export async function translateDescription(text, key = '', request = fetch) {
   if (!key) throw new Error('자동 번역을 사용하려면 Lab 상단에 DeepL API 키를 등록해주세요.');
   const host = key.endsWith(':fx') ? 'api-free.deepl.com' : 'api.deepl.com';
@@ -50,23 +51,23 @@ export async function translateWorksTexts(texts, key = '', request = fetch) {
 }
 export async function autoTranslateWorks(work, previous = {}, translate = translateWorksTexts) {
   const fields=[];
-  const add=(target,before,key)=>{
+  const add=(target,before,key,plainText=false)=>{
     const text=target[key]||'',english=target[key+'_en']||'';
     const manual=Boolean(english) && english!==(before?.[key+'_en']||'');
-    if(/[가-힣]/.test(text)&&!manual&&(text!==before?.[key]||!english||previous.works_translation_pending))fields.push({target,key,text});
+    if(/[가-힣]/.test(text)&&!manual&&(text!==before?.[key]||!english||previous.works_translation_pending))fields.push({target,key,text,plainText});
   };
   add(work,previous,'description');
   add(work,previous,'lessons');
   if (!Array.isArray(work.responsibility_items)) add(work,previous,'responsibilities');
   (work.responsibility_items || []).forEach(entry => {
     const before = (previous.responsibility_items || []).find(old => old.id === entry.id) || {};
-    for (const key of ['title','description']) add(entry,before,key);
+    for (const key of ['title','description']) add(entry,before,key,true);
   });
   (work.process||[]).forEach((entry,i)=>{
     const before=(previous.process||[]).find(old=>old.title===entry.title&&old.description===entry.description)||previous.process?.[i]||{};
     for(const key of ['title','description'])add(entry,before,key);
   });
   if(!fields.length){work.works_translation_pending=false;return null;}
-  try{const translated=await translate(fields.map(field=>field.text));fields.forEach((field,i)=>field.target[field.key+'_en']=translated[i]);work.works_translation_pending=false;return null;}
+  try{const translated=await translate(fields.map(field=>field.text));fields.forEach((field,i)=>field.target[field.key+'_en']=field.plainText ? decodeTextEntities(translated[i]) : translated[i]);work.works_translation_pending=false;return null;}
   catch(error){work.works_translation_pending=true;return `한글 내용은 저장되었습니다. ${error.message}`;}
 }
