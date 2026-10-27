@@ -38,8 +38,17 @@
   "meta_production_en": "Collaborative",
   "description_en": "<p>An exhibition project exploring the temporal layers of a city through interactive mapping.</p>",
   "vimeo_url": "",
-  "month": null,
+  "month": 6,
   "detail_background": "#ffffff",
   "cover_image": "/3dowonWebpage/assets/uploads/layered-city-1793111386648-700335.jpg",
-  "hover_image": "/3dowonWebpage/assets/uploads/layered-city-1793109695327-149832.jpg"
+  "hover_image": "/3dowonWebpage/assets/uploads/layered-city-1793109695327-149832.jpg",
+  "detail_columns": 1,
+  "responsibilities": "",
+  "responsibilities_en": "",
+  "lessons": "",
+  "lessons_en": "",
+  "company": "",
+  "responsibility_items": [],
+  "process": [],
+  "works_translation_pending": false
 }

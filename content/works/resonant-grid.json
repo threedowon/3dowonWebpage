@@ -23,7 +23,9 @@
   "meta_production": "개인",
   "gallery": [
     "/3dowonWebpage/assets/uploads/resonant-grid-1789065350271-434224.jpg",
+    "/3dowonWebpage/assets/uploads/resonant-grid-1793113693001-32757.jpg",
     "/3dowonWebpage/assets/uploads/resonant-grid-1789065353957-462967.jpg",
+    "/3dowonWebpage/assets/uploads/resonant-grid-1793113693146-206493.jpg",
     "/3dowonWebpage/assets/uploads/resonant-grid-1789065356036-67866.jpg",
     "/3dowonWebpage/assets/uploads/resonant-grid-1789065359154-799339.jpg"
   ],
@@ -36,9 +38,30 @@
   "description_en": "<p>An interactive media installation for a brand launch event. Grid-shaped lighting and sensor input combine so the space responds to audience participation.</p>\n            <p>Role</p>\n            <p>Developed an Arduino-based sensor and lighting control system</p>\n            <p>Programmed the DMX lighting sequence</p>\n            <p>Handled on-site installation and interaction testing</p>",
   "vimeo_url": "",
   "mux": {
-    "upload_id": "cae3AThc00ih4G005OaPylNqXrCqPuKZg102qzbUaURqIc",
-    "asset_id": "GnsSexYWJ029759qKP87EiejEh6WdppuRp008k5S2Biqw",
-    "playback_id": "zdZ92z02X3CMMLrdijIEdOFvweI00Mt01GQw7K9gOhup00Q",
-    "aspect_ratio": "16:9"
-  }
+    "upload_id": "e00pkbIPWVkaPm8CYplr68ts7nqlItgm2PzvepITPJow",
+    "asset_id": "fnCwcXCm4rHTaQ7g9SatBU4br1Ki100TWddaTz0197G8M",
+    "playback_id": "P7202AYYnbFfBtT4sBrKHSLyU8wQ3NUOUqafA7VQ802Do",
+    "aspect_ratio": "9:16"
+  },
+  "detail_rows": [
+    [
+      "/3dowonWebpage/assets/uploads/resonant-grid-1789065350271-434224.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/resonant-grid-1793113693001-32757.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/resonant-grid-1789065353957-462967.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/resonant-grid-1793113693146-206493.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/resonant-grid-1789065356036-67866.jpg"
+    ],
+    [
+      "/3dowonWebpage/assets/uploads/resonant-grid-1789065359154-799339.jpg"
+    ]
+  ],
+  "detail_columns": 1
 }

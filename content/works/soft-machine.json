@@ -53,5 +53,15 @@
       "/3dowonWebpage/assets/uploads/soft-machine-1789062921517-446570.jpg"
     ]
   ],
-  "detail_columns": 1
+  "detail_columns": 1,
+  "month": 6,
+  "detail_background": "#ffffff",
+  "responsibilities": "",
+  "responsibilities_en": "",
+  "lessons": "",
+  "lessons_en": "",
+  "company": "",
+  "responsibility_items": [],
+  "process": [],
+  "works_translation_pending": false
 }

@@ -3,18 +3,19 @@
   "slug": "ambient-loop",
   "thumbnail": "/3dowonWebpage/assets/uploads/ambient-loop-1789062207794-632080.jpg",
   "meta_medium": "영상",
-  "meta_tech": "Unreal",
+  "meta_tech": "Unreal Engine",
   "gallery": [
-    "/3dowonWebpage/assets/uploads/ambient-loop-1789062213412-564993.jpg",
-    "/3dowonWebpage/assets/uploads/ambient-loop-1789062217223-947887.jpg",
-    "/3dowonWebpage/assets/uploads/ambient-loop-1789062220614-780489.jpg",
-    "/3dowonWebpage/assets/uploads/ambient-loop-1789062223055-404662.jpg"
+    "/3dowonWebpage/assets/uploads/ambient-loop-1793113479744-183784.jpg",
+    "/3dowonWebpage/assets/uploads/ambient-loop-1793113480067-118135.jpg",
+    "/3dowonWebpage/assets/uploads/ambient-loop-1793113480318-636603.jpg",
+    "/3dowonWebpage/assets/uploads/ambient-loop-1793113480581-281281.jpg",
+    "/3dowonWebpage/assets/uploads/ambient-loop-1793113480811-961683.jpg"
   ],
   "meta_production": "개인",
   "meta_type": "영상",
   "hero_image": "/3dowonWebpage/assets/uploads/ambient-loop-1789062207794-632080.jpg",
   "tech": [
-    "Unreal"
+    "Unreal Engine"
   ],
   "meta_year": "2024",
   "title": "Inside the Summer",
@@ -25,14 +26,27 @@
   "type": "영상",
   "preview_bg": "/3dowonWebpage/assets/uploads/ambient-loop-1789062207794-632080.jpg",
   "index_type_label": "영상",
-  "description": "<p>환경 데이터를 순환 구조로 전시하는 미디어 아트 큐레이션 프로젝트이다. 여러 채널의 영상이 루프되며 하나의 공간적 서사를 형성한다.</p>\n            <p>담당</p>\n            <p>멀티채널 영상 스케줄링 시스템 구축</p>\n            <p>Unity 기반 재생·동기화 환경 제작</p>\n            <p>전시 공간 사운드·영상 배치 협업</p>",
+  "description": "<p>여름의 풍경을 카메라에 담듯 표현한 Unreal Engine 기반 영상 작업입니다. 가상 공간 안에서 여름을 바라보는 시선을 구성하고, 카메라의 구도와 움직임을 통해 계절의 분위기를 담아내고자 했습니다.</p>\n            <p>지나가는 풍경 속에서 잠시 머물고 싶은 순간을 포착하듯, 여름의 한 장면을 영상으로 기록했습니다.</p>",
   "year": 2024,
   "grid_type_label_en": "Video",
   "index_type_label_en": "Video",
   "meta_medium_en": "Video",
-  "meta_tech_en": "Unreal",
+  "meta_tech_en": "Unreal Engine",
   "meta_production_en": "Solo",
   "meta_type_en": "Video",
-  "description_en": "<p>A media art curation project that presents environmental data in a circular structure. Multiple channels of video loop together to form a single spatial narrative.</p>\n            <p>Role</p>\n            <p>Built a multi-channel video scheduling system</p>\n            <p>Developed a Unity-based playback and sync environment</p>\n            <p>Collaborated on sound and video placement in the exhibition space</p>",
-  "vimeo_url": ""
+  "description_en": "<p>This Unreal Engine-based video project captures summer scenery as if through a camera lens. I sought to compose a perspective that views summer from within a virtual space and to convey the atmosphere of the season through the camera’s framing and movement.</p>\n            <p>Just as one might capture a moment in a passing landscape that makes you want to linger, I recorded a scene of summer on film.</p>",
+  "vimeo_url": "",
+  "month": 2,
+  "detail_background": "#ffffff",
+  "detail_columns": 1,
+  "responsibilities": "",
+  "responsibilities_en": "",
+  "lessons": "",
+  "lessons_en": "",
+  "company": "",
+  "responsibility_items": [],
+  "process": [],
+  "works_translation_pending": false,
+  "cover_image": "/3dowonWebpage/assets/uploads/ambient-loop-1793113480811-961683.jpg",
+  "hover_image": "/3dowonWebpage/assets/uploads/ambient-loop-1793113479744-183784.jpg"
 }

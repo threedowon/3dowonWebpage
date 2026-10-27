@@ -39,7 +39,7 @@
   "index_type_label_en": "Interactive, Web",
   "meta_type_en": "Interactive, Web",
   "meta_medium_en": "Interactive, Web",
-  "month": null,
+  "month": 2,
   "detail_background": "#ffffff",
   "detail_columns": 1,
   "responsibilities": "<p>HTML, CSS , JavaScript 기반 웹 프론트엔드 구성</p>",
@@ -54,5 +54,30 @@
     "aspect_ratio": "16:9"
   },
   "cover_image": "/3dowonWebpage/assets/uploads/botanic-brush-1793109822606-946774.jpg",
-  "hover_image": "/3dowonWebpage/assets/uploads/botanic-brush-1789064063030-578685.jpg"
+  "hover_image": "/3dowonWebpage/assets/uploads/botanic-brush-1789064063030-578685.jpg",
+  "lessons": "",
+  "lessons_en": "",
+  "responsibility_items": [
+    {
+      "id": "af0babdc-20e6-416b-91f6-9b7e550ffbc9",
+      "title": "HTML, CSS , JavaScript 기반 웹 프론트엔드 구성",
+      "title_en": "HTML, CSS, and JavaScript-Based Web Front-End Development",
+      "description": "- HTML, CSS, JavaScript를 활용하여 사용자가 직접 화면 위에 드로잉을 할 수 있는 웹 인터페이스를 구현\n- Canvas 기반 드로잉 로직을 구성하여 사용자의 마우스/터치 이동 경로에 따라 꽃 이미지가 일정 간격으로 자연스럽게 배치되도록 설계\n- 드로잉 결과는 단순한 선이 아니라, 꽃 이미지의 조합으로 글자·형태·제스처가 남도록 표현",
+      "description_en": "HTML, CSS, and JavaScript-Based Web Front-End Development"
+    },
+    {
+      "id": "db3ff151-e620-4194-9e8f-6425d59ef593",
+      "title": "드로잉 이미지 → 언리얼 연동 → 꽃 성장 시스템",
+      "title_en": "Drawing Images → Unreal Integration → Flower Growth System",
+      "description": "- 웹에서 생성된 드로잉 결과를 로컬 폴더의 이미지 파일로 저장\n- 언리얼 엔진에서 해당 이미지를 로드하여 이미지 데이터를 기반으로 꽃이 자라나는 시스템을 구현",
+      "description_en": "- Save the drawing results generated on the web as image files in a local folder\n- Load those images into Unreal Engine to implement a system where flowers grow based on the image data"
+    },
+    {
+      "id": "f31710c2-c25d-4ee7-99fa-e18663b7d780",
+      "title": "레벨 디자인 및 환경 구성",
+      "title_en": "Level Design and Environment Setup",
+      "description": "",
+      "description_en": ""
+    }
+  ]
 }
